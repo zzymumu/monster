@@ -418,7 +418,7 @@ export function WeChatSkin(p: SkinProps) {
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
-  const ownerConversation = catRescue.stage >= 9 && catRescue.branch !== "leave-first";
+  const ownerConversation = catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11;
   const firstOwnerMessageIndex = catRescue.messages.findIndex((item) => item.sender === "大G" || item.sender === "温尚翊");
   const firstOwnerGroup = firstOwnerMessageIndex >= 0 ? catRescue.messages[firstOwnerMessageIndex].id.match(/^cat-rescue-(\d+)-/)?.[1] : undefined;
   const ownerConversationStart = firstOwnerGroup
@@ -428,7 +428,7 @@ export function WeChatSkin(p: SkinProps) {
   const ownerStoryMessages = catRescue.messages.slice(ownerConversationStart);
   const catRescueActive = p.thread === "西蓝花"
     ? !ownerConversation && friendStoryMessages.length > 0
-    : p.thread === "大G" && ownerConversation && ownerStoryMessages.length > 0;
+    : p.thread === "大G" && ownerConversation && catRescue.messages.length > 0;
   const catAvatar = GLOOMY_AVATAR;
   const threadItems = p.thread === "大G"
     ? [...p.items.filter((item) => item.title === "大G" || item.title === "温尚翊"), ...ownerStoryMessages]
@@ -442,7 +442,7 @@ export function WeChatSkin(p: SkinProps) {
     const created = lines.map((line, index) => {
       const total = start + Math.floor(index / 2);
       const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
-      const ownerThread = (nextStage >= 9 || catRescue.stage >= 9) && branch !== "leave-first";
+      const ownerThread = (nextStage >= 9 && nextStage !== 10 && nextStage !== 11) || (catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11);
       return makeItem({
         id: "cat-rescue-" + Date.now() + "-" + index + "-" + Math.random().toString(36).slice(2, 7),
         title: ownerThread ? "大G" : "西蓝花",
