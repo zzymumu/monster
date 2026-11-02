@@ -1,0 +1,607 @@
+/* iOS 27-inspired refinement layer: system-wide Liquid Glass materials and Photos UI. */
+.ios18 {
+  --ios27-glass: rgba(248, 249, 252, .72);
+  --ios27-glass-strong: rgba(250, 251, 254, .88);
+  --ios27-separator: rgba(60, 60, 67, .16);
+  --ios27-blue: #0a84ff;
+  --ios27-text: #17181c;
+  --ios27-muted: #858791;
+}
+.ios18 .phone-screen {
+  background: #f4f4f7;
+  color: var(--ios27-text);
+}
+.ios18 .status-bar {
+  z-index: 30;
+  backdrop-filter: saturate(1.5);
+}
+.ios18 .dynamic-island {
+  box-shadow: 0 1px 0 #ffffff26, 0 4px 14px #0005;
+  transition: width .28s cubic-bezier(.2,.8,.2,1), height .28s ease;
+}
+.ios18 .home-screen {
+  background: transparent;
+}
+.ios18 .dock {
+  background: linear-gradient(145deg, #ffffff55, #ffffff22);
+  border: 1px solid #ffffff5c;
+  backdrop-filter: blur(34px) saturate(1.8);
+  -webkit-backdrop-filter: blur(34px) saturate(1.8);
+  box-shadow: inset 0 1px 1px #ffffffa8, 0 8px 24px #0002;
+}
+.ios18 .app-icon {
+  border-radius: 17px;
+  box-shadow: 0 2px 8px #0002, inset 0 1px 1px #ffffff6b;
+}
+.ios18 .app-screen {
+  background: #f5f5f8;
+  color: #17181c;
+}
+.ios18 .app-screen .app-nav,
+.ios18 .app-screen .catalog-nav {
+  background: color-mix(in srgb, var(--ios27-glass-strong) 92%, transparent);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border-bottom: 1px solid #ffffffb5;
+}
+.ios18 .device-control {
+  background: linear-gradient(155deg, #f4f5f8e8, #dfe2e9d9);
+  backdrop-filter: blur(42px) saturate(1.8);
+  -webkit-backdrop-filter: blur(42px) saturate(1.8);
+  border: 1px solid #ffffffa6;
+  box-shadow: 0 18px 50px #0003, inset 0 1px #ffffffb8;
+  border-radius: 30px;
+}
+.ios18 .device-keyboard {
+  background: #d4d7dfed;
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+}
+.ios18 .device-keyboard button {
+  border-radius: 11px;
+  box-shadow: 0 1px 1px #0002, inset 0 1px #ffffffa6;
+}
+.ios18 .lock-screen {
+  background: linear-gradient(180deg, #1113, #10132212 55%, #080b17a8);
+}
+.ios18 .lock-screen .lock-clock-block {
+  text-shadow: 0 2px 18px #0005;
+}
+.ios18 .lock-screen .lock-notifications > * {
+  border-radius: 22px;
+  background: #f7f8f9c9;
+  border: 1px solid #ffffff75;
+  backdrop-filter: blur(32px) saturate(1.7);
+  -webkit-backdrop-filter: blur(32px) saturate(1.7);
+  box-shadow: 0 8px 28px #0002, inset 0 1px #ffffffb5;
+}
+.ios18 .lock-tools button {
+  background: #f4f5f6a8;
+  border: 1px solid #ffffff70;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  box-shadow: 0 5px 18px #0002, inset 0 1px #ffffffa8;
+}
+.ios18 .home-indicator {
+  box-shadow: 0 1px 5px #0004;
+}
+
+/* Apple Photos-inspired library, collections and Shared Albums. */
+.ios27-photos {
+  background: #f6f6f8;
+  color: #17181c;
+}
+.ios27-photos .catalog-scroll {
+  padding: 8px 0 14px;
+}
+.ios27-photos .photos-title-row {
+  padding: 4px 20px 10px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+.ios27-photos .photos-library-label {
+  font-size: 13px;
+  color: #8b8c94;
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+.ios27-photos .photos-title-row h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -.8px;
+  font-weight: 750;
+}
+.ios27-photos .photos-back {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--ios27-blue);
+  font-size: 15px;
+  padding: 3px 0;
+}
+.ios27-photos .photos-shared-count {
+  color: #8a8b92;
+  font-size: 12px;
+}
+.ios27-photos .photo-mosaic {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  padding: 0 2px;
+}
+.ios27-photos .photo-mosaic > button {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: #e5e6eb;
+  border-radius: 2px;
+}
+.ios27-photos .photo-mosaic > button > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ios27-photos .photo-mosaic > button > svg {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  filter: drop-shadow(0 1px 3px #0007);
+}
+.ios27-photos .catalog-search {
+  margin: 8px 16px 14px;
+  border-radius: 14px;
+  background: #e9e9ed;
+  min-height: 40px;
+}
+.ios27-photos .catalog-tabs {
+  background: #f8f8fae8 !important;
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  border-top: 1px solid #ffffffb8 !important;
+}
+.ios27-photos .catalog-tabs button.selected {
+  color: var(--ios27-blue);
+}
+.ios27-photos .photos-collection-section {
+  padding: 8px 16px 16px;
+}
+.ios27-photos .photos-collection-section h3 {
+  margin: 12px 4px;
+  font-size: 21px;
+  font-weight: 720;
+  letter-spacing: -.3px;
+}
+.ios27-photos .album-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 12px;
+}
+.ios27-photos .album-grid > button {
+  min-width: 0;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  color: inherit;
+}
+.ios27-photos .album-grid > button > :first-child,
+.ios27-photos .photos-shared-shortcut > span {
+  width: 100%;
+  aspect-ratio: 1.48;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e4e5e9;
+  display: grid;
+  place-items: center;
+}
+.ios27-photos .album-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ios27-photos .album-grid strong {
+  font-size: 14px;
+  font-weight: 650;
+}
+.ios27-photos .album-grid small {
+  color: #8a8b92;
+  font-size: 11px;
+}
+.ios27-photos .photos-shared-shortcut > span {
+  color: #3586d9;
+  background: linear-gradient(135deg, #dcecff, #f1f4fb);
+}
+.ios27-photos .photos-shared-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 4px;
+  text-align: left;
+  border-bottom: 1px solid var(--ios27-separator);
+}
+.ios27-photos .photos-shared-row > svg:first-child {
+  color: #3988db;
+}
+.ios27-photos .photos-shared-row span {
+  display: grid;
+  flex: 1;
+  gap: 3px;
+}
+.ios27-photos .photos-shared-row small {
+  color: #888992;
+  font-size: 12px;
+}
+.ios27-photos .shared-albums-page {
+  padding: 4px 16px 20px;
+}
+.ios27-photos .shared-albums-intro {
+  text-align: center;
+  padding: 18px 14px 20px;
+}
+.ios27-photos .shared-albums-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  color: #2788df;
+  background: linear-gradient(145deg, #e1f0ff, #c9e2ff);
+}
+.ios27-photos .shared-albums-intro h2 {
+  margin: 0 0 6px;
+  font-size: 21px;
+  letter-spacing: -.35px;
+}
+.ios27-photos .shared-albums-intro p {
+  margin: 0 auto;
+  max-width: 270px;
+  color: #858791;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ios27-photos .shared-create-row,
+.ios27-photos .shared-invite-row,
+.ios27-photos .shared-comment-compose {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 15px;
+  background: #e9e9ed;
+}
+.ios27-photos .shared-create-row input,
+.ios27-photos .shared-invite-row input,
+.ios27-photos .shared-comment-compose input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #17181c;
+  font: inherit;
+  font-size: 14px;
+}
+.ios27-photos .shared-create-row button,
+.ios27-photos .shared-invite-row button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ios27-blue);
+  font-size: 14px;
+  font-weight: 650;
+}
+.ios27-photos button:disabled {
+  opacity: .38;
+}
+.ios27-photos .shared-album-list {
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: white;
+}
+.ios27-photos .shared-album-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #eeeeF1;
+}
+.ios27-photos .shared-album-cover {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #e8edf5;
+  color: #6d9bcb;
+  flex: none;
+}
+.ios27-photos .shared-album-cover > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ios27-photos .shared-album-info {
+  display: grid;
+  gap: 5px;
+  flex: 1;
+}
+.ios27-photos .shared-album-info strong {
+  font-size: 15px;
+  font-weight: 650;
+}
+.ios27-photos .shared-album-info small,
+.ios27-photos .shared-local-note {
+  color: #888a93;
+  font-size: 11px;
+}
+.ios27-photos .shared-empty-card {
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  color: #9698a0;
+}
+.ios27-photos .shared-empty-card strong {
+  color: #555760;
+  font-size: 14px;
+}
+.ios27-photos .shared-local-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.45;
+  margin: 14px 4px;
+}
+.ios27-photos .shared-album-detail {
+  padding: 0 14px 20px;
+}
+.ios27-photos .shared-album-hero {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: white;
+}
+.ios27-photos .shared-album-hero-art {
+  width: 68px;
+  height: 68px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e5edf7;
+  color: #5e92c8;
+}
+.ios27-photos .shared-album-hero-art > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ios27-photos .shared-album-hero > div:last-child {
+  display: grid;
+  gap: 5px;
+}
+.ios27-photos .shared-album-hero strong {
+  font-size: 16px;
+}
+.ios27-photos .shared-album-hero small {
+  color: #888a93;
+  font-size: 11px;
+}
+.ios27-photos .shared-members-panel,
+.ios27-photos .shared-photos-panel,
+.ios27-photos .shared-comments-panel {
+  margin-top: 14px;
+  padding: 14px 12px;
+  border-radius: 16px;
+  background: white;
+}
+.ios27-photos .shared-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.ios27-photos .shared-section-heading strong {
+  font-size: 16px;
+}
+.ios27-photos .shared-section-heading span {
+  color: #888a93;
+  font-size: 12px;
+}
+.ios27-photos .shared-members-list {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 2px 0 12px;
+}
+.ios27-photos .shared-member {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  min-width: 44px;
+}
+.ios27-photos .shared-member .catalog-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+.ios27-photos .shared-member small {
+  font-size: 10px;
+  color: #686a72;
+}
+.ios27-photos .shared-invite-avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #a8abb4;
+  border-radius: 50%;
+  color: #858894;
+}
+.ios27-photos .shared-invite-row {
+  background: #f1f1f4;
+  padding: 8px 10px;
+}
+.ios27-photos .shared-add-heading {
+  display: grid;
+  gap: 3px;
+  margin: 16px 2px 10px;
+}
+.ios27-photos .shared-add-heading strong {
+  font-size: 14px;
+}
+.ios27-photos .shared-add-heading small {
+  color: #8a8c95;
+  font-size: 11px;
+}
+.ios27-photos .shared-picker > button.picked {
+  outline: 3px solid var(--ios27-blue);
+  outline-offset: -3px;
+}
+.ios27-photos .shared-picked-check {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: var(--ios27-blue);
+  font-size: 12px;
+  font-weight: 700;
+}
+.ios27-photos .shared-primary-action {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  color: white;
+  background: var(--ios27-blue);
+  font-size: 14px;
+  font-weight: 650;
+}
+.ios27-photos .shared-empty {
+  text-align: center;
+  color: #93959e;
+  font-size: 13px;
+  padding: 18px 0;
+}
+.ios27-photos .shared-comment {
+  margin: 8px 0;
+  padding: 9px 11px;
+  border-radius: 11px;
+  background: #f1f1f4;
+  font-size: 13px;
+}
+.ios27-photos .shared-comment-compose {
+  margin-top: 12px;
+  padding: 8px 10px;
+  background: #f1f1f4;
+}
+.ios27-photos .shared-comment-compose button {
+  color: var(--ios27-blue);
+}
+.ios27-photos .media-count {
+  padding: 8px 16px;
+  color: #8a8c95;
+  font-size: 11px;
+}
+
+/* WeChat iOS-style hierarchy: restrained nav, compact list rows and native tab bar. */
+.ios18 .wechat-ui {
+  background: #f7f7f7;
+  color: #191919;
+}
+.ios18 .wechat-ui .wx-nav {
+  min-height: 48px;
+  padding: 0 12px;
+  background: #f7f7f7f5;
+  border-bottom: 1px solid #e6e6e6;
+  backdrop-filter: blur(22px);
+}
+.ios18 .wechat-ui .wx-nav strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.ios18 .wechat-ui .wx-chat-row {
+  background: #f7f7f7;
+  min-height: 76px;
+  padding: 10px 15px;
+}
+.ios18 .wechat-ui .wx-chat-row > div {
+  min-width: 0;
+  flex: 1;
+}
+.ios18 .wechat-ui .wx-chat-row p {
+  color: #929292;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ios18 .wechat-ui .wx-bottom {
+  min-height: 54px;
+  background: #f7f7f7f4;
+  border-top: 1px solid #dedede;
+  backdrop-filter: blur(22px);
+}
+.ios18 .wechat-ui .wx-bottom button.selected {
+  color: #07c160;
+}
+.ios18 .wechat-ui .wx-bottom button:not(.selected) {
+  color: #7b7b7b;
+}
+.ios18 .wechat-ui .wx-discovery {
+  background: #fff;
+  min-height: 54px;
+  padding: 0 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.ios18 .wechat-ui .skin-compose {
+  background: #f3f3f3;
+  border-top: 1px solid #dedede;
+}
+.dark-phone.ios18 .ios27-photos,
+.dark-phone.ios18 .wechat-ui {
+  background: #111214;
+  color: #f4f4f6;
+}
+.dark-phone.ios18 .ios27-photos .shared-album-list,
+.dark-phone.ios18 .ios27-photos .shared-album-hero,
+.dark-phone.ios18 .ios27-photos .shared-members-panel,
+.dark-phone.ios18 .ios27-photos .shared-photos-panel,
+.dark-phone.ios18 .ios27-photos .shared-comments-panel {
+  background: #222327;
+}
+.dark-phone.ios18 .ios27-photos .shared-create-row,
+.dark-phone.ios18 .ios27-photos .shared-invite-row,
+.dark-phone.ios18 .ios27-photos .shared-comment-compose,
+.dark-phone.ios18 .ios27-photos .shared-comment {
+  background: #303137;
+}
+.dark-phone.ios18 .wechat-ui .wx-nav,
+.dark-phone.ios18 .wechat-ui .wx-chat-row,
+.dark-phone.ios18 .wechat-ui .wx-bottom {
+  background: #18191c;
+  color: #f4f4f6;
+}
