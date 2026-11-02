@@ -222,6 +222,10 @@ export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): 
   if (stage === 13) return 14;
   return 9;
 }
+export function shouldShowPrankHistoryLine(item: Item, branch: string): boolean {
+  const obsoletePrankReply = /^(妳是？|……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
+  return branch !== "monster-prank" || !obsoletePrankReply.test(item.body);
+}
 export function splitCatRescueMessages(messages: Item[]): { broccoli: Item[]; owner: Item[] } {
   const isHospitalStoryMessage = (item: Item) =>
     /我會帶它去醫院先檢查|我会带它去医院先检查|你都說到這個份上了|你都说到这个份上了|放進外出籠|放进外出笼|路上小心.*到了記得|路上小心.*到了记得|你到了嗎|你到了吗|我帶它走.*先去醫院|我带它走.*先去医院|我不是不相信你啦|我會先讓醫生檢查|我会先让医生检查|我等你消息|醫生正在幫它檢查|医生正在帮它检查|醫生開始幫它檢查|医生开始帮它检查|醫生有開始幫它檢查|医生有开始帮它检查|先陪著它|先陪着它|到了到了|刚到医院|剛到醫院|晶片或主人資料|晶片或主人资料/.test(item.body);
@@ -566,9 +570,8 @@ export function WeChatSkin(p: SkinProps) {
     // remove unmistakable owner-prank lines from legacy mixed saves.
     !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|？？？|對不起.*發錯|对不起.*发错/.test(item.body)
   );
-  const legacyPrankReply = /^(妳是？|……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
   const keepPrankHistoryClean = (item: Item) =>
-    catRescue.branch !== "monster-prank" || !legacyPrankReply.test(item.body);
+    shouldShowPrankHistoryLine(item, catRescue.branch);
   const threadItems = isMonsterThread
     ? [
         ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
