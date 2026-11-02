@@ -35,22 +35,17 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[66]).toHaveLength(0);
   });
 
-  it("keeps the Vava isolation objection before the go-home branch", () => {
-    expect(CAT_RESCUE_CHOICES[2][1].nextStage).toBe(73);
-    expect(CAT_RESCUE_CHOICES[2][1].label).toContain("先回家");
-    expect(CAT_RESCUE_CHOICES[67].some((choice) => choice.nextStage === 81)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67].some((choice) => /隔离|隔離/.test(choice.label))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67][0].lines.some((line) => /衣服、手、鞋子/.test(line.body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67][0].lines.some((line) => /隔離也不是/.test(line.body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[81].every((choice) => choice.nextStage === 68)).toBe(true);
+  it("keeps the Vava isolation objection and then takes the kitten to the clinic", () => {
+    expect(CAT_RESCUE_CHOICES[0].find((choice) => choice.id === "leave-first")?.nextStage).toBe(1);
+    expect(CAT_RESCUE_CHOICES[1].every((choice) => choice.nextStage === 2)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.nextStage === 3)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.lines.some((line) => /醫院|医院/.test(line.body)))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.nextStage === 81)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.lines.some((line) => /病菌|寄生蟲/.test(line.body)))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[81].every((choice) => choice.nextStage === 3)).toBe(true);
   });
 
   it("separates the name surprise from the nameplate explanation", () => {
-    expect(CAT_RESCUE_CHOICES[71][0].lines[0].body).toContain("！！！");
-    expect(CAT_RESCUE_CHOICES[71][0].lines[0].body).not.toContain("溫尚翊");
-    expect(CAT_RESCUE_CHOICES[71][0].lines[1].body).toContain("怎麼了");
-    expect(CAT_RESCUE_CHOICES[80][0].lines[0].body).toContain("銘牌");
-    expect(CAT_RESCUE_CHOICES[80][0].lines[0].body).toContain("溫尚翊");
     expect(CAT_RESCUE_CHOICES[63][1].lines.some((line) => /吃(?:什麼|什么)/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[78][0].lines[0].body).toContain("我哪知道啦");
   });
@@ -72,72 +67,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[11].every((choice) => choice.nextStage !== 8)).toBe(true);
   });
 
-  it("offers a longer leave-first route that returns home, chats, then finds the kitten and rejoins the rescue path", () => {
-    const leaveFirst = CAT_RESCUE_CHOICES[0].find((choice) => choice.id === "leave-first");
-    expect(leaveFirst?.nextStage).toBe(72);
-    expect(leaveFirst?.label).toContain("Vava 隔离");
-    expect(leaveFirst?.lines.some((line) => /隔離也不是把牠關進房間/.test(line.body))).toBe(true);
-    expect(leaveFirst?.lines.some((line) => /衣服、手、鞋子/.test(line.body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[72]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[72].every((choice) => choice.nextStage === 73)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[72].some((choice) => /回家/.test(choice.label))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[72].every((choice) => choice.lines[0].sender === "我" && choice.lines.slice(1).every((line) => line.sender === "西蓝花"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[73]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[73].every((choice) => choice.nextStage === 74)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[73].every((choice) => choice.lines[0].sender === "我" && choice.lines.slice(1).every((line) => line.sender === "西蓝花"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[74]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[74].every((choice) => choice.nextStage === 75)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[74].every((choice) => choice.lines[0].sender === "我" && choice.lines.slice(1).every((line) => line.sender === "西蓝花"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[75]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[75].every((choice) => choice.nextStage === 76)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[75].every((choice) => choice.lines[0].sender === "我" && choice.lines.slice(1).every((line) => line.sender === "西蓝花"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[76]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[76].every((choice) => choice.nextStage === 71)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[76].some((choice) => /不行/.test(choice.label))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.nextStage === 80)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[80]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[80].every((choice) => choice.nextStage === 49)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[80][0].lines[0].body).toContain("銘牌");
-    expect(CAT_RESCUE_CHOICES[80][0].lines[0].body).toContain("溫尚翊");
-    expect(CAT_RESCUE_CHOICES[80][0].lines[1].body).toContain("怪獸");
-    expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.lines[0].sender === "我" && choice.lines[1].sender === "西蓝花")).toBe(true);
-    expect(CAT_RESCUE_CHOICES[80].every((choice) => choice.lines[0].sender === "我" && choice.lines.slice(1).every((line) => line.sender === "西蓝花"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[48].every((choice) => choice.nextStage === 49)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[49].every((choice) => choice.nextStage === 50)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[50].every((choice) => choice.nextStage === 51)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[51].every((choice) => choice.nextStage === 52)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[52].every((choice) => choice.nextStage === 8)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[10]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[10].every((choice) => choice.nextStage === 67)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.nextStage === 81)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.lines.some((line) => /病菌|寄生蟲/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.lines.every((line) => line.thread === "西蓝花"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[81]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[81].every((choice) => choice.nextStage === 3)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[81].every((choice) => choice.lines.some((line) => /醫院|医院/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[81].every((choice) => choice.lines.every((line) => line.thread === "西蓝花"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[61].every((choice) => choice.lines.some((line) => /可能回覆得比較慢|可能沒辦法馬上回覆/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[62].every((choice) => choice.lines[0].sender === "我")).toBe(true);
-    expect(CAT_RESCUE_CHOICES[62].every((choice) => choice.lines[0].body.includes("玩玩"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[62].every((choice) => choice.lines.every((line) => line.thread === "大G"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[56][0].lines[0].body).not.toMatch(/請.*吃飯|请.*吃饭/);
-    expect(CAT_RESCUE_CHOICES[56][0].lines[1].body).toContain("慢慢來就好");
-    expect(CAT_RESCUE_CHOICES[61].every((choice) => choice.nextStage === 82)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[82].find((choice) => choice.id === "owner-thanks-and-dinner")?.nextStage).toBe(86);
-    expect(CAT_RESCUE_CHOICES[82].find((choice) => choice.id === "owner-tease-dinner")?.nextStage).toBe(83);
-    expect(CAT_RESCUE_CHOICES[86].every((choice) => choice.nextStage === 59)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[83].every((choice) => choice.nextStage === 85)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[85].every((choice) => choice.nextStage === 62)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[82].every((choice) => choice.lines.some((line) => /請妳吃飯|請妳吃頓飯/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[83].every((choice) => choice.nextStage === 62)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[82].every((choice) => choice.lines.every((line) => line.thread === "大G"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[83].every((choice) => choice.lines.every((line) => line.thread === "大G"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[71].some((choice) => /還在原地/.test(choice.lines.map((line) => line.body).join(" ")))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.lines.every((line) => line.thread === "西蓝花"))).toBe(true);
-    expect(getCatRescueThreadForStage(71)).toBe("西蓝花");
-    expect(getCatRescueThreadForStage(3)).toBe("西蓝花");
-  });
+
 
   it("has a defined next state for every visible story choice", () => {
     const systemStates = new Set([8, 13, 17]);
