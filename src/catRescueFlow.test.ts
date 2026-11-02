@@ -7,6 +7,7 @@ import {
   shouldMigrateLegacyPrankReadd,
   shouldShowPrankHistoryLine,
   splitCatRescueMessages,
+  orderCatRescueThreadItems,
 } from "./AppSkins";
 import { createWork } from "./demo";
 import { makeItem } from "./schema";
@@ -182,6 +183,44 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(getCatRescueStageAfterFriendAdd(8, "monster-cat")).toBe(9);
     expect(getCatRescueStageAfterFriendAdd(13, "monster-prank")).toBe(16);
     expect(getCatRescueStageAfterFriendAdd(13, "monster-cat")).toBe(14);
+  });
+
+  it("keeps player replies in the transcript and places the newest message last", () => {
+    const oldReply = makeItem({
+      id: "player-old",
+      title: "西蓝花",
+      sender: "我",
+      body: "我先看看它。",
+      time: "2026-11-02 14:20",
+      outgoing: true,
+    });
+    const delayedReply = makeItem({
+      id: "friend-later",
+      title: "西蓝花",
+      sender: "西蓝花",
+      body: "好，那你慢慢来。",
+      time: "2026-11-02 14:21",
+    });
+    const newestReply = makeItem({
+      id: "player-new",
+      title: "西蓝花",
+      sender: "我",
+      body: "我已经到医院了。",
+      time: "2026-11-02 14:22",
+      outgoing: true,
+    });
+    const ordered = orderCatRescueThreadItems([
+      oldReply,
+      newestReply,
+      delayedReply,
+      newestReply,
+    ]);
+    expect(ordered.map((item) => item.id)).toEqual([
+      "player-old",
+      "friend-later",
+      "player-new",
+    ]);
+    expect(ordered.at(-1)?.body).toBe("我已经到医院了。");
   });
 
   it("keeps the prank and apology branches in the owner's conversation", () => {
