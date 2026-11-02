@@ -398,8 +398,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   9: [
     { id: "monster-prank", label: "我是你爸爸", nextStage: 17, branch: "monster-prank", lines: [
       { sender: "我", body: "我是你爸爸。" },
-      { sender: "大G", body: "……蛤？" },
-      { sender: "大G", body: "妳哪位？我不認識妳喔。" },
     ]},
     { id: "monster-cat-intro", label: "你好，我捡到了一只小黑猫……", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "你好，我捡到了一只小黑猫。它脖子上挂着挂牌，上面有你的联系方式，我就照着上面的微信号加你了。" },
@@ -414,8 +412,8 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "prank-apology", label: "对不起我发错人了啊啊啊！", nextStage: 13, branch: "monster-prank", lines: [
       { sender: "我", body: "對不起我發錯人了啊啊啊！！！" },
     ]},
-    { id: "prank-explain", label: "等等等等！我开玩笑的，你先别删我！", nextStage: 13, branch: "monster-prank", lines: [
-      { sender: "我", body: "等等等等！我開玩笑的啦，你先別刪我！！！" },
+    { id: "prank-explain", label: "等等等等！我刚刚开玩笑的！", nextStage: 13, branch: "monster-prank", lines: [
+      { sender: "我", body: "等等等等！我剛剛開玩笑的啦！！！" },
     ]},
   ],
   14: [
@@ -568,8 +566,14 @@ export function WeChatSkin(p: SkinProps) {
     // remove unmistakable owner-prank lines from legacy mixed saves.
     !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|？？？|對不起.*發錯|对不起.*发错/.test(item.body)
   );
+  const legacyPrankReply = /^(妳是？|……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
+  const keepPrankHistoryClean = (item: Item) =>
+    catRescue.branch !== "monster-prank" || !legacyPrankReply.test(item.body);
   const threadItems = isMonsterThread
-    ? [...p.items.filter((item) => item.title === "大G" || item.title === "温尚翊"), ...ownerStoryMessages]
+    ? [
+        ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
+        ...ownerStoryMessages.filter(keepPrankHistoryClean),
+      ]
     : isBroccoliThread
       ? [...broccoliBaseItems, ...friendStoryMessages]
       : allItems.filter((item) => item.title === p.thread);
