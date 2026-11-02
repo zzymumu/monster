@@ -98,7 +98,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[20]).toHaveLength(3);
     expect(CAT_RESCUE_CHOICES[21]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[22]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[23]).toHaveLength(1);
     expect(CAT_RESCUE_CHOICES[24]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[20].some((choice) => choice.id === "verify-owner-name")).toBe(true);
