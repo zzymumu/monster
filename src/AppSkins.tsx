@@ -222,16 +222,6 @@ export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): 
   if (stage === 13) return 14;
   return 9;
 }
-export function recoverCatRescueStage(stage: number, branch: string, friendAccepted: boolean): number {
-  // Stages 10–12 are active broccoli-side story beats (including the
-  // leave-first / return-for-the-kitten branch). A stale friend-accepted flag
-  // must never turn them into stage 8, which is exclusively the WeChat-ID step.
-  if (stage >= 10 && stage <= 12) return stage;
-  // Stage 9 is the post-add owner-chat handoff; keep it intact as well.
-  if (stage === 9) return 9;
-  if (!friendAccepted && stage >= 9 && stage <= 12) return 8;
-  return stage;
-}
 export function shouldShowPrankHistoryLine(item: Item, branch: string): boolean {
   const obsoletePrankReply = /^(妳是？|……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
   return branch !== "monster-prank" || !obsoletePrankReply.test(item.body);
