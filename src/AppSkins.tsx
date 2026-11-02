@@ -258,7 +258,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34, 37, 38, 39]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
@@ -377,11 +377,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   3: [
-    { id: "hold-gently", label: "我先蹲下来慢慢靠近它，等它愿意了再轻轻抱起来", nextStage: 30, lines: [
+    { id: "hold-gently", label: "我先蹲下来慢慢靠近它，等它愿意了再轻轻抱起来", nextStage: 12, lines: [
       { sender: "我", body: "我先蹲下來慢慢靠近牠，不會勉強牠，等牠願意了再輕輕抱起來。" },
       { sender: "西蓝花", body: "對對對！先讓牠自己靠近妳比較安全，別急，慢慢來就好。" },
     ]},
-    { id: "kitten-approached", label: "它没有躲我，还主动蹭我的手，应该愿意让我抱", nextStage: 30, lines: [
+    { id: "kitten-approached", label: "它没有躲我，还主动蹭我的手，应该愿意让我抱", nextStage: 12, lines: [
       { sender: "我", body: "牠沒有躲我，還主動蹭我的手，看起來應該願意讓我抱。我會很小心的。" },
       { sender: "西蓝花", body: "那就好！但還是要托好牠，別讓牠突然掙扎，外出籠也先準備好喔。" },
     ]},
@@ -404,6 +404,16 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "return-anyway", label: "我想了一路，还是决定回头找它", nextStage: 5, lines: [
       { sender: "我", body: "我本來想回家了，可是越走越不對勁……我還是回頭找牠好了。" },
       { sender: "西蓝花", body: "去吧去吧，但不要跑，注意車！" },
+    ]},
+  ],
+  12: [
+    { id: "go-to-clinic-carefully", label: "我会小心把它放进外出笼，现在就带它去医院", nextStage: 30, lines: [
+      { sender: "我", body: "我會小心把牠放進外出籠，現在就帶牠去醫院，先確認健康狀況。" },
+      { sender: "西蓝花", body: "好！路上小心，到了醫院記得跟我說一聲，我等妳消息。" },
+    ]},
+    { id: "ask-staff-for-help", label: "我先请工作人员帮忙安置，再带它去检查", nextStage: 30, lines: [
+      { sender: "我", body: "我先請工作人員幫忙安置牠，再一起帶牠去檢查，這樣比較安全。" },
+      { sender: "西蓝花", body: "這樣很穩妥！妳也別急，到了醫院再告訴我檢查情況。" },
     ]},
   ],
   4: [
