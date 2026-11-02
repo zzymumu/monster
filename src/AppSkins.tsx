@@ -261,6 +261,13 @@ export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" 
   const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
+export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
+  // Stage 66 is a terminal state. Keep its transcript in Broccoli's chat,
+  // but never force that chat back open after the user exits it.
+  return pendingCount === 0 &&
+    [32, 33, 37, 38, 39, 63, 64, 65].includes(stage) &&
+    currentThread !== "西蓝花" && currentThread !== "西兰花";
+}
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
   if (stage === 13 && branch === "monster-prank") return 16;
   if (stage === 13) return 14;
@@ -1278,7 +1285,7 @@ export function WeChatSkin(p: SkinProps) {
     // Broccoli only once every queued DaG message has appeared. Later, return
     // to DaG after the Broccoli follow-up is fully delivered.
     if (pendingCatLines.length > 0) return;
-    if ([32, 33, 37, 38, 39, 63, 64, 65, 66].includes(catRescue.stage) && p.thread !== "西蓝花" && p.thread !== "西兰花") {
+    if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
       setTab("微信");
       p.onThread("西蓝花");
     } else if ([35, 40].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
