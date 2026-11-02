@@ -449,6 +449,30 @@ function PhoneRuntime({
         (_, i) => i !== index,
       ),
     });
+  const openNotification = (notice: ReturnType<typeof notificationContent>) => {
+    setPanel("");
+    if (notice.appId === "wechat" && notice.contact) {
+      const current = runtimeRef.current;
+      update({
+        ...current,
+        ui: {
+          ...current.ui,
+          wechat: {
+            ...current.ui?.wechat,
+            openThread: notice.contact,
+          },
+        },
+      });
+      open("wechat");
+      if (locked) setPinOpen(true);
+      return;
+    }
+    const target = installedApps.some((a) => a.id === notice.appId)
+      ? notice.appId
+      : installedApps.some((a) => a.id === "messages") ? "messages" : "";
+    if (target) open(target);
+    if (locked) setPinOpen(true);
+  };
   if (!ready) return <div className="phone-loading">正在恢复进度…</div>;
   return (
     <div
@@ -578,6 +602,7 @@ function PhoneRuntime({
                 notices={s.notifications}
                 notificationItems={notificationItems}
                 onDismiss={dismissNotice}
+                onNotificationOpen={openNotification}
                 pinOpen={pinOpen}
                 setPinOpen={setPinOpen}
                 error={pinError}
@@ -711,34 +736,7 @@ function PhoneRuntime({
                       notices={s.notifications}
                       apps={work.apps}
                       items={notificationItems}
-                      onOpen={(notice) => {
-                        setPanel("");
-                        if (locked) {
-                          beginUnlock();
-                          return;
-                        }
-                        // A notification is a deep link to its exact app and
-                        // conversation, not a generic shortcut to Messages.
-                        if (notice.appId === "wechat" && notice.contact) {
-                          const current = runtimeRef.current;
-                          update({
-                            ...current,
-                            ui: {
-                              ...current.ui,
-                              wechat: {
-                                ...current.ui?.wechat,
-                                openThread: notice.contact,
-                              },
-                            },
-                          });
-                          open("wechat");
-                          return;
-                        }
-                        const target = installedApps.some((a) => a.id === notice.appId)
-                          ? notice.appId
-                          : installedApps.some((a) => a.id === "messages") ? "messages" : "";
-                        if (target) open(target);
-                      }}
+                      onOpen={openNotification}
                       onDismiss={dismissNotice}
                     />
                   ) : (
