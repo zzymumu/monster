@@ -359,7 +359,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "如果牠一直躲，就先不要硬抓，找附近有經驗的人幫忙會比較安全。" },
       { sender: "西蓝花", body: "等醫生檢查過再決定要不要帶回家，先答應我不要讓 Vava 冒險！" },
     ]},
-    { id: "still-worried", label: "好吧……你说得对，我先回家好了", nextStage: 72, lines: [
+    { id: "still-worried", label: "好吧……你说得对，我先回家好了", nextStage: 73, lines: [
       { sender: "我", body: "好吧……妳說得對，我先不把牠帶回家了。我先回家冷靜一下，可是心裡還是有點放不下。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這樣比較穩妥！妳不是不管牠，我們只是先用安全一點的方法幫牠。到家跟我說一聲喔。", thread: "西蓝花" },
     ]},
