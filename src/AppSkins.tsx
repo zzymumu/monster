@@ -1064,17 +1064,17 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   79: [
-    { id: "report-dinner-later", label: "有消息我第一個告訴你！", nextStage: 80, lines: [
+    { id: "report-dinner-later", label: "有消息我第一個告訴你！", nextStage: 84, lines: [
       { sender: "我", body: "有消息我第一個告訴妳！", thread: "西蓝花" },
       { sender: "西蓝花", body: "說好了喔！我等妳消息，先去照顧玩玩吧！", thread: "西蓝花" },
     ]},
-    { id: "back-to-wanwan", label: "我先去看看玩玩，晚点再跟你聊", nextStage: 80, lines: [
+    { id: "back-to-wanwan", label: "我先去看看玩玩，晚点再跟你聊", nextStage: 84, lines: [
       { sender: "我", body: "我先去看看玩玩，晚點再跟妳聊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "去吧去吧！替我摸摸牠，記得吃飯喔！", thread: "西蓝花" },
     ]},
   ],
   66: [],
-  80: [
+  84: [
     { id: "exit-wechat-after-broccoli", label: "好啦！我先去看看玩玩，退出微信", nextStage: 66, lines: [
       { sender: "我", body: "好啦！我先去看看玩玩，晚點再跟妳聊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "去吧去吧！有消息記得跟我說，替我摸摸玩玩！", thread: "西蓝花" },
@@ -1135,11 +1135,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   71: [
-    { id: "kitten-still-there", label: "！！！（小猫居然还在原地！）", nextStage: 80, lines: [
+    { id: "kitten-still-there", label: "！！！（小猫居然还在原地！）", nextStage: 84, lines: [
       { sender: "我", body: "！！！牠居然還在原地！我剛剛還怕牠已經不見了……", thread: "西蓝花" },
       { sender: "西蓝花", body: "？？？怎麼了怎麼了？妳找到牠了嗎？發生什麼事？", thread: "西蓝花" },
     ]},
-    { id: "kitten-still-there-again", label: "！！！我回去看了，小猫居然还在！", nextStage: 80, lines: [
+    { id: "kitten-still-there-again", label: "！！！我回去看了，小猫居然还在！", nextStage: 84, lines: [
       { sender: "我", body: "！！！我回去看了，牠居然還在原地！我還以為牠已經不見了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "？？？怎麼了？妳找到牠了嗎？快跟我說！", thread: "西蓝花" },
     ]},
