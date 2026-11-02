@@ -83,7 +83,7 @@ export function NativeSettings({
         return (
           <div className="settings-group">
             {row("关于本机", "", () => nav.push("关于本机"))}
-            {row("软件更新", "iOS 18.0", () => nav.push("软件更新"))}
+            {row("软件更新", "iOS 27.2", () => nav.push("软件更新"))}
             {row("iPhone 储存空间", "", () => nav.push("iPhone 储存空间"))}
             {row("日期与时间", "", () => nav.push("日期与时间"))}
             {row("语言与地区", "简体中文", () => nav.push("语言与地区"))}
@@ -93,7 +93,7 @@ export function NativeSettings({
         return (
           <div className="settings-group">
             {row("名称", work.phone.owner + "的 iPhone")}
-            {row("iOS 版本", "18.0")}
+            {row("iOS 版本", "27.2")}
             {row("机型名称", "iPhone 15 Pro")}
             {row("照片", String(work.data.photos?.length || 0))}
             {row(
@@ -168,7 +168,7 @@ export function NativeSettings({
       case "软件更新":
         return (
           <p className="settings-page-caption">
-            iOS 18.0 · 此为作品中的虚拟系统，不下载系统更新。
+            iOS 27.2 · 此为作品中的虚拟系统，不下载系统更新。
           </p>
         );
       default:
