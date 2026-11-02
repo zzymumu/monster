@@ -332,7 +332,7 @@ export function ControlCenter({
   const [tool, setTool] = useState("");
   return (
     <motion.div
-      className="system-panel device-control"
+      className="system-panel device-control cc-reference-layout"
       initial={{ y: -70, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -100, opacity: 0 }}

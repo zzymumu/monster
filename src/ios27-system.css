@@ -1799,3 +1799,255 @@
   }
   .phone-shell.ios27 .device-control .cc-page-rail { gap: 16px; }
 }
+
+
+/* Reference-matched Control Center layout (user screenshot, 942x2048).
+   Use proportional placement so the same composition holds in the phone viewport. */
+.phone-shell.ios27 .system-panel.device-control.cc-reference-layout {
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  color: #fff !important;
+  background: rgba(14, 15, 23, .66) !important;
+  -webkit-backdrop-filter: blur(42px) saturate(1.55) !important;
+  backdrop-filter: blur(42px) saturate(1.55) !important;
+}
+.phone-shell.ios27 .cc-reference-layout > .cc-edit,
+.phone-shell.ios27 .cc-reference-layout > .cc-close {
+  position: absolute !important;
+  top: 1.5% !important;
+  width: clamp(34px, 8.4vw, 54px) !important;
+  height: clamp(34px, 8.4vw, 54px) !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  background: rgba(235,235,242,.28) !important;
+  color: white !important;
+  opacity: 1 !important;
+  z-index: 5 !important;
+}
+.phone-shell.ios27 .cc-reference-layout > .cc-edit { left: 9.2% !important; }
+.phone-shell.ios27 .cc-reference-layout > .cc-close { right: 9.2% !important; }
+.phone-shell.ios27 .cc-reference-layout > .cc-edit svg,
+.phone-shell.ios27 .cc-reference-layout > .cc-close svg {
+  width: 23px !important;
+  height: 23px !important;
+}
+.phone-shell.ios27 .cc-reference-layout > .cc-status {
+  position: absolute !important;
+  top: 8.1% !important;
+  left: 10.3% !important;
+  right: 10.3% !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  font-size: clamp(11px, 3.3vw, 16px) !important;
+  line-height: 1.5 !important;
+  opacity: 1 !important;
+  z-index: 4 !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-sim-lines {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1px !important;
+  min-width: 0 !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-sim-lines > span {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  white-space: nowrap !important;
+  line-height: 1.45 !important;
+  font-weight: 600 !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-sim-lines svg {
+  width: 15px !important;
+  height: 15px !important;
+  flex: none !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-sim-lines small,
+.phone-shell.ios27 .cc-reference-layout .cc-sim-lines em {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex: none !important;
+  padding: 0 3px !important;
+  border: 1px solid rgba(255,255,255,.86) !important;
+  border-radius: 3px !important;
+  font-size: 9px !important;
+  line-height: 13px !important;
+  font-style: normal !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-battery {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  white-space: nowrap !important;
+  font-size: clamp(12px, 3.3vw, 16px) !important;
+  flex: none !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-battery svg { width: 25px !important; height: 25px !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid {
+  position: absolute !important;
+  top: 15.2% !important;
+  left: 9.3% !important;
+  right: 20.0% !important;
+  bottom: 35.5% !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-rows: repeat(6, minmax(0, 1fr)) !important;
+  grid-auto-flow: row !important;
+  grid-auto-rows: unset !important;
+  gap: 1.45vh !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  overflow: visible !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-connect {
+  grid-column: 1 / span 2 !important;
+  grid-row: 1 / span 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  box-sizing: border-box !important;
+  padding: 12px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  grid-template-rows: repeat(2, minmax(0,1fr)) !important;
+  gap: 8px !important;
+  border-radius: 30px !important;
+  overflow: hidden !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-connect > button {
+  place-self: center !important;
+  width: min(100%, 64px) !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-connect > button svg { width: 27px !important; height: 27px !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-small-connections {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  grid-template-rows: repeat(2,minmax(0,1fr)) !important;
+  gap: 5px !important;
+  align-items: center !important;
+  justify-items: center !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-small-connections button {
+  width: min(100%, 34px) !important;
+  height: auto !important;
+  aspect-ratio: 1 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-small-connections button svg { width: 17px !important; height: 17px !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-music {
+  grid-column: 3 / span 2 !important;
+  grid-row: 1 / span 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 14px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 5px !important;
+  border-radius: 30px !important;
+  text-align: left !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-media-top { display: flex !important; justify-content: space-between !important; align-items: flex-start !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-media-top > span { width: 70px !important; height: 70px !important; border-radius: 16px !important; display: grid !important; place-items: center !important; background: rgba(255,255,255,.14) !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-media-title { display: flex !important; flex-direction: column !important; gap: 2px !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-media-title strong { font-size: clamp(14px,4vw,18px) !important; line-height: 1.2 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-media-title small { font-size: 12px !important; opacity: .65 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-media-controls { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-media-controls button { padding: 0 !important; background: transparent !important; color: white !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-media-controls button:nth-child(2) svg { width: 30px !important; height: 30px !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-rotation-button { grid-column: 1 !important; grid-row: 3 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-bell-button { grid-column: 2 !important; grid-row: 3 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-slider-brightness { grid-column: 3 !important; grid-row: 3 / span 2 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-slider-volume { grid-column: 4 !important; grid-row: 3 / span 2 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-focus { grid-column: 1 / span 2 !important; grid-row: 4 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-tool-flashlight { grid-column: 1 !important; grid-row: 5 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-tool-calculator { grid-column: 2 !important; grid-row: 5 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-tool-camera { grid-column: 3 !important; grid-row: 5 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-tool-record { grid-column: 4 !important; grid-row: 5 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-tool-qr { grid-column: 1 !important; grid-row: 6 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-tool-battery { grid-column: 2 !important; grid-row: 6 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-tool-mirror { grid-column: 3 !important; grid-row: 6 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-square {
+  justify-self: center !important;
+  align-self: stretch !important;
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-square svg { width: 28px !important; height: 28px !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-focus {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  border-radius: 999px !important;
+  font-size: clamp(12px, 3.5vw, 16px) !important;
+  white-space: nowrap !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-focus svg:first-child { width: 38px !important; height: 38px !important; padding: 9px !important; flex: none !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-focus svg:last-child { margin-left: auto !important; flex: none !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-slider {
+  position: relative !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 36px !important;
+  box-sizing: border-box !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-slider input { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; opacity: 0 !important; z-index: 3 !important; writing-mode: vertical-lr !important; direction: rtl !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-slider > span { position: absolute !important; left: 0 !important; right: 0 !important; bottom: 0 !important; border-radius: inherit !important; background: #fafafa !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-slider > svg { position: absolute !important; left: 50% !important; bottom: 11% !important; transform: translateX(-50%) !important; width: 29px !important; height: 29px !important; z-index: 2 !important; margin: 0 !important; color: #f2ca36 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-slider-volume > svg { color: #22b7d6 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-page-rail { position: absolute !important; right: 2.7% !important; top: 35.5% !important; gap: 3.8vh !important; z-index: 4 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-page-rail button { width: 24px !important; height: 24px !important; padding: 0 !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-page-rail svg { width: 21px !important; height: 21px !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-dismiss { display: none !important; }
+.phone-shell.ios27 .cc-reference-layout .cc-home { display: none !important; }
+@media (max-height: 680px) {
+  .phone-shell.ios27 .cc-reference-layout .cc-grid { top: 15% !important; bottom: 32% !important; gap: 1.1vh !important; }
+  .phone-shell.ios27 .cc-reference-layout > .cc-status { top: 7.8% !important; }
+  .phone-shell.ios27 .cc-reference-layout .cc-page-rail { gap: 2.8vh !important; }
+}
