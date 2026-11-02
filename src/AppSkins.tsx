@@ -258,7 +258,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
@@ -321,11 +321,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "而且牠這麼小，身邊有沒有貓媽媽也還不知道，不能看到牠可憐就直接抱走喔。" },
       { sender: "西蓝花", body: "我不是不讓你救牠啦，我是怕牠身上有跳蚤或傳染病，回家碰到 Vava 怎麼辦？" },
     ]},
-    { id: "leave-first", label: "先不带走好了……可是我真的有点放心不下", nextStage: 72, branch: "leave-first", lines: [
-      { sender: "我", body: "好吧……我先不把牠帶回家。可是牠一直在那裡叫，我真的有點放心不下。" },
-      { sender: "西蓝花", body: "乖，先不要衝動！妳家裡還有 Vava，不能只想到眼前這隻小貓，也要顧慮原本在家的孩子呀。" },
-      { sender: "西蓝花", body: "而且牠身上有沒有跳蚤、皮膚病，甚至有沒有貓媽媽在附近都還不知道，真的不能直接抱回家。" },
-      { sender: "西蓝花", body: "我知道妳心軟啦，但先回家冷靜一下，好不好？我們可以再想別的辦法。" },
+    { id: "leave-first", label: "要不我先带它回家？让它单独住一个房间，跟 Vava 隔离", nextStage: 72, branch: "leave-first", lines: [
+      { sender: "我", body: "可是牠一直在外面也不是辦法……要不我先帶牠回家？讓牠單獨住一個房間，跟 Vava 隔離，完全不碰面。" },
+      { sender: "西蓝花", body: "妳先等等！隔離也不是把牠關進房間、關上門就沒事了啊。" },
+      { sender: "西蓝花", body: "妳每天還是要走進走出，衣服、手、鞋子都有可能把病菌或寄生蟲帶來帶去，Vava 一樣有風險。" },
+      { sender: "西蓝花", body: "而且小貓有沒有跳蚤、耳疥蟲或其他傳染病都還不知道，至少先確認健康狀況再說，好不好？" },
     ]},
   ],
   1: [
@@ -964,47 +964,40 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "agree-go-home", label: "好吧……我听你的，先回家好了", nextStage: 73, lines: [
       { sender: "我", body: "好吧……我聽妳的，先回家好了。我不把牠帶回去，至少先不要讓 Vava 冒險。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這樣才乖！妳不是不幫牠，只是先不要急著把牠帶進家裡。路上小心，到家跟我說一聲。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "如果牠真的一直在附近，我們再想辦法找救援或確認有沒有人在找牠，好不好？", thread: "西蓝花" },
     ]},
-    { id: "reluctant-go-home", label: "嗯……我先回家，可是我還是有點難受", nextStage: 73, lines: [
+    { id: "reluctant-go-home", label: "嗯……我先回家，可是还是有点难受", nextStage: 73, lines: [
       { sender: "我", body: "嗯……我先回家，可是想到牠還一個人在那裡，我心裡還是很難受。", thread: "西蓝花" },
       { sender: "西蓝花", body: "我知道啦，我也會心疼。但妳先回去休息，我們不是不管牠，是要用安全一點的方法幫牠。", thread: "西蓝花" },
     ]},
   ],
   73: [
-    { id: "home-arrived-chat", label: "我到家啦！今天真的發生好多事", nextStage: 74, lines: [
+    { id: "home-arrived-chat", label: "我到家啦！今天真的发生好多事", nextStage: 74, lines: [
       { sender: "我", body: "我到家啦！今天真的發生好多事，整個人都累了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "辛苦啦！先喝點水、坐下來休息。妳今天是不是又忙到沒好好吃東西？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈哈妳還記得喔！後來主管出面處理，他終於不敢再亂甩鍋了，想到就好笑。", thread: "西蓝花" },
     ]},
-    { id: "home-food-chat", label: "我回家了，先跟你聊點別的轉換心情", nextStage: 74, lines: [
+    { id: "home-food-chat", label: "我回家了，先跟你聊点别的转换心情", nextStage: 74, lines: [
       { sender: "我", body: "我回家了，先跟妳聊點別的轉換一下心情，不然我腦袋一直都是那隻小貓。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啊！那妳今天晚餐想吃什麼？不要又隨便泡個東西就算了喔。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "因為妳真的很不會照顧自己啊！我不盯著妳，妳是不是又要忘記吃飯！", thread: "西蓝花" },
     ]},
   ],
   74: [
-    { id: "ask-more-about-work", label: "哈哈哈那你今天還遇到什麼好笑的事？", nextStage: 75, lines: [
-      { sender: "我", body: "哈哈哈那妳今天還遇到什麼好笑的事？快講，我想聽。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "還有一個客人點錯飲料，喝了一口才發現，居然怪我做錯！我真的差點當場笑出來。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "對吧！所以今天真的被搞得很累。欸，妳現在有沒有比較放鬆一點？", thread: "西蓝花" },
+    { id: "ask-more-about-work", label: "有啦有啦！对了，你上次说那个同事后来怎么样了？", nextStage: 75, lines: [
+      { sender: "我", body: "有啦有啦！我有吃東西。對了，妳上次說那個很雷的同事後來怎麼樣了？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈妳還記得喔！後來主管出面處理，他終於不敢再亂甩鍋了，想到就好笑。", thread: "西蓝花" },
     ]},
-    { id: "tell-her-resting", label: "好多了！我現在坐在沙發上休息", nextStage: 75, lines: [
-      { sender: "我", body: "好多了！我現在坐在沙發上休息，終於不用一直跑來跑去了。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "那就好！今天先不要再折騰自己了，早點洗澡休息。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "不過妳剛剛說那隻小貓，真的不要一時心軟就帶回家喔，答應我。", thread: "西蓝花" },
+    { id: "answer-food", label: "还没吃呢……我等一下就去弄点东西", nextStage: 75, lines: [
+      { sender: "我", body: "還沒吃啦……我等一下就去弄點東西，妳不要先罵我！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我就知道！快去吃一點，不要忙起來又忘記。等妳吃完我們再聊。", thread: "西蓝花" },
     ]},
   ],
   75: [
-    { id: "still-thinking-cat", label: "可是我腦袋裡還是一直想到那隻小貓……", nextStage: 76, lines: [
-      { sender: "我", body: "可是我腦袋裡還是一直想到那隻小貓……牠那麼小，現在不知道怎麼樣了。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我就知道妳還在想！但妳真的不能直接帶牠回家，Vava 的健康也要顧，先找有經驗的人幫忙比較好。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我懂妳的意思，可是隔離也不是關上門就沒事。先確認牠有沒有主人、附近有沒有貓媽媽，真的比較穩妥。", thread: "西蓝花" },
+    { id: "ask-about-her-day", label: "哈哈哈那你今天还遇到什么好笑的事？", nextStage: 76, lines: [
+      { sender: "我", body: "哈哈哈那妳今天還遇到什麼好笑的事？快講，我想聽。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "還有一個客人點錯飲料，喝了一口才發現，居然怪我做錯！我真的差點當場笑出來。", thread: "西蓝花" },
     ]},
-    { id: "ask-rescue-again", label: "那如果我找附近的救援先去看看呢？", nextStage: 76, lines: [
-      { sender: "我", body: "那如果我找附近的救援先去看看呢？至少有人可以幫忙確認牠的狀況。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "這樣可以啊！有經驗的人會知道怎麼接近牠，也能看看附近有沒有主人在找。妳不要自己硬抓就好。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳真的很心軟欸……好啦，先把事情想清楚，但不要一直責怪自己。", thread: "西蓝花" },
+    { id: "tease-her-work", label: "你今天听起来也很忙欸，辛苦啦", nextStage: 76, lines: [
+      { sender: "我", body: "妳今天聽起來也很忙欸，辛苦啦！今天總算可以休息一下了吧？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對啊！所以今天真的被搞得很累。還好現在可以跟妳聊天放鬆一下。", thread: "西蓝花" },
     ]},
   ],
   76: [
@@ -1099,17 +1092,24 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   71: [
-    { id: "kitten-still-there", label: "它居然还在原地！等等，铭牌上写着温尚翊？？？", nextStage: 48, lines: [
-      { sender: "我", body: "我回來了……牠居然還在原地！看到我還小小聲叫了一下。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "天啊，牠真的還在喔？妳先別急，看看牠脖子上有沒有項圈或名牌。", thread: "西蓝花" },
-      { sender: "我", body: "等一下！牠脖子上真的掛著一個牌子……上面寫著主人名字：溫尚翊？？？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "溫尚翊？？？？等一下！！！妳說的是溫尚翊？？？", thread: "西蓝花" },
+    { id: "kitten-still-there", label: "它居然还在原地！等等，铭牌上写着温尚翊？？？", nextStage: 80, lines: [
+      { sender: "我", body: "我回來了……牠居然還在原地！看到我還小小聲叫了一下。等等，牠脖子上那個牌子……溫尚翊？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊？？？妳怎麼突然說這個名字？發生什麼事了？", thread: "西蓝花" },
     ]},
-    { id: "notice-nameplate", label: "小猫还在！它的铭牌上有主人名字和电话", nextStage: 48, lines: [
-      { sender: "我", body: "牠還在！而且脖子上掛著一個牌子，上面有主人名字跟聯絡電話。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "真的嗎？快看看名字！至少終於能聯絡到主人了。", thread: "西蓝花" },
-      { sender: "我", body: "名字是溫尚翊……下面還有電話。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "蛤？？？溫尚翊？？？妳先等一下，這名字怎麼這麼耳熟！", thread: "西蓝花" },
+    { id: "notice-nameplate", label: "小猫还在！我看到铭牌上写着温尚翊？？？", nextStage: 80, lines: [
+      { sender: "我", body: "牠還在！我看到牠脖子上的名牌，等等……溫尚翊？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊？？？妳怎麼了？名牌上寫了什麼？", thread: "西蓝花" },
+    ]},
+  ],
+  80: [
+    { id: "explain-nameplate", label: "铭牌！铭牌上写着温尚翊！！", nextStage: 48, lines: [
+      { sender: "我", body: "銘牌！銘牌上寫著溫尚翊！！下面還有聯絡電話！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下？？？溫尚翊？？？這不是怪獸的本名嗎？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且玩玩不是怪獸家那隻貓的名字嗎？？？妳先不要動，我現在整個人都傻了！！！", thread: "西蓝花" },
+    ]},
+    { id: "confirm-tag", label: "真的！我没看错，铭牌上就是温尚翊，还有电话", nextStage: 48, lines: [
+      { sender: "我", body: "真的！我沒看錯，名牌上就是溫尚翊，旁邊還有電話！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不是吧？？？貓叫玩玩，主人還叫溫尚翊？？？這也太巧了吧！！！", thread: "西蓝花" },
     ]},
   ]
 };
