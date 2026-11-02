@@ -695,7 +695,7 @@ export function WeChatSkin(p: SkinProps) {
       setTab("微信");
       p.onThread("大G");
     }
-  }, [catRescue.stage, pendingCatLines.length, p.thread]);
+  }, [catRescue.stage, pendingCatLines.length, p.thread, p.onThread]);
   useEffect(() => {
     if (!legacyPrankReaddPending) return;
     setCatRescueRaw(JSON.stringify({ ...parsedCatRescue, version: 2, stage: 16, branch: "monster-prank" }));
