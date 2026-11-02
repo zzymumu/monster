@@ -222,6 +222,12 @@ export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): 
   if (stage === 13) return 14;
   return 9;
 }
+export function recoverCatRescueStage(stage: number, branch: string, friendAccepted: boolean): number {
+  // "leave-first" stages 10–12 are still the return-to-find-the-cat branch.
+  // Never collapse them into stage 8 (the WeChat-ID handoff).
+  if (!friendAccepted && branch !== "leave-first" && stage >= 9 && stage <= 12) return 8;
+  return stage;
+}
 export function shouldShowPrankHistoryLine(item: Item, branch: string): boolean {
   const obsoletePrankReply = /^(妳是？|……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
   return branch !== "monster-prank" || !obsoletePrankReply.test(item.body);
@@ -530,15 +536,13 @@ export function WeChatSkin(p: SkinProps) {
   const storyClockRef = useRef(p.virtualTime || "14:24");
   storyClockRef.current = p.virtualTime || storyClockRef.current;
   const parsedCatRescue = parseCatRescueState(catRescueRaw);
-  // Recover stale sessions from older buggy builds: if the user has not
-  // completed the explicit add-friend confirmation, keep the story on the
-  // broccoli side (stage 8 is the WeChat-ID handoff).
-  // Stage 13 is the deliberate "deleted as a friend" state in the prank
-  // branch. Preserve it even though the friend-accepted flag is now false,
-  // otherwise the blocked-send UI can never appear.
-  const catRescue = !monsterFriendAccepted && parsedCatRescue.stage >= 9 && parsedCatRescue.stage <= 12
-    ? { ...parsedCatRescue, stage: 8 }
-    : parsedCatRescue;
+  // Recover stale friend-add sessions without overwriting the separate
+  // "leave-first" branch, which must return to the kitten before any WeChat step.
+  // The prank's deleted-friend stage 13 is also deliberately preserved.
+  const recoveredStage = recoverCatRescueStage(parsedCatRescue.stage, parsedCatRescue.branch, monsterFriendAccepted);
+  const catRescue = recoveredStage === parsedCatRescue.stage
+    ? parsedCatRescue
+    : { ...parsedCatRescue, stage: recoveredStage };
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
