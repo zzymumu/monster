@@ -349,7 +349,7 @@ export function ControlCenter({
       <nav className="cc-page-rail" aria-label="控制中心分类">
         {[Heart, Music2, House, Radio].map((Icon, i) => (
           <button key={i} aria-label={["常用控制", "媒体控制", "家庭控制", "连接控制"][i]}
-            onClick={() => document.querySelector([".cc-grid", ".cc-music", ".cc-home", ".cc-connect"][i])?.scrollIntoView({ block: "nearest", behavior: "smooth" })}>
+            onClick={() => document.querySelector([".cc-grid", ".cc-music", ".cc-focus", ".cc-connect"][i])?.scrollIntoView({ block: "nearest", behavior: "smooth" })}>
             <Icon fill={i === 0 ? "currentColor" : "none"} />
           </button>
         ))}

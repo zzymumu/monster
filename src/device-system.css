@@ -1458,14 +1458,14 @@
 .phone-shell.ios27 .device-control .cc-page-rail svg { width: 22px; height: 22px; }
 .phone-shell.ios27 .device-control .cc-grid {
   position: absolute;
-  top: calc(max(16px, env(safe-area-inset-top)) + 184px);
+  top: calc(max(16px, env(safe-area-inset-top)) + 155px);
   left: 22px;
   right: 42px;
-  bottom: 74px;
+  bottom: 210px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: 1.45fr 1.45fr .78fr .9fr .9fr .9fr;
-  gap: 12px;
+  grid-template-rows: .9fr .9fr .8fr 1fr 1fr 1fr;
+  gap: 10px;
   overflow: hidden;
 }
 .phone-shell.ios27 .device-control .cc-connect,
