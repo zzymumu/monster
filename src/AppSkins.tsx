@@ -593,6 +593,8 @@ export function WeChatSkin(p: SkinProps) {
         avatar: line.sender === "西蓝花" ? catAvatar : "",
         meta: { storyId: "cat-rescue", storyThread: line.thread || (ownerThread ? "大G" : "西蓝花") },
       });
+      const prankApologyFailed = catRescue.stage === 13 && catRescue.branch === "monster-prank" && line.sender === "我";
+      if (prankApologyFailed) setMonsterSendFailed(true);
       const prankFinished = catRescue.stage === 17 && catRescue.branch === "monster-prank" && pendingCatLines.length === 1;
       setCatRescueRaw(JSON.stringify({
         ...catRescue,
@@ -625,7 +627,7 @@ export function WeChatSkin(p: SkinProps) {
       // because the prank has already cost them the friendship.
       setMonsterFriendAccepted(false);
       setMonsterRemoved(true);
-      setMonsterSendFailed(true);
+      setMonsterSendFailed(false);
       setAddedFriends((current) => current.filter((name) => name !== "大G"));
     } else if (choice.nextStage === 13) {
       setMonsterRemoved(true);
