@@ -181,7 +181,7 @@ export function WeChatSkin(p: SkinProps) {
     ...p.items.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
     ...addedFriends,
   ])).sort((a, b) => a.localeCompare(b, "zh-CN"));
-  const friendDirectory = Array.from(new Set(p.items.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")));
+  const friendDirectory = Array.from(new Set(["温尚翊", "西兰花", "爸爸", "妈妈", ...p.items.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")]));
   const friendMatches = addQuery.trim() ? friendDirectory.filter((name) => {
     const related = p.items.filter((i) => i.title === name || i.sender === name);
     const keys = [name, ...related.flatMap((i) => [i.meta.wechatId, i.meta.account, i.meta.phone, i.meta.handle])].filter(Boolean).join(" ").toLowerCase();
