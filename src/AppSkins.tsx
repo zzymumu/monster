@@ -925,33 +925,33 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   ],
   63: [
     { id: "tell-broccoli-he-promised-dinner", label: "嘻嘻！他要请我吃饭！", nextStage: 64, lines: [
-      { sender: "我", body: "嘻嘻！他要請我吃飯！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "啊啊啊啊啊！！！真的假的！！！妳居然讓怪獸答應請妳吃飯了？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我不行了我先尖叫三秒！！！所以妳們這是有來有往了是不是！！", thread: "西蓝花" },
+      { sender: "我", body: "嘻嘻！他要请我吃饭！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "啊啊啊啊啊！！！真的假的！！！你居然让怪兽答应请你吃饭了？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我不行了我先尖叫三秒！！！所以你们这是有来有往了是不是！！", thread: "西蓝花" },
     ]},
     { id: "tell-broccoli-dinner-casual", label: "欸嘿，他刚刚答应回来请我吃饭了！", nextStage: 64, lines: [
-      { sender: "我", body: "欸嘿，他剛剛答應回來請我吃飯了！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "等一下等一下！！！怪獸本人說要請妳吃飯？？？我現在比妳還激動欸！！！", thread: "西蓝花" },
+      { sender: "我", body: "欸嘿，他刚刚答应回来请我吃饭了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下等一下！！！怪兽本人说要请你吃饭？？？我现在比你还激动欸！！！", thread: "西蓝花" },
     ]},
   ],
   64: [
     { id: "fangirl-details", label: "对啊！我只是开玩笑问他的，没想到他真的答应了", nextStage: 65, lines: [
-      { sender: "我", body: "對啊！我只是開玩笑問他的，沒想到他真的答應了。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "救命，這是什麼偶像劇情節啦！妳快說，他有沒有講哪天？還是要等他忙完回來？", thread: "西蓝花" },
+      { sender: "我", body: "對啊！我只是开玩笑问他的，没想到他真的答应了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "救命，这是什么偶像剧情节啦！你快说，他有没有讲哪天？还是要等他忙完回来？", thread: "西蓝花" },
     ]},
     { id: "fangirl-scream", label: "你先别激动！我现在也还没反应过来", nextStage: 65, lines: [
-      { sender: "我", body: "妳先別激動！我現在也還沒反應過來啦。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我怎麼可能不激動！妳冷靜一點，我們先不要自己腦補太多，但這真的很值得尖叫欸！", thread: "西蓝花" },
+      { sender: "我", body: "你先别激动！我现在也还没反应过来啦。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我怎么可能不激动！你冷静一点，我们先不要自己脑补太多，但这真的很值得尖叫欸！", thread: "西蓝花" },
     ]},
   ],
   65: [
     { id: "settle-down-broccoli", label: "哈哈哈先保密，等确定时间再告诉你", nextStage: 66, lines: [
-      { sender: "我", body: "哈哈哈先保密，等確定時間再告訴妳！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好啦好啦，我先把尖叫聲收起來！但妳一定要跟我報告後續，聽到沒有！", thread: "西蓝花" },
+      { sender: "我", body: "哈哈哈先保密，等确定时间再告诉你！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，我先把尖叫声收起来！但你一定要跟我报告后续，听到没有！", thread: "西蓝花" },
     ]},
     { id: "end-broccoli-chat", label: "好了好了，我先去照顾玩玩，晚点再跟你说", nextStage: 66, lines: [
-      { sender: "我", body: "好啦好啦，我先去照顧玩玩，晚點再跟妳說！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "去吧去吧！替我摸摸玩玩，還有——吃飯的事一定要回來跟我報告！！！", thread: "西蓝花" },
+      { sender: "我", body: "好啦好啦，我先去照顾玩玩，晚点再跟你说！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "去吧去吧！替我摸摸玩玩，还有——吃饭的事一定要回来跟我报告！！！", thread: "西蓝花" },
     ]},
   ],
   66: [],
