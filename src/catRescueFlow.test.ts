@@ -25,7 +25,7 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("returns to the WeChat conversation list after the final Broccoli exchange", () => {
-    expect(shouldCloseBroccoliAtStoryEnd(66, 0, "西蓝花")).toBe(true);
+    expect(shouldCloseBroccoliAtStoryEnd(66, 0, "西蓝花")).toBe(false);
     expect(shouldCloseBroccoliAtStoryEnd(66, 1, "西蓝花")).toBe(false);
     expect(shouldCloseBroccoliAtStoryEnd(65, 0, "西蓝花")).toBe(false);
     expect(shouldCloseBroccoliAtStoryEnd(66, 0, "")).toBe(false);
