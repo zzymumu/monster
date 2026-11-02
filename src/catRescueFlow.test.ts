@@ -157,9 +157,9 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[37]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[38]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[39][0].nextStage).toBe(40);
-    expect(CAT_RESCUE_CHOICES[40][0].nextStage).toBe(42);
+    expect(CAT_RESCUE_CHOICES[40][0].nextStage).toBe(41);
     expect(CAT_RESCUE_CHOICES[42][0].nextStage).toBe(43);
-    expect(CAT_RESCUE_CHOICES[43][0].nextStage).toBe(24);
+    expect(CAT_RESCUE_CHOICES[43][0].nextStage).toBe(44);
   });
 
 
