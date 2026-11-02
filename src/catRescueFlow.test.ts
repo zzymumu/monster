@@ -39,7 +39,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.nextStage === 1)).toBe(true);
     expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.lines[0].body.includes("帶") && !/隔離/.test(choice.lines[0].body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.lines[1].body.includes("Vava") && /傳染病/.test(choice.lines[1].body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[1].some((choice) => /隔離/.test(choice.label))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[1].some((choice) => /隔离|隔離/.test(choice.label))).toBe(true);
     expect(CAT_RESCUE_CHOICES[1].every((choice) => choice.nextStage === 2)).toBe(true);
     expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.nextStage === 3)).toBe(true);
     expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.lines.some((line) => /醫院|医院/.test(line.body)))).toBe(true);
@@ -181,7 +181,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[86].every((choice) => choice.nextStage === 87)).toBe(true);
     expect(CAT_RESCUE_CHOICES[87]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[87].every((choice) => choice.nextStage === 62)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[83].some((choice) => /麻煩你/.test(choice.label))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[83].some((choice) => /麻烦你|麻煩你/.test(choice.label))).toBe(true);
     expect(CAT_RESCUE_CHOICES[83].every((choice) => choice.nextStage === 85)).toBe(true);
     expect(CAT_RESCUE_CHOICES[85].every((choice) => choice.nextStage === 62)).toBe(true);
     for (const [stage, next] of [[56,61],[59,60],[60,61],[61,82],[62,63],[63,64],[64,65],[65,77],[77,78],[78,79],[79,84],[84,66]] as const) {
