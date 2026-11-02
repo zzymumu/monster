@@ -124,6 +124,18 @@ export function DeviceLock({
             </p>
             <h1>{time}</h1>
           </div>
+          <div className="lock-widgets" aria-label="锁屏小组件">
+            <div className="lock-widget lock-widget-battery">
+              <div className="lock-widget-heading"><Battery size={19} /><strong>{work.phone.battery}%</strong></div>
+              <div className="lock-widget-title">电池</div>
+              <div className="lock-widget-track"><span style={{ width: `${work.phone.battery}%` }} /></div>
+            </div>
+            <div className="lock-widget lock-widget-now-playing">
+              <div className="lock-widget-heading"><Music2 size={19} /><strong>马上播放</strong></div>
+              <div className="lock-widget-title">星探 (Live)</div>
+              <div className="lock-widget-track"><span style={{ width: "8%" }} /></div>
+            </div>
+          </div>
           <div className="lock-notifications">
             {work.phone.notifications && (
               <SystemNotifications
