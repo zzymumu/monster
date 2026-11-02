@@ -66,21 +66,27 @@ function Studio() {
   useEffect(() => {
     const boot = async () => {
       await useStudio.getState().load();
-      // ?freshphone=1 creates a separate copy of the current phone project,
-      // resets its player runtime, and leaves the existing project untouched.
+      // ?freshphone=1 creates a true clean-play copy: preserve the phone,
+      // contacts, avatars, media and story definitions, but remove saved player
+      // state and previously generated cat-rescue chat transcript.
       if (!freshLaunchHandled.current && new URLSearchParams(window.location.search).get("freshphone") === "1") {
         freshLaunchHandled.current = true;
         const source = useStudio.getState().work;
         if (source) {
-          await useStudio.getState().add({
-            ...structuredClone(source),
-            title: source.title + " · 全新测试",
-          });
+          const clean = structuredClone(source);
+          clean.title = source.title + " · 全新剧情测试";
+          const storyMessage = (item: Item) =>
+            item.meta?.storyThread === "西蓝花" ||
+            item.meta?.storyThread === "西兰花" ||
+            item.meta?.storyThread === "大G" ||
+            /小黑貓|小黑猫|玩玩|名牌|溫尚翊|温尚翊|怪獸|怪兽|外出籠|外出笼|晶片|撿到.*貓|捡到.*猫|醫院|医院/.test(item.body);
+          clean.data.wechat = (clean.data.wechat ?? []).filter((item) => !storyMessage(item));
+          await useStudio.getState().add(clean);
           const freshWork = useStudio.getState().work;
           if (freshWork) {
             const snapshot = structuredClone(freshWork);
             setPreview(snapshot);
-            setRuntime(dispatch(snapshot, initialRuntime(snapshot), "start"));
+            setRuntime(initialRuntime(snapshot));
             setView("phone");
           }
         }
