@@ -1516,3 +1516,23 @@
     font-size: 96px !important;
   }
 }
+
+/* iOS lock-screen wallpaper gallery */
+.phone-shell.ios27 .wallpaper-picker-overlay{position:absolute;z-index:1200;inset:0;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;padding:max(42px,env(safe-area-inset-top)) 0 34px;color:#fff;background:#050507}
+.phone-shell.ios27 .wallpaper-picker-header{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:0 18px;text-align:center;font-size:17px;font-weight:650}
+.phone-shell.ios27 .wallpaper-picker-header button,.phone-shell.ios27 .wallpaper-add{width:42px;height:42px;display:grid;place-items:center;color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(90,90,96,.32);backdrop-filter:blur(18px)}
+.phone-shell.ios27 .wallpaper-picker-label{margin:0 0 -12px 24px;font-size:14px;color:rgba(255,255,255,.78)}
+.phone-shell.ios27 .wallpaper-picker-carousel{display:flex;align-items:center;gap:16px;overflow-x:auto;padding:12px 22px 20px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.phone-shell.ios27 .wallpaper-picker-carousel::-webkit-scrollbar{display:none}
+.phone-shell.ios27 .wallpaper-preview{position:relative;flex:0 0 72%;max-width:285px;padding:0;border:2px solid transparent;border-radius:34px;overflow:hidden;background:transparent;color:#fff;scroll-snap-align:center}
+.phone-shell.ios27 .wallpaper-preview.selected{border-color:#fff}
+.phone-shell.ios27 .wallpaper-preview-art{width:100%;aspect-ratio:9/19.5;display:flex;flex-direction:column;align-items:center;padding-top:18%;border-radius:31px;color:#fff;object-fit:cover;text-shadow:0 1px 8px rgba(0,0,0,.28);box-sizing:border-box}
+.phone-shell.ios27 .wallpaper-preview-art small{font-size:11px;font-weight:600}
+.phone-shell.ios27 .wallpaper-preview-art b{margin-top:8px;font-size:clamp(44px,14vw,70px);font-weight:300;letter-spacing:-3px}
+.phone-shell.ios27 .wallpaper-preview-art i{margin-top:38%;font-size:11px;font-style:normal}
+.phone-shell.ios27 .wallpaper-preview-name{display:block;padding:10px 0 8px;font-size:13px}
+.phone-shell.ios27 .wallpaper-preview-check{position:absolute;top:12px;right:12px;padding:5px;border-radius:50%;background:#1688ff;box-sizing:content-box}
+.phone-shell.ios27 .wallpaper-picker-actions{display:flex;justify-content:center;align-items:center;gap:20px;padding:0 26px}
+.phone-shell.ios27 .wallpaper-customize{flex:1;max-width:270px;height:58px;border:1px solid rgba(255,255,255,.2);border-radius:32px;color:#fff;background:linear-gradient(180deg,rgba(80,80,86,.55),rgba(35,35,40,.75));box-shadow:inset 0 1px 1px rgba(255,255,255,.16),0 8px 24px rgba(0,0,0,.3);font-size:17px;font-weight:650}
+.phone-shell.ios27 .wallpaper-add{width:58px;height:58px}
+.phone-shell.ios27 .phone-screen[style*="background-image"]{background-size:cover;background-position:center}
