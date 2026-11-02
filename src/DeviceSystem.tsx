@@ -11,7 +11,6 @@ import {
   Delete,
   ChevronDown,
   Play,
-  Pause,
   SkipForward,
   Moon,
   RotateCcw,
