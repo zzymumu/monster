@@ -34,7 +34,7 @@ import "./ios/tokens.css";
 import "./ios/reference.css";
 import "./ios/status-bar.css";
 import "./ios27-system.css";
-import { WeChatSkin, WhatsAppSkin } from "./AppSkins";
+import { WeChatSkin, WhatsAppSkin, getCatRescueThreadForStage } from "./AppSkins";
 import { RichText } from "./RichText";
 import {
   useEffect,
@@ -59,6 +59,7 @@ import {
 import { getApp, type AppPlugin } from "./registry";
 import {
   initialRuntime,
+  makeItem,
   safeMedia,
   type Work,
   type Item,
@@ -259,6 +260,97 @@ function PhoneRuntime({
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
   };
+  // Story replies use a persistent phone-level queue: leaving WeChat does not
+  // pause delivery. Each incoming line waits a fresh random 30–60 seconds.
+  const pendingStoryQueueRaw = s.ui?.wechat?.wxCatPendingLines;
+  useEffect(() => {
+    if (creator || !ready || typeof pendingStoryQueueRaw !== "string") return;
+    let queue: Array<{ id?: string; sender: string; body: string; thread?: string; dueAt?: number }> = [];
+    try {
+      const parsed = JSON.parse(pendingStoryQueueRaw);
+      if (Array.isArray(parsed)) queue = parsed.filter((line) =>
+        line && typeof line.sender === "string" && typeof line.body === "string"
+      );
+    } catch { queue = []; }
+    if (!queue.length) return;
+    const current = runtimeRef.current;
+    const first = queue[0];
+    if (!first.dueAt) {
+      queue[0] = {
+        ...first,
+        id: first.id || "story-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8),
+        dueAt: Date.now() + 30000 + Math.floor(Math.random() * 30001),
+      };
+      update({
+        ...current,
+        ui: {
+          ...current.ui,
+          wechat: { ...current.ui?.wechat, wxCatPendingLines: JSON.stringify(queue) },
+        },
+      });
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      const latest = runtimeRef.current;
+      let latestQueue: typeof queue = [];
+      try {
+        const parsed = latest.ui?.wechat?.wxCatPendingLines;
+        if (typeof parsed === "string") {
+          const value = JSON.parse(parsed);
+          if (Array.isArray(value)) latestQueue = value;
+        }
+      } catch { latestQueue = []; }
+      if (!latestQueue.length || latestQueue[0].id !== first.id) return;
+      const thread = first.thread || getCatRescueThreadForStage(
+        (() => {
+          try {
+            const raw = latest.ui?.wechat?.wxCatRescue;
+            return typeof raw === "string" ? Number(JSON.parse(raw).stage) || 0 : 0;
+          } catch { return 0; }
+        })(),
+      );
+      const date = latest.date || work.phone.date;
+      const time = latest.time || work.phone.time;
+      const created = makeItem({
+        id: first.id || "cat-rescue-" + Date.now(),
+        title: thread,
+        sender: first.sender,
+        body: first.body,
+        time: date + " " + time,
+        outgoing: first.sender === "我",
+        meta: { storyId: "cat-rescue", storyThread: thread },
+      });
+      let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
+      try {
+        const raw = latest.ui?.wechat?.wxCatRescue;
+        if (typeof raw === "string") catState = JSON.parse(raw);
+      } catch { catState = {}; }
+      const nextQueue = latestQueue.slice(1);
+      const nextNotifications = [...latest.notifications];
+      const openThread = String(latest.ui?.wechat?.openThread || "");
+      if (first.sender !== "我" && (app !== "wechat" || openThread !== thread)) {
+        nextNotifications.push("微信：" + thread + "：" + first.body);
+      }
+      update({
+        ...latest,
+        ui: {
+          ...latest.ui,
+          wechat: {
+            ...latest.ui?.wechat,
+            wxCatRescue: JSON.stringify({
+              version: 2,
+              stage: Number(catState.stage) || 0,
+              branch: typeof catState.branch === "string" ? catState.branch : "",
+              messages: [...(Array.isArray(catState.messages) ? catState.messages : []), created],
+            }),
+            wxCatPendingLines: JSON.stringify(nextQueue),
+          },
+        },
+        notifications: nextNotifications.slice(-60),
+      });
+    }, Math.max(0, first.dueAt - Date.now()));
+    return () => window.clearTimeout(timer);
+  }, [creator, ready, pendingStoryQueueRaw, app, work.id, work.phone.date, work.phone.time]);
   const captureApp = () => {
     if (!app) return;
     const current = shell.current?.querySelector<HTMLElement>(".app-screen");
