@@ -46,6 +46,14 @@ describe("WeChat cat-rescue story configuration", () => {
     }
   });
 
+  it("offers exactly two player-controlled replies at every active story turn", () => {
+    const systemOrTerminalStages = new Set([8, 13, 36]);
+    for (const [stage, choices] of Object.entries(CAT_RESCUE_CHOICES)) {
+      if (systemOrTerminalStages.has(Number(stage))) continue;
+      expect(choices, `stage ${stage} must have two choices`).toHaveLength(2);
+    }
+  });
+
   it("shows two reply choices immediately after Broccoli asks whether the user arrived", () => {
     expect(CAT_RESCUE_CHOICES[30]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[30].every((choice) => choice.nextStage === 31)).toBe(true);
@@ -96,10 +104,10 @@ describe("WeChat cat-rescue story configuration", () => {
       "我是在路邊撿到一隻小黑貓，牠脖子上的牌子有你的微信號，所以才急著聯絡你。",
       "蛤？原來是這樣……小黑貓現在在哪裡？牠有沒有受傷？妳先跟我說一下。",
     ]);
-    expect(CAT_RESCUE_CHOICES[20]).toHaveLength(3);
+    expect(CAT_RESCUE_CHOICES[20]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[21]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[22]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[23]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[24]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[20].some((choice) => choice.id === "verify-owner-name")).toBe(true);
