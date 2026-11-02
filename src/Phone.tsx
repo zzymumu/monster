@@ -260,9 +260,12 @@ function PhoneRuntime({
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
   };
-  // Story replies use a persistent phone-level queue: leaving WeChat does not
-  // pause delivery. Each incoming line waits a fresh random 30–60 seconds.
+  // A single phone-level FIFO scheduler. Only the head message receives a
+  // deadline; the next deadline is created only after the current line ships.
+  // UI/app changes cannot flush the queue or make overdue messages burst out.
   const pendingStoryQueueRaw = s.ui?.wechat?.wxCatPendingLines;
+  const currentAppRef = useRef(app);
+  currentAppRef.current = app;
   useEffect(() => {
     if (creator || !ready || typeof pendingStoryQueueRaw !== "string") return;
     let queue: Array<{ id?: string; sender: string; body: string; thread?: string; dueAt?: number }> = [];
@@ -273,50 +276,50 @@ function PhoneRuntime({
       );
     } catch { queue = []; }
     if (!queue.length) return;
-    const current = runtimeRef.current;
+
     const first = queue[0];
-    if (!first.dueAt) {
-      queue[0] = {
+    const now = Date.now();
+    // Missing or stale deadlines are replaced with a fresh 30–60s wait.
+    if (!first.dueAt || first.dueAt <= now) {
+      const scheduled = [{
         ...first,
-        id: first.id || "story-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8),
-        dueAt: Date.now() + 30000 + Math.floor(Math.random() * 30001),
-      };
+        id: first.id || "story-" + now + "-" + Math.random().toString(36).slice(2, 8),
+        dueAt: now + 30000 + Math.floor(Math.random() * 30001),
+      }, ...queue.slice(1)];
       update({
-        ...current,
+        ...runtimeRef.current,
         ui: {
-          ...current.ui,
-          wechat: { ...current.ui?.wechat, wxCatPendingLines: JSON.stringify(queue) },
+          ...runtimeRef.current.ui,
+          wechat: { ...runtimeRef.current.ui?.wechat, wxCatPendingLines: JSON.stringify(scheduled) },
         },
       });
       return;
     }
+
     const timer = window.setTimeout(() => {
       const latest = runtimeRef.current;
       let latestQueue: typeof queue = [];
       try {
-        const parsed = latest.ui?.wechat?.wxCatPendingLines;
-        if (typeof parsed === "string") {
-          const value = JSON.parse(parsed);
-          if (Array.isArray(value)) latestQueue = value;
+        const raw = latest.ui?.wechat?.wxCatPendingLines;
+        if (typeof raw === "string") {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) latestQueue = parsed;
         }
       } catch { latestQueue = []; }
       if (!latestQueue.length || latestQueue[0].id !== first.id) return;
-      const thread = first.thread || getCatRescueThreadForStage(
-        (() => {
-          try {
-            const raw = latest.ui?.wechat?.wxCatRescue;
-            return typeof raw === "string" ? Number(JSON.parse(raw).stage) || 0 : 0;
-          } catch { return 0; }
-        })(),
-      );
-      const date = latest.date || work.phone.date;
-      const time = latest.time || work.phone.time;
+
+      const thread = first.thread || getCatRescueThreadForStage((() => {
+        try {
+          const raw = latest.ui?.wechat?.wxCatRescue;
+          return typeof raw === "string" ? Number(JSON.parse(raw).stage) || 0 : 0;
+        } catch { return 0; }
+      })());
       const created = makeItem({
         id: first.id || "cat-rescue-" + Date.now(),
         title: thread,
         sender: first.sender,
         body: first.body,
-        time: date + " " + time,
+        time: (latest.date || work.phone.date) + " " + (latest.time || work.phone.time),
         outgoing: first.sender === "我",
         meta: { storyId: "cat-rescue", storyThread: thread },
       });
@@ -325,10 +328,10 @@ function PhoneRuntime({
         const raw = latest.ui?.wechat?.wxCatRescue;
         if (typeof raw === "string") catState = JSON.parse(raw);
       } catch { catState = {}; }
-      const nextQueue = latestQueue.slice(1);
+
       const nextNotifications = [...latest.notifications];
       const openThread = String(latest.ui?.wechat?.openThread || "");
-      if (first.sender !== "我" && (app !== "wechat" || openThread !== thread)) {
+      if (first.sender !== "我" && (currentAppRef.current !== "wechat" || openThread !== thread)) {
         nextNotifications.push("微信：" + thread + "：" + first.body);
       }
       update({
@@ -343,14 +346,17 @@ function PhoneRuntime({
               branch: typeof catState.branch === "string" ? catState.branch : "",
               messages: [...(Array.isArray(catState.messages) ? catState.messages : []), created],
             }),
-            wxCatPendingLines: JSON.stringify(nextQueue),
+            // Do not set the next item's deadline here. The next effect pass
+            // starts its own independent 30–60 second interval.
+            wxCatPendingLines: JSON.stringify(latestQueue.slice(1)),
           },
         },
         notifications: nextNotifications.slice(-60),
       });
     }, Math.max(0, first.dueAt - Date.now()));
+
     return () => window.clearTimeout(timer);
-  }, [creator, ready, pendingStoryQueueRaw, app, work.id, work.phone.date, work.phone.time]);
+  }, [creator, ready, pendingStoryQueueRaw, work.id]);
   const captureApp = () => {
     if (!app) return;
     const current = shell.current?.querySelector<HTMLElement>(".app-screen");
