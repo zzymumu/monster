@@ -116,7 +116,7 @@ function MessageList({
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
       {items.map((i) => {
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
-        const simplifiedMessage = wechat && (i.sender === "我" || i.sender === "西蓝花");
+        const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
         return <div
           key={i.id}
