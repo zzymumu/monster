@@ -30,6 +30,17 @@ import {
   Image as ImageIcon,
   Layers,
   ShoppingBag,
+  Monitor,
+  ChevronRight,
+  Tag,
+  ContactRound,
+  Radio,
+  ScanLine,
+  Sparkles,
+  MapPin,
+  Wallet,
+  Bookmark,
+  BookOpen,
 } from "lucide-react";
 import { safeMedia, type Item, type UiValue } from "./schema";
 export type SkinProps = {
@@ -152,372 +163,246 @@ function Compose({
   );
 }
 export function WeChatSkin(p: SkinProps) {
-  const [tab, setTab] = useState("微信"),
-    [query, setQuery] = useState(""),
-    [moments, setMoments] = useState(false),
-    [menu, setMenu] = useState(false),
-    [searchOpen, setSearchOpen] = useState(false),
-    [utility, setUtility] = useState("");
-  const [readThreads, setReadThreads] = useSkinState<string[]>(
-    p,
-    "readThreads",
-    [],
-  );
+  const [tab, setTab] = useState("微信");
+  const [query, setQuery] = useState("");
+  const [moments, setMoments] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [utility, setUtility] = useState("");
+  const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
+
   const conversations = Array.from(
-    new Set(
-      p.items
-        .filter((i) => !["朋友圈", "我"].includes(i.folder))
-        .map((i) => i.title),
-    ),
+    new Set(p.items.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title)),
   ).sort((a, b) => {
     const aLast = p.items.filter((i) => i.title === a).at(-1)?.time ?? "";
     const bLast = p.items.filter((i) => i.title === b).at(-1)?.time ?? "";
     return bLast.localeCompare(aLast);
   });
-  const contacts = [
-    ...new Set(p.items.map((i) => i.sender).filter((s) => s !== "我")),
-  ];
-  const posts = p.items.filter(
-    (i) => i.folder === "朋友圈" || i.kind === "post",
+  const contacts = Array.from(new Set(
+    p.items.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
+  )).sort((a, b) => a.localeCompare(b, "zh-CN"));
+  const posts = p.items.filter((i) => i.folder === "朋友圈" || i.kind === "post");
+  const ownerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
+  const filteredConversations = conversations.filter((name) =>
+    name.toLowerCase().includes(query.toLowerCase()) ||
+    p.items.some((i) => i.title === name && i.body.toLowerCase().includes(query.toLowerCase())),
   );
+  const shortcutRows = [
+    { label: "新的朋友", icon: Users, color: "#f4a23a" },
+    { label: "仅聊天的朋友", icon: ContactRound, color: "#f4a23a" },
+    { label: "群聊", icon: MessageCircle, color: "#16b86a" },
+    { label: "标签", icon: Tag, color: "#278bd8" },
+    { label: "公众号", icon: BookOpen, color: "#168de0" },
+    { label: "服务号", icon: Layers, color: "#14a9d6" },
+    { label: "企业微信联系人", icon: Users, color: "#368bd0" },
+  ];
+  const discoverGroups = [
+    [{ label: "朋友圈", icon: Camera, color: "#24b66a" }],
+    [
+      { label: "视频号", icon: Play, color: "#f2a53a" },
+      { label: "直播", icon: Radio, color: "#e77970" },
+    ],
+    [
+      { label: "扫一扫", icon: ScanLine, color: "#368fd0" },
+      { label: "听一听", icon: Music, color: "#e66b79" },
+    ],
+    [
+      { label: "看一看", icon: Sparkles, color: "#e6b735" },
+      { label: "搜一搜", icon: Search, color: "#e8757d" },
+    ],
+    [
+      { label: "附近的人", icon: MapPin, color: "#368fd0" },
+      { label: "游戏", icon: Grid, color: "#e2a83c" },
+      { label: "小程序", icon: Layers, color: "#7c72cf" },
+    ],
+  ];
+  const profileRows = [
+    { label: "服务", icon: MessageCircle, color: "#18b77b" },
+    { label: "收藏", icon: Bookmark, color: "#e5b13c" },
+    { label: "朋友圈", icon: ImageIcon, color: "#389bd2" },
+    { label: "视频号", icon: Play, color: "#399bd5" },
+    { label: "卡包", icon: Wallet, color: "#e47e68" },
+    { label: "表情", icon: Smile, color: "#e6b83d" },
+    { label: "设置", icon: Settings, color: "#389bd2" },
+  ];
+  const openUtility = (label: string) => setUtility(label);
+  const openContact = (name: string) => {
+    const related = p.items.find((i) => i.sender === name || i.title === name);
+    if (related) {
+      p.onThread(related.title);
+      p.onRead(related.title);
+    } else setUtility(name);
+  };
+  const initials = (name: string) => {
+    const first = name.trim().charAt(0);
+    return /^[a-z]/i.test(first) ? first.toUpperCase() : "☆";
+  };
+
   return (
-    <div
-      className="wechat-ui independent-skin"
-      data-tab={tab}
-      data-thread={!!p.thread}
-      data-moments={moments}
-      data-utility={!!utility}
-    >
+    <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility}>
       <div className="app-nav wx-nav">
-        <button
-          aria-label={utility || p.thread || moments ? "返回" : "收藏"}
-          onClick={() =>
-            utility
-              ? setUtility("")
-              : p.thread
-                ? p.onThread("")
-                : moments
-                  ? setMoments(false)
-                  : setUtility("收藏")
-          }
-        >
-          {utility || p.thread || moments ? (
-            <ChevronLeft size={22} />
-          ) : (
-            <Star size={22} />
-          )}
+        <button aria-label={utility || p.thread || moments ? "返回" : tab === "微信" ? "收藏" : "返回"} onClick={() => {
+          if (utility) setUtility("");
+          else if (p.thread) p.onThread("");
+          else if (moments) setMoments(false);
+          else if (tab !== "微信") setTab("微信");
+          else setUtility("收藏");
+        }}>
+          {utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
         </button>
-        <strong>
-          {utility ||
-            p.thread ||
-            (moments ? "朋友圈" : tab === "微信" ? p.name : tab)}
-        </strong>
-        <button
-          aria-label={
-            p.creator ? "新增内容" : p.thread ? "聊天详情" : "微信菜单"
-          }
-          onClick={
-            p.creator
-              ? p.onAdd
-              : () => (p.thread ? setUtility("聊天信息") : setMenu(!menu))
-          }
-        >
-          {p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={22} />}
+        <strong>{utility || p.thread || (moments ? "朋友圈" : tab)}</strong>
+        <button aria-label={p.thread ? "聊天详情" : "微信菜单"} onClick={() => p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>
+          {p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}
         </button>
       </div>
-      {menu && (
+
+      {menu && !p.thread && !moments && !utility && (
         <div className="wx-popup-menu" role="menu">
-          {["搜索", "发起群聊", "添加朋友", "扫一扫", "收付款"].map((label) => (
-            <button
-              role="menuitem"
-              key={label}
-              onClick={() => {
-                setMenu(false);
-                if (label === "搜索") {
-                  setSearchOpen(true);
-                } else setUtility(label);
-              }}
-            >
-              {label}
-            </button>
+          {["发起群聊", "添加朋友", "扫一扫", "收付款"].map((label) => (
+            <button role="menuitem" key={label} onClick={() => { setMenu(false); setUtility(label); }}>{label}</button>
           ))}
         </div>
       )}
+
       {utility ? (
         <div className="skin-scroll wx-utility">
           {utility === "聊天信息" && (
             <div className="wx-members">
-              {[
-                ...new Set(
-                  p.items
-                    .filter((i) => i.title === p.thread)
-                    .map((i) => i.sender),
-                ),
-              ].map((name) => (
-                <div key={name}>
-                  <Avatar
-                    name={name}
-                    src={p.items.find((i) => i.sender === name)?.avatar}
-                  />
-                  <small>{name}</small>
-                </div>
+              {Array.from(new Set(p.items.filter((i) => i.title === p.thread).map((i) => i.sender))).map((name) => (
+                <div key={name}><Avatar name={name} src={p.items.find((i) => i.sender === name)?.avatar} /><small>{name}</small></div>
               ))}
             </div>
           )}
-          {p.items
-            .filter((i) => i.folder === utility)
-            .map((i) => (
-              <button
-                key={i.id}
-                className="wx-discovery"
-                onClick={() => p.onItem(i)}
-              >
-                {i.title}
-                <span>›</span>
-              </button>
-            ))}
-          {!p.items.some((i) => i.folder === utility) &&
-            utility !== "聊天信息" && <p className="skin-empty">暂无内容</p>}
+          {p.items.filter((i) => i.folder === utility).map((i) => (
+            <button key={i.id} className="wx-discovery" onClick={() => p.onItem(i)}>{i.title}<span>›</span></button>
+          ))}
+          {!p.items.some((i) => i.folder === utility) && utility !== "聊天信息" && (
+            <div className="wx-empty-state"><span>{utility}</span><p>这里还没有内容</p></div>
+          )}
         </div>
       ) : p.thread ? (
         <>
-          <MessageList
-            items={p.items.filter((i) => i.title === p.thread)}
-            creator={p.creator}
-            onItem={p.onItem}
-            onRead={p.onRead}
-          />
+          <MessageList items={p.items.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} />
           <Compose creator={p.creator} onAdd={p.onAdd} />
         </>
       ) : moments ? (
         <div className="wx-moments">
-          <div className="wx-moment-cover">
-            <Camera size={32} />
-            <span>朋友圈</span>
-          </div>
+          <div className="wx-moment-cover"><Camera size={32} /><span>朋友圈</span></div>
           {posts.map((i) => (
-            <button
-              key={i.id}
-              className="wx-moment-post"
-              onClick={() => p.onItem(i)}
-            >
-              <Avatar name={i.sender} />
-              <div>
-                <strong>{i.sender}</strong>
-                <p>{i.body}</p>
-                {i.media && <ItemMedia item={i} />}
-                <small>{i.time}</small>
-              </div>
+            <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
+              <Avatar name={i.sender} src={i.avatar} />
+              <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
             </button>
           ))}
-          {!posts.length && <p className="skin-empty">暂无朋友圈动态</p>}
-          {p.creator && (
-            <button className="phone-add" onClick={p.onAdd}>
-              添加朋友圈动态
-            </button>
-          )}
+          {!posts.length && <p className="skin-empty">暂时还没有朋友圈动态</p>}
+          {p.creator && <button className="phone-add" onClick={p.onAdd}>发布朋友圈</button>}
         </div>
       ) : (
-        <div className="skin-scroll">
-          {tab === "微信" ? (
+        <div className="wx-page-scroll">
+          {tab === "微信" && (
             <>
-              {searchOpen && (
-                <label className="wx-search">
-                  <Search size={14} />
-                  <input
-                    aria-label="搜索微信内容"
-                    placeholder="搜索"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                </label>
-              )}
-              {conversations
-                .filter(
-                  (t) =>
-                    t.includes(query) ||
-                    p.items.some(
-                      (i) => i.title === t && i.body.includes(query),
-                    ),
-                )
-                .map((t) => {
-                  const list = p.items.filter((i) => i.title === t),
-                    last = list.at(-1)!;
+              <label className="wx-search wx-search-persistent">
+                <Search size={17} />
+                <input aria-label="搜索微信内容" placeholder="搜索" value={query} onChange={(e) => setQuery(e.target.value)} />
+              </label>
+              <button className="wx-desktop-login" onClick={() => setUtility("文件传输助手")}>
+                <Monitor size={22} /><span>已登录 Windows 电脑</span><ChevronRight size={16} />
+              </button>
+              <div className="wx-conversation-list">
+                {filteredConversations.map((name) => {
+                  const list = p.items.filter((i) => i.title === name);
+                  const last = list.at(-1)!;
+                  const unread = !readThreads.includes(name) && list.some((i) => !i.read);
                   return (
-                    <button
-                      className="wx-chat-row"
-                      key={t}
-                      onClick={() => {
-                        setReadThreads((v) => (v.includes(t) ? v : [...v, t]));
-                        p.onThread(t);
-                        p.onRead(t);
-                      }}
-                    >
+                    <button className="wx-chat-row" key={name} onClick={() => {
+                      setReadThreads((v) => v.includes(name) ? v : [...v, name]);
+                      p.onThread(name);
+                      p.onRead(name);
+                    }}>
                       <span className="wx-chat-avatar">
-                        <Avatar name={t} src={last.avatar} />
-                        {!readThreads.includes(t) &&
-                          list.some((i) => !i.read) && (
-                            <b className="wx-unread">
-                              {list.filter((i) => !i.read).length}
-                            </b>
-                          )}
+                        <Avatar name={name} src={last.avatar} />
+                        {unread && <b className="wx-unread">{list.filter((i) => !i.read).length || ""}</b>}
                       </span>
-                      <div>
-                        <strong>{t}</strong>
-                        <p>{last.body}</p>
-                      </div>
+                      <div className="wx-chat-copy"><strong>{name}</strong><p>{last.body}</p></div>
                       <time>{last.time.slice(-5)}</time>
                     </button>
                   );
                 })}
-              {!conversations.length && <p className="skin-empty">暂无聊天</p>}
+                {!filteredConversations.length && <p className="skin-empty">没有找到相关聊天</p>}
+              </div>
             </>
-          ) : tab === "通讯录" ? (
-            <>
-              <div className="wx-contact-shortcuts">
-                {[
-                  ["新的朋友", Users],
-                  ["群聊", MessageCircle],
-                  ["标签", Layers],
-                  ["公众号", AtSign],
-                ].map(([label, Icon]) => {
-                  const Glyph = Icon as typeof Users;
-                  return (
-                    <button key={String(label)} onClick={() => setUtility(String(label))}>
-                      <span><Glyph size={18} /></span>{String(label)}
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="wx-section-label">联系人</div>
-              {contacts.map((c) => (
-                <button
-                  key={c}
-                  className="wx-contact"
-                  onClick={() => {
-                    const item = p.items.find((i) => i.sender === c);
-                    if (item) {
-                      p.onThread(item.title);
-                      p.onRead(item.title);
-                    }
-                  }}
-                >
-                  <Avatar
-                    name={c}
-                    src={p.items.find((i) => i.sender === c)?.avatar}
-                  />
-                  {c}
-                </button>
-              ))}
-            </>
-          ) : tab === "发现" ? (
-            <div className="wx-discover-groups">
-              {[
-                [Camera, "朋友圈", "#26a958"],
-                [Play, "视频号", "#fa9d3b"],
-                [Grid, "小程序", "#438bd1"],
-                [Search, "搜一搜", "#6c9bce"],
-                [Music, "听一听", "#fa5151"],
-                [ImageIcon, "看一看", "#4a9c82"],
-              ].map(([Icon, label, color]) => {
-                const Glyph = Icon as typeof Camera;
-                return (
-                  <button
-                    key={String(label)}
-                    className="wx-discovery"
-                    onClick={() =>
-                      label === "朋友圈"
-                        ? setMoments(true)
-                        : setUtility(String(label))
-                    }
-                  >
-                    <Glyph size={22} style={{ color: String(color) }} />
-                    {String(label)}
-                    <span>›</span>
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <>
-              <div className="wx-profile">
-                <Avatar name={p.owner || "机主"} />
-                <div>
-                  <h2>{p.owner || "机主"}</h2>
-                  <small>微信号：未设置</small>
-                  <button
-                    className="wx-profile-status"
-                    onClick={() => setUtility("状态")}
-                  >
-                    ＋ 状态
-                  </button>
-                </div>
-              </div>
-              <div className="wx-profile-menu">
-                {[
-                  [MessageCircle, "服务", "#07c160"],
-                  [Layers, "收藏", "#e8a828"],
-                  [ImageIcon, "朋友圈", "#3a9bd9"],
-                  [Layers, "作品", "#329dd8"],
-                  [ShoppingBag, "小店与卡包", "#ed7c59"],
-                  [Smile, "表情", "#f7b900"],
-                  [Settings, "设置", "#1696d2"],
-                ].map(([Icon, label, color]) => {
-                  const Glyph = Icon as typeof Settings;
-                  return (
-                    <button
-                      key={String(label)}
-                      className="wx-discovery"
-                      onClick={() =>
-                        label === "朋友圈"
-                          ? setMoments(true)
-                          : setUtility(String(label))
-                      }
-                    >
-                      <Glyph size={22} style={{ color: String(color) }} />
-                      {String(label)}
-                      <span>›</span>
-                    </button>
-                  );
-                })}
-              </div>
-              {p.items
-                .filter((i) => i.folder === "我")
-                .map((i) => (
-                  <button
-                    className="wx-discovery"
-                    key={i.id}
-                    onClick={() => p.onItem(i)}
-                  >
-                    <User size={18} />
-                    {i.title}
-                    <span>›</span>
+          )}
+
+          {tab === "通讯录" && (
+            <div className="wx-contacts-page">
+              <label className="wx-search wx-search-persistent">
+                <Search size={17} /><input placeholder="搜索" value={query} onChange={(e) => setQuery(e.target.value)} aria-label="搜索联系人" />
+              </label>
+              <div className="wx-shortcut-list">
+                {shortcutRows.map(({label, icon: Icon, color}) => (
+                  <button key={label} onClick={() => openUtility(label)}>
+                    <span className="wx-shortcut-icon" style={{background: color}}><Icon size={21} /></span>{label}
                   </button>
                 ))}
-              {p.creator && (
-                <button className="phone-add" onClick={p.onAdd}>
-                  编辑个人资料内容
-                </button>
-              )}
-            </>
+              </div>
+              <div className="wx-contact-section-title">我的联系人</div>
+              <div className="wx-contact-list">
+                {contacts.filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => {
+                  const avatarItem = p.items.find((i) => i.sender === name);
+                  return <button className="wx-contact-row" key={name} onClick={() => openContact(name)}>
+                    <Avatar name={name} src={avatarItem?.avatar} /><span>{name}</span>
+                  </button>;
+                })}
+                {!contacts.length && <p className="skin-empty">联系人会在聊天后显示在这里</p>}
+              </div>
+              <div className="wx-alpha-index" aria-hidden="true">⌕<br />A<br />B<br />C<br />D<br />E<br />F<br />G<br />H<br />I<br />J<br />K<br />L<br />M<br />N<br />O<br />P<br />Q<br />R<br />S<br />T<br />U<br />V<br />W<br />X<br />Y<br />Z<br />#</div>
+            </div>
+          )}
+
+          {tab === "发现" && (
+            <div className="wx-discover-page">
+              {discoverGroups.map((group, index) => (
+                <section className="wx-discover-group" key={index}>
+                  {group.map(({label, icon: Icon, color}) => (
+                    <button className="wx-discover-row" key={label} onClick={() => label === "朋友圈" ? setMoments(true) : openUtility(label)}>
+                      <Icon size={23} style={{color}} /><span>{label}</span><ChevronRight size={18} />
+                    </button>
+                  ))}
+                </section>
+              ))}
+            </div>
+          )}
+
+          {tab === "我" && (
+            <div className="wx-me-page">
+              <button className="wx-me-profile" onClick={() => openUtility("个人资料")}>
+                <Avatar name={ownerName} />
+                <span className="wx-me-identity"><strong>{ownerName}</strong><small>微信号：未设置</small><em>＋ 状态</em></span>
+                <ChevronRight size={20} />
+              </button>
+              <div className="wx-me-group">
+                {profileRows.slice(0, 1).map(({label, icon: Icon, color}) => <button key={label} onClick={() => openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
+              </div>
+              <div className="wx-me-group">
+                {profileRows.slice(1, 6).map(({label, icon: Icon, color}) => <button key={label} onClick={() => label === "朋友圈" ? setMoments(true) : openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
+              </div>
+              <div className="wx-me-group">
+                {profileRows.slice(6).map(({label, icon: Icon, color}) => <button key={label} onClick={() => openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
+              </div>
+            </div>
           )}
         </div>
       )}
+
       {!p.thread && !moments && !utility && (
         <nav className="wx-bottom">
           {[
-            { label: "微信", icon: MessageCircle },
-            { label: "通讯录", icon: Users },
-            { label: "发现", icon: Compass },
-            { label: "我", icon: User },
-          ].map((t) => (
-            <button
-              className={tab === t.label ? "selected" : ""}
-              key={t.label}
-              onClick={() => setTab(t.label)}
-            >
-              <t.icon size={21} />
-              <span>{t.label}</span>
+            {label:"微信", icon:MessageCircle},
+            {label:"通讯录", icon:Users},
+            {label:"发现", icon:Compass},
+            {label:"我", icon:User},
+          ].map(({label, icon: Icon}) => (
+            <button className={tab === label ? "selected" : ""} key={label} onClick={() => { setTab(label); setQuery(""); }}>
+              <Icon size={23} /><span>{label}</span>
             </button>
           ))}
         </nav>

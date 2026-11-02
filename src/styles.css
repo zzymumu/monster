@@ -4918,3 +4918,67 @@ label {
   background: #e34f58;
   transform: rotate(135deg);
 }
+
+
+/* WeChat reference layout: four native-style tabs, kept separate from story data. */
+.wechat-ui.wx-reference-layout { background:#ededed; color:#191919; }
+.wechat-ui.wx-reference-layout .wx-nav { min-height:48px; height:48px; flex:none; background:#ededed; border:0; padding:0 13px; }
+.wechat-ui.wx-reference-layout .wx-nav strong { font-size:17px; font-weight:600; }
+.wechat-ui.wx-reference-layout .wx-page-scroll { flex:1; min-height:0; overflow:auto; background:#ededed; scrollbar-width:none; }
+.wechat-ui.wx-reference-layout .wx-page-scroll::-webkit-scrollbar { display:none; }
+.wechat-ui.wx-reference-layout .wx-search-persistent { height:39px; min-height:39px; margin:5px 9px 10px; padding:0 12px; border-radius:7px; background:#fff; color:#a5a5a5; justify-content:center; gap:7px; }
+.wechat-ui.wx-reference-layout .wx-search-persistent input { width:min(70%,220px); flex:none; font-size:14px; color:#333; padding:0; }
+.wechat-ui.wx-reference-layout .wx-desktop-login { width:100%; height:47px; display:flex; align-items:center; gap:16px; padding:0 25px; background:#ededed; color:#858585; font-size:13px; text-align:left; }
+.wechat-ui.wx-reference-layout .wx-desktop-login svg:last-child { margin-left:auto; opacity:0; }
+.wechat-ui.wx-reference-layout .wx-conversation-list { background:#fff; }
+.wechat-ui.wx-reference-layout .wx-chat-row { min-height:67px; height:auto; padding:10px 14px; gap:11px; border-bottom:1px solid #ededed; background:#fff; }
+.wechat-ui.wx-reference-layout .wx-chat-avatar { position:relative; width:43px; height:43px; flex:none; }
+.wechat-ui.wx-reference-layout .wx-chat-avatar .skin-avatar { width:43px; height:43px; }
+.wechat-ui.wx-reference-layout .wx-chat-copy { min-width:0; flex:1; align-self:stretch; display:flex; flex-direction:column; justify-content:center; }
+.wechat-ui.wx-reference-layout .wx-chat-row strong { font-size:15px; line-height:20px; font-weight:500; color:#171717; }
+.wechat-ui.wx-reference-layout .wx-chat-row p { font-size:12px; line-height:18px; margin-top:3px; color:#aaa; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.wechat-ui.wx-reference-layout .wx-chat-row time { align-self:flex-start; margin:1px 0 0; font-size:10px; color:#b5b5b5; white-space:nowrap; }
+.wechat-ui.wx-reference-layout .wx-unread { position:absolute; top:-4px; right:-4px; min-width:10px; height:10px; padding:0; border-radius:50%; background:#fa5151; color:transparent; font-size:0; }
+.wechat-ui.wx-reference-layout .wx-bottom { height:62px; min-height:62px; background:#fafafa; border-top:1px solid #e5e5e5; padding:3px 8px 4px; }
+.wechat-ui.wx-reference-layout .wx-bottom button { min-width:0; flex:1; align-items:center; justify-content:center; gap:2px; color:#222; padding:2px; }
+.wechat-ui.wx-reference-layout .wx-bottom button span { font-size:10px; line-height:14px; }
+.wechat-ui.wx-reference-layout .wx-bottom button.selected { color:#07a85a; }
+.wechat-ui.wx-reference-layout .wx-contacts-page { position:relative; min-height:100%; background:#fff; padding-bottom:12px; }
+.wechat-ui.wx-reference-layout .wx-shortcut-list { background:#fff; }
+.wechat-ui.wx-reference-layout .wx-shortcut-list button { height:56px; display:flex; align-items:center; gap:12px; width:100%; padding:0 14px; border-bottom:1px solid #f0f0f0; text-align:left; font-size:15px; color:#222; }
+.wechat-ui.wx-reference-layout .wx-shortcut-icon { width:36px; height:36px; border-radius:5px; display:grid; place-items:center; color:#fff; flex:none; }
+.wechat-ui.wx-reference-layout .wx-contact-section-title { padding:14px 14px 7px; color:#888; background:#f7f7f7; font-size:12px; }
+.wechat-ui.wx-reference-layout .wx-contact-row { height:57px; display:flex; align-items:center; gap:12px; width:100%; padding:0 14px; background:#fff; border-bottom:1px solid #f1f1f1; text-align:left; font-size:14px; }
+.wechat-ui.wx-reference-layout .wx-contact-row .skin-avatar { width:38px; height:38px; font-size:16px; }
+.wechat-ui.wx-reference-layout .wx-alpha-index { position:fixed; right:7px; top:25%; z-index:2; color:#777; font-size:9px; line-height:14px; text-align:center; pointer-events:none; }
+.wechat-ui.wx-reference-layout .wx-discover-page { padding-top:0; background:#ededed; }
+.wechat-ui.wx-reference-layout .wx-discover-group { margin:0 0 9px; background:#fff; }
+.wechat-ui.wx-reference-layout .wx-discover-row { width:100%; min-height:58px; display:flex; align-items:center; gap:14px; padding:0 16px; background:#fff; border-bottom:1px solid #f1f1f1; text-align:left; font-size:15px; color:#222; }
+.wechat-ui.wx-reference-layout .wx-discover-row > span { flex:1; }
+.wechat-ui.wx-reference-layout .wx-discover-row > svg:last-child { color:#b7b7b7; }
+.wechat-ui.wx-reference-layout .wx-me-page { min-height:100%; padding-top:22px; background:#ededed; }
+.wechat-ui.wx-reference-layout .wx-me-profile { width:100%; min-height:122px; display:flex; align-items:center; gap:15px; padding:18px 18px 20px; background:#fff; text-align:left; }
+.wechat-ui.wx-reference-layout .wx-me-profile > .skin-avatar { width:62px; height:62px; font-size:22px; }
+.wechat-ui.wx-reference-layout .wx-me-identity { flex:1; min-width:0; display:flex; flex-direction:column; gap:7px; }
+.wechat-ui.wx-reference-layout .wx-me-identity strong { font-size:19px; font-weight:600; }
+.wechat-ui.wx-reference-layout .wx-me-identity small { font-size:12px; color:#999; }
+.wechat-ui.wx-reference-layout .wx-me-identity em { width:max-content; border:1px solid #e5e5e5; border-radius:15px; padding:3px 9px; font-size:11px; color:#999; font-style:normal; }
+.wechat-ui.wx-reference-layout .wx-me-profile > svg { color:#aaa; }
+.wechat-ui.wx-reference-layout .wx-me-group { margin-top:9px; background:#fff; }
+.wechat-ui.wx-reference-layout .wx-me-group button { width:100%; height:56px; display:flex; align-items:center; gap:14px; padding:0 16px; border-bottom:1px solid #f0f0f0; background:#fff; text-align:left; }
+.wechat-ui.wx-reference-layout .wx-me-group button span { flex:1; font-size:15px; }
+.wechat-ui.wx-reference-layout .wx-me-group button > svg:last-child { color:#b8b8b8; }
+.wechat-ui.wx-reference-layout .wx-empty-state { padding:60px 20px; text-align:center; color:#888; }
+.wechat-ui.wx-reference-layout .wx-empty-state span { color:#555; font-size:16px; }
+.wechat-ui.wx-reference-layout .wx-empty-state p { margin-top:10px; font-size:12px; }
+.wechat-ui.wx-reference-layout .wx-utility { flex:1; min-height:0; overflow:auto; background:#ededed; }
+.wechat-ui.wx-reference-layout .wx-utility .wx-discovery { margin:0; min-height:55px; }
+.wechat-ui.wx-reference-layout .wx-utility .wx-members { display:flex; flex-wrap:wrap; gap:12px; padding:15px; background:#fff; }
+.wechat-ui.wx-reference-layout .wx-utility .wx-members > div { width:48px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.wechat-ui.wx-reference-layout .wx-utility .wx-members small { font-size:10px; color:#777; }
+@media (max-height:740px) {
+  .wechat-ui.wx-reference-layout .wx-chat-row { min-height:60px; padding-top:8px; padding-bottom:8px; }
+  .wechat-ui.wx-reference-layout .wx-shortcut-list button,
+  .wechat-ui.wx-reference-layout .wx-discover-row,
+  .wechat-ui.wx-reference-layout .wx-me-group button { min-height:51px; height:51px; }
+}
