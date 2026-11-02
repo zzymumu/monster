@@ -58,6 +58,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[12]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[12].every((choice) => choice.nextStage === 30)).toBe(true);
     expect(CAT_RESCUE_CHOICES[30]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[30][1].lines[0].body).not.toContain("玩玩");
     expect(CAT_RESCUE_CHOICES[30].every((choice) => choice.nextStage === 31)).toBe(true);
     expect(CAT_RESCUE_CHOICES[31]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[31].every((choice) => choice.nextStage === 40)).toBe(true);
