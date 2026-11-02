@@ -385,14 +385,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "牠沒有躲我，還主動蹭我的手，看起來應該願意讓我抱。我會很小心的。" },
       { sender: "西蓝花", body: "那就好！但還是要托好牠，別讓牠突然掙扎，外出籠也先準備好喔。" },
     ]},
-    { id: "ask-clinic-help", label: "我不勉强它，先请医院工作人员帮忙会比较安全", nextStage: 30, lines: [
-      { sender: "我", body: "我不勉強牠了，等一下請醫院的工作人員幫忙，這樣比較安全。" },
-      { sender: "西蓝花", body: "這樣也很好！交給專業的人幫忙最安心，妳也不要讓自己受傷。" },
-    ]},
-    { id: "prepare-carrier", label: "我会先把外出笼打开，慢慢引导它进去", nextStage: 30, lines: [
-      { sender: "我", body: "我先把外出籠打開放在旁邊，再慢慢引導牠進去，不會突然抓牠。" },
-      { sender: "西蓝花", body: "好！動作輕一點，別嚇到牠。妳自己也要小心，到了醫院再跟我說。" },
-    ]},
   ],
   10: [
     { id: "talk-about-day", label: "先聊点别的吧，你今天不是说有件事要跟我讲？", nextStage: 11, lines: [
@@ -421,6 +413,10 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "真的！医生说牌子上留了联络电话，我现在脑袋一片空白。" },
       { sender: "西蓝花", body: "先把照片传給我！我确认一下……天啊，真的是这三个字欸！" },
     ]},
+    { id: "check-name-again", label: "我再确认一下挂牌和联络方式，免得认错人", nextStage: 5, lines: [
+      { sender: "我", body: "我再仔細確認一下挂牌和聯絡方式，免得真的認錯人。" },
+      { sender: "西蓝花", body: "對，先確認清楚比較好！不過這名字真的太巧了啦。" },
+    ]},
   ],
   5: [
     { id: "same-name", label: "我也觉得可能是重名，但还是好不真实……", nextStage: 6, lines: [
@@ -443,12 +439,20 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "电话打不通啊？要不试试看能不能透过微信号加好友？" },
       { sender: "我", body: "好像可以试试看，我看看牌子上有没有其他资料。" },
     ]},
+    { id: "send-message-first", label: "我先不一直打电话，试着发条消息确认", nextStage: 7, lines: [
+      { sender: "我", body: "我先不一直打電話了，試著用其他方式聯絡看看。" },
+      { sender: "西蓝花", body: "可以啊，先簡單說明情況就好，別太緊張！" },
+    ]},
   ],
   7: [
     { id: "try-wechat", label: "好，我试试看用这个微信号加好友。", nextStage: 8, lines: [
       { sender: "我", body: "好，我试试看用这个微信号加好友。" },
       { sender: "西蓝花", body: "嗯嗯！先确认是不是本人，别一上来就把自己吓到。" },
       { sender: "我", body: "我去微信看看……" },
+    ]},
+    { id: "check-contact-card", label: "我再看看挂牌上有没有其他联系方式", nextStage: 8, lines: [
+      { sender: "我", body: "我再看看挂牌上有沒有其他聯絡方式，確認一下資料。" },
+      { sender: "西蓝花", body: "好，慢慢找！有找到就先核對清楚再聯絡。" },
     ]},
   ],
   9: [
@@ -481,6 +485,10 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "其實是因為我撿到一隻小黑貓，牠身上的牌子留了你的微信號，我才加你的。" },
       { sender: "大G", body: "蛤？小黑貓？妳在哪裡看到牠的？牠現在還好嗎？" },
     ]},
+    { id: "apologize-and-explain", label: "真的对不起，我是捡到小猫才加你的", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "真的對不起，我不是故意鬧你的……我是撿到一隻小黑貓，看到牌子才聯絡你。" },
+      { sender: "大G", body: "喔，原來是這樣……那小黑貓現在在哪裡？有沒有受傷？" },
+    ]},
   ],
   16: [
     { id: "monster-apology-after-prank", label: "对不起，刚刚发错人了……其实我是捡到你的小猫了", nextStage: 20, branch: "monster-cat", lines: [
@@ -502,12 +510,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "大G", body: "那就好，牠從小就不太怕生啦。只是有時候好奇心很重，門一開就想往外跑。" },
       { sender: "我", body: "难怪会自己跑出去，幸好这次遇到我了。" },
       { sender: "大G", body: "真的要謝謝妳欸，不然我回家才發現牠不見，一定會急死。" },
-    ]},
-    { id: "cat-tag", label: "挂牌上写着你的联系方式，我怕它走丢才赶紧联系你", nextStage: 21, lines: [
-      { sender: "我", body: "它脖子上的挂牌还挺清楚的，上面有你的联系方式，我怕它再跑丢才赶紧联系你。" },
-      { sender: "大G", body: "那個牌子掛很久了，還好有留電話。牠平常都在家附近活動，我也沒想到會跑遠。" },
-      { sender: "我", body: "它现在很安全，你先不用担心。" },
-      { sender: "大G", body: "嗯，謝謝妳。真的麻煩妳了。" },
     ]},
     { id: "verify-owner-name", label: "你叫什么名字？我想核对一下和名牌上的名字对不对", nextStage: 21, lines: [
       { sender: "我", body: "對了，你叫什麼名字？我想核對一下，看看是不是跟牠名牌上的名字對得上。" },
@@ -546,6 +548,10 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "對了，聊了半天我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？" },
       { sender: "大G", body: "牠叫玩玩。" },
     ]},
+    { id: "ask-name-and-habits", label: "它叫什么名字？平常有什么特别习惯吗？", nextStage: 27, lines: [
+      { sender: "我", body: "那牠叫什麼名字呀？平常有沒有什麼特別的習慣？" },
+      { sender: "大G", body: "牠叫玩玩啦，平常很愛玩，也很黏人。" },
+    ]},
   ],
   24: [
     { id: "prepare-space", label: "我先给它准备一个安静的小空间", nextStage: 25, lines: [
@@ -578,11 +584,19 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "好，那你先忙，有情況我再聯絡你。玩玩這邊我會照顧好的。" },
       { sender: "大G", body: "好，真的謝謝妳。等我忙完回去就去接牠，這幾天就先麻煩妳了。" },
     ]},
+    { id: "send-photo-later", label: "我晚点拍张玩玩的照片给你，让你安心", nextStage: 36, lines: [
+      { sender: "我", body: "等牠安頓好，我晚點拍張照片給你，讓你放心一點。" },
+      { sender: "大G", body: "好啊，謝謝妳。先讓牠休息，不用急著拍，別嚇到牠。" },
+    ]},
   ],
   27: [
     { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 41, lines: [
       { sender: "我", body: "玩玩……？我靠！", thread: "大G" },
       { sender: "大G", body: "妳？？？怎麼啦？", thread: "大G" },
+    ]},
+    { id: "ask-why-question", label: "没事啦，只是突然想到一件事，等下告诉你", nextStage: 41, lines: [
+      { sender: "我", body: "沒事啦，只是突然想到一件事，等一下再跟你說。" , thread: "大G" },
+      { sender: "大G", body: "好啊，妳慢慢說，不急。" , thread: "大G" },
     ]},
   ],
   41: [
@@ -591,11 +605,19 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "大G", body: "哈哈哈哈，牠小時候就很愛玩，才會取這個名字。平常叫牠，牠有時候還會故意裝沒聽見。", thread: "大G" },
       { sender: "我", body: "原來是這樣！感覺牠真的很有自己的個性欸，名字跟牠好搭！", thread: "大G" },
     ]},
+    { id: "play-it-cool", label: "我只是觉得玩玩这个名字很可爱，真的没别的意思", nextStage: 32, lines: [
+      { sender: "我", body: "我只是覺得玩玩這個名字很可愛啦，真的沒有別的意思！", thread: "大G" },
+      { sender: "大G", body: "哈哈，牠聽到有人誇牠，應該會很得意吧。", thread: "大G" },
+    ]},
   ],
   32: [
     { id: "tell-broccoli-wanwan", label: "我靠我靠我靠，玩玩！那只猫叫玩玩！！！！！！！！", nextStage: 33, lines: [
       { sender: "我", body: "我靠我靠我靠，玩玩！那隻貓叫玩玩！！！！！！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "玩玩？？？怪獸家的貓就叫玩玩啊！！！真的假的！！！妳確定是怪獸家的玩玩？？？", thread: "西蓝花" },
+    ]},
+    { id: "confirm-cat-name", label: "对！而且你确定它就是你家的玩玩吗？", nextStage: 33, lines: [
+      { sender: "我", body: "對啊！而且你確定牠就是你家的玩玩嗎？名字和事情都對上了欸！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "天啊這也太巧了吧！妳快跟我說後來怎麼樣！", thread: "西蓝花" },
     ]},
   ],
   33: [
@@ -604,6 +626,10 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "啊啊啊啊啊救命！！！妳這是什麼神仙運氣啦！！！怎麼隨便撿隻貓都能撿到怪獸家的玩玩！！！", thread: "西蓝花" },
       { sender: "我", body: "我現在整個人都在抖，我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會直接撿到怪獸家的貓啦！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
+    ]},
+    { id: "tell-her-im-shocked", label: "我现在脑袋一片空白，真的还没缓过来", nextStage: 37, lines: [
+      { sender: "我", body: "我現在腦袋真的一片空白，到現在都還沒緩過來！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈我懂！但妳先冷靜，別忘了玩玩還在等妳照顧呢！", thread: "西蓝花" },
     ]},
   ],
   37: [
@@ -637,6 +663,10 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "我先回去跟大G說玩玩現在很安全，不能讓他太擔心。" , thread: "西蓝花" },
       { sender: "西蓝花", body: "好啦快去！記得妳答應我要回來報告後續喔，我還等著聽呢！" , thread: "西蓝花" },
     ]},
+    { id: "go-check-cat", label: "我先去看看玩玩，晚点再回来跟你说", nextStage: 40, lines: [
+      { sender: "我", body: "我先去看看玩玩，晚點再回來跟妳說後續！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦快去！記得照顧好牠，我等妳消息！", thread: "西蓝花" },
+    ]},
   ],
   40: [
     { id: "promise-care-wanwan", label: "你放心！我会好好照顾玩玩的，等你回来再接它", nextStage: 42, branch: "monster-cat", lines: [
@@ -668,17 +698,29 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "好，我知道了！我會照顧好玩玩，有什麼情況都會第一時間告訴你。", thread: "大G" },
       { sender: "大G", body: "好，那就拜託妳了。這幾天有任何事都可以隨時找我，辛苦妳了。", thread: "大G" },
     ]},
+    { id: "confirm-food-plan", label: "我先照你说的准备食物和饮水，有问题再问你", nextStage: 24, branch: "monster-cat", lines: [
+      { sender: "我", body: "我先照你說的準備食物和飲水，有不確定的地方再問你。", thread: "大G" },
+      { sender: "大G", body: "好，真的謝謝妳，辛苦了。", thread: "大G" },
+    ]},
   ],
   34: [
     { id: "back-to-owner", label: "我先回去跟大G说玩玩现在很安全", nextStage: 35, branch: "monster-cat", lines: [
       { sender: "我", body: "我先回去跟大G說玩玩現在很安全，不能讓他太擔心。" , thread: "大G" },
       { sender: "西蓝花", body: "好啦，快去！記得有新消息再回來跟我說，我要聽後續！" , thread: "西蓝花" },
     ]},
+    { id: "promise-message", label: "有新消息我一定第一时间告诉你", nextStage: 35, branch: "monster-cat", lines: [
+      { sender: "我", body: "有新消息我一定第一時間告訴你，你先不用太擔心。", thread: "大G" },
+      { sender: "西蓝花", body: "好！妳先去忙吧，記得有消息回來跟我說。", thread: "西蓝花" },
+    ]},
   ],
   35: [
     { id: "tell-owner-safe", label: "玩玩现在很安全，我会先照顾好它", nextStage: 24, branch: "monster-cat", lines: [
       { sender: "我", body: "玩玩現在很安全，我會先照顧好牠，你不用擔心。" , thread: "大G" },
       { sender: "大G", body: "那就好……真的謝謝妳。玩玩就先拜託妳了，等我回去再好好跟妳道謝。" , thread: "大G" },
+    ]},
+    { id: "reassure-owner-gently", label: "我会让它先好好休息，你放心忙自己的事", nextStage: 24, branch: "monster-cat", lines: [
+      { sender: "我", body: "我會先讓玩玩好好休息，你放心忙自己的事，有狀況我會聯絡你。", thread: "大G" },
+      { sender: "大G", body: "好，謝謝妳幫忙照顧牠，我放心多了。", thread: "大G" },
     ]},
   ],
   36: [],
