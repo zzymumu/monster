@@ -19,6 +19,7 @@ import {
   Globe,
   Mic,
   ArrowUp,
+  Send,
   ChevronUp,
   Plus,
   Power,
@@ -41,20 +42,22 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { type Item, type Work } from "./schema";
-export const KeyboardContext = createContext<(open: boolean) => void>(() => {});
+export const KeyboardContext = createContext<(open: boolean, onSend?: (value: string) => void) => void>(() => {});
 export function NativeComposer({
   creator,
   onAdd,
+  onSend,
 }: {
   creator: boolean;
   onAdd: () => void;
+  onSend?: (value: string) => void;
 }) {
   const open = useContext(KeyboardContext);
   return (
     <button
       className="native-compose-field"
       aria-label={creator ? "添加消息" : "输入消息"}
-      onClick={() => (creator ? onAdd() : open(true))}
+      onClick={() => (creator ? onAdd() : open(true, onSend))}
     >
       {creator ? "添加消息" : ""}
     </button>
@@ -390,10 +393,17 @@ export function ControlCenter({
     </motion.div>
   );
 }
-export function DeviceKeyboard({ close }: { close: () => void }) {
+export function DeviceKeyboard({ close, onSend }: { close: () => void; onSend?: (value: string) => void }) {
   const [value, setValue] = useState(""),
     [shift, setShift] = useState(false),
     [numbers, setNumbers] = useState(false);
+  const submit = () => {
+    const message = value.trim();
+    if (!message) return;
+    onSend?.(message);
+    setValue("");
+    close();
+  };
   return (
     <div className="device-keyboard" role="dialog" aria-label="屏幕键盘">
       <div className="keyboard-draft">
@@ -402,8 +412,10 @@ export function DeviceKeyboard({ close }: { close: () => void }) {
           aria-label="消息草稿"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") submit(); }}
           placeholder="输入消息"
         />
+        {value.trim() && <button aria-label="发送消息" onClick={submit}><Send size={19} /></button>}
         <button aria-label="收起键盘" onClick={close}>
           <ChevronDown />
         </button>
