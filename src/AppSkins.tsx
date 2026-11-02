@@ -967,10 +967,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "not-thinking-yet", label: "哦哦，那先不想啦！等他回来再说", nextStage: 79, lines: [
       { sender: "我", body: "哦哦，先不想啦！等他回來再說，現在先把玩玩照顧好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啦好啦，先照顧玩玩！不過妳記得有消息要第一時間跟我說喔！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "還有那頓飯！等他回來妳一定要跟我說後續，知道沒有！", thread: "西蓝花" },
     ]},
     { id: "focus-on-wanwan", label: "哦哦！先照顾好玩玩，等他回来再说", nextStage: 79, lines: [
       { sender: "我", body: "哦哦！那先不想啦，等他回來再說，現在先把玩玩照顧好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "嗯嗯，先把玩玩照顧好！這頓飯妳可別忘了，等他回來再跟我報告！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "有新消息記得第一時間通知我，我真的超好奇啦！", thread: "西蓝花" },
     ]},
   ],
   77: [
