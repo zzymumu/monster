@@ -306,7 +306,7 @@ function PhoneRuntime({
     pink: "linear-gradient(150deg,#f4b8c9,#b5a6e5 55%,#6a8bc5)",
   };
   const wallpaperStyle: CSSProperties = wallpaperChoice.startsWith("data:image/")
-    ? { backgroundImage: `url(\"${wallpaperChoice}\")`, backgroundSize: "cover", backgroundPosition: "center" }
+    ? { backgroundImage: `url(${wallpaperChoice})`, backgroundSize: "cover", backgroundPosition: "center" }
     : wallpaperChoice !== "default" && wallpaperBackgrounds[wallpaperChoice]
       ? { backgroundImage: wallpaperBackgrounds[wallpaperChoice] }
       : {};
