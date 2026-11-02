@@ -54,7 +54,7 @@ describe("WeChat cat-rescue story configuration", () => {
 
   it("contains the complete delete, failed-send, re-add, apology sequence", () => {
     const prank = CAT_RESCUE_CHOICES[9].find((choice) => choice.id === "monster-prank");
-    const apology = CAT_RESCUE_CHOICES[16].find((choice) => choice.id === "monster-apology-after-prank");
+    const apology = CAT_RESCUE_CHOICES[16].find((choice) => choice.id === "monster-apology-explain");
     expect(prank?.nextStage).toBe(17);
     expect(prank?.lines.map((line) => line.body)).toEqual([
       "我是你爸爸。", "……蛤？", "妳哪位？我不認識妳喔。", "好喔，那我先把妳刪掉了。掰。",
