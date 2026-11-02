@@ -69,6 +69,7 @@ export function DeviceLock({
   notices,
   notificationItems = [],
   onDismiss,
+  onNotificationOpen,
   pinOpen,
   setPinOpen,
   error,
@@ -82,6 +83,7 @@ export function DeviceLock({
   notices: string[];
   notificationItems?: Item[];
   onDismiss: (index: number) => void;
+  onNotificationOpen: (notice: ReturnType<typeof import("./SystemNotifications").notificationContent>) => void;
   pinOpen: boolean;
   setPinOpen: (v: boolean) => void;
   error: string;
@@ -148,7 +150,7 @@ export function DeviceLock({
                 notices={notices}
                 apps={work.apps}
                 items={notificationItems}
-                onOpen={open}
+                onOpen={onNotificationOpen}
                 onDismiss={onDismiss}
               />
             )}
