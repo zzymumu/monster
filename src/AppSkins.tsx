@@ -606,7 +606,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "那我還是先好好照顧玩玩，等你回來再說好了。", thread: "大G" },
       { sender: "大G", body: "好，就這麼說定。這幾天先麻煩妳照顧玩玩了。", thread: "大G" },
       { sender: "大G", body: "對了，我把玩玩平常的照顧方式整理給妳，妳先看看，有不清楚的再問我。", thread: "大G" },
-      { sender: "大G", body: "【玩玩照顧小指南】\\n1. 吃飯：平常吃固定的乾糧，早晚各一餐，先照原本份量，不要突然換新食物。\\n2. 喝水：每天換乾淨的水，水碗放在牠容易找到的地方。\\n3. 零食：先不要餵人吃的東西，零食也別一次給太多。\\n4. 貓砂：牠習慣在安靜的位置上廁所，記得每天清理。\\n5. 休息：剛換環境可能會躲起來，讓牠自己慢慢熟悉，不用一直抱牠。\\n6. 個性：玩玩很愛玩，也很黏人，熟了會自己跑來蹭妳。\\n如果食慾、精神或排泄有明顯異常，先跟我說，也麻煩請醫生看看。", thread: "大G" },
+      { sender: "大G", body: "【玩玩照顧小指南】\n1. 吃飯：平常吃固定的乾糧，早晚各一餐，先照原本份量，不要突然換新食物。\n2. 喝水：每天換乾淨的水，水碗放在牠容易找到的地方。\n3. 零食：先不要餵人吃的東西，零食也別一次給太多。\n4. 貓砂：牠習慣在安靜的位置上廁所，記得每天清理。\n5. 休息：剛換環境可能會躲起來，讓牠自己慢慢熟悉，不用一直抱牠。\n6. 個性：玩玩很愛玩，也很黏人，熟了會自己跑來蹭妳。\n如果食慾、精神或排泄有明顯異常，先跟我說，也麻煩請醫生看看。", thread: "大G" },
     ]},
   ],
   26: [
@@ -1087,7 +1087,7 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 40, 41, 42, 43, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].includes(catRescue.stage);
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 40, 41, 42, 43, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 85, 86, 87].includes(catRescue.stage);
   // Keep both contact transcripts readable for the entire story, including
   // after the handoff. Hiding the Broccoli story view at later stages made
   // delivered replies appear in notifications but disappear when opened.
