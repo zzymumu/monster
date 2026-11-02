@@ -163,13 +163,17 @@ export function WeChatSkin(p: SkinProps) {
     "readThreads",
     [],
   );
-  const conversations = [
-    ...new Set(
+  const conversations = Array.from(
+    new Set(
       p.items
         .filter((i) => !["朋友圈", "我"].includes(i.folder))
         .map((i) => i.title),
     ),
-  ];
+  ).sort((a, b) => {
+    const aLast = p.items.filter((i) => i.title === a).at(-1)?.time ?? "";
+    const bLast = p.items.filter((i) => i.title === b).at(-1)?.time ?? "";
+    return bLast.localeCompare(aLast);
+  });
   const contacts = [
     ...new Set(p.items.map((i) => i.sender).filter((s) => s !== "我")),
   ];
@@ -370,6 +374,21 @@ export function WeChatSkin(p: SkinProps) {
             </>
           ) : tab === "通讯录" ? (
             <>
+              <div className="wx-contact-shortcuts">
+                {[
+                  ["新的朋友", Users],
+                  ["群聊", MessageCircle],
+                  ["标签", Layers],
+                  ["公众号", AtSign],
+                ].map(([label, Icon]) => {
+                  const Glyph = Icon as typeof Users;
+                  return (
+                    <button key={String(label)} onClick={() => setUtility(String(label))}>
+                      <span><Glyph size={18} /></span>{String(label)}
+                    </button>
+                  );
+                })}
+              </div>
               <div className="wx-section-label">联系人</div>
               {contacts.map((c) => (
                 <button
@@ -396,7 +415,10 @@ export function WeChatSkin(p: SkinProps) {
               {[
                 [Camera, "朋友圈", "#26a958"],
                 [Play, "视频号", "#fa9d3b"],
+                [Grid, "小程序", "#438bd1"],
+                [Search, "搜一搜", "#6c9bce"],
                 [Music, "听一听", "#fa5151"],
+                [ImageIcon, "看一看", "#4a9c82"],
               ].map(([Icon, label, color]) => {
                 const Glyph = Icon as typeof Camera;
                 return (
