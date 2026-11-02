@@ -147,6 +147,7 @@ function PhoneRuntime({
   const [pinOpen, setPinOpen] = useState(false);
   const [quickCamera, setQuickCamera] = useState(false);
   const [keyboard, setKeyboard] = useState(false);
+  const keyboardSend = useRef<((value: string) => void) | undefined>(undefined);
   const [recent, setRecent] = useState<string[]>([]);
   const appSnapshots = useRef(new Map<string, HTMLElement>());
   const [banner, setBanner] = useState("");
@@ -347,7 +348,7 @@ function PhoneRuntime({
       style={{ "--phone-scale": deviceScale } as CSSProperties}
       className={`phone-shell ios18 ios27 ${work.phone.theme === "dark" ? "dark-phone" : ""}`}
     >
-      <KeyboardContext.Provider value={setKeyboard}>
+      <KeyboardContext.Provider value={(open, onSend) => { keyboardSend.current = onSend; setKeyboard(open); }}>
         <div
           className={`phone-screen wallpaper-${work.phone.wallpaper} ${locked ? "is-locked" : ""} ${app ? "in-app" : ""} ${keyboard ? "keyboard-open" : ""}`}
           style={wallpaperStyle}
@@ -828,7 +829,7 @@ function PhoneRuntime({
               </div>
             </div>
           )}
-          {keyboard && <DeviceKeyboard close={() => setKeyboard(false)} />}
+          {keyboard && <DeviceKeyboard close={() => setKeyboard(false)} onSend={(value) => keyboardSend.current?.(value)} />}
           {loadError && (
             <button className="runtime-error" onClick={() => setLoadError("")}>
               {loadError}
