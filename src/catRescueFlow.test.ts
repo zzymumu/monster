@@ -180,23 +180,21 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[58][0].lines[2].body).toContain("整理給妳");
     expect(CAT_RESCUE_CHOICES[58][0].lines[3].body).toContain("玩玩照顧小指南");
     expect(CAT_RESCUE_CHOICES[58].every((choice) => choice.nextStage === 59)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[61].every((choice) =>
+      choice.lines.slice(1).some((line) => /沒辦法馬上回覆|回覆得比較慢/.test(line.body))
+    )).toBe(true);
     expect(CAT_RESCUE_CHOICES[82]).toHaveLength(1);
-    expect(CAT_RESCUE_CHOICES[82][0].nextStage).toBe(86);
-    expect(CAT_RESCUE_CHOICES[82][0].lines[1].body).toContain("不如請我吃頓飯");
-    expect(CAT_RESCUE_CHOICES[86]).toHaveLength(1);
-    expect(CAT_RESCUE_CHOICES[86][0].nextStage).toBe(87);
-    expect(CAT_RESCUE_CHOICES[86][0].lines[0].body).toContain("開玩笑");
-    expect(CAT_RESCUE_CHOICES[87]).toHaveLength(1);
-    expect(CAT_RESCUE_CHOICES[87][0].nextStage).toBe(88);
-    expect(CAT_RESCUE_CHOICES[88]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[88].every((choice) => choice.nextStage === 89)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[89]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[89].every((choice) => choice.nextStage === 90)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[90][0].nextStage).toBe(91);
-    expect(CAT_RESCUE_CHOICES[91].every((choice) => choice.nextStage === 63)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[82][0].label).toContain("好的，掰掰");
+    expect(CAT_RESCUE_CHOICES[82][0].lines).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[82][0].lines[0].sender).toBe("我");
+    expect(CAT_RESCUE_CHOICES[82][0].lines[0].body).toContain("看玩玩吃飯了沒有");
+    expect(CAT_RESCUE_CHOICES[82][0].nextStage).toBe(66);
+    for (const obsoleteStage of [86,87,88,89,90,91]) {
+      expect(CAT_RESCUE_CHOICES[obsoleteStage]).toBeUndefined();
+    }
     expect(CAT_RESCUE_CHOICES[83]).toBeUndefined();
     expect(CAT_RESCUE_CHOICES[85]).toBeUndefined();
-    for (const [stage, next, count] of [[56,61,2],[59,60,2],[60,61,2],[61,82,2],[82,86,1],[86,87,1],[87,88,1],[88,89,2],[89,90,2],[90,91,1],[91,63,2],[62,63,2],[63,64,2],[64,65,2],[65,77,2],[77,78,2],[78,79,2],[79,84,2],[84,66,2]] as const) {
+    for (const [stage, next, count] of [[56,61,2],[59,60,2],[60,61,2],[61,82,2],[82,66,1],[62,63,2],[63,64,2],[64,65,2],[65,77,2],[77,78,2],[78,79,2],[79,84,2],[84,66,2]] as const) {
       expect(CAT_RESCUE_CHOICES[stage]).toHaveLength(count);
       expect(CAT_RESCUE_CHOICES[stage].every((choice) => choice.nextStage === next)).toBe(true);
     }
