@@ -123,7 +123,7 @@ describe("WeChat cat-rescue story configuration", () => {
       "對了，聊了半天我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？",
       "牠叫玩玩。",
     ]);
-    expect(CAT_RESCUE_CHOICES[26]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[26]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[26][0].lines.some((line) => /情況我再聯絡你/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[27][0].lines.map((line) => line.body)).toEqual([
       "玩玩……？我靠！",
