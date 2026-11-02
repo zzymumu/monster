@@ -272,15 +272,15 @@ function PhoneRuntime({
       notifications: current.notifications.filter((notice) => !notice.startsWith(prefix)),
     });
   };
-  // A single phone-level FIFO scheduler. Only the head message receives a
-  // deadline; the next deadline is created only after the current line ships.
-  // UI/app changes cannot flush the queue or make overdue messages burst out.
+  // Story replies are delivered immediately in their authored order.
+  // Keep the queue only as a handoff between the chat UI and phone runtime;
+  // do not add artificial waiting periods between dialogue lines.
   const pendingStoryQueueRaw = s.ui?.wechat?.wxCatPendingLines;
   const currentAppRef = useRef(app);
   currentAppRef.current = app;
   useEffect(() => {
     if (creator || !ready || typeof pendingStoryQueueRaw !== "string") return;
-    let queue: Array<{ id?: string; sender: string; body: string; thread?: string; dueAt?: number }> = [];
+    let queue: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
     try {
       const parsed = JSON.parse(pendingStoryQueueRaw);
       if (Array.isArray(parsed)) queue = parsed.filter((line) =>
@@ -289,96 +289,61 @@ function PhoneRuntime({
     } catch { queue = []; }
     if (!queue.length) return;
 
-    const first = queue[0];
-    const now = Date.now();
-    // Missing or stale deadlines are replaced with a fresh 30–60s wait.
-    if (!first.dueAt || first.dueAt <= now) {
-      const scheduled = [{
-        ...first,
-        id: first.id || "story-" + now + "-" + Math.random().toString(36).slice(2, 8),
-        dueAt: now + 10000 + Math.floor(Math.random() * 20001),
-      }, ...queue.slice(1)];
-      update({
-        ...runtimeRef.current,
-        ui: {
-          ...runtimeRef.current.ui,
-          wechat: { ...runtimeRef.current.ui?.wechat, wxCatPendingLines: JSON.stringify(scheduled) },
-        },
-      });
-      return;
-    }
+    const latest = runtimeRef.current;
+    let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
+    try {
+      const raw = latest.ui?.wechat?.catRescueState;
+      if (typeof raw === "string") catState = JSON.parse(raw);
+    } catch { catState = {}; }
 
-    const timer = window.setTimeout(() => {
-      const latest = runtimeRef.current;
-      let latestQueue: typeof queue = [];
-      try {
-        const raw = latest.ui?.wechat?.wxCatPendingLines;
-        if (typeof raw === "string") {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) latestQueue = parsed;
-        }
-      } catch { latestQueue = []; }
-      if (!latestQueue.length || latestQueue[0].id !== first.id) return;
+    const fallbackThread = getCatRescueThreadForStage(Number(catState.stage) || 0);
+    const baseOrder = Date.now();
+    const baseTime = (latest.date || work.phone.date) + " " + (latest.time || work.phone.time);
+    let storyMessages = Array.isArray(catState.messages) ? catState.messages : [];
+    let wechatMessages = latest.messages.wechat ?? [];
+    const nextNotifications = [...latest.notifications];
+    const openThread = String(latest.ui?.wechat?.openThread || "");
 
-      const thread = first.thread || getCatRescueThreadForStage((() => {
-        try {
-          const raw = latest.ui?.wechat?.catRescueState;
-          return typeof raw === "string" ? Number(JSON.parse(raw).stage) || 0 : 0;
-        } catch { return 0; }
-      })());
+    queue.forEach((line, index) => {
+      const thread = line.thread || fallbackThread;
       const created = makeItem({
-        id: first.id || "cat-rescue-" + Date.now(),
+        id: line.id || "cat-rescue-" + baseOrder + "-" + index,
         title: thread,
-        sender: first.sender,
-        body: first.body,
-        time: (latest.date || work.phone.date) + " " + (latest.time || work.phone.time),
-        outgoing: first.sender === "我",
-        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(Date.now()) },
+        sender: line.sender,
+        body: line.body,
+        time: baseTime,
+        outgoing: false,
+        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(baseOrder + index) },
       });
-      let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
-      try {
-        const raw = latest.ui?.wechat?.catRescueState;
-        if (typeof raw === "string") catState = JSON.parse(raw);
-      } catch { catState = {}; }
-
-      const nextNotifications = [...latest.notifications];
-      const openThread = String(latest.ui?.wechat?.openThread || "");
-      if (first.sender !== "我" && (currentAppRef.current !== "wechat" || openThread !== thread)) {
-        nextNotifications.push("微信：" + thread + "：" + first.body);
-      }
-      const savedStoryMessages = Array.isArray(catState.messages) ? catState.messages : [];
-      // Persist every delivered story line in BOTH the canonical story
-      // transcript and the ordinary WeChat message collection. Notification
-      // delivery is only an alert; it must never be the thing that makes a
-      // message exist. This also makes missed/dismissed banners harmless.
       const appendOnce = (items: Item[]) =>
         items.some((item) => item.id === created.id) ? items : [...items, created];
-      update({
-        ...latest,
-        messages: {
-          ...latest.messages,
-          wechat: appendOnce(latest.messages.wechat ?? []),
-        },
-        ui: {
-          ...latest.ui,
-          wechat: {
-            ...latest.ui?.wechat,
-            catRescueState: JSON.stringify({
-              version: 2,
-              stage: Number(catState.stage) || 0,
-              branch: typeof catState.branch === "string" ? catState.branch : "",
-              messages: appendOnce(savedStoryMessages),
-            }),
-            // Do not set the next item's deadline here. The next effect pass
-            // starts its own independent 30–60 second interval.
-            wxCatPendingLines: JSON.stringify(latestQueue.slice(1)),
-          },
-        },
-        notifications: nextNotifications.slice(-60),
-      });
-    }, Math.max(0, first.dueAt - Date.now()));
+      storyMessages = appendOnce(storyMessages);
+      wechatMessages = appendOnce(wechatMessages);
+      if (currentAppRef.current !== "wechat" || openThread !== thread) {
+        nextNotifications.push("微信：" + thread + "：" + line.body);
+      }
+    });
 
-    return () => window.clearTimeout(timer);
+    // Persist every line in the canonical story transcript and normal chat
+    // history, then clear the handoff queue so choices can resume immediately.
+    update({
+      ...latest,
+      messages: { ...latest.messages, wechat: wechatMessages },
+      ui: {
+        ...latest.ui,
+        wechat: {
+          ...latest.ui?.wechat,
+          catRescueState: JSON.stringify({
+            version: 2,
+            stage: Number(catState.stage) || 0,
+            branch: typeof catState.branch === "string" ? catState.branch : "",
+            messages: storyMessages,
+          }),
+          wxCatPendingLines: "[]",
+        },
+      },
+      notifications: nextNotifications.slice(-60),
+    });
   }, [creator, ready, pendingStoryQueueRaw, work.id]);
   const captureApp = () => {
     if (!app) return;
