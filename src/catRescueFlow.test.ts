@@ -13,10 +13,10 @@ import { makeItem } from "./schema";
 
 describe("WeChat cat-rescue story configuration", () => {
   it("routes every hospital stage to Broccoli and owner stages to DaG", () => {
-    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31]) {
+    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34]) {
       expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
     }
-    for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26]) {
+    for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35]) {
       expect(getCatRescueThreadForStage(stage)).toBe("大G");
     }
   });
@@ -101,6 +101,23 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[24]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[20].some((choice) => choice.id === "verify-owner-name")).toBe(true);
+    expect(CAT_RESCUE_CHOICES[20].find((choice) => choice.id === "verify-owner-name")?.lines.some((line) => /我叫溫尚翊/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[21].every((choice) => choice.lines.some((line) => /這幾天都在外地/.test(line.body)))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[26]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[26][0].lines.map((line) => line.body)).toEqual([
+      "對了，我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？",
+      "牠叫玩玩。",
+    ]);
+    expect(CAT_RESCUE_CHOICES[27][0].lines.map((line) => line.body)).toEqual([
+      "玩玩……？我靠！",
+      "妳？？？怎麼啦？",
+    ]);
+    expect(CAT_RESCUE_CHOICES[32][0].lines.some((line) => line.body === "我靠我靠我靠，玩玩！！怪獸家的貓就叫玩玩！！！！" && line.thread === "西蓝花")).toBe(true);
+    expect(CAT_RESCUE_CHOICES[32][0].lines.some((line) => line.sender === "西蓝花")).toBe(true);
+    expect(CAT_RESCUE_CHOICES[33]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[34][0].nextStage).toBe(35);
+    expect(CAT_RESCUE_CHOICES[35][0].nextStage).toBe(23);
   });
 
 
@@ -132,10 +149,10 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("keeps the prank and apology branches in the owner's conversation", () => {
-    for (const stage of [9, 16, 17, 20, 21, 22, 23, 24, 25]) {
+    for (const stage of [9, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35]) {
       expect(getCatRescueThreadForStage(stage)).toBe("大G");
       for (const choice of CAT_RESCUE_CHOICES[stage] ?? []) {
-        expect(choice.lines.every((line) => line.sender === "我" || line.sender === "大G")).toBe(true);
+        expect(choice.lines.every((line) => line.thread === "西蓝花" || line.sender === "我" || line.sender === "大G")).toBe(true);
       }
     }
   });
