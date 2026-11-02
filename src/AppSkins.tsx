@@ -108,10 +108,22 @@ function MessageList({
   wechat?: boolean;
 }) {
   const messagesRef = useRef<HTMLDivElement>(null);
+  // Include the final message identity and body: a transcript can be updated
+  // without changing its length (for example when an old save is repaired).
+  const messageContentKey = items.map((item) => item.id + ":" + item.body).join("\u001f");
   useEffect(() => {
     const container = messagesRef.current;
-    if (container) container.scrollTop = container.scrollHeight;
-  }, [items.length]);
+    if (!container) return;
+    // Wait for React to commit the new bubbles, then re-check after layout.
+    // This avoids leaving the player's freshly sent bubble just below the fold.
+    const firstFrame = window.requestAnimationFrame(() => {
+      container.scrollTop = container.scrollHeight;
+      window.requestAnimationFrame(() => {
+        if (messagesRef.current === container) container.scrollTop = container.scrollHeight;
+      });
+    });
+    return () => window.cancelAnimationFrame(firstFrame);
+  }, [items.length, messageContentKey]);
 
   return (
     <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""}`}>
@@ -189,6 +201,25 @@ function parseCatRescueState(raw: string): CatRescueState {
   } catch {
     return { version: 2, stage: 0, branch: "", messages: [] };
   }
+}
+
+// Merge legacy phone messages and the canonical story transcript without
+// losing player replies. Sort by their saved timestamp, preserving insertion
+// order for messages with the same (or unavailable) timestamp.
+export function orderCatRescueThreadItems(items: Item[]): Item[] {
+  const unique = items.filter((item, index, all) =>
+    all.findIndex((candidate) => candidate.id === item.id) === index
+  );
+  return unique
+    .map((item, index) => ({ item, index, timestamp: Date.parse(item.time) }))
+    .sort((a, b) => {
+      const aValid = Number.isFinite(a.timestamp);
+      const bValid = Number.isFinite(b.timestamp);
+      if (aValid && bValid && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
+      if (aValid !== bValid) return aValid ? 1 : -1;
+      return a.index - b.index;
+    })
+    .map(({ item }) => item);
 }
 type CatLine = { sender: "我" | "西蓝花" | "大G"; body: string; thread?: "西蓝花" | "大G" };
 type CatChoice = {
@@ -736,36 +767,38 @@ export function WeChatSkin(p: SkinProps) {
     // Keep the original seeded chat history: those messages also carry the
     // cat-rescue storyId, but belong to the broccoli conversation. Only
     // remove unmistakable owner-prank lines from legacy mixed saves.
-    !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|？？？|對不起.*發錯|对不起.*发错/.test(item.body)
+    !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|對不起.*發錯|对不起.*发错/.test(item.body) &&
+    // Keep player-authored text (even if it contains question marks). Only
+    // the duplicated incoming opener is reconstructed below.
+    !(item.sender !== "我" && item.body.trim() === "？？？")
   );
   const keepPrankHistoryClean = (item: Item) =>
     shouldShowPrankHistoryLine(item, catRescue.branch, hasPrankPath);
   const threadItems = isMonsterThread
-    ? filterPrankHistoryLines([
+    ? filterPrankHistoryLines(orderCatRescueThreadItems([
         ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
         ...catRescue.messages.filter((item) =>
           (item.meta?.storyThread === "大G" || item.meta?.storyThread === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
           keepPrankHistoryClean(item)
         ),
-      ].filter((item, index, items) => items.findIndex((entry) => entry.id === item.id) === index), hasPrankPath)
+      ]), hasPrankPath)
     : isBroccoliThread
-      ? [
+      ? orderCatRescueThreadItems([
           ...broccoliBaseItems,
           ...p.items.filter((item) =>
             (item.title === "西蓝花" || item.title === "西兰花") &&
             item.sender === "西蓝花" &&
             item.body.trim() === "？？？"
           ),
-          // Render every saved Broccoli story message directly from the
-          // canonical story transcript. This includes the opening question,
-          // the user's reply, and every delayed follow-up delivered later.
+          // Include every canonical story line plus legacy player-authored
+          // replies, then order the merged transcript by its saved timestamp.
           ...catRescue.messages.filter((item) =>
             item.meta?.storyThread === "西蓝花" ||
             item.meta?.storyThread === "西兰花" ||
             item.title === "西蓝花" ||
             item.title === "西兰花"
           ),
-        ].filter((item, index, items) => items.findIndex((entry) => entry.id === item.id) === index)
+        ])
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
   useEffect(() => {
