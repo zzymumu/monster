@@ -258,7 +258,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
@@ -600,13 +600,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   27: [
-    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 41, lines: [
+    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 32, lines: [
       { sender: "我", body: "玩玩……？我靠！", thread: "大G" },
       { sender: "大G", body: "妳？？？怎麼啦？", thread: "大G" },
     ]},
-    { id: "ask-why-question", label: "没事啦，只是突然想到一件事，等下告诉你", nextStage: 41, lines: [
-      { sender: "我", body: "沒事啦，只是突然想到一件事，等一下再跟你說。" , thread: "大G" },
-      { sender: "大G", body: "好啊，妳慢慢說，不急。" , thread: "大G" },
+    { id: "hide-surprise", label: "没事没事，我就是觉得这个名字太好了", nextStage: 32, lines: [
+      { sender: "我", body: "沒事沒事，我就是覺得這個名字太好了！", thread: "大G" },
+      { sender: "大G", body: "哈哈，牠的名字喔？牠真的很愛玩，所以才叫玩玩。", thread: "大G" },
     ]},
   ],
   41: [
@@ -620,25 +620,23 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   32: [
-    { id: "tell-broccoli-wanwan", label: "我靠我靠我靠，玩玩！那只猫叫玩玩！！！！！！！！", nextStage: 33, lines: [
-      { sender: "我", body: "我靠我靠我靠，玩玩！那隻貓叫玩玩！！！！！！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "玩玩？？？怪獸家的貓就叫玩玩啊！！！真的假的！！！妳確定是怪獸家的玩玩？？？", thread: "西蓝花" },
+    { id: "tell-broccoli-name-is-perfect", label: "没事没事，我就是觉得这个名字太好了哈哈哈", nextStage: 33, lines: [
+      { sender: "我", body: "沒事沒事，我就是覺得這個名字太好了哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "蛤？名字太好了？妳反應也太大了吧！妳是不是想到什麼了？", thread: "西蓝花" },
     ]},
-    { id: "confirm-cat-name", label: "对！而且你确定它就是你家的玩玩吗？", nextStage: 33, lines: [
-      { sender: "我", body: "對啊！而且你確定牠就是你家的玩玩嗎？名字和事情都對上了欸！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "天啊這也太巧了吧！妳快跟我說後來怎麼樣！", thread: "西蓝花" },
+    { id: "say-name-is-cute", label: "我只是觉得玩玩这个名字也太可爱了吧", nextStage: 33, lines: [
+      { sender: "我", body: "我只是覺得玩玩這個名字也太可愛了吧！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈真的很可愛！但妳剛剛那個反應，感覺不只是覺得名字可愛欸？", thread: "西蓝花" },
     ]},
   ],
   33: [
-    { id: "tell-broccoli-the-truth", label: "对啊我知道！所以我才来找你啊啊啊！！！", nextStage: 37, lines: [
-      { sender: "我", body: "對啊我知道所以我才來找你啊啊啊啊！他真的是怪獸啊啊啊啊啊啊啊啊！我靠我靠我靠我這什麼神仙運氣啊！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "啊啊啊啊啊救命！！！妳這是什麼神仙運氣啦！！！怎麼隨便撿隻貓都能撿到怪獸家的玩玩！！！", thread: "西蓝花" },
-      { sender: "我", body: "我現在整個人都在抖，我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會直接撿到怪獸家的貓啦！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
+    { id: "explain-just-lucky-coincidence", label: "真的啦！只是觉得太巧了，没想到会叫玩玩", nextStage: 37, lines: [
+      { sender: "我", body: "真的啦！只是覺得太巧了，沒想到牠會叫玩玩，我一時有點反應不過來。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，先相信妳！但這名字真的很有記憶點，妳先別在大G面前露餡喔。", thread: "西蓝花" },
     ]},
-    { id: "tell-her-im-shocked", label: "我现在脑袋一片空白，真的还没缓过来", nextStage: 37, lines: [
-      { sender: "我", body: "我現在腦袋真的一片空白，到現在都還沒緩過來！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈哈我懂！但妳先冷靜，別忘了玩玩還在等妳照顧呢！", thread: "西蓝花" },
+    { id: "keep-it-to-myself", label: "我先不告诉你原因，等一下慢慢跟你说", nextStage: 37, lines: [
+      { sender: "我", body: "我先不告訴妳原因啦，等一下慢慢跟妳說，現在真的有點亂。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好！我等妳整理好再說。可是妳這個反應真的很可疑欸！", thread: "西蓝花" },
     ]},
   ],
   37: [
@@ -678,13 +676,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   40: [
-    { id: "reveal-wen-shangyi", label: "医生说……主人名字叫温尚翊？？？？？", nextStage: 41, lines: [
-      { sender: "我", body: "醫生說……名牌上的主人名字叫溫尚翊？？？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "溫尚翊？？？？？等一下！！！！妳說溫尚翊？？？", thread: "西蓝花" },
+    { id: "return-to-owner-calmly", label: "我回去跟大G说：不好意思，刚刚有点激动", nextStage: 35, branch: "monster-cat", lines: [
+      { sender: "我", body: "不好意思，剛剛有點激動，因為玩玩這個名字真的很可愛。", thread: "大G" },
+      { sender: "大G", body: "哈哈，沒關係啦！牠平常就很有存在感，名字也跟牠很搭。", thread: "大G" },
     ]},
-    { id: "show-full-tag", label: "名牌上写着主人：温尚翊，还有联络电话……", nextStage: 41, lines: [
-      { sender: "我", body: "名牌上寫著主人：溫尚翊，下面還有聯絡電話……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "溫尚翊？？？？？不是吧！！！！妳先等等，我腦袋有點轉不過來！", thread: "西蓝花" },
+    { id: "ask-owner-about-name", label: "我再问大G：玩玩这个名字有什么由来吗？", nextStage: 35, branch: "monster-cat", lines: [
+      { sender: "我", body: "對了，玩玩這個名字有什麼由來嗎？聽起來很可愛。", thread: "大G" },
+      { sender: "大G", body: "因為牠從小就閒不下來，整天跑來跑去，家裡就一直叫牠玩玩了。", thread: "大G" },
     ]},
   ],
   42: [
