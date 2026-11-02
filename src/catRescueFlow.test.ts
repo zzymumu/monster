@@ -16,7 +16,7 @@ import { makeItem } from "./schema";
 
 describe("WeChat cat-rescue story configuration", () => {
   it("routes every hospital stage to Broccoli and owner stages to DaG", () => {
-    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81]) {
+    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 77, 78, 79]) {
       expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
     }
     for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 53]) {
@@ -43,9 +43,12 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[1].every((choice) => choice.nextStage === 2)).toBe(true);
     expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.nextStage === 3)).toBe(true);
     expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.lines.some((line) => /醫院|医院/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.nextStage === 81)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.lines.some((line) => /病菌|寄生蟲/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[81].every((choice) => choice.nextStage === 3)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.nextStage === 1)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[1].every((choice) => choice.nextStage === 2)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.nextStage === 3)).toBe(true);
+    for (const obsoleteStage of [67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 80, 81]) {
+      expect(CAT_RESCUE_CHOICES[obsoleteStage]).toBeUndefined();
+    }
   });
 
   it("separates the name surprise from the nameplate explanation", () => {
@@ -61,13 +64,13 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(shouldAutoReturnToBroccoli(66, 0, "西蓝花")).toBe(false);
   });
 
-  it("keeps the leave-first return-to-kitten choices in the Broccoli thread", () => {
+  it("keeps the remaining rescue choices in the Broccoli thread without a return-home branch", () => {
     expect(getCatRescueThreadForStage(10)).toBe("西蓝花");
     expect(getCatRescueThreadForStage(11)).toBe("西蓝花");
     expect(CAT_RESCUE_CHOICES[10]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[11]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[10].every((choice) => choice.nextStage !== 8)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[11].every((choice) => choice.nextStage !== 8)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[10].every((choice) => choice.nextStage === 0)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[11].every((choice) => choice.nextStage === 5)).toBe(true);
   });
 
 
