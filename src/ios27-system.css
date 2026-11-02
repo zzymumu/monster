@@ -968,3 +968,76 @@
   background: transparent;
   padding: 12px 24px;
 }
+
+
+/* Final lock-screen corrections: actual status island states, visible glance widgets,
+   and a transparent swipe target (never a white pill/block above the home indicator). */
+.phone-shell.ios27 .status-bar {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 14px 31px 0 35px; height: 56px;
+}
+.phone-shell.ios27 .status-bar > .status-time {
+  display: inline-flex; align-items: center; min-width: 0;
+  padding: 0; margin: 1px 0 0; color: #fff; background: transparent;
+  border: 0; font-size: 14px; line-height: 20px; font-weight: 650;
+  text-shadow: 0 1px 4px rgba(0,0,0,.35);
+}
+.phone-shell.ios27 .dynamic-island {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.phone-shell.ios27 .island-lock-state {
+  width: 100%; height: 100%; padding: 0 18px;
+  display: flex; align-items: center; justify-content: space-between; color: #f4f4f6;
+}
+.phone-shell.ios27 .island-lock-state > svg:first-child {
+  fill: currentColor; stroke: #000; stroke-width: 1.5;
+}
+.phone-shell.ios27 .island-lock-state .island-face-id { color: #62e58b; stroke-width: 2; }
+.phone-shell.ios27 .signals {
+  margin-top: 0; padding: 0; color: #fff; background: transparent; border: 0;
+  display: flex; align-items: center; gap: 6px; text-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block { top: 75px; }
+.phone-shell.ios27 .lock-screen.device-lock .lock-widgets {
+  top: 204px; left: 38px; right: 38px; min-height: 74px; z-index: 2;
+  display: grid !important; visibility: visible !important; opacity: 1 !important;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 34px;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-widget-heading { font-size: 15px; line-height: 22px; }
+.phone-shell.ios27 .lock-screen.device-lock .lock-widget-title { font-size: 14px; line-height: 19px; }
+.phone-shell.ios27 .lock-screen.device-lock .lock-widget-track { margin-top: 4px; }
+
+/* Hide the textual unlock pill; retain an invisible, accessible swipe/click target. */
+.phone-shell.ios27 .lock-screen.device-lock .swipe-unlock {
+  position: absolute; z-index: 88; left: 50%; bottom: 30px; transform: translateX(-50%);
+  width: 180px; height: 34px; min-height: 34px; padding: 0; margin: 0; overflow: hidden;
+  color: transparent !important; font-size: 0 !important; line-height: 0;
+  background: transparent !important; border: 0 !important; border-radius: 0;
+  box-shadow: none !important; -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important; animation: none !important; opacity: .01 !important;
+}
+/* Keep only the slim white home-indicator line, never a filled button background. */
+.phone-shell.ios27 .phone-screen > .home-indicator {
+  position: absolute; z-index: 100; bottom: 0; left: 0; width: 100%;
+  height: 30px; min-height: 30px; padding: 0 0 7px; margin: 0;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: transparent !important; border: 0 !important; border-radius: 0;
+  box-shadow: none !important;
+}
+.phone-shell.ios27 .phone-screen > .home-indicator:after {
+  content: ""; display: block; width: 136px; height: 5px; border-radius: 99px;
+  background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.24);
+}
+.phone-shell.ios27 .device-passcode { background: rgba(0,0,0,.12); }
+.phone-shell.ios27 .device-passcode .pin-keypad button {
+  background: rgba(235,239,248,.19); border-color: rgba(255,255,255,.34);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.23), 0 4px 15px rgba(0,0,0,.08);
+}
+@media (max-height: 760px) {
+  .phone-shell.ios27 .lock-screen.device-lock .lock-widgets { top: 190px; }
+  .phone-shell.ios27 .device-passcode .passcode-dots { margin-bottom: 48px; }
+  .phone-shell.ios27 .device-passcode .pin-keypad { grid-auto-rows: 68px; gap: 12px 24px; }
+  .phone-shell.ios27 .device-passcode .pin-keypad button { width: 68px; height: 68px; }
+}
