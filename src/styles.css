@@ -5623,3 +5623,89 @@ label {
   .wechat-ui.wx-reference-layout .wx-me-profile-actions { gap: 5px; }
   .wechat-ui.wx-reference-layout .wx-friends-status { font-size: 11px; }
 }
+
+
+/* Status picker: true full-height scroll surface with an always-visible close control. */
+.wechat-ui.wx-reference-layout[data-status-editor="true"] {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-nav {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 56px;
+  height: 56px;
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: 48px minmax(0,1fr) 48px;
+  align-items: center;
+  padding: 0 12px;
+  background: linear-gradient(135deg,#a66d43 0%,#b9785c 48%,#b96e69 100%);
+  color: #fff;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-nav > button:first-child {
+  width: 42px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  color: #fff;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-nav > button:first-child .wx-status-close {
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 300;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-nav > strong {
+  justify-self: center;
+  color: rgba(255,255,255,.94);
+  font-size: 17px;
+  font-weight: 500;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-nav > button:last-child {
+  width: 42px;
+  height: 48px;
+  pointer-events: none;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-status-editor {
+  flex: 1 1 0;
+  min-height: 0;
+  height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0 12px max(24px, env(safe-area-inset-bottom));
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-status-editor::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-status-category:last-of-type {
+  margin-bottom: 12px;
+}
+
+/* Align the profile picture's top edge with the nickname, not the middle of the text stack. */
+.wechat-ui.wx-reference-layout .wx-me-profile {
+  align-items: flex-start;
+}
+.wechat-ui.wx-reference-layout .wx-me-avatar-edit {
+  align-self: flex-start;
+  margin-top: 1px;
+}
+.wechat-ui.wx-reference-layout .wx-me-identity {
+  align-self: flex-start;
+  padding-top: 0;
+}
+.wechat-ui.wx-reference-layout .wx-me-profile-trailing {
+  align-self: stretch;
+}
