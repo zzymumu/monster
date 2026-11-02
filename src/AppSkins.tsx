@@ -581,8 +581,8 @@ export function WeChatSkin(p: SkinProps) {
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
                   ))}
                 </div>
+                <div className="cat-rescue-option-hint">选择一条回复发送</div>
               )}
-              <div className="cat-rescue-option-hint">选择一条回复发送</div>
             </div>
           ) : (
             <>
