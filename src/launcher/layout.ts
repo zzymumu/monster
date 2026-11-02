@@ -134,8 +134,13 @@ export function validateLayout(raw: unknown, input: Work) {
       }
     }
     layout.order = [
+      ...layout.widgets.map((widget) => widget.id),
       ...visibleApps,
-      ...layout.order.filter((id) => !visibleApps.includes(id)),
+      ...layout.order.filter(
+        (id) =>
+          !visibleApps.includes(id) &&
+          !layout.widgets.some((widget) => widget.id === id),
+      ),
     ];
     layout.previewLayoutRevision = 1;
   }
