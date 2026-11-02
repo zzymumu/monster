@@ -999,9 +999,14 @@ export function WeChatSkin(p: SkinProps) {
     const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
     const readding = catRescue.stage === 13;
     const prankReadd = readding && hasPrankPath;
+    // The phone's virtual clock can be earlier than timestamps on the
+    // existing transcript (for example after a time reset). Use a monotonic
+    // story-order timestamp so the friend-added event is appended after the
+    // previous chat, and the owner's opener follows that event.
+    const addFriendOrderAt = Date.now();
     const created = [
-      makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend", storyThread: "大G" } }),
-      ...(!readding ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", wechatId: "mo00oster111" } })] : []),
+      makeItem({ id: "monster-added-system-" + addFriendOrderAt, title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", storyOrderAt: String(addFriendOrderAt) } }),
+      ...(!readding ? [makeItem({ id: "monster-first-message-" + addFriendOrderAt, title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", wechatId: "mo00oster111", storyOrderAt: String(addFriendOrderAt + 1) } })] : []),
     ];
     const nextStage = prankReadd ? 16 : getCatRescueStageAfterFriendAdd(catRescue.stage, catRescue.branch);
     const nextBranch = prankReadd ? "monster-prank" : catRescue.branch;
