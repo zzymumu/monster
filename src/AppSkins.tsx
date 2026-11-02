@@ -255,6 +255,26 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "那我稍微放心一点了……但你真的确定要带它回家吗？" },
     ]},
   ],
+  30: [
+    { id: "arrived-hospital", label: "到了到了！我刚到医院，正在等医生", nextStage: 31, lines: [
+      { sender: "我", body: "到了到了！我刚到医院，正在等医生。" },
+      { sender: "西蓝花", body: "好！你先别急，医生有开始帮它检查了吗？" },
+    ]},
+    { id: "already-checking", label: "到了！医生已经开始检查了", nextStage: 31, lines: [
+      { sender: "我", body: "到了到了！医生已经开始帮它检查了。" },
+      { sender: "西蓝花", body: "那就好！记得问医生有没有晶片，也顺便确认一下它的健康状况。" },
+    ]},
+  ],
+  31: [
+    { id: "chip-check", label: "我会问的，等结果出来马上告诉你", nextStage: 4, lines: [
+      { sender: "我", body: "我会问的，等结果出来马上告诉你。" },
+      { sender: "西蓝花", body: "嗯嗯，那你先陪着它，别让它紧张。等医生检查完再跟我说！" },
+    ]},
+    { id: "worried-about-cat", label: "它看起来有点紧张，我先陪陪它", nextStage: 4, lines: [
+      { sender: "我", body: "它看起来有点紧张，我先陪陪它，等医生检查完再说。" },
+      { sender: "西蓝花", body: "好可怜喔……你陪着它就好，检查结果出来记得第一时间告诉我！" },
+    ]},
+  ],
   3: [
     { id: "promise-check", label: "放心吧，我会先带它去医院检查，绝对不会让它碰到 Vava", nextStage: 30, lines: [
       { sender: "我", body: "放心吧，我会带它去医院先检查，医生确认安全之前绝对不会让它碰到 Vava。" },
