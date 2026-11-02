@@ -234,7 +234,6 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].sender).toBe("西蓝花");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("真的假的");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("你們吃什麼");
-    expect(CAT_RESCUE_CHOICES[65][0].lines.filter((line) => line.sender === "西蓝花")).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("你們吃什麼");
     expect(CAT_RESCUE_CHOICES[65][0].lines.filter((line) => line.sender === "西蓝花")).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[63][0].lines.every((line) => line.thread === "西蓝花")).toBe(true);
