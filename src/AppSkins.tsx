@@ -936,6 +936,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "沒事沒事，你先忙！我去看看玩玩有沒有乖乖吃飯。", thread: "大G" },
       { sender: "大G", body: "好，妳先去忙牠吧。真的謝謝妳，晚點有空再聊。", thread: "大G" },
     ]},
+  ],
   63: [
     { id: "tell-broccoli-he-promised-dinner", label: "嘻嘻！他要请我吃饭！", nextStage: 64, lines: [
       { sender: "我", body: "嘻嘻！他要请我吃饭！", thread: "西蓝花" },
@@ -945,6 +946,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "欸嘿，他刚刚答应回来请我吃饭了！", thread: "西蓝花" },
       { sender: "西蓝花", body: "真的假的！！！他真的要請妳吃飯？妳運氣也太好了吧！你們吃什麼？", thread: "西蓝花" },
     ]},
+  ],
   64: [
     { id: "fangirl-details", label: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", nextStage: 65, lines: [
       { sender: "我", body: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", thread: "西蓝花" },
@@ -952,6 +954,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "fangirl-scream", label: "我哪知道啦！我当时整个人都懵了！", nextStage: 65, lines: [
       { sender: "我", body: "我哪知道啦！我当时整个人都懵了，根本没想到要问！", thread: "西蓝花" },
     ]},
+  ],
   65: [
     { id: "settle-down-broccoli", label: "哈哈哈你不要笑我啦！", nextStage: 77, lines: [
       { sender: "我", body: "哈哈哈你不要笑我啦！", thread: "西蓝花" },
@@ -962,6 +965,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "先不想啦！等他回来再说，现在先把玩玩照顾好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啦好啦，先照顧玩玩！但我一定會記得這頓飯，妳不准裝沒這回事。", thread: "西蓝花" },
     ]},
+  ],
   72: [
     { id: "agree-go-home", label: "好吧……我听你的，先回家好了", nextStage: 73, lines: [
       { sender: "我", body: "好吧……我聽妳的，先回家好了。我不把牠帶回去，至少先不要讓 Vava 冒險。", thread: "西蓝花" },
@@ -1023,6 +1027,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "先不想啦！等他回來再說，現在先把玩玩照顧好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啦，先照顧玩玩！但這頓飯我幫妳記著，妳不准裝沒這回事。", thread: "西蓝花" },
     ]},
+  ],
   78: [
     { id: "dinner-tease", label: "我哪知道啦！等他回来再问他", nextStage: 79, lines: [
       { sender: "我", body: "我哪知道啦！等他回來再問他嘛。", thread: "西蓝花" },
@@ -1033,6 +1038,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "好啦我知道啦！妳怎麼比我還期待啦哈哈哈。", thread: "西蓝花" },
       { sender: "西蓝花", body: "那當然！這可是怪獸本人欸，我怎麼可能不期待！", thread: "西蓝花" },
     ]},
+  ],
   79: [
     { id: "report-dinner-later", label: "有消息我第一個告訴你！", nextStage: 66, lines: [
       { sender: "我", body: "有消息我第一個告訴妳！", thread: "西蓝花" },
@@ -1042,6 +1048,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "我先去看看玩玩，晚點再跟妳聊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "去吧去吧！替我摸摸牠，記得吃飯喔！", thread: "西蓝花" },
     ]},
+  ],
   66: [],
   67: [
     { id: "suggest-isolation", label: "要不我先带它回家，单独一个房间跟 Vava 隔离？", nextStage: 81, lines: [
@@ -1102,6 +1109,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "！！！我回去看了，牠居然還在原地！我還以為牠已經不見了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "？？？怎麼了？妳找到牠了嗎？快跟我說！", thread: "西蓝花" },
     ]},
+  ],
   81: [
     { id: "agree-go-home-after-isolation", label: "好吧……你说得对，我先回家好了", nextStage: 68, lines: [
       { sender: "我", body: "好吧……妳說得對，我先不把牠帶回家了。我先回家，可是想到牠還在那裡，心裡還是很難受。", thread: "西蓝花" },
@@ -1122,6 +1130,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "我沒看錯！銘牌上真的就是溫尚翊！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "真的假的啦？？？這名字也太熟悉了吧！妳先看看有沒有電話，我們確認一下。", thread: "西蓝花" },
     ]},
+  ],
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
