@@ -257,6 +257,11 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].sender).toBe("我");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].sender).toBe("西蓝花");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("真的假的");
+    expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("你們吃什麼");
+    expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("我哪知道啊");
+    expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("根本沒想到要問");
+    expect(CAT_RESCUE_CHOICES[65][0].lines.filter((line) => line.sender === "西蓝花")).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[65][0].nextStage).toBe(77);
     expect(CAT_RESCUE_CHOICES[63][0].lines.every((line) => line.thread === "西蓝花")).toBe(true);
     expect(CAT_RESCUE_CHOICES[63].every((choice) => choice.lines.every((line) => !/[妳們這個麼為會說話讓還沒對時來過進見聽問題樣長點愛歡樂難當動給氣車錢買賣東書讀寫認識記錯實覺應該係親臉聲遠近盡別處萬無數機電腦網線號種變帶幫張條魚貓鳥藥醫檢驗結終簡體國臺灣溫尚翊]/.test(line.body)))).toBe(true);
     expect(getCatRescueThreadForStage(63)).toBe("西蓝花");
@@ -284,7 +289,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[55]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[55].every((choice) => choice.nextStage === 56)).toBe(true);
     expect(CAT_RESCUE_CHOICES[56]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[56].every((choice) => choice.nextStage === 57)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[56].every((choice) => choice.nextStage === 61)).toBe(true);
     expect(CAT_RESCUE_CHOICES[57]).toHaveLength(0);
     expect(CAT_RESCUE_CHOICES[27][0].lines.map((line) => line.body)).toEqual([
       "玩玩……？我靠！",
