@@ -665,7 +665,7 @@ export function WeChatSkin(p: SkinProps) {
       {addIdModal && (
         <div className="wx-friend-flow-backdrop">
           <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="微信号">
-            <button className="wx-friend-flow-close" disabled={catRescue.stage === 15 && !idCopied} onClick={() => setAddIdModal(false)>×</button>
+            <button className="wx-friend-flow-close" disabled={catRescue.stage === 15 && !idCopied} onClick={() => setAddIdModal(false)}>×</button>
             <div className="wx-friend-flow-avatar"><Avatar name="大G" /></div>
             <strong>找到一個微信號</strong>
             <p>可以試著用這個微信號添加對方</p>
