@@ -398,7 +398,14 @@ function PhoneRuntime({
             >
               中国移动
             </button>
-            <div className="dynamic-island" />
+            <div className="dynamic-island" aria-label={locked ? "已锁定" : "灵动岛"}>
+              {locked && (
+                <span className="island-lock-state">
+                  <LockKeyhole size={19} fill="currentColor" />
+                  {pinOpen && <StatusGlyph kind="cellular" />}
+                </span>
+              )}
+            </div>
             <button
               className="signals"
               onClick={() => setPanel(panel === "control" ? "" : "control")}
