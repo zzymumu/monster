@@ -745,7 +745,13 @@ export function WeChatSkin(p: SkinProps) {
         ...ownerStoryMessages.filter(keepPrankHistoryClean),
       ], hasPrankPath)
     : isBroccoliThread
-      ? [...broccoliBaseItems, ...friendStoryMessages]
+      ? [
+          ...broccoliBaseItems,
+          ...friendStoryMessages,
+          // Keep the first surprised "？？？" visible in the original
+          // Broccoli exchange as context for the user's next reply.
+          ...catRescue.messages.filter((item) => item.body.trim() === "？？？"),
+        ].filter((item, index, items) => items.findIndex((entry) => entry.id === item.id) === index)
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
   useEffect(() => {
