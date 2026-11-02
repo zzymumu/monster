@@ -684,6 +684,19 @@ export function WeChatSkin(p: SkinProps) {
     if (missing.length) setPendingCatLines((current) => [...current, ...missing]);
   }, [catRescue.stage, catRescue.branch, catRescue.messages.length, hasPrankPath, pendingCatLines, p.items]);
   useEffect(() => {
+    // After the owner reacts to the name reveal, move the visible chat to
+    // Broccoli only once every queued DaG message has appeared. Later, return
+    // to DaG after the Broccoli follow-up is fully delivered.
+    if (pendingCatLines.length > 0) return;
+    if (catRescue.stage === 32 && p.thread !== "西蓝花" && p.thread !== "西兰花") {
+      setTab("微信");
+      p.onThread("西蓝花");
+    } else if (catRescue.stage === 35 && p.thread !== "大G" && p.thread !== "温尚翊") {
+      setTab("微信");
+      p.onThread("大G");
+    }
+  }, [catRescue.stage, pendingCatLines.length, p.thread]);
+  useEffect(() => {
     if (!legacyPrankReaddPending) return;
     setCatRescueRaw(JSON.stringify({ ...parsedCatRescue, version: 2, stage: 16, branch: "monster-prank" }));
     const alreadyHasQuestion = [...p.items, ...parsedCatRescue.messages].some((item) => item.body.trim() === "？？？");
