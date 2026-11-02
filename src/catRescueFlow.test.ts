@@ -3,6 +3,7 @@ import {
   CAT_RESCUE_CHOICES,
   getCatRescueStageAfterFriendAdd,
   getCatRescueThreadForStage,
+  shouldShowPrankHistoryLine,
   splitCatRescueMessages,
 } from "./AppSkins";
 import { createWork } from "./demo";
@@ -44,13 +45,10 @@ describe("WeChat cat-rescue story configuration", () => {
     const prank = CAT_RESCUE_CHOICES[9].find((choice) => choice.id === "monster-prank");
     const apology = CAT_RESCUE_CHOICES[16].find((choice) => choice.id === "monster-apology-after-prank");
     expect(prank?.nextStage).toBe(17);
-    expect(prank?.lines.map((line) => line.body)).toEqual([
-      "我是你爸爸。",
-      "……蛤？",
-      "妳哪位？我不認識妳喔。",
-    ]);
-    expect(prank?.lines.some((line) => line.body === "妳是？")).toBe(false);
+    expect(prank?.lines.map((line) => line.body)).toEqual(["我是你爸爸。"]);
     expect(CAT_RESCUE_CHOICES[17]).toHaveLength(2);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "old-question", title: "大G", sender: "大G", body: "妳是？" }), "monster-prank")).toBe(false);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "old-delete", title: "大G", sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" }), "monster-prank")).toBe(false);
     expect(CAT_RESCUE_CHOICES[17].some((choice) => /發錯人/.test(choice.lines[0].body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[17].every((choice) => choice.nextStage === 13)).toBe(true);
     expect(apology?.nextStage).toBe(20);
