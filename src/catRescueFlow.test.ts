@@ -113,8 +113,9 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[69]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[69].every((choice) => choice.nextStage === 70)).toBe(true);
     expect(CAT_RESCUE_CHOICES[70]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[70].every((choice) => choice.nextStage === 71)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[70].some((choice) => /不行/.test(choice.label))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[70].every((choice) => choice.nextStage === 76)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[76].every((choice) => choice.nextStage === 71)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[76].some((choice) => /不行/.test(choice.label))).toBe(true);
     expect(CAT_RESCUE_CHOICES[71]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.nextStage === 80)).toBe(true);
     expect(CAT_RESCUE_CHOICES[80].every((choice) => choice.nextStage === 49)).toBe(true);
@@ -257,6 +258,10 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].sender).toBe("我");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].sender).toBe("西蓝花");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("真的假的");
+    expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("你們吃什麼");
+    expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("我哪知道啊");
+    expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("根本沒想到要問");
+    expect(CAT_RESCUE_CHOICES[65][0].lines.filter((line) => line.sender === "西蓝花")).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("你們吃什麼");
     expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("我哪知道啊");
     expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("根本沒想到要問");
