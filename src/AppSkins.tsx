@@ -66,13 +66,11 @@ function Avatar({
   round?: boolean;
   src?: string;
 }) {
+  const safeSrc = safeMedia(src);
+  const imageSrc = safeSrc.startsWith("data:image/") ? safeSrc : name === "西蓝花" ? GLOOMY_AVATAR : "";
   return (
     <span className={`skin-avatar ${round ? "round" : ""} ${name === "大G" || name === "温尚翊" ? "guitar-avatar" : ""}`}>
-      {safeMedia(src)?.startsWith("data:image/") ? (
-        <img src={safeMedia(src)} alt="" />
-      ) : (
-        name === "大G" || name === "温尚翊" ? "🎸" : name.slice(0, 1)
-      )}
+      {imageSrc ? <img src={imageSrc} alt="" /> : name === "大G" || name === "温尚翊" ? "🎸" : name.slice(0, 1)}
     </span>
   );
 }
@@ -168,17 +166,19 @@ function Compose({
 }
 
 
-type CatRescueState = { stage: number; branch: string; messages: Item[] };
+type CatRescueState = { version: number; stage: number; branch: string; messages: Item[] };
 function parseCatRescueState(raw: string): CatRescueState {
   try {
     const value = JSON.parse(raw) as Partial<CatRescueState>;
+    if (value.version !== 2) return { version: 2, stage: 0, branch: "", messages: [] };
     return {
+      version: 2,
       stage: Number.isFinite(value.stage) ? Number(value.stage) : 0,
       branch: typeof value.branch === "string" ? value.branch : "",
       messages: Array.isArray(value.messages) ? value.messages as Item[] : [],
     };
   } catch {
-    return { stage: 0, branch: "", messages: [] };
+    return { version: 2, stage: 0, branch: "", messages: [] };
   }
 }
 type CatLine = { sender: "我" | "西蓝花"; body: string };
@@ -186,108 +186,143 @@ type CatChoice = {
   id: string;
   label: string;
   nextStage: number;
+  branch?: string;
   lines: CatLine[];
 };
+const GLOOMY_AVATAR = "https://sacsbar.itembox.design/item/img/charactor/icon/GLOOMY_icon.png";
 const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
-    { id: "pity", label: "它看起来好可怜，瘦瘦小小的，一直在路边叫", nextStage: 1, lines: [
-      { sender: "我", body: "它看起来好可怜，瘦瘦小小的，一直在路边叫，我都不忍心走了。" },
-      { sender: "西蓝花", body: "等一下！！你家里不是还有 Vava 吗？先别急着带回家呀！" },
-      { sender: "我", body: "我知道……可是它真的好小一只，身边也没有猫妈妈。" },
-      { sender: "西蓝花", body: "我懂我懂，但流浪猫的健康情况不清楚，Vava 也要保护好，不能直接放一起。" },
+    { id: "bring-home", label: "我真的不忍心把它留在這裡……想帶它回家", nextStage: 1, branch: "bring-home", lines: [
+      { sender: "我", body: "我越看越捨不得……它一直在路邊叫，我想先把它帶回家。" },
+      { sender: "西蓝花", body: "等等等等！！你先不要衝動啦！你家裡還有 Vava 耶！" },
+      { sender: "我", body: "我知道啊，可是它這麼小一隻，身邊也沒有貓媽媽，我真的走不開。" },
+      { sender: "西蓝花", body: "我不是不讓你救牠啦，我是怕牠身上有跳蚤或傳染病，回家碰到 Vava 怎麼辦？" },
     ]},
-    { id: "cute", label: "它真的好可爱啊啊啊，我已经蹲在旁边看它十分钟了", nextStage: 1, lines: [
-      { sender: "我", body: "它真的好可爱啊啊啊，我已经蹲在旁边看它十分钟了！" },
-      { sender: "西蓝花", body: "你先站起来！！哈哈哈哈。等等，你家不是有 Vava 了吗？" },
-      { sender: "我", body: "可是它一直用圆圆的眼睛看我，我真的走不动……" },
-      { sender: "西蓝花", body: "可爱归可爱，健康风险也要考虑。先别让它接触 Vava，好不好？" },
+    { id: "leave-first", label: "先不帶走好了……可是我真的有點放心不下", nextStage: 10, branch: "leave-first", lines: [
+      { sender: "我", body: "我先不帶牠走好了……可是牠一直在那裡，我真的有點放心不下。" },
+      { sender: "西蓝花", body: "嗯……先不要急著抱回家也可以，至少先確認牠附近有沒有媽媽或其他人照顧。" },
+      { sender: "我", body: "好吧，我先走一段看看，可是我一定會一直想牠。" },
+      { sender: "西蓝花", body: "你先去忙一下啦，有時候牠可能只是躲在附近，等等再看看也好。" },
     ]},
   ],
   1: [
-    { id: "hesitate", label: "我也知道，可是把它留在这里我会一直惦记", nextStage: 2, lines: [
-      { sender: "我", body: "我也知道，可是把它留在这里我会一直惦记。万一它晚上还在外面怎么办？" },
-      { sender: "西蓝花", body: "唉……你这个人就是心太软。那至少先别直接抱回家，找个安全的方式安置它。" },
-      { sender: "我", body: "它刚刚还主动蹭我的鞋，感觉一点都不怕我。" },
-      { sender: "西蓝花", body: "啊啊啊你不要再描述了，我也要心软了！但 Vava 真的不能冒险。" },
+    { id: "separate-room", label: "我可以讓牠住另一個房間，完全不碰到 Vava", nextStage: 2, lines: [
+      { sender: "我", body: "我可以讓牠先住另一個房間，門關起來，完全不讓牠碰到 Vava。" },
+      { sender: "西蓝花", body: "可是你進出房間也會把病菌帶來帶去啊，而且牠的健康狀況我們都不知道。" },
+      { sender: "我", body: "那我回家先換衣服、洗手消毒，東西也分開用，好不好？" },
+      { sender: "西蓝花", body: "你連隔離流程都想好了是不是……我真的要被你說服了，但還是要先看醫生！" },
     ]},
-    { id: "vava", label: "我会把它和 Vava 完全隔离的，先带它去医院检查", nextStage: 2, lines: [
-      { sender: "我", body: "我会把它和 Vava 完全隔离的，先带它去医院检查，可以吗？" },
-      { sender: "西蓝花", body: "你已经开始计划了是吧……好吧，先去医院检查是比较稳妥的，别让它们接触。" },
-      { sender: "我", body: "嗯，我会准备单独的航空箱，回家也单独隔离。" },
-      { sender: "西蓝花", body: "那就先去医院！记得问医生传染病筛查、驱虫和芯片，路上小心。" },
+    { id: "cant-leave", label: "可是我一想到牠還要在外面待著就好難受", nextStage: 2, lines: [
+      { sender: "我", body: "可是我一想到牠還要在外面待著，我就覺得好難受。牠看起來真的很小。" },
+      { sender: "西蓝花", body: "我懂啦……但你也不能因為心疼牠，就讓 Vava 冒風險啊。" },
+      { sender: "我", body: "我沒有要讓牠們見面，我只是想先把牠安置好。" },
+      { sender: "西蓝花", body: "唉，你這樣講我也開始心軟了……但一定要先檢查，答應我。" },
     ]},
   ],
   2: [
-    { id: "go-clinic", label: "好，我决定了，先带它去医院，检查完再说", nextStage: 3, lines: [
-      { sender: "我", body: "好，我决定了，先带它去医院，检查完再说。我真的不放心把它留在路边。" },
-      { sender: "西蓝花", body: "好吧好吧，知道你会心软。先去医院是对的，Vava 那边一定要隔离好！" },
-      { sender: "我", body: "我已经叫到车了，小黑猫乖乖待在箱子里，希望它没事。" },
-      { sender: "西蓝花", body: "你到了没有？路上还顺利吗？检查完第一时间告诉我！" },
+    { id: "clinic-first", label: "那我先帶牠去醫院，檢查完再決定怎麼安置", nextStage: 3, lines: [
+      { sender: "我", body: "不然這樣好了，我先帶牠去醫院，檢查完再決定怎麼安置。" },
+      { sender: "西蓝花", body: "這樣比較好！可是你確定牠願意讓你抱嗎？也要小心別被抓傷。" },
+      { sender: "我", body: "我慢慢靠近牠了，牠沒有躲，還一直蹭我的手。" },
+      { sender: "西蓝花", body: "啊啊啊不要講得這麼可愛啦！我現在也很難叫你放下牠了。" },
     ]},
-    { id: "ask-help", label: "我先联系附近医院，问问能不能马上接诊", nextStage: 3, lines: [
-      { sender: "我", body: "我先联系附近医院，问问能不能马上接诊，确认好就带它过去。" },
-      { sender: "西蓝花", body: "可以！你先确认医院能接诊，路上注意保暖。Vava 先不要接触它哦。" },
-      { sender: "我", body: "联系好了，我现在带它过去。" },
-      { sender: "西蓝花", body: "到了没有？我在等你的消息，千万别自己吓自己！" },
+    { id: "still-worried", label: "我還是怕帶回家不安全……要不先送醫院？", nextStage: 3, lines: [
+      { sender: "我", body: "我還是怕帶回家不安全……要不先送醫院？至少先讓醫生看看牠。" },
+      { sender: "西蓝花", body: "對！先去醫院最安心，記得跟醫生說家裡還有 Vava。" },
+      { sender: "我", body: "嗯，我會跟醫生說，也會準備單獨的外出籠。" },
+      { sender: "西蓝花", body: "那我稍微放心一點了……但你真的確定要帶牠回家嗎？" },
     ]},
   ],
   3: [
-    { id: "arrived", label: "到了！医生正在给它做基础检查", nextStage: 4, lines: [
-      { sender: "我", body: "到了！医生正在给它做基础检查，我先在外面等一下。" },
-      { sender: "西蓝花", body: "呼……终于到了。你也别紧张，先听医生怎么说。" },
-      { sender: "我", body: "医生说先检查皮肤、耳朵和基础体征，再做一下传染病筛查。" },
-      { sender: "西蓝花", body: "好专业！希望小家伙健健康康的。对了，记得问问有没有主人信息。" },
+    { id: "promise-check", label: "放心吧，我會先帶牠去醫院檢查，絕對不會讓牠碰到 Vava", nextStage: 4, lines: [
+      { sender: "我", body: "放心吧，我會帶牠去醫院先檢查，醫生確認安全之前絕對不會讓牠碰到 Vava。" },
+      { sender: "西蓝花", body: "好啦……你都說到這個份上了，我就相信你一次。先帶牠去檢查，其他的等醫生說了再決定。" },
+      { sender: "我", body: "好！我把牠放進外出籠了，現在就去醫院。" },
+      { sender: "西蓝花", body: "路上小心！到了記得跟我說，還有不要忘記問醫生有沒有晶片喔。" },
+      { sender: "我", body: "到了，醫生先幫牠做基本檢查，等一下看看能不能找到主人資料。" },
     ]},
-    { id: "waiting", label: "刚到，正在排队，猫猫有点紧张", nextStage: 4, lines: [
-      { sender: "我", body: "刚到，正在排队，小猫有点紧张，一直缩在箱子角落里。" },
-      { sender: "西蓝花", body: "可怜的小朋友……你把箱子放稳一点，别一直围着它，让它安心待着。" },
-      { sender: "我", body: "轮到我们了，医生开始检查了！" },
-      { sender: "西蓝花", body: "好，等结果！你记得问问有没有芯片，看看能不能找到主人。" },
+    { id: "go-now", label: "好啦好啦，我帶牠走，先去醫院再說", nextStage: 4, lines: [
+      { sender: "我", body: "好啦好啦，我帶牠走，先去醫院再說。你放心，我不會讓牠直接接觸 Vava。" },
+      { sender: "西蓝花", body: "我不是不相信你啦，我是怕你一心軟就什麼都忘了！" },
+      { sender: "我", body: "知道啦，我會先讓醫生檢查，回家也會隔離。" },
+      { sender: "西蓝花", body: "那就好……快去吧，我等你消息。" },
+      { sender: "我", body: "醫生正在幫牠檢查，等一下要看看有沒有晶片或主人資料。" },
+    ]},
+  ],
+  10: [
+    { id: "talk-about-day", label: "先聊點別的吧，你今天不是說有件事要跟我講？", nextStage: 11, lines: [
+      { sender: "我", body: "我先不想小貓的事了……對了，你今天不是說有件事要跟我講？" },
+      { sender: "西蓝花", body: "哈哈哈哈你終於想到別的事了！我今天上班真的遇到一個超誇張的人。" },
+      { sender: "我", body: "怎麼了怎麼了，快說！" },
+      { sender: "西蓝花", body: "他把咖啡放在影印機旁邊，結果整杯打翻，文件全部變咖啡味，笑死我了。" },
+      { sender: "我", body: "救命哈哈哈哈哈，你們辦公室每天都這麼精彩嗎？" },
+      { sender: "西蓝花", body: "差不多啦！欸你晚餐想吃什麼？不要又隨便吃喔。" },
+    ]},
+    { id: "chat-food", label: "你先陪我聊聊天，我現在心裡亂亂的", nextStage: 11, lines: [
+      { sender: "我", body: "你先陪我聊聊天嘛，我現在心裡亂亂的，想轉移一下注意力。" },
+      { sender: "西蓝花", body: "好啦好啦，我在！那你今天有沒有好好吃飯？" },
+      { sender: "我", body: "還沒欸，本來想說回家再吃。" },
+      { sender: "西蓝花", body: "不行！先去買點東西吃，不要餓著肚子亂想。" },
+      { sender: "我", body: "知道啦……你最近有沒有看到什麼好看的劇？" },
+      { sender: "西蓝花", body: "有啊，我晚點傳給你！你先去吃點東西。" },
+    ]},
+  ],
+  11: [
+    { id: "go-back", label: "不行，我還是放心不下，我想回去看看牠", nextStage: 5, lines: [
+      { sender: "我", body: "不行……我還是放心不下。牠那麼小一隻，我真的沒辦法當作沒看見，我回去看看。" },
+      { sender: "西蓝花", body: "我就知道你一定會回去啦！慢慢走，注意安全。" },
+      { sender: "我", body: "我回到剛才那個地方了……天啊，牠竟然還在！" },
+      { sender: "西蓝花", body: "真的假的？？牠還在那裡等你喔？" },
+      { sender: "我", body: "牠跑過來蹭我了！我抱起來才發現脖子上掛著一個牌子，上面寫著主人：溫尚翊。" },
+      { sender: "西蓝花", body: "……等一下。你說什麼？？？溫尚翊？？？" },
+    ]},
+    { id: "return-anyway", label: "我想了一路，還是決定回頭找牠", nextStage: 5, lines: [
+      { sender: "我", body: "我本來想回家了，可是越走越不對勁……我還是回頭找牠好了。" },
+      { sender: "西蓝花", body: "去吧去吧，但不要跑，注意車！" },
+      { sender: "我", body: "我找到牠了！！牠竟然還在原地！" },
+      { sender: "西蓝花", body: "天啊，還好牠沒有跑掉……" },
+      { sender: "我", body: "牠脖子上有個小挂牌，我剛剛看清楚了，上面寫著主人：溫尚翊。" },
+      { sender: "西蓝花", body: "蛤？？？？你再說一次？？溫尚翊？？？" },
     ]},
   ],
   4: [
-    { id: "chip", label: "芯片主人真的写着温尚翊……我是不是看错了？", nextStage: 5, lines: [
-      { sender: "我", body: "等一下……芯片登记的主人写的是温尚翊？" },
-      { sender: "西蓝花", body: "温尚翊？？啊？？你说谁？？？" },
-      { sender: "我", body: "五月天那个温尚翊啊！！！不会吧？？？" },
-      { sender: "西蓝花", body: "你先等等……真的假的？会不会只是同名啊？" },
-    ]},
-    { id: "confirm", label: "医生把名字给我看了，真的是温尚翊三个字", nextStage: 5, lines: [
-      { sender: "我", body: "医生把登记资料给我看了，真的是温尚翊三个字。" },
-      { sender: "西蓝花", body: "啊？？？？温尚翊？？？我脑子突然空白了。" },
-      { sender: "我", body: "我也傻了，怎么会这么巧啊……" },
-      { sender: "西蓝花", body: "先冷静啦，世界上同名的人也不是没有吧！" },
+    { id: "tag-check", label: "我把牌子拍給你看了，真的是溫尚翊", nextStage: 5, lines: [
+      { sender: "我", body: "醫生剛剛看了牠脖子上的挂牌，上面清清楚楚寫著主人：溫尚翊。" },
+      { sender: "西蓝花", body: "等一下……你說的是溫尚翊？？？不會吧？？？" },
+      { sender: "我", body: "真的！醫生說牌子上留了聯絡電話，我現在腦袋一片空白。" },
+      { sender: "西蓝花", body: "先把照片傳給我！我確認一下……天啊，真的是這三個字欸！" },
     ]},
   ],
   5: [
-    { id: "same-name", label: "我也觉得可能是重名，但还是好不真实……", nextStage: 6, lines: [
-      { sender: "我", body: "可是这个名字也太巧了吧，我现在还是觉得很不真实。" },
-      { sender: "西蓝花", body: "名字一样不代表就是本人啦，先不要自己吓自己。" },
+    { id: "same-name", label: "我也覺得可能是重名，但還是好不真實……", nextStage: 6, lines: [
+      { sender: "我", body: "可是這個名字也太巧了吧，我現在還是覺得很不真實。" },
+      { sender: "西蓝花", body: "名字一樣不代表就是本人啦，先不要自己嚇自己。" },
       { sender: "我", body: "我知道啊，但如果真的是他呢？" },
-      { sender: "西蓝花", body: "那也先把猫咪的事情确认清楚，别想太远哈哈哈。" },
+      { sender: "西蓝花", body: "我也覺得很離譜……算了不管了，可能是重名吧！主人肯定等得很著急，先打電話過去問問啦。" },
     ]},
-    { id: "maybe-him", label: "你说会不会真的是他啊……", nextStage: 6, lines: [
-      { sender: "我", body: "你说……会不会真的是他啊？" },
-      { sender: "西蓝花", body: "啊？？你还真的开始想了？？？" },
-      { sender: "我", body: "我只是觉得太巧了嘛！" },
-      { sender: "西蓝花", body: "我也觉得很离谱，但还是先当作重名吧，别越猜越紧张。" },
+    { id: "maybe-him", label: "你說會不會真的是他啊……", nextStage: 6, lines: [
+      { sender: "我", body: "你說……會不會真的是他啊？" },
+      { sender: "西蓝花", body: "溫尚翊？？啊？？啊？？？我真的要瘋了！" },
+      { sender: "我", body: "五月天那個溫尚翊欸！！！" },
+      { sender: "西蓝花", body: "我知道我知道！可是也可能只是同名啦……先打電話確認，拜託你冷靜一點哈哈哈。" },
     ]},
   ],
   6: [
-    { id: "call-owner", label: "行……我现在打电话过去问问。", nextStage: 7, lines: [
-      { sender: "西蓝花", body: "算了不管了，可能是重名吧！主人肯定也等得着急了，先打电话过去问问啦。" },
-      { sender: "我", body: "行……我现在打过去问问。" },
-      { sender: "我", body: "我打了……一直响，沒有人接。" },
-      { sender: "西蓝花", body: "电话打不通啊？要不试试看能不能通过手机号加微信？" },
+    { id: "call-owner", label: "行……我現在打電話過去問問。", nextStage: 7, lines: [
+      { sender: "我", body: "行……我現在打過去問問。" },
+      { sender: "我", body: "我打了……一直響，沒有人接。" },
+      { sender: "西蓝花", body: "電話打不通啊？要不試試看能不能透過微信號加好友？" },
+      { sender: "我", body: "好像可以試試看，我看看牌子上有沒有其他資料。" },
     ]},
   ],
   7: [
-    { id: "try-wechat", label: "好，我试试看用手机号加微信。", nextStage: 8, lines: [
-      { sender: "我", body: "好，我试试看用这个手机号加微信。" },
-      { sender: "西蓝花", body: "嗯嗯！先确认是不是本人，别一上来就把自己吓到。" },
+    { id: "try-wechat", label: "好，我試試看用這個微信號加好友。", nextStage: 8, lines: [
+      { sender: "我", body: "好，我試試看用這個微信號加好友。" },
+      { sender: "西蓝花", body: "嗯嗯！先確認是不是本人，別一上來就把自己嚇到。" },
       { sender: "我", body: "我去微信看看……" },
     ]},
   ],
+};
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
@@ -298,7 +333,7 @@ export function WeChatSkin(p: SkinProps) {
   const catRescue = parseCatRescueState(catRescueRaw);
   const allItems = [...p.items, ...catRescue.messages];
   const catRescueActive = p.thread === "西蓝花" && allItems.some((item) => item.meta.storyId === "cat-rescue");
-  const catAvatar = allItems.find((item) => item.sender === "西蓝花" && item.avatar)?.avatar || "";
+  const catAvatar = allItems.find((item) => item.sender === "西蓝花" && item.avatar)?.avatar || GLOOMY_AVATAR;
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
     const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
@@ -318,13 +353,14 @@ export function WeChatSkin(p: SkinProps) {
       });
     });
     setCatRescueRaw(JSON.stringify({
+      version: 2,
       stage: nextStage,
       branch,
       messages: [...catRescue.messages, ...created],
     }));
   };
   const chooseCatRescue = (choice: CatChoice) => {
-    appendCatLines(choice.lines, choice.nextStage);
+    appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
     if (choice.nextStage === 8) { setIdCopied(false); setAddIdModal(true); }
   };
   const appendNewFriendConversation = () => {
@@ -335,7 +371,7 @@ export function WeChatSkin(p: SkinProps) {
       makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: "你已添加了大G，現在可以開始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend" } }),
       makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "你是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } }),
     ];
-    setCatRescueRaw(JSON.stringify({ ...catRescue, stage: 9, messages: [...catRescue.messages, ...created] }));
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: 9, messages: [...catRescue.messages, ...created] }));
     setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
   };
 
@@ -717,7 +753,7 @@ export function WeChatSkin(p: SkinProps) {
                       p.onRead(name);
                     }}>
                       <span className="wx-chat-avatar">
-                        <Avatar name={name} src={last.avatar} />
+                        <Avatar name={name} src={last.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} />
                         {unread && <b className="wx-unread">{list.filter((i) => !i.read).length || ""}</b>}
                       </span>
                       <div className="wx-chat-copy"><strong>{name}</strong><p>{last.body}</p></div>
@@ -747,7 +783,7 @@ export function WeChatSkin(p: SkinProps) {
                 {contacts.filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => {
                   const avatarItem = allItems.find((i) => i.sender === name);
                   return <button className="wx-contact-row" key={name} onClick={() => openContact(name)}>
-                    <Avatar name={name} src={avatarItem?.avatar} /><span>{name}</span>
+                    <Avatar name={name} src={avatarItem?.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} /><span>{name}</span>
                   </button>;
                 })}
                 {!contacts.length && <p className="skin-empty">联系人会在聊天后显示在这里</p>}
