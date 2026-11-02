@@ -398,10 +398,8 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   9: [
     { id: "monster-prank", label: "我是你爸爸", nextStage: 17, branch: "monster-prank", lines: [
       { sender: "我", body: "我是你爸爸。" },
-      { sender: "大G", body: "妳是？" },
       { sender: "大G", body: "……蛤？" },
       { sender: "大G", body: "妳哪位？我不認識妳喔。" },
-      { sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" },
     ]},
     { id: "monster-cat-intro", label: "你好，我捡到了一只小黑猫……", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "你好，我捡到了一只小黑猫。它脖子上挂着挂牌，上面有你的联系方式，我就照着上面的微信号加你了。" },
@@ -412,6 +410,14 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   13: [],
+  17: [
+    { id: "prank-apology", label: "对不起我发错人了啊啊啊！", nextStage: 13, branch: "monster-prank", lines: [
+      { sender: "我", body: "對不起我發錯人了啊啊啊！！！" },
+    ]},
+    { id: "prank-explain", label: "等等等等！我开玩笑的，你先别删我！", nextStage: 13, branch: "monster-prank", lines: [
+      { sender: "我", body: "等等等等！我開玩笑的啦，你先別刪我！！！" },
+    ]},
+  ],
   14: [
     { id: "monster-apology-legacy", label: "对不起我开玩笑的……我是真的捡到你的猫了", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "對不起，剛剛那句真的發錯了……我不是故意鬧你的。" },
@@ -614,7 +620,14 @@ export function WeChatSkin(p: SkinProps) {
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
     if (choice.nextStage === 8) { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
-    if (choice.nextStage === 13) {
+    if (choice.nextStage === 13 && (choice.branch || catRescue.branch) === "monster-prank") {
+      // The player gets to compose an apology first; the send then visibly fails
+      // because the prank has already cost them the friendship.
+      setMonsterFriendAccepted(false);
+      setMonsterRemoved(true);
+      setMonsterSendFailed(true);
+      setAddedFriends((current) => current.filter((name) => name !== "大G"));
+    } else if (choice.nextStage === 13) {
       setMonsterRemoved(true);
       setAddedFriends((current) => current.filter((name) => name !== "大G"));
       p.onThread("");
