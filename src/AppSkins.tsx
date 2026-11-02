@@ -550,9 +550,17 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   27: [
-    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 32, lines: [
+    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 41, lines: [
       { sender: "我", body: "玩玩……？我靠！", thread: "大G" },
       { sender: "大G", body: "妳？？？怎麼啦？", thread: "大G" },
+    ]},
+  ],
+  41: [
+    { id: "cover-up-name-reaction", label: "哦哦哦没事没事！我觉得这个名字简直太好了！", nextStage: 32, lines: [
+      { sender: "我", body: "哦哦哦沒事沒事！我只是覺得「玩玩」這個名字簡直太好了啦！超可愛的！", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈，牠小時候就很愛玩，才會取這個名字。平常叫牠，牠有時候還會故意裝沒聽見。" , thread: "大G" },
+      { sender: "我", body: "原來是這樣！感覺牠真的很有自己的個性欸，名字跟牠好搭！", thread: "大G" },
+      { sender: "大G", body: "牠真的很有個性，熟了之後會一直黏著人。這幾天就先麻煩妳陪陪牠了。" , thread: "大G" },
     ]},
   ],
   32: [
@@ -679,7 +687,7 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40].includes(catRescue.stage);
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41].includes(catRescue.stage);
   const catRescueActive = isBroccoliThread
     ? (!monsterFriendAccepted || [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34, 37, 38, 39].includes(catRescue.stage))
     : isMonsterThread && (monsterFriendAccepted || ownerChatStarted);
