@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   CAT_RESCUE_CHOICES,
+  getCatRescueStageAfterFriendAdd,
   getCatRescueThreadForStage,
+  splitCatRescueMessages,
 } from "./AppSkins";
+import { createWork } from "./demo";
+import { makeItem } from "./schema";
 
 describe("WeChat cat-rescue story configuration", () => {
   it("routes every hospital stage to Broccoli and owner stages to DaG", () => {
@@ -54,6 +58,34 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[24]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
+  });
+
+
+  it("preserves the full seeded Broccoli chat history in its own conversation", () => {
+    const work = createWork();
+    const history = work.data.wechat.filter((item) => item.title === "西蓝花");
+    expect(history).toHaveLength(18);
+    expect(history.every((item) => item.sender !== "大G")).toBe(true);
+    expect(history.some((item) => item.body.includes("五月天"))).toBe(true);
+    expect(history.some((item) => item.body.includes("小黑猫"))).toBe(true);
+  });
+
+  it("keeps legacy misrouted hospital messages in Broccoli and prank messages with DaG", () => {
+    const mixed = [
+      makeItem({ id: "clinic-wrong-title", title: "大G", sender: "我", body: "到了到了！我刚到医院。", outgoing: true, meta: { storyThread: "大G" } }),
+      makeItem({ id: "clinic-question", title: "大G", sender: "西蓝花", body: "医生有开始帮它检查了吗？", meta: { storyThread: "大G" } }),
+      makeItem({ id: "prank-wrong-title", title: "西蓝花", sender: "我", body: "我是你爸爸。", outgoing: true }),
+      makeItem({ id: "owner-reply", title: "大G", sender: "大G", body: "妳哪位？我不認識妳喔。" }),
+    ];
+    const split = splitCatRescueMessages(mixed);
+    expect(split.broccoli.map((item) => item.id)).toEqual(["clinic-wrong-title", "clinic-question"]);
+    expect(split.owner.map((item) => item.id)).toEqual(["prank-wrong-title", "owner-reply"]);
+  });
+
+  it("returns the correct stage after initial add and after re-adding a deleted friend", () => {
+    expect(getCatRescueStageAfterFriendAdd(8, "monster-cat")).toBe(9);
+    expect(getCatRescueStageAfterFriendAdd(13, "monster-prank")).toBe(16);
+    expect(getCatRescueStageAfterFriendAdd(13, "monster-cat")).toBe(14);
   });
 
   it("keeps the prank and apology branches in the owner's conversation", () => {
