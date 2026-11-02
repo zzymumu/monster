@@ -712,7 +712,7 @@ export function WeChatSkin(p: SkinProps) {
   try {
     const parsed = JSON.parse(pendingCatLinesRaw);
     if (Array.isArray(parsed)) pendingCatLines = parsed.filter((line) =>
-      line && typeof line.body === "string" && typeof line.sender === "string"
+      line && typeof line.body === "string" && typeof line.sender === "string" && line.sender !== "我"
     ) as CatLine[];
   } catch { pendingCatLines = []; }
   const setPendingCatLines = (next: CatLine[] | ((current: CatLine[]) => CatLine[])) => {
@@ -880,26 +880,19 @@ export function WeChatSkin(p: SkinProps) {
   // phone-level scheduler, so they continue arriving while another app is open.
 
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
-    // Persist the selected reply immediately. Remaining lines are delivered
-    // one by one by the queue effect, so a click always produces visible output.
+    // A choice sends exactly the player's first line. Then only incoming
+    // replies are queued, in order, until the next player-authored line.
+    // Later player lines in legacy script arrays are NOT auto-sent: the next
+    // stage's visible choices are how the player responds.
     const destination = getCatRescueThreadForStage(nextStage);
     const prepared = lines.map((line) => ({ ...line, thread: line.thread || destination }));
-    // Player's selected reply appears immediately. The opening "？？？"
-    // reaction from either friend also appears immediately when that chat is
-    // opened; only subsequent incoming messages enter the 30–60s queue.
     const immediateLines: CatLine[] = [];
-    let firstIncomingQuestionUsed = false;
-    for (const line of prepared) {
-      if (line.sender === "我") {
-        immediateLines.push(line);
-      } else if (!firstIncomingQuestionUsed && line.body.includes("？？？")) {
-        immediateLines.push(line);
-        firstIncomingQuestionUsed = true;
-      } else {
-        break;
-      }
+    if (prepared[0]?.sender === "我") immediateLines.push(prepared[0]);
+    const queuedLines: CatLine[] = [];
+    for (const line of prepared.slice(immediateLines.length)) {
+      if (line.sender === "我") break;
+      queuedLines.push(line);
     }
-    const queuedLines = prepared.slice(immediateLines.length);
     const immediateItems = immediateLines.map((line, index) => makeItem({
       id: "cat-rescue-" + Date.now() + "-" + index + "-" + Math.random().toString(36).slice(2, 7),
       title: line.thread || destination,
