@@ -1017,11 +1017,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "好啦好啦，先照顧玩玩！但我一定會記得這頓飯，妳不准裝沒這回事。", thread: "西蓝花" },
     ]},
   ],
-,
-,
-,
-,
-,
   77: [
     { id: "dinner-when", label: "哈哈哈你不要笑我啦！", nextStage: 78, lines: [
       { sender: "我", body: "哈哈哈妳不要笑我啦！", thread: "西蓝花" },
@@ -1065,13 +1060,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "哈哈哈哈今天真的很精彩！好啦，先去陪玩玩，晚點再聊！", thread: "西蓝花" },
     ]},
   ],
-,
-,
-,
-,
-,
-,
-,
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
