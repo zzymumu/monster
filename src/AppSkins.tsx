@@ -676,10 +676,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "知道啦！我先回去看看玩玩，晚點再跟你說。" , thread: "西蓝花" },
       { sender: "西蓝花", body: "快去快去！替我摸摸玩玩，啊不對，先確認牠願不願意給妳摸，哈哈哈哈！" , thread: "西蓝花" },
     ]},
-    { id: "promise-update", label: "我先去照顾玩玩，有消息马上回来告诉你", nextStage: 39, lines: [
-      { sender: "我", body: "我先去照顧玩玩，有消息一定馬上回來告訴你！" , thread: "西蓝花" },
-      { sender: "西蓝花", body: "好！妳先忙，記得吃飯喝水，不要光顧著激動。玩玩就交給妳啦！" , thread: "西蓝花" },
-    ]},
   ],
   39: [
     { id: "return-to-dag-after-reveal", label: "我先回去跟大G说玩玩现在很安全", nextStage: 40, lines: [
