@@ -15,7 +15,6 @@ import {
   Moon,
   RotateCcw,
   Monitor,
-  Timer,
   Calculator,
   Globe,
   Mic,
