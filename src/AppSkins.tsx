@@ -331,6 +331,8 @@ export function WeChatSkin(p: SkinProps) {
   const [catRescueRaw, setCatRescueRaw] = useSkinState<string>(p, "catRescueState", "");
   const catRescue = parseCatRescueState(catRescueRaw);
   const allItems = [...p.items, ...catRescue.messages];
+  const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
+  const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
   const catRescueActive = p.thread === "西蓝花" && allItems.some((item) => item.meta.storyId === "cat-rescue");
   const catAvatar = allItems.find((item) => item.sender === "西蓝花" && item.avatar)?.avatar || GLOOMY_AVATAR;
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
@@ -367,8 +369,8 @@ export function WeChatSkin(p: SkinProps) {
     const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
     const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
     const created = [
-      makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: "你已添加了大G，現在可以開始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend" } }),
-      makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "你是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } }),
+      makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend" } }),
+      makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } }),
     ];
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: 9, messages: [...catRescue.messages, ...created] }));
     setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
@@ -463,13 +465,13 @@ export function WeChatSkin(p: SkinProps) {
     return bLast.localeCompare(aLast);
   });
   const contacts = Array.from(new Set([
-    ...allItems.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
-    ...addedFriends,
+    ...allItems.map((i) => displayName(i.sender)).filter((s) => s && s !== "我" && s !== "机主"),
+    ...addedFriends.map(displayName),
   ])).sort((a, b) => a.localeCompare(b, "zh-CN"));
   const friendDirectory = Array.from(new Set(["西蓝花", "爸爸", "妈妈", ...allItems.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")]));
   const friendMatches = addQuery.trim()
     ? addQuery.trim().toLowerCase() === "mo00oster111" && catRescue.stage >= 8
-      ? ["温尚翊"]
+      ? ["大G"]
       : friendDirectory.filter((name) => {
           const related = allItems.filter((i) => i.title === name || i.sender === name);
           const keys = [name, ...related.flatMap((i) => [i.meta.wechatId, i.meta.account, i.meta.phone, i.meta.handle])].filter(Boolean).join(" ").toLowerCase();
@@ -521,11 +523,12 @@ export function WeChatSkin(p: SkinProps) {
   ];
   const openUtility = (label: string) => setUtility(label);
   const openContact = (name: string) => {
-    const related = allItems.find((i) => i.sender === name || i.title === name);
+    const canonicalName = isMonsterName(name) ? "大G" : name;
+    const related = allItems.find((i) => displayName(i.title) === canonicalName || displayName(i.sender) === canonicalName);
     if (related) {
       p.onThread(related.title);
       p.onRead(related.title);
-    } else setUtility(name);
+    } else setUtility(canonicalName);
   };
   return (
     <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility} data-status-editor={statusEditorOpen}>
@@ -533,7 +536,7 @@ export function WeChatSkin(p: SkinProps) {
         <div className="wx-friend-flow-backdrop">
           <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="微信号">
             <button className="wx-friend-flow-close" onClick={() => setAddIdModal(false)}>×</button>
-            <div className="wx-friend-flow-avatar"><Avatar name="温尚翊" /></div>
+            <div className="wx-friend-flow-avatar"><Avatar name="大G" /></div>
             <strong>找到一個微信號</strong>
             <p>可以試著用這個微信號添加對方</p>
             <div className="wx-friend-id">mo00oster111</div>
@@ -549,7 +552,7 @@ export function WeChatSkin(p: SkinProps) {
             {friendRequestModal === "confirm" ? (
               <>
                 <strong>添加到通讯录</strong>
-                <p>温尚翊 · 微信号 mo00oster111</p>
+                <p>大G · 微信号 mo00oster111</p>
                 <div className="wx-friend-id">你可以向对方发送好友申请</div>
                 <button className="wx-friend-flow-primary" onClick={() => { appendNewFriendConversation(); setFriendRequestModal("sent"); }}>发送好友申请</button>
                 <button className="wx-friend-flow-secondary" onClick={() => setFriendRequestModal("")}>取消</button>
@@ -576,7 +579,7 @@ export function WeChatSkin(p: SkinProps) {
         }}>
           {statusEditorOpen ? <span className="wx-status-close">×</span> : utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
         </button>
-        <strong>{statusEditorOpen ? "设个状态" : utility || p.thread || (moments ? "朋友圈" : tab)}</strong>
+        <strong>{statusEditorOpen ? "设个状态" : utility || (p.thread ? displayName(p.thread) : moments ? "朋友圈" : tab)}</strong>
         <button aria-label={statusEditorOpen ? " " : p.thread ? "聊天详情" : "微信菜单"} onClick={() => statusEditorOpen ? undefined : p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>
           {statusEditorOpen ? null : p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}
         </button>
@@ -622,13 +625,14 @@ export function WeChatSkin(p: SkinProps) {
           {addQuery.trim() ? (
             <div className="wx-add-results">
               {friendMatches.length ? friendMatches.map((name) => {
-                const related = allItems.find((i) => i.title === name || i.sender === name);
-                const isMonster = name === "温尚翊";
+                const isMonster = isMonsterName(name);
+                const visibleName = displayName(name);
+                const related = allItems.find((i) => displayName(i.title) === visibleName || displayName(i.sender) === visibleName);
                 const alreadyAdded = addedFriends.includes(isMonster ? "大G" : name);
                 return (
-                  <div className="wx-add-result" key={name}>
-                    <Avatar name={isMonster ? "大G" : name} src={related?.avatar} />
-                    <span><strong>{name}</strong><small>微信号：{isMonster ? "mo00oster111" : related?.meta.wechatId || related?.meta.account || name}</small></span>
+                  <div className="wx-add-result" key={visibleName}>
+                    <Avatar name={visibleName} src={related?.avatar} />
+                    <span><strong>{visibleName}</strong><small>微信号：{isMonster ? "mo00oster111" : related?.meta.wechatId || related?.meta.account || name}</small></span>
                     <button disabled={alreadyAdded} onClick={() => isMonster ? setFriendRequestModal("confirm") : setAddedFriends((v) => v.includes(name) ? v : [...v, name])}>{alreadyAdded ? "已添加" : isMonster ? "添加到通讯录" : "添加"}</button>
                   </div>
                 );
@@ -780,7 +784,7 @@ export function WeChatSkin(p: SkinProps) {
               <div className="wx-contact-section-title">我的联系人</div>
               <div className="wx-contact-list">
                 {contacts.filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => {
-                  const avatarItem = allItems.find((i) => i.sender === name);
+                  const avatarItem = allItems.find((i) => displayName(i.sender) === name || displayName(i.title) === name);
                   return <button className="wx-contact-row" key={name} onClick={() => openContact(name)}>
                     <Avatar name={name} src={avatarItem?.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} /><span>{name}</span>
                   </button>;
