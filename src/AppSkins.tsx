@@ -327,7 +327,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "妳先回去休息一下，別急著做決定。要是真的還在附近，我們再想辦法找救援。" },
       { sender: "西蓝花", body: "而且家裡還有 Vava，先不要讓兩隻貓突然接觸，好不好？" },
     ]},
-  ]
+  ],
   1: [
     { id: "separate-room", label: "我可以让它住另一个房间，完全不碰到 Vava", nextStage: 2, lines: [
       { sender: "我", body: "我可以讓牠先住另一個房間，門關起來，完全不讓牠碰到 Vava。" },
@@ -341,7 +341,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "如果附近真的沒有貓媽媽，也可以先問問救援的人，不一定要直接帶回家。" },
       { sender: "西蓝花", body: "唉，妳這樣講我也開始心軟了……但一定要先檢查，答應我。" },
     ]},
-  ]
+  ],
   2: [
     { id: "clinic-first", label: "那我先带它去医院，检查完再决定怎么安置", nextStage: 3, lines: [
       { sender: "我", body: "不然這樣好了，我先帶牠去醫院，檢查完再決定怎麼安置。" },
@@ -355,7 +355,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "還有先不要跟家裡的貓共用碗、貓砂或毯子，隔離做好一點。" },
       { sender: "西蓝花", body: "那我稍微放心一點了……但妳真的確定要帶牠去醫院嗎？" },
     ]},
-  ]
+  ],
   30: [
     { id: "still-on-way", label: "还在路上，快到了，我会小心", nextStage: 31, lines: [
       { sender: "我", body: "還在路上，應該快到了，我會小心開車，外出籠也有固定好。" },
@@ -399,7 +399,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "不要又跟我說忙到忘記吃，妳每次都這樣。" },
       { sender: "西蓝花", body: "等一下先去弄點東西吃，聽到沒有！" },
     ]},
-  ]
+  ],
   11: [
     { id: "go-back", label: "不行，我还是放心不下，我想回去看看它", nextStage: 5, lines: [
       { sender: "我", body: "不行……我還是放心不下。牠那麼小一隻，我真的沒辦法當作沒看見，我回去看看。" },
@@ -982,7 +982,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "妳怎麼跟我媽一樣一直提醒妳吃飯？因為妳真的很需要人盯著啊哈哈哈！", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啦，今天先放過妳，明天再跟我報告後續。", thread: "西蓝花" },
     ]},
-  ]
+  ],
   69: [
     { id: "still-thinking-kitten", label: "我刚刚休息了一下，可是脑子里还是那只小猫", nextStage: 70, lines: [
       { sender: "我", body: "我剛剛休息了一下，可是腦子裡還是一直想到那隻小貓。", thread: "西蓝花" },
