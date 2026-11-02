@@ -39,12 +39,6 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { safeMedia, type Work } from "./schema";
-function formatLockTime(value: number) {
-  if (!Number.isFinite(value)) return "0:00";
-  const minutes = Math.floor(value / 60);
-  const seconds = Math.floor(value % 60).toString().padStart(2, "0");
-  return minutes + ":" + seconds;
-}
 export const KeyboardContext = createContext<(open: boolean) => void>(() => {});
 export function NativeComposer({
   creator,
@@ -89,21 +83,6 @@ export function DeviceLock({
 }) {
   const [code, setCode] = useState("");
   const [emergencyOpen, setEmergencyOpen] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const tracks = Object.values(work.data).flat().filter((item) => item.kind === "audio" && !!safeMedia(item.media));
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [musicPlaying, setMusicPlaying] = useState(false);
-  const [musicProgress, setMusicProgress] = useState(0);
-  const [musicDuration, setMusicDuration] = useState(0);
-  const currentTrack = tracks.length ? tracks[trackIndex % tracks.length] : null;
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !currentTrack) return;
-    audio.pause();
-    audio.currentTime = 0;
-    setMusicProgress(0);
-    if (musicPlaying) void audio.play().catch(() => setMusicPlaying(false));
-  }, [trackIndex, currentTrack?.id]);
   useEffect(() => {
     if (error) setCode("");
   }, [error]);
@@ -122,6 +101,12 @@ export function DeviceLock({
     }
   };
   const open = () => (work.phone.passcode ? setPinOpen(true) : onUnlock(""));
+  const lockDate = new Date((work.phone.date || new Date().toISOString().slice(0, 10)) + "T12:00:00");
+  const lockDateLabel = new Intl.DateTimeFormat("zh-CN", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  }).format(lockDate);
   return (
     <motion.div
       className={"lock-screen device-lock " + (pinOpen ? "pin-open" : "")}
@@ -133,33 +118,8 @@ export function DeviceLock({
       {!pinOpen ? (
         <>
           <div className="lock-clock-block">
-            <p className="lock-unlock-hint">向上轻扫以解锁</p>
-            <h1>{time}</h1>
-          </div>
-          <div className="lock-now-playing" aria-label="锁屏音乐播放器">
-            {currentTrack ? (
-              <>
-                <audio ref={audioRef} src={safeMedia(currentTrack.media)} preload="metadata"
-                  onLoadedMetadata={(event) => setMusicDuration(event.currentTarget.duration || 0)}
-                  onTimeUpdate={(event) => setMusicProgress(event.currentTarget.currentTime)}
-                  onEnded={() => tracks.length > 1 ? setTrackIndex((index) => (index + 1) % tracks.length) : setMusicPlaying(false)}
-                  onPause={() => setMusicPlaying(false)} onPlay={() => setMusicPlaying(true)} />
-                <div className="lock-music-main">
-                  <div className="lock-music-cover">{currentTrack.avatar ? <img src={safeMedia(currentTrack.avatar)} alt="" /> : <Music2 size={28} />}</div>
-                  <div className="lock-music-copy"><strong>{currentTrack.title}</strong><span>{currentTrack.sender || "音乐"}</span></div>
-                  <span className="lock-music-wave" aria-hidden="true">▮▮▮▮</span>
-                </div>
-                <input className="lock-music-progress" aria-label="音乐播放进度" type="range" min="0" max={Math.max(musicDuration, 1)} value={Math.min(musicProgress, musicDuration || 1)}
-                  onChange={(event) => { const value = Number(event.target.value); if (audioRef.current) audioRef.current.currentTime = value; setMusicProgress(value); }} />
-                <div className="lock-music-times"><span>{formatLockTime(musicProgress)}</span><span>{musicDuration ? "−" + formatLockTime(Math.max(0, musicDuration - musicProgress)) : "—:——"}</span></div>
-                <div className="lock-music-controls">
-                  <button aria-label="上一首" onClick={() => setTrackIndex((index) => (index + tracks.length - 1) % tracks.length)}><SkipForward style={{ transform: "rotate(180deg)" }} size={25} fill="currentColor" /></button>
-                  <button aria-label={musicPlaying ? "暂停" : "播放"} onClick={() => { const audio = audioRef.current; if (!audio) return; if (audio.paused) void audio.play().catch(() => setMusicPlaying(false)); else audio.pause(); }}>{musicPlaying ? <Pause size={30} fill="currentColor" /> : <Play size={30} fill="currentColor" />}</button>
-                  <button aria-label="下一首" onClick={() => setTrackIndex((index) => (index + 1) % tracks.length)}><SkipForward size={25} fill="currentColor" /></button>
-                  <span className="lock-music-output" aria-hidden="true">◖))</span>
-                </div>
-              </>
-            ) : <div className="lock-music-empty"><Music2 size={25} /><span>未在播放</span><small>添加音频后可在锁屏控制音乐</small></div>}
+            <p className="lock-unlock-hint">{lockDateLabel}</p>
+            <h1>{time.replace(/^0(?=\\d:)/, "")}</h1>
           </div>
           <div className="lock-notifications">
             {work.phone.notifications && (
