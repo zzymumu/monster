@@ -711,7 +711,7 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41].includes(catRescue.stage);
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41, 42, 43].includes(catRescue.stage);
   const catRescueActive = isBroccoliThread
     ? (!monsterFriendAccepted || [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34, 37, 38, 39].includes(catRescue.stage))
     : isMonsterThread && (monsterFriendAccepted || ownerChatStarted);
