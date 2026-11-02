@@ -29,7 +29,9 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(shouldCloseBroccoliAtStoryEnd(66, 1, "西蓝花")).toBe(false);
     expect(shouldCloseBroccoliAtStoryEnd(65, 0, "西蓝花")).toBe(false);
     expect(shouldCloseBroccoliAtStoryEnd(66, 0, "")).toBe(false);
-    expect(CAT_RESCUE_CHOICES[79].every((choice) => choice.nextStage === 66)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[79].every((choice) => choice.nextStage === 84)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[84]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[84].every((choice) => choice.nextStage === 66)).toBe(true);
     expect(CAT_RESCUE_CHOICES[66]).toHaveLength(0);
   });
 
