@@ -570,9 +570,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   32: [
-    { id: "tell-broccoli-wanwan", label: "我靠我靠我靠，玩玩！！怪兽家的猫就叫玩玩！！！！", nextStage: 33, lines: [
-      { sender: "我", body: "我靠我靠我靠，玩玩！！怪獸家的貓就叫玩玩！！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "玩玩？？？怪獸的貓就叫玩玩啊！！！真的假的！！！", thread: "西蓝花" },
+    { id: "tell-broccoli-wanwan", label: "我靠我靠我靠，玩玩！那只猫叫玩玩！！！！！！！！", nextStage: 33, lines: [
+      { sender: "我", body: "我靠我靠我靠，玩玩！那隻貓叫玩玩！！！！！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "玩玩？？？怪獸家的貓就叫玩玩啊！！！真的假的！！！妳確定是怪獸家的玩玩？？？", thread: "西蓝花" },
     ]},
   ],
   33: [
