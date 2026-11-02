@@ -316,7 +316,7 @@ export function WeChatSkin(p: SkinProps) {
     }));
   };
   const chooseCatRescue = (choice: CatChoice) => {
-    appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
+    appendCatLines(choice.lines, choice.nextStage);
   };
 
 
