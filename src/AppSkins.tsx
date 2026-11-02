@@ -323,7 +323,6 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
 };
-};
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
   const [query, setQuery] = useState("");
