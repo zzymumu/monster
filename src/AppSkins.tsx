@@ -543,7 +543,7 @@ export function WeChatSkin(p: SkinProps) {
                   <button className="wx-me-name-edit" onClick={() => { setNameDraft(ownerName); setNameEditorOpen(true); }}>
                     <strong>{ownerName}</strong>
                   </button>
-                  <small>微信号：zzy332128272</small>
+                  <small>微信号：IloveMayday</small>
                   <div className="wx-me-profile-actions">
                     <button className="wx-profile-status" onClick={() => setStatusEditorOpen(true)}>{profileStatus ? "● " + profileStatus : "＋ 状态"}</button>
                     <button className="wx-friends-status" onClick={() => openUtility("朋友状态")} aria-label="查看朋友状态">
