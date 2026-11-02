@@ -2,8 +2,14 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { X } from "lucide-react";
 import { AppArtwork } from "./AppArtwork";
-import type { Work } from "./schema";
-export function notificationContent(text: string, apps: Work["apps"]) {
+import type { Item, Work } from "./schema";
+export function notificationContent(text: string, apps: Work["apps"], items: Item[] = []) {
+  const wechat = text.match(/^微信[：:]\\s*([^：:]+)[：:]\\s*(.*)$/);
+  if (wechat) {
+    const contact = wechat[1].trim();
+    const message = items.find((item) => item.title === contact || item.sender === contact);
+    return { title: contact, body: wechat[2], appId: "wechat", avatar: message?.avatar || "", contact };
+  }
   const separator = text.search(/[:：]/);
   const sender = separator > 0 ? text.slice(0, separator) : "信息";
   const app = apps.find((a) => a.name === sender);
@@ -11,17 +17,21 @@ export function notificationContent(text: string, apps: Work["apps"]) {
     title: sender,
     body: separator > 0 ? text.slice(separator + 1) : text,
     appId: app?.id ?? "messages",
+    avatar: "",
+    contact: "",
   };
 }
 export function SystemNotifications({
   notices,
   apps,
+  items = [],
   onOpen,
   onDismiss,
   compact = false,
 }: {
   notices: string[];
   apps: Work["apps"];
+  items?: Item[];
   onOpen: () => void;
   onDismiss: (index: number) => void;
   compact?: boolean;
@@ -38,7 +48,7 @@ export function SystemNotifications({
     >
       <div className="notice-cards">
         {shown.map(({ text, index }) => {
-          const n = notificationContent(text, apps);
+          const n = notificationContent(text, apps, items);
           return (
             <motion.div
               layout
@@ -55,7 +65,7 @@ export function SystemNotifications({
             >
               <button className="notice-open" onClick={onOpen}>
                 <span className="notice-app-art">
-                  <AppArtwork id={n.appId} />
+                  {n.avatar.startsWith("data:image/") ? <img className="notice-contact-avatar" src={n.avatar} alt="" /> : <AppArtwork id={n.appId} />}
                 </span>
                 <span className="notice-copy">
                   <strong>{n.title}</strong>
