@@ -36,6 +36,9 @@ import {
   ChevronRight,
   Lock,
   ImagePlus,
+  Bell,
+  BatteryLow,
+  QrCode,
   Check,
   X,
 } from "lucide-react";
@@ -258,11 +261,12 @@ export function WallpaperPicker({
   const fileInput = useRef<HTMLInputElement>(null);
   const [selected, setSelected] = useState(current);
   const presets = [
-    { id: "default", name: "默认壁纸", image: imageUrl, background: "linear-gradient(145deg,#607c9e,#d9c9ad 48%,#243d36)" },
-    { id: "sunset", name: "日落", image: "", background: "linear-gradient(155deg,#35134d 0%,#f34c58 42%,#ffb347 68%,#3a8cbd 100%)" },
-    { id: "ocean", name: "海岸", image: "", background: "linear-gradient(160deg,#a9d8e8 0%,#3f91b8 48%,#123f68 100%)" },
-    { id: "midnight", name: "深空", image: "", background: "radial-gradient(circle at 65% 28%,#536c9c,#171b35 55%,#05060b)" },
-    { id: "pink", name: "柔粉", image: "", background: "linear-gradient(150deg,#f4b8c9,#b5a6e5 55%,#6a8bc5)" },
+    { id: "default", name: "怪兽 · 我的照片", image: imageUrl, background: "linear-gradient(145deg,#607c9e,#d9c9ad 48%,#243d36)" },
+    { id: "liquid", name: "液态玻璃", image: "", background: "radial-gradient(ellipse at 18% 18%,#f7d8ed 0%,transparent 36%),radial-gradient(ellipse at 78% 24%,#9fc8ff 0%,transparent 42%),radial-gradient(ellipse at 55% 78%,#f5b9a6 0%,transparent 38%),linear-gradient(145deg,#222b5b 0%,#6b6ba7 48%,#b8c9db 100%)" },
+    { id: "coast", name: "海岸晨光", image: "", background: "radial-gradient(ellipse at 72% 28%,#fff4d8 0%,transparent 24%),linear-gradient(165deg,#b9e4ed 0%,#6caec5 42%,#315e80 70%,#172d4b 100%)" },
+    { id: "aurora", name: "极光夜色", image: "", background: "radial-gradient(ellipse at 22% 36%,#62e2c0aa 0%,transparent 34%),radial-gradient(ellipse at 75% 30%,#a17affaa 0%,transparent 36%),radial-gradient(ellipse at 50% 80%,#2678bd 0%,transparent 42%),linear-gradient(155deg,#07152d,#101b3e 58%,#080d21)" },
+    { id: "glacier", name: "冰川蓝", image: "", background: "radial-gradient(ellipse at 20% 22%,#fff 0%,transparent 28%),radial-gradient(ellipse at 84% 72%,#9dd8e8 0%,transparent 35%),linear-gradient(145deg,#d8e8f0 0%,#8fb6d2 42%,#527ba6 75%,#273f68 100%)" },
+    { id: "bloom", name: "柔雾花园", image: "", background: "radial-gradient(ellipse at 25% 18%,#ffe2d2 0%,transparent 33%),radial-gradient(ellipse at 80% 38%,#d6c3e9 0%,transparent 35%),radial-gradient(ellipse at 48% 85%,#9cb9a0 0%,transparent 38%),linear-gradient(145deg,#f2d8d0,#c4b7cf 52%,#536f75)" },
   ];
   const chooseFile = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
@@ -312,7 +316,7 @@ export function WallpaperPicker({
 }
 
 export function ControlCenter({
-  battery = 94,
+  battery = 82,
   network,
   close,
 }: {
@@ -322,7 +326,10 @@ export function ControlCenter({
 }) {
   const [rotation, setRotation] = useState(true),
     [focus, setFocus] = useState(false),
-    [playing, setPlaying] = useState(false);
+    [playing, setPlaying] = useState(false),
+    [bell, setBell] = useState(false),
+    [lowPower, setLowPower] = useState(false),
+    [recording, setRecording] = useState(false);
   const [brightness, setBrightness] = useState(50),
     [volume, setVolume] = useState(25);
   const [tool, setTool] = useState("");
@@ -333,50 +340,19 @@ export function ControlCenter({
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -100, opacity: 0 }}
     >
-      <button className="cc-close" aria-label="关闭控制中心" onClick={close}>
-        <Power />
-      </button>
-      <button
-        className="cc-edit"
-        aria-label="控制中心编辑"
-        onClick={() => setTool("编辑控制")}
-      >
-        <Plus />
-      </button>
-      <div className="cc-current">
-        <span>
-          <Airplay size={13} />
-        </span>
-        控制中心 <ChevronRight size={16} />
-      </div>
+      <button className="cc-edit" aria-label="添加控制" onClick={() => setTool("添加控制")}><Plus /></button>
+      <button className="cc-close" aria-label="关闭控制中心" onClick={close}><Power /></button>
       <div className="cc-status" aria-label={"蜂窝网络 " + network}>
-        <div>
-          <span>
-            <Signal size={18} />
-            <small>主号</small> 中国移动 <Wifi size={17} />
-          </span>
-          <span>
-            <Signal size={18} />
-            <small>副号</small> 中国电信
-          </span>
+        <div className="cc-sim-lines">
+          <span><Signal size={17} /><small>主号</small>中国移动 5G <Wifi size={17} /><em>VPN</em></span>
+          <span><Signal size={17} /><small>商务</small>中国电信</span>
         </div>
-        <span>
-          <Lock size={13} /> {battery}% <Battery size={27} />
-        </span>
+        <span className="cc-battery"><Lock size={13} /> {battery}% <Battery size={28} /></span>
       </div>
       <nav className="cc-page-rail" aria-label="控制中心分类">
         {[Heart, Music2, House, Radio].map((Icon, i) => (
-          <button
-            key={i}
-            aria-label={["常用控制", "媒体控制", "家庭控制", "连接控制"][i]}
-            onClick={() =>
-              document
-                .querySelector(
-                  [".cc-grid", ".cc-music", ".cc-home", ".cc-connect"][i],
-                )
-                ?.scrollIntoView({ block: "nearest", behavior: "smooth" })
-            }
-          >
+          <button key={i} aria-label={["常用控制", "媒体控制", "家庭控制", "连接控制"][i]}
+            onClick={() => document.querySelector([".cc-grid", ".cc-music", ".cc-home", ".cc-connect"][i])?.scrollIntoView({ block: "nearest", behavior: "smooth" })}>
             <Icon fill={i === 0 ? "currentColor" : "none"} />
           </button>
         ))}
@@ -384,104 +360,33 @@ export function ControlCenter({
       <div className="cc-grid">
         <ConnectivityModule />
         <div className="cc-music">
-          <div className="cc-media-top">
-            <span>
-              <Music2 size={28} />
-            </span>
-            <Airplay size={21} />
-          </div>
-          <div className="cc-media-title">
-            <strong>{playing ? "测试播放" : "未在播放"}</strong>
-            <small>音乐</small>
-          </div>
-          <div>
-            <button aria-label="上一首">
-              <SkipForward style={{ transform: "rotate(180deg)" }} />
-            </button>
-            <button
-              aria-label={playing ? "暂停" : "播放"}
-              onClick={() => setPlaying(!playing)}
-            >
-              <Play fill="currentColor" />
-            </button>
-            <button aria-label="下一首">
-              <SkipForward />
-            </button>
+          <div className="cc-media-top"><span><Music2 size={28} /></span><Airplay size={21} /></div>
+          <div className="cc-media-title"><strong>{playing ? "正在播放" : "未在播放"}</strong><small>音乐</small></div>
+          <div className="cc-media-controls">
+            <button aria-label="上一首"><SkipForward style={{ transform: "rotate(180deg)" }} /></button>
+            <button aria-label={playing ? "暂停" : "播放"} onClick={() => setPlaying(!playing)}><Play fill="currentColor" /></button>
+            <button aria-label="下一首"><SkipForward /></button>
           </div>
         </div>
-        <button
-          className={"cc-square " + (rotation ? "cc-white" : "")}
-          aria-label="旋转锁定"
-          aria-pressed={rotation}
-          onClick={() => setRotation(!rotation)}
-        >
-          <span className="cc-rotation">
-            <RotateCcw />
-            <Lock size={14} />
-          </span>
+        <button className={"cc-square cc-rotation-button " + (rotation ? "cc-white" : "")} aria-label="旋转锁定" aria-pressed={rotation} onClick={() => setRotation(!rotation)}>
+          <span className="cc-rotation"><RotateCcw /><Lock size={14} /></span>
         </button>
-        <button
-          className="cc-square"
-          onClick={() => setTool(tool ? "" : "屏幕镜像")}
-          aria-label="屏幕镜像"
-        >
-          <Monitor />
-        </button>
-        <SliderModule
-          type="brightness"
-          value={brightness}
-          onChange={setBrightness}
-        />
+        <button className={"cc-square cc-bell-button " + (bell ? "cc-white" : "")} aria-label="静音模式" aria-pressed={bell} onClick={() => setBell(!bell)}><Bell fill={bell ? "currentColor" : "none"} /></button>
+        <SliderModule type="brightness" value={brightness} onChange={setBrightness} />
         <SliderModule type="volume" value={volume} onChange={setVolume} />
-        <button
-          className={"cc-focus " + (focus ? "cc-white" : "")}
-          aria-pressed={focus}
-          onClick={() => setFocus(!focus)}
-        >
-          <Moon />
-          <span>专注模式</span>
-          <ChevronDown size={14} />
+        <button className={"cc-focus " + (focus ? "cc-white" : "")} aria-pressed={focus} onClick={() => setFocus(!focus)}>
+          <Moon /><span>专注模式</span><ChevronDown size={14} />
         </button>
-        <button className="cc-home" onClick={() => setTool("家庭")}>
-          <House size={38} />
-          <span>未设置家庭</span>
-        </button>
-        {[Flashlight, Timer, Calculator, Camera].map((Icon, i) => (
-          <button
-            className={"cc-square cc-tool-" + i}
-            aria-label={["手电筒", "计时器", "计算器", "相机"][i]}
-            key={i}
-            onClick={() =>
-              setTool(tool ? "" : ["手电筒", "计时器", "计算器", "相机"][i])
-            }
-          >
-            <Icon />
-          </button>
-        ))}
-        {[ScanLine, Circle, Radio].map((Icon, i) => (
-          <button
-            key={i}
-            className={"cc-square cc-bottom-tool cc-bottom-" + i}
-            aria-label={["扫码", "屏幕录制", "声音识别"][i]}
-            onClick={() => setTool(["扫码", "屏幕录制", "声音识别"][i])}
-          >
-            <Icon />
-          </button>
-        ))}
+        <button className="cc-square cc-tool-flashlight" aria-label="手电筒" onClick={() => setTool(tool ? "" : "手电筒")}><Flashlight /></button>
+        <button className="cc-square cc-tool-calculator" aria-label="计算器" onClick={() => setTool(tool ? "" : "计算器")}><Calculator /></button>
+        <button className="cc-square cc-tool-camera" aria-label="相机" onClick={() => setTool(tool ? "" : "相机")}><Camera /></button>
+        <button className={"cc-square cc-tool-record " + (recording ? "cc-recording" : "")} aria-label="屏幕录制" aria-pressed={recording} onClick={() => setRecording(!recording)}><Circle /></button>
+        <button className="cc-square cc-tool-qr" aria-label="扫描二维码" onClick={() => setTool("扫描二维码")}><QrCode /></button>
+        <button className={"cc-square cc-tool-battery " + (lowPower ? "cc-white" : "")} aria-label="低电量模式" aria-pressed={lowPower} onClick={() => setLowPower(!lowPower)}><BatteryLow /></button>
+        <button className="cc-square cc-tool-mirror" aria-label="屏幕镜像" onClick={() => setTool("屏幕镜像")}><Monitor /></button>
       </div>
-      {tool && (
-        <div className="cc-tool">
-          <strong>{tool}</strong>
-          <p>
-            {tool === "屏幕镜像" ? "正在搜索作品中的设备…" : "作品内快捷控制"}
-          </p>
-          <button onClick={() => setTool("")}>完成</button>
-        </div>
-      )}
-      <button className="cc-dismiss" onClick={close}>
-        轻扫以关闭
-        <ChevronUp size={16} />
-      </button>
+      {tool && <div className="cc-tool"><strong>{tool}</strong><p>{tool === "屏幕镜像" ? "正在搜索作品中的设备…" : "作品内快捷控制"}</p><button onClick={() => setTool("")}>完成</button></div>}
+      <button className="cc-dismiss" onClick={close}>轻扫以关闭 <ChevronUp size={16} /></button>
     </motion.div>
   );
 }

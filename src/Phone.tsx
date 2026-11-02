@@ -316,10 +316,11 @@ function PhoneRuntime({
   const displayTime = creator ? work.phone.time : s.time || work.phone.time;
   const plugin = getApp(app);
   const wallpaperBackgrounds: Record<string, string> = {
-    sunset: "linear-gradient(155deg,#35134d 0%,#f34c58 42%,#ffb347 68%,#3a8cbd 100%)",
-    ocean: "linear-gradient(160deg,#a9d8e8 0%,#3f91b8 48%,#123f68 100%)",
-    midnight: "radial-gradient(circle at 65% 28%,#536c9c,#171b35 55%,#05060b)",
-    pink: "linear-gradient(150deg,#f4b8c9,#b5a6e5 55%,#6a8bc5)",
+    liquid: "radial-gradient(ellipse at 18% 18%,#f7d8ed 0%,transparent 36%),radial-gradient(ellipse at 78% 24%,#9fc8ff 0%,transparent 42%),radial-gradient(ellipse at 55% 78%,#f5b9a6 0%,transparent 38%),linear-gradient(145deg,#222b5b 0%,#6b6ba7 48%,#b8c9db 100%)",
+    coast: "radial-gradient(ellipse at 72% 28%,#fff4d8 0%,transparent 24%),linear-gradient(165deg,#b9e4ed 0%,#6caec5 42%,#315e80 70%,#172d4b 100%)",
+    aurora: "radial-gradient(ellipse at 22% 36%,#62e2c0aa 0%,transparent 34%),radial-gradient(ellipse at 75% 30%,#a17affaa 0%,transparent 36%),radial-gradient(ellipse at 50% 80%,#2678bd 0%,transparent 42%),linear-gradient(155deg,#07152d,#101b3e 58%,#080d21)",
+    glacier: "radial-gradient(ellipse at 20% 22%,#fff 0%,transparent 28%),radial-gradient(ellipse at 84% 72%,#9dd8e8 0%,transparent 35%),linear-gradient(145deg,#d8e8f0 0%,#8fb6d2 42%,#527ba6 75%,#273f68 100%)",
+    bloom: "radial-gradient(ellipse at 25% 18%,#ffe2d2 0%,transparent 33%),radial-gradient(ellipse at 80% 38%,#d6c3e9 0%,transparent 35%),radial-gradient(ellipse at 48% 85%,#9cb9a0 0%,transparent 38%),linear-gradient(145deg,#f2d8d0,#c4b7cf 52%,#536f75)",
   };
   const wallpaperStyle: CSSProperties = wallpaperChoice.startsWith("data:image/")
     ? { backgroundImage: `url(${wallpaperChoice})`, backgroundSize: "cover", backgroundPosition: "center" }
