@@ -64,6 +64,7 @@ export function DeviceLock({
   work,
   time,
   notices,
+  notificationItems = [],
   onDismiss,
   pinOpen,
   setPinOpen,
@@ -76,6 +77,7 @@ export function DeviceLock({
   work: Work;
   time: string;
   notices: string[];
+  notificationItems?: Item[];
   onDismiss: (index: number) => void;
   pinOpen: boolean;
   setPinOpen: (v: boolean) => void;
@@ -142,6 +144,7 @@ export function DeviceLock({
                 compact
                 notices={notices}
                 apps={work.apps}
+                items={notificationItems}
                 onOpen={open}
                 onDismiss={onDismiss}
               />
