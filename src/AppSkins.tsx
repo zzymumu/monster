@@ -600,13 +600,23 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   27: [
-    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 32, lines: [
+    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 53, lines: [
       { sender: "我", body: "玩玩……？我靠！", thread: "大G" },
       { sender: "大G", body: "妳？？？怎麼啦？", thread: "大G" },
     ]},
-    { id: "hide-surprise", label: "没事没事，我就是觉得这个名字太好了", nextStage: 32, lines: [
-      { sender: "我", body: "沒事沒事，我就是覺得這個名字太好了！", thread: "大G" },
-      { sender: "大G", body: "哈哈，牠的名字喔？牠真的很愛玩，所以才叫玩玩。", thread: "大G" },
+    { id: "ask-name-again", label: "等一下……你刚刚说它叫玩玩？", nextStage: 53, lines: [
+      { sender: "我", body: "等一下……你剛剛說牠叫玩玩？", thread: "大G" },
+      { sender: "大G", body: "對啊，牠叫玩玩。怎麼了嗎？", thread: "大G" },
+    ]},
+  ],
+  53: [
+    { id: "say-name-is-perfect", label: "没事没事，我就是觉得这个名字太好了哈哈哈", nextStage: 32, lines: [
+      { sender: "我", body: "沒事沒事，我就是覺得這個名字太好了哈哈哈！", thread: "大G" },
+      { sender: "大G", body: "哈哈，原來是這樣。牠的名字跟牠的個性真的很搭。", thread: "大G" },
+    ]},
+    { id: "say-name-is-cute-to-owner", label: "我只是觉得玩玩这个名字也太可爱了", nextStage: 32, lines: [
+      { sender: "我", body: "我只是覺得玩玩這個名字也太可愛了！", thread: "大G" },
+      { sender: "大G", body: "哈哈，牠從小就很愛玩，家裡就一直這樣叫牠。", thread: "大G" },
     ]},
   ],
   41: [
@@ -886,7 +896,7 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41, 42, 43].includes(catRescue.stage);
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41, 42, 43, 53].includes(catRescue.stage);
   // Keep both contact transcripts readable for the entire story, including
   // after the handoff. Hiding the Broccoli story view at later stages made
   // delivered replies appear in notifications but disappear when opened.
