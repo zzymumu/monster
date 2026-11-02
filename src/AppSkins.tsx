@@ -258,15 +258,17 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
-  // Stage 66 is a terminal state. Keep its transcript in Broccoli's chat,
-  // but never force that chat back open after the user exits it.
   return pendingCount === 0 &&
     [32, 33, 37, 38, 39, 63, 64, 65].includes(stage) &&
     currentThread !== "西蓝花" && currentThread !== "西兰花";
+}
+export function shouldCloseBroccoliAtStoryEnd(stage: number, pendingCount: number, currentThread: string): boolean {
+  return stage === 66 && pendingCount === 0 &&
+    (currentThread === "西蓝花" || currentThread === "西兰花");
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
   if (stage === 13 && branch === "monster-prank") return 16;
@@ -1052,9 +1054,15 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   ],
   66: [],
   67: [
-    { id: "admit-going-home", label: "好吧，你说得也有道理，我先回家好了", nextStage: 68, lines: [
-      { sender: "我", body: "好吧……妳說得也有道理，我先回家好了。只是心裡還是有點放不下。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "先回家休息一下啦！而且妳家裡還有 Vava，要是真的想幫牠，也可以先問問附近有沒有人看過牠，別急著帶回家。", thread: "西蓝花" },
+    { id: "suggest-isolation", label: "要不我先带它回家，单独一个房间跟 Vava 隔离？", nextStage: 81, lines: [
+      { sender: "我", body: "可是牠一直在外面也不是辦法……要不我先帶牠回家？讓牠單獨住一個房間，跟 Vava 隔離，完全不碰面。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳先等等！隔離也不是把牠關進房間、關上門就沒事了啊。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳每天還是要走進走出，衣服、手、鞋子都有可能把病菌或寄生蟲帶來帶去，Vava 一樣有風險。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且小貓有沒有跳蚤、耳疥蟲或其他傳染病都還不知道，至少先確認健康狀況再說，好不好？", thread: "西蓝花" },
+    ]},
+    { id: "admit-going-home", label: "好吧……那我先回家好了", nextStage: 68, lines: [
+      { sender: "我", body: "好吧……我聽妳的，先不把牠帶回家了。我先回家冷靜一下，可是心裡還是有點放不下。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "這樣比較穩妥！妳不是不管牠，我們只是先用安全一點的方法幫牠。到家跟我說一聲喔。", thread: "西蓝花" },
     ]},
     { id: "promise-not-bring-home", label: "嗯，我不把它带回家了，先回去再说", nextStage: 68, lines: [
       { sender: "我", body: "嗯，我不把牠帶回家了，先回去再說。", thread: "西蓝花" },
@@ -1099,13 +1107,23 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   71: [
-    { id: "kitten-still-there", label: "它居然还在原地！等等，铭牌上写着温尚翊？？？", nextStage: 80, lines: [
-      { sender: "我", body: "我回來了……牠居然還在原地！看到我還小小聲叫了一下。等等，牠脖子上那個牌子……溫尚翊？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "溫尚翊？？？妳怎麼突然說這個名字？發生什麼事了？", thread: "西蓝花" },
+    { id: "kitten-still-there", label: "它居然还在原地！等等，温尚翊？？？", nextStage: 80, lines: [
+      { sender: "我", body: "我回來了……牠居然還在原地！看到我還小小聲叫了一下。溫尚翊？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊？？？妳怎麼了？？？怎麼突然這麼驚訝？", thread: "西蓝花" },
     ]},
-    { id: "notice-nameplate", label: "小猫还在！我看到铭牌上写着温尚翊？？？", nextStage: 80, lines: [
-      { sender: "我", body: "牠還在！我看到牠脖子上的名牌，等等……溫尚翊？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "溫尚翊？？？妳怎麼了？名牌上寫了什麼？", thread: "西蓝花" },
+    { id: "notice-nameplate", label: "小猫还在！等等，温尚翊？？？", nextStage: 80, lines: [
+      { sender: "我", body: "牠還在！等等……溫尚翊？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊？？？發生什麼事了？妳先說清楚！", thread: "西蓝花" },
+    ]},
+  ],
+  81: [
+    { id: "agree-go-home-after-isolation", label: "好吧……你说得对，我先回家好了", nextStage: 68, lines: [
+      { sender: "我", body: "好吧……妳說得對，我先不把牠帶回家了。我先回家，可是想到牠還在那裡，心裡還是很難受。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我知道啦，我也會心疼。妳先回家休息，到家跟我說一聲，我們再一起想辦法。", thread: "西蓝花" },
+    ]},
+    { id: "ask-rescue-instead", label: "那我先回家，想想有没有更安全的办法", nextStage: 68, lines: [
+      { sender: "我", body: "那我先回家，想想有沒有更安全的辦法可以幫牠。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對嘛！先不要急著帶回家，確認牠的健康和有沒有主人比較重要。路上小心！", thread: "西蓝花" },
     ]},
   ],
   80: [
@@ -1285,7 +1303,11 @@ export function WeChatSkin(p: SkinProps) {
     // Broccoli only once every queued DaG message has appeared. Later, return
     // to DaG after the Broccoli follow-up is fully delivered.
     if (pendingCatLines.length > 0) return;
-    if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
+    if (shouldCloseBroccoliAtStoryEnd(catRescue.stage, pendingCatLines.length, p.thread)) {
+      // The friend conversation has reached its final exchange. Return to
+      // the WeChat conversation list instead of trapping the player in chat.
+      p.onThread("");
+    } else if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
       setTab("微信");
       p.onThread("西蓝花");
     } else if ([35, 40].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
