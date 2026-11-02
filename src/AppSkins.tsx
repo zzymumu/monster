@@ -258,7 +258,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43, 44, 45]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
@@ -367,13 +367,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   31: [
-    { id: "sudden-exclamation", label: "！！！！！！", nextStage: 40, lines: [
-      { sender: "我", body: "！！！！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "？？？？怎麼了怎麼了？？妳怎麼突然發這麼多驚嘆號？？？", thread: "西蓝花" },
+    { id: "doctor-started-check", label: "医生正在帮它检查，刚刚拿去扫描晶片了", nextStage: 46, lines: [
+      { sender: "我", body: "醫生正在幫牠檢查，剛剛先拿去掃描晶片了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好，那先等醫生確認！希望牠有晶片，這樣比較容易找到主人。", thread: "西蓝花" },
     ]},
-    { id: "doctor-showed-tag", label: "等一下！！！医生刚刚给我看了它脖子上的名牌……", nextStage: 40, lines: [
-      { sender: "我", body: "等一下！！！醫生剛剛給我看了牠脖子上的名牌……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "名牌怎麼了？？上面寫什麼？妳快說，我有點緊張了！", thread: "西蓝花" },
+    { id: "doctor-checking-now", label: "医生刚开始检查，我在旁边等结果", nextStage: 46, lines: [
+      { sender: "我", body: "醫生剛開始幫牠檢查，我在旁邊等結果。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "嗯嗯，妳先陪著牠，不要太緊張，有消息再跟我說。", thread: "西蓝花" },
     ]},
   ],
   3: [
@@ -745,6 +745,76 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "check-wechat-id", label: "我再确认一下微信号，怕自己看错", nextStage: 8, lines: [
       { sender: "我", body: "我再確認一下微信號，怕自己太緊張看錯了……", thread: "西蓝花" },
       { sender: "西蓝花", body: "好，慢慢看清楚！確認沒錯再加，這件事真的太不可思議了。", thread: "西蓝花" },
+    ]},
+  ],
+  46: [
+    { id: "sudden-exclamation", label: "！！！！！！", nextStage: 47, lines: [
+      { sender: "我", body: "！！！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？？怎麼了怎麼了？？妳怎麼突然發這麼多驚嘆號？？？", thread: "西蓝花" },
+    ]},
+    { id: "doctor-has-tag", label: "等一下！！！医生刚刚拿着它的名牌过来了……", nextStage: 47, lines: [
+      { sender: "我", body: "等一下！！！醫生剛剛拿著牠的名牌過來了……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "名牌？上面寫了什麼？妳怎麼這麼激動？？", thread: "西蓝花" },
+    ]},
+  ],
+  47: [
+    { id: "reveal-owner-name", label: "医生说……主人名字叫温尚翊？？？？？", nextStage: 48, lines: [
+      { sender: "我", body: "醫生說……名牌上的主人名字叫溫尚翊？？？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊？？？？等一下！！！！妳說的是溫尚翊？？？", thread: "西蓝花" },
+    ]},
+    { id: "show-tag-details", label: "名牌上写着温尚翊，还有一组联络电话", nextStage: 48, lines: [
+      { sender: "我", body: "名牌上寫著溫尚翊，下面還有一組聯絡電話……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊？？？？這名字怎麼這麼耳熟……妳等一下！", thread: "西蓝花" },
+    ]},
+  ],
+  48: [
+    { id: "yes-mayday-monster", label: "对啊……五月天那个怪兽，温尚翊？？？", nextStage: 49, lines: [
+      { sender: "我", body: "對啊……五月天那個怪獸，溫尚翊？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怪獸？？？？啊？？？？是五月天那個怪獸？？？真的假的！！！", thread: "西蓝花" },
+    ]},
+    { id: "ask-if-same-person", label: "我也不敢相信，会不会只是刚好同名？", nextStage: 49, lines: [
+      { sender: "我", body: "我也不敢相信……會不會只是剛好同名啊？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "可是溫尚翊這三個字也太巧了吧！！！妳先等等，我現在也好震驚！", thread: "西蓝花" },
+    ]},
+  ],
+  49: [
+    { id: "reassure-just-same-name", label: "先冷静，可能只是重名吧，哪有那么巧", nextStage: 50, lines: [
+      { sender: "我", body: "先冷靜……可能只是重名吧，哪有那麼巧，對不對？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "也是啦……世界上同名同姓的人又不是沒有，哪有那麼巧真的遇到怪獸啦。", thread: "西蓝花" },
+    ]},
+    { id: "still-in-disbelief", label: "可是这也太巧了，我现在手都在抖", nextStage: 50, lines: [
+      { sender: "我", body: "可是這也太巧了吧……我現在手都在抖欸。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我懂我懂！先不要自己嚇自己，也可能只是同名啦，我們先確認本人比較實在。", thread: "西蓝花" },
+    ]},
+  ],
+  50: [
+    { id: "call-owner", label: "那我照名牌上的电话打过去确认一下", nextStage: 51, lines: [
+      { sender: "我", body: "那我照名牌上的電話打過去確認一下好了……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對對對！先打電話確認，妳不要一接通就太激動喔！", thread: "西蓝花" },
+    ]},
+    { id: "hesitate-call", label: "我有点不敢打……你陪我一起确认好不好", nextStage: 51, lines: [
+      { sender: "我", body: "我有點不敢打欸……妳陪我一起確認好不好？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我陪妳！快打快打，我也好想知道到底是不是本人！", thread: "西蓝花" },
+    ]},
+  ],
+  51: [
+    { id: "call-no-answer", label: "打了……一直响，没有人接电话", nextStage: 52, lines: [
+      { sender: "我", body: "我打了……電話一直響，可是沒有人接。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "欸？？沒人接喔？是不是人在忙？那名牌上有沒有微信號？要不要試著加微信看看？", thread: "西蓝花" },
+    ]},
+    { id: "call-unreachable", label: "电话好像打不通，暂时联系不上主人", nextStage: 52, lines: [
+      { sender: "我", body: "電話好像打不通，暫時聯絡不上主人……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怎麼會這樣！那看看名牌上有沒有微信號吧，試著加好友聯絡看看？", thread: "西蓝花" },
+    ]},
+  ],
+  52: [
+    { id: "add-wechat-owner", label: "有微信号！我现在试着添加好友", nextStage: 8, lines: [
+      { sender: "我", body: "有微信號！我現在試著添加好友看看。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "快去快去！先確認是不是本人，等對方回覆再說！", thread: "西蓝花" },
+    ]},
+    { id: "double-check-wechat", label: "我再确认一下微信号，怕自己看错", nextStage: 8, lines: [
+      { sender: "我", body: "我再確認一下微信號，怕自己太緊張看錯了……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好，慢慢看清楚！確認沒錯再加好友。", thread: "西蓝花" },
     ]},
   ],
   36: [],
