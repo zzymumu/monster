@@ -116,7 +116,8 @@ function MessageList({
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
       {items.map((i) => {
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
-        const body = monsterMessage ? toTraditionalChinese(i.body) : i.body;
+        const simplifiedMessage = wechat && (i.sender === "我" || i.sender === "西蓝花");
+        const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
         return <div
           key={i.id}
           className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
@@ -199,6 +200,14 @@ const SIMPLIFIED_TO_TRADITIONAL: Record<string, string> = {
 };
 function toTraditionalChinese(value: string) {
   return value.replace(/[\s\S]/g, (char) => SIMPLIFIED_TO_TRADITIONAL[char] || char);
+}
+const TRADITIONAL_TO_SIMPLIFIED: Record<string, string> = Object.fromEntries(
+  Object.entries(SIMPLIFIED_TO_TRADITIONAL)
+    .filter(([simplified, traditional]) => simplified.length === 1 && traditional.length === 1)
+    .map(([simplified, traditional]) => [traditional, simplified]),
+);
+function toSimplifiedChinese(value: string) {
+  return value.replace(/[\s\S]/g, (char) => TRADITIONAL_TO_SIMPLIFIED[char] || char);
 }
 const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
@@ -690,7 +699,7 @@ export function WeChatSkin(p: SkinProps) {
           {catRescueActive ? (
             <div className="cat-rescue-thread">
               <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
-              {catRescue.stage === 8 && !idCopied && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看對方的微信號</button></div>}
+              {catRescue.stage === 8 && !idCopied && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
               {catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
