@@ -130,7 +130,7 @@ export function DeviceLock({
           <div className="lock-widgets" aria-label="锁屏小组件">
             <div className="lock-widget lock-widget-battery">
               <div className="lock-widget-heading"><Battery size={19} /><strong>{work.phone.battery}%</strong></div>
-              <div className="lock-widget-title">电池</div>
+              <div className="lock-widget-title">你才是 iphone</div>
               <div className="lock-widget-track"><span style={{ width: `${work.phone.battery}%` }} /></div>
             </div>
             <div className="lock-widget lock-widget-now-playing">
