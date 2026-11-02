@@ -777,6 +777,9 @@ export function WeChatSkin(p: SkinProps) {
     item.sender !== "大G" &&
     item.sender !== "温尚翊" &&
     item.meta?.storyThread !== "大G" &&
+    // Hide a player line that an older build incorrectly auto-sent from the
+    // scripted branch instead of waiting for the user to choose it.
+    item.body.trim() !== "我知道啊，可是它这么小一只，身边也没有猫妈妈，我真的走不开。" &&
     // Keep the original seeded chat history: those messages also carry the
     // cat-rescue storyId, but belong to the broccoli conversation. Only
     // remove unmistakable owner-prank lines from legacy mixed saves.
@@ -810,7 +813,7 @@ export function WeChatSkin(p: SkinProps) {
             item.meta?.storyThread === "西兰花" ||
             item.title === "西蓝花" ||
             item.title === "西兰花"
-          ),
+          ).filter((item) => item.body.trim() !== "我知道啊，可是它这么小一只，身边也没有猫妈妈，我真的走不开。"),
         ])
       : allItems.filter((item) => item.title === p.thread);
   // Never expose the next interaction branch while any scripted line is
