@@ -943,7 +943,7 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41, 42, 43, 53].includes(catRescue.stage);
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 40, 41, 42, 43, 53, 54, 55, 56].includes(catRescue.stage);
   // Keep both contact transcripts readable for the entire story, including
   // after the handoff. Hiding the Broccoli story view at later stages made
   // delivered replies appear in notifications but disappear when opened.
