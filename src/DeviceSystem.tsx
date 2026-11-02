@@ -113,7 +113,6 @@ export function DeviceLock({
       setCode("");
     }
   };
-  const open = () => (work.phone.passcode ? setPinOpen(true) : onUnlock(""));
   const lockDate = new Date((work.phone.date || new Date().toISOString().slice(0, 10)) + "T12:00:00");
   const lockDateLabel = new Intl.DateTimeFormat("zh-CN", {
     weekday: "long",
