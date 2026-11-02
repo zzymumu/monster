@@ -785,6 +785,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
+              {p.thread === "大G" && catRescue.stage >= 23 && <Compose creator={p.creator} onAdd={p.onAdd} />}
             </div>
           ) : (
             <>
