@@ -1041,3 +1041,127 @@
   .phone-shell.ios27 .device-passcode .pin-keypad { grid-auto-rows: 68px; gap: 12px 24px; }
   .phone-shell.ios27 .device-passcode .pin-keypad button { width: 68px; height: 68px; }
 }
+
+
+/* Lock Screen widgets: iOS-style weather and calendar glance cards.
+   These styles target the actual JSX emitted by DeviceLock, not placeholder selectors. */
+.phone-shell.ios27 .lock-screen.device-lock .lock-widgets {
+  position: absolute;
+  top: 222px;
+  left: 18px;
+  right: 18px;
+  z-index: 4;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 10px;
+  min-height: 112px;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0,0,0,.22);
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-widget {
+  min-width: 0;
+  min-height: 112px;
+  padding: 10px 12px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 21px;
+  background: linear-gradient(145deg, rgba(245,248,255,.22), rgba(225,235,250,.10));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 8px 24px rgba(0,0,0,.12);
+  -webkit-backdrop-filter: blur(25px) saturate(1.55);
+  backdrop-filter: blur(25px) saturate(1.55);
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-widget-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 17px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 650;
+  color: rgba(255,255,255,.94);
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-widget-topline > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-widget-topline svg {
+  flex: none;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-weather-temperature {
+  font-size: 37px;
+  line-height: 39px;
+  letter-spacing: -1.8px;
+  font-weight: 350;
+  margin-top: 0;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-weather-condition {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 550;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-weather-range {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: auto;
+  font-size: 9px;
+  line-height: 12px;
+  color: rgba(255,255,255,.88);
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-weather-range span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-calendar-month {
+  color: rgba(255,255,255,.84);
+  font-weight: 550;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-calendar-day {
+  font-size: 30px;
+  line-height: 31px;
+  font-weight: 350;
+  letter-spacing: -1px;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-calendar-events {
+  display: grid;
+  gap: 3px;
+  margin-top: auto;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-calendar-events > div {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  min-width: 0;
+  font-size: 9px;
+  line-height: 12px;
+  white-space: nowrap;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-calendar-events b {
+  flex: none;
+  color: #d9eaff;
+  font-weight: 700;
+}
+.phone-shell.ios27 .lock-screen.device-lock .lock-calendar-events span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-height: 760px) {
+  .phone-shell.ios27 .lock-screen.device-lock .lock-widgets {
+    top: 204px;
+    min-height: 100px;
+  }
+  .phone-shell.ios27 .lock-screen.device-lock .lock-widget {
+    min-height: 100px;
+    padding: 8px 10px;
+  }
+}
