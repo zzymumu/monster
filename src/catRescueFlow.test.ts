@@ -389,17 +389,19 @@ describe("WeChat cat-rescue story configuration", () => {
       }
     }
   });
-  it("keeps DaG's availability notice at the end and preserves every selected player reply", () => {
+  it("ends DaG's conversation with the user's single goodbye reply", () => {
     expect(CAT_RESCUE_CHOICES[61].every((choice) =>
-      choice.lines.slice(1).every((line) => !/沒辦法馬上回覆|回覆得比較慢/.test(line.body))
+      choice.lines.slice(1).some((line) => /沒辦法馬上回覆|回覆得比較慢/.test(line.body))
     )).toBe(true);
+    expect(CAT_RESCUE_CHOICES[82]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[82][0].label).toContain("好的，掰掰");
+    expect(CAT_RESCUE_CHOICES[82][0].lines).toHaveLength(1);
     expect(CAT_RESCUE_CHOICES[82][0].lines[0].sender).toBe("我");
-    expect(CAT_RESCUE_CHOICES[82][0].lines[0].body).toContain("不如請我吃頓飯");
-    expect(CAT_RESCUE_CHOICES[89].every((choice) =>
-      choice.lines.at(-1)?.body.includes("不好意思")
-    )).toBe(true);
-    expect(CAT_RESCUE_CHOICES[90][0].lines[0].sender).toBe("我");
-    expect(CAT_RESCUE_CHOICES[90][0].lines.slice(1).some((line) => /回覆/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[82][0].lines[0].body).toContain("看玩玩吃飯了沒有");
+    expect(CAT_RESCUE_CHOICES[82][0].nextStage).toBe(66);
+    for (const obsoleteStage of [86, 87, 88, 89, 90, 91]) {
+      expect(CAT_RESCUE_CHOICES[obsoleteStage]).toBeUndefined();
+    }
   });
 
 });
