@@ -789,13 +789,27 @@ export function WeChatSkin(p: SkinProps) {
   }, [catRescue.stage, pendingCatLines.length, p.thread, p.onThread]);
   useEffect(() => {
     if (!legacyPrankReaddPending) return;
-    setCatRescueRaw(JSON.stringify({ ...parsedCatRescue, version: 2, stage: 16, branch: "monster-prank" }));
     const alreadyHasQuestion = [...p.items, ...parsedCatRescue.messages].some((item) => item.body.trim() === "？？？");
-    if (!alreadyHasQuestion) {
-      setPendingCatLines((current) => current.some((line) => line.body === "？？？")
-        ? current
-        : [...current, { sender: "大G", body: "？？？", thread: "大G" }]);
-    }
+    // This first "？？？" is the conversation opener shown as soon as the
+    // user enters DaG's chat. It is not part of the delayed reply sequence.
+    const openingQuestion = alreadyHasQuestion ? null : makeItem({
+      id: "cat-rescue-opening-question",
+      title: "大G",
+      sender: "大G",
+      body: "？？？",
+      time: "2026-11-02 " + (storyClockRef.current || "14:24"),
+      outgoing: false,
+      meta: { storyId: "cat-rescue", storyThread: "大G" },
+    });
+    setCatRescueRaw(JSON.stringify({
+      ...parsedCatRescue,
+      version: 2,
+      stage: 16,
+      branch: "monster-prank",
+      messages: openingQuestion ? [...parsedCatRescue.messages, openingQuestion] : parsedCatRescue.messages,
+    }));
+    // No delayed queue entry for the opening question; only the replies after
+    // the user continues are timed 30–60 seconds each.
   }, [legacyPrankReaddPending]);
   // Pending replies are persisted in WeChat UI state and delivered by the
   // phone-level scheduler, so they continue arriving while another app is open.
