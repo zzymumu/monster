@@ -799,16 +799,20 @@ export function WeChatSkin(p: SkinProps) {
     // one by one by the queue effect, so a click always produces visible output.
     const destination = getCatRescueThreadForStage(nextStage);
     const prepared = lines.map((line) => ({ ...line, thread: line.thread || destination }));
+    // Player's chosen line appears immediately; every incoming line,
+    // including the first "？？？", is queued for the 30–60 second timer.
     const [first, ...rest] = prepared;
-    const immediate = first ? makeItem({
+    const immediateLine = first?.sender === "我" ? first : null;
+    const queuedLines = immediateLine ? rest : prepared;
+    const immediate = immediateLine ? makeItem({
       id: "cat-rescue-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
-      title: first.thread || destination,
-      sender: first.sender,
-      body: first.body,
+      title: immediateLine.thread || destination,
+      sender: immediateLine.sender,
+      body: immediateLine.body,
       time: "2026-11-02 " + (storyClockRef.current || "14:24"),
-      outgoing: first.sender === "我",
-      avatar: first.sender === "西蓝花" ? catAvatar : "",
-      meta: { storyId: "cat-rescue", storyThread: first.thread || destination },
+      outgoing: true,
+      avatar: "",
+      meta: { storyId: "cat-rescue", storyThread: immediateLine.thread || destination },
     }) : null;
     setCatRescueRaw(JSON.stringify({
       ...catRescue,
@@ -817,7 +821,7 @@ export function WeChatSkin(p: SkinProps) {
       branch,
       messages: immediate ? [...catRescue.messages, immediate] : catRescue.messages,
     }));
-    setPendingCatLines((current) => [...current, ...rest]);
+    setPendingCatLines((current) => [...current, ...queuedLines]);
   };
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
