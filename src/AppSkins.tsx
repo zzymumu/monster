@@ -39,7 +39,6 @@ import {
   Sparkles,
   MapPin,
   Wallet,
-  Bookmark,
   BookOpen,
 } from "lucide-react";
 import { safeMedia, type Item, type UiValue } from "./schema";

@@ -1630,3 +1630,96 @@
   .phone-shell.ios27 .device-control .cc-status { top: calc(max(14px, env(safe-area-inset-top)) + 60px); }
   .phone-shell.ios27 .device-control .cc-page-rail { gap: 18px; }
 }
+
+
+/* Expanded Control Center spacing and taller vertical sliders for phone-sized viewports. */
+.phone-shell.ios27 .system-panel.device-control.cc-reference-layout {
+  padding-left: 22px;
+  padding-right: 42px;
+}
+.phone-shell.ios27 .device-control .cc-grid {
+  top: calc(max(16px, env(safe-area-inset-top)) + 150px);
+  bottom: 82px;
+  grid-template-rows: minmax(62px,1.1fr) minmax(62px,1.1fr) minmax(60px,.95fr) minmax(60px,.95fr) minmax(62px,1fr) minmax(62px,1fr);
+  gap: 10px;
+  overflow: visible;
+}
+.phone-shell.ios27 .device-control .cc-connect,
+.phone-shell.ios27 .device-control .cc-music {
+  padding: 12px;
+  border-radius: 28px;
+}
+.phone-shell.ios27 .device-control .cc-media-top > span {
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+}
+.phone-shell.ios27 .device-control .cc-media-top > span svg { width: 24px; height: 24px; }
+.phone-shell.ios27 .device-control .cc-media-title strong { font-size: 15px; }
+.phone-shell.ios27 .device-control .cc-media-title small { font-size: 11px; }
+.phone-shell.ios27 .device-control .cc-media-controls button svg { width: 22px; height: 22px; }
+.phone-shell.ios27 .device-control .cc-square svg { width: 27px; height: 27px; }
+.phone-shell.ios27 .device-control .cc-slider {
+  grid-row: 3 / span 2;
+  width: 100%;
+  min-height: 0;
+  border-radius: 36px;
+}
+.phone-shell.ios27 .device-control .cc-slider > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0 0 36px 36px;
+}
+.phone-shell.ios27 .device-control .cc-slider > input {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  touch-action: none;
+}
+.phone-shell.ios27 .device-control .cc-slider > svg {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10%;
+  width: 31px;
+  height: 31px;
+}
+.phone-shell.ios27 .device-control .cc-focus {
+  grid-column: 1 / span 2;
+  grid-row: 4;
+  min-height: 0;
+  padding: 0 12px;
+  gap: 8px;
+  font-size: 13px;
+}
+.phone-shell.ios27 .device-control .cc-focus svg:first-child {
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+}
+.phone-shell.ios27 .device-control .cc-tool-flashlight { grid-column: 1; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-calculator { grid-column: 2; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-camera { grid-column: 3; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-record { grid-column: 4; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-qr { grid-column: 1; grid-row: 6; }
+.phone-shell.ios27 .device-control .cc-tool-battery { grid-column: 2; grid-row: 6; }
+.phone-shell.ios27 .device-control .cc-tool-mirror { grid-column: 3; grid-row: 6; }
+@media (max-height: 740px) {
+  .phone-shell.ios27 .device-control .cc-grid {
+    top: calc(max(14px, env(safe-area-inset-top)) + 150px);
+    bottom: 62px;
+    gap: 8px;
+    grid-template-rows: minmax(56px,1.1fr) minmax(56px,1.1fr) minmax(54px,.95fr) minmax(54px,.95fr) minmax(56px,1fr) minmax(56px,1fr);
+  }
+  .phone-shell.ios27 .device-control .cc-connect,
+  .phone-shell.ios27 .device-control .cc-music { padding: 10px; }
+  .phone-shell.ios27 .device-control .cc-media-top > span { width: 46px; height: 46px; }
+  .phone-shell.ios27 .device-control .cc-focus { font-size: 12px; }
+}
