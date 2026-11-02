@@ -3,7 +3,7 @@ import {
   ConnectivityModule,
   SliderModule,
 } from "./vendor/ios-web/ControlModules";
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, useRef, createContext, useContext } from "react";
 import {
   LockKeyhole,
   Flashlight,
@@ -35,6 +35,9 @@ import {
   Airplay,
   ChevronRight,
   Lock,
+  ImagePlus,
+  Check,
+  X,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { type Work } from "./schema";
@@ -68,6 +71,7 @@ export function DeviceLock({
   onUnlock,
   onCamera,
   onLight,
+  onWallpaperPicker,
 }: {
   work: Work;
   time: string;
@@ -79,9 +83,12 @@ export function DeviceLock({
   onUnlock: (v: string) => void;
   onCamera: () => void;
   onLight: () => void;
+  onWallpaperPicker: () => void;
 }) {
   const [code, setCode] = useState("");
   const [emergencyOpen, setEmergencyOpen] = useState(false);
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearLongPress = () => { if (longPressTimer.current) clearTimeout(longPressTimer.current); longPressTimer.current = null; };
   useEffect(() => {
     if (error) setCode("");
   }, [error]);
@@ -113,6 +120,15 @@ export function DeviceLock({
       animate={{ opacity: 1 }}
       exit={{ y: -852, opacity: 0 }}
       transition={{ duration: 0.48, ease: [0.32, 0.72, 0, 1] }}
+      onPointerDown={(event) => {
+        if (pinOpen || (event.target as HTMLElement).closest("button")) return;
+        clearLongPress();
+        longPressTimer.current = setTimeout(() => { onWallpaperPicker(); }, 550);
+      }}
+      onPointerUp={clearLongPress}
+      onPointerLeave={clearLongPress}
+      onPointerCancel={clearLongPress}
+      onContextMenu={(event) => { event.preventDefault(); if (!pinOpen) onWallpaperPicker(); }}
     >
       {!pinOpen ? (
         <>
@@ -227,6 +243,68 @@ export function DeviceLock({
     </motion.div>
   );
 }
+
+export function WallpaperPicker({
+  current,
+  onSelect,
+  onClose,
+}: {
+  current: string;
+  onSelect: (value: string) => void;
+  onClose: () => void;
+}) {
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [selected, setSelected] = useState(current);
+  const presets = [
+    { id: "default", name: "当前壁纸", background: "linear-gradient(145deg,#607c9e,#d9c9ad 48%,#243d36)" },
+    { id: "sunset", name: "日落", background: "linear-gradient(155deg,#35134d 0%,#f34c58 42%,#ffb347 68%,#3a8cbd 100%)" },
+    { id: "ocean", name: "海岸", background: "linear-gradient(160deg,#a9d8e8 0%,#3f91b8 48%,#123f68 100%)" },
+    { id: "midnight", name: "深空", background: "radial-gradient(circle at 65% 28%,#536c9c,#171b35 55%,#05060b)" },
+    { id: "pink", name: "柔粉", background: "linear-gradient(150deg,#f4b8c9,#b5a6e5 55%,#6a8bc5)" },
+  ];
+  const chooseFile = (file?: File) => {
+    if (!file || !file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const value = String(reader.result || "");
+      if (value) { setSelected(value); onSelect(value); onClose(); }
+    };
+    reader.readAsDataURL(file);
+  };
+  return (
+    <motion.div className="wallpaper-picker-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <div className="wallpaper-picker-header">
+        <button aria-label="关闭壁纸选择" onClick={onClose}><X /></button>
+        <strong>壁纸</strong>
+        <span />
+      </div>
+      <div className="wallpaper-picker-label">锁定屏幕</div>
+      <div className="wallpaper-picker-carousel">
+        {presets.map((preset) => (
+          <button key={preset.id} className={"wallpaper-preview " + (selected === preset.id ? "selected" : "")} onClick={() => setSelected(preset.id)}>
+            <span className="wallpaper-preview-art" style={{ background: preset.background }}>
+              <small>周一 · 9:41</small><b>09:41</b><i>天气　日历</i>
+            </span>
+            <span className="wallpaper-preview-name">{preset.name}</span>
+            {selected === preset.id && <Check className="wallpaper-preview-check" size={18} />}
+          </button>
+        ))}
+        {selected.startsWith("data:image/") && (
+          <button className="wallpaper-preview selected" onClick={() => setSelected(current)}>
+            <img className="wallpaper-preview-art" src={selected} alt="自定义壁纸预览" />
+            <span className="wallpaper-preview-name">自定义照片</span><Check className="wallpaper-preview-check" size={18} />
+          </button>
+        )}
+      </div>
+      <div className="wallpaper-picker-actions">
+        <button className="wallpaper-customize" onClick={() => { onSelect(selected); onClose(); }}>自定义</button>
+        <button className="wallpaper-add" aria-label="添加新壁纸" onClick={() => fileInput.current?.click()}><ImagePlus /></button>
+      </div>
+      <input ref={fileInput} type="file" accept="image/*" hidden onChange={(event) => chooseFile(event.target.files?.[0])} />
+    </motion.div>
+  );
+}
+
 export function ControlCenter({
   battery = 94,
   network,
