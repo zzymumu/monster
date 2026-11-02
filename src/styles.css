@@ -5303,11 +5303,7 @@ label {
   font-size: 22px;
 }
 .wechat-ui.wx-reference-layout .wx-me-avatar-edit input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
+  display: none !important;
 }
 .wechat-ui.wx-reference-layout .wx-me-name-edit {
   justify-content: flex-start;
