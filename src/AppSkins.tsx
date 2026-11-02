@@ -928,13 +928,25 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   82: [
-    { id: "owner-thanks-and-dinner", label: "你先忙吧，玩玩这边我会照顾好的", nextStage: 83, lines: [
-      { sender: "我", body: "好呀，你先忙你的，玩玩這邊我會照顧好的。有狀況我再跟你說。", thread: "大G" },
-      { sender: "大G", body: "好，真的謝謝妳。等我回去一定要好好謝謝妳……不然請妳吃頓飯好了，總不能一直讓妳白忙。", thread: "大G" },
+    { id: "owner-thanks-and-dinner", label: "那你要不请我吃饭？", nextStage: 86, lines: [
+      { sender: "大G", body: "真的很謝謝妳願意照顧玩玩，這段時間要麻煩妳了。", thread: "大G" },
+      { sender: "我", body: "那你要不請我吃飯？", thread: "大G" },
+      { sender: "大G", body: "哈哈，好啊，等我回去請妳吃飯。", thread: "大G" },
     ]},
     { id: "owner-tease-dinner", label: "那你忙完记得回来看看它哦", nextStage: 83, lines: [
       { sender: "我", body: "那你忙完記得回來看看牠喔，牠應該也會想你。", thread: "大G" },
       { sender: "大G", body: "一定會啦。說起來，妳可是玩玩的救命恩人欸，我是不是也該請妳吃頓飯？哈哈。", thread: "大G" },
+    ]},
+  ],
+  86: [
+    { id: "accept-dinner-playfully", label: "好啊，不准反悔！我可是能吃很多的！", nextStage: 59, lines: [
+      { sender: "我", body: "好啊，不准反悔！我可是能吃很多的！", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，答應妳的當然不反悔。那妳可要好好想想想吃什麼了。", thread: "大G" },
+      { sender: "大G", body: "不過現在先麻煩妳照顧玩玩，牠剛換地方，可能還需要一點時間適應。", thread: "大G" },
+    ]},
+    { id: "accept-dinner-shyly", label: "那我就不客气啦，谢谢你！", nextStage: 59, lines: [
+      { sender: "我", body: "那我就不客氣啦，謝謝你！", thread: "大G" },
+      { sender: "大G", body: "哈哈，不用客氣，說好了就不會反悔。先讓玩玩好好適應，有狀況再跟我說。", thread: "大G" },
     ]},
   ],
   83: [
