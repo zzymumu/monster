@@ -20,7 +20,6 @@ import {
   MessageCircle,
   Plus,
   Share2,
-  X,
   Music,
   Phone,
   Search,
