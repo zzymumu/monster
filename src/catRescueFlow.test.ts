@@ -83,6 +83,9 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[17].every((choice) => choice.nextStage === 13)).toBe(true);
     expect(CAT_RESCUE_CHOICES[16]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[16].every((choice) => choice.nextStage === 20)).toBe(true);
+    const shortApology = CAT_RESCUE_CHOICES[16].find((choice) => choice.id === "monster-apology-after-prank");
+    expect(shortApology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "我", "大G"]);
+    expect(shortApology?.lines[1].body).toBe("我說呢，怎麼有人一上來就說奇奇怪怪的話，原來是這樣喔……");
     expect(apology?.nextStage).toBe(20);
     expect(apology?.lines.some((line) => /小黑貓/.test(line.body))).toBe(true);
     expect(apology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "我", "大G"]);
