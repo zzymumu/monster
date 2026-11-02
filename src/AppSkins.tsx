@@ -484,11 +484,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   21: [
-    { id: "ask-return", label: "那你什么时候回来接它呀？", nextStage: 22, lines: [
-      { sender: "我", body: "那你什么时候回来接它呀？我可以先帮你照看，不过想先知道大概多久。" },
-      { sender: "大G", body: "我這幾天都在外地，還要幾天才回得去，完全不知道牠竟然自己從家裡跑出去了。要不是妳聯絡我，我可能還不知道牠不見了。" },
-      { sender: "我", body: "没关系，你先把事情处理好，小猫这边我会留意。" },
-      { sender: "大G", body: "妳人也太好了吧……我都還沒開口拜託妳。" },
+    { id: "ask-return", label: "那你什么时候方便回来接它呀？", nextStage: 22, lines: [
+      { sender: "我", body: "那你什麼時候方便回來接牠呀？我可以先幫你照看，不過想先知道你大概什麼時候回來。" },
+      { sender: "大G", body: "我這幾天都不在家，人在外地還有事情要處理，暫時沒辦法回去接牠。原本真的不知道牠自己跑出門了……" },
     ]},
     { id: "offer-care", label: "要不我先帮你照顾它几天，等你回来再接走？", nextStage: 22, lines: [
       { sender: "我", body: "要不我先帮你照顾它几天吧，等你回来再接走就好。" },
@@ -498,29 +496,22 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   22: [
-    { id: "agree-care", label: "可以，我先照顾它几天，等你回来再接它", nextStage: 23, lines: [
-      { sender: "大G", body: "那……我可以拜託妳一件事嗎？能不能先幫我照顧牠幾天？等我一回去就馬上把牠接走。" },
-      { sender: "我", body: "可以呀，没问题。我会先照顾它，你回来前我会好好看着它。" },
-      { sender: "大G", body: "真的太謝謝妳了。牠的飼料跟習慣我晚點整理給妳，妳有什麼問題隨時傳訊息給我。" },
-      { sender: "大G", body: "還有啊，牠有點挑食，別被牠那張無辜的臉騙了，哈哈。" },
+    { id: "offer-care-first", label: "那我先帮你照顾它几天，等你回来再接它？", nextStage: 23, lines: [
+      { sender: "我", body: "那要不我先幫你照顧牠幾天？等你忙完回來，再過來接牠就好。" },
+      { sender: "大G", body: "真的可以嗎？那就太麻煩妳了……我這幾天都不在家，最放心不下的就是牠。" },
+      { sender: "我", body: "沒關係啦，牠現在在我這裡，我會先照顧好牠，你不用太擔心。" },
+      { sender: "大G", body: "謝謝妳，真的幫了我大忙。等我回去再好好謝謝妳。" },
     ]},
-    { id: "ask-details", label: "好呀，不过你要告诉我它平时的习惯和注意事项", nextStage: 23, lines: [
-      { sender: "大G", body: "那……我可以拜託妳一件事嗎？能不能先幫我照顧牠幾天？等我一回去就馬上把牠接走。" },
-      { sender: "我", body: "好呀，不过你要告诉我它平时的习惯和注意事项，我怕照顾不好。" },
-      { sender: "大G", body: "當然，我等一下把牠平常吃什麼、喜歡玩什麼都整理給妳。牠其實很好照顧啦，就是有點黏人。" },
-      { sender: "大G", body: "這幾天真的要麻煩妳了，謝謝妳願意幫忙。" },
+    { id: "offer-care-with-details", label: "我可以帮忙照顾几天，你把注意事项告诉我就好", nextStage: 23, lines: [
+      { sender: "我", body: "我可以先幫你照顧幾天，你把牠平常的習慣和要注意的事情告訴我就好。" },
+      { sender: "大G", body: "好，真的謝謝妳。我這幾天都不在家，還好牠遇到妳。牠的飼料跟習慣我晚點整理給妳。" },
+      { sender: "我", body: "好呀，你慢慢整理，不用急，我先讓牠安心待著。" },
     ]},
   ],
   23: [
-    { id: "ask-food-routine", label: "那你把它平时吃什么、一天吃几次告诉我吧", nextStage: 24, lines: [
-      { sender: "我", body: "那你把它平时吃什么、一天吃几次告诉我吧，我先照着准备。" },
-      { sender: "大G", body: "牠平常吃固定的乾糧，一天分幾次少量給就好，旁邊記得放乾淨的水。突然換食物牠可能會不習慣。" },
-      { sender: "大G", body: "我晚點把飼料的照片跟份量傳給妳，妳先不要自己亂換喔。" },
-    ]},
-    { id: "ask-habits", label: "它平时有什么习惯？我想先熟悉一下", nextStage: 24, lines: [
-      { sender: "我", body: "它平时有什么习惯呀？我想先熟悉一下，免得它换环境不适应。" },
-      { sender: "大G", body: "牠有點黏人，晚上可能會在門口等人。剛到新地方先讓牠自己熟悉，不用一直抱牠。" },
-      { sender: "大G", body: "還有牠很愛玩小球，看到紙箱也會鑽進去，妳留意一下別讓牠咬到不該吃的東西。" },
+    { id: "ask-kitten-name-after-care", label: "对了，这只猫叫什么名字呀？", nextStage: 27, lines: [
+      { sender: "我", body: "對了，聊了半天我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？" },
+      { sender: "大G", body: "牠叫玩玩。" },
     ]},
   ],
   24: [
