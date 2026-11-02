@@ -17,6 +17,7 @@ import {
 } from "./vendor/ios-web/Launcher";
 import {
   DeviceLock,
+  WallpaperPicker,
   ControlCenter,
   DeviceKeyboard,
   KeyboardContext,
@@ -137,6 +138,10 @@ function PhoneRuntime({
   const [app, setApp] = useState("");
   const [homeRequest, setHomeRequest] = useState(0);
   const [locked, setLocked] = useState(!creator);
+  const [wallpaperChoice, setWallpaperChoice] = useState(() => {
+    try { return localStorage.getItem("foundphone-lock-wallpaper") || "default"; } catch { return "default"; }
+  });
+  const [wallpaperPickerOpen, setWallpaperPickerOpen] = useState(false);
   const [pinOpen, setPinOpen] = useState(false);
   const [quickCamera, setQuickCamera] = useState(false);
   const [keyboard, setKeyboard] = useState(false);
@@ -294,6 +299,17 @@ function PhoneRuntime({
   }, [app, work.apps]);
   const displayTime = creator ? work.phone.time : s.time || work.phone.time;
   const plugin = getApp(app);
+  const wallpaperBackgrounds: Record<string, string> = {
+    sunset: "linear-gradient(155deg,#35134d 0%,#f34c58 42%,#ffb347 68%,#3a8cbd 100%)",
+    ocean: "linear-gradient(160deg,#a9d8e8 0%,#3f91b8 48%,#123f68 100%)",
+    midnight: "radial-gradient(circle at 65% 28%,#536c9c,#171b35 55%,#05060b)",
+    pink: "linear-gradient(150deg,#f4b8c9,#b5a6e5 55%,#6a8bc5)",
+  };
+  const wallpaperStyle: CSSProperties = wallpaperChoice.startsWith("data:image/")
+    ? { backgroundImage: `url(\"${wallpaperChoice}\")`, backgroundSize: "cover", backgroundPosition: "center" }
+    : wallpaperChoice !== "default" && wallpaperBackgrounds[wallpaperChoice]
+      ? { backgroundImage: wallpaperBackgrounds[wallpaperChoice] }
+      : {};
   useEffect(() => {
     const count = s.notifications.length;
     if (!locked && work.phone.notifications && count > noticesSeen.current) {
@@ -321,6 +337,7 @@ function PhoneRuntime({
       <KeyboardContext.Provider value={setKeyboard}>
         <div
           className={`phone-screen wallpaper-${work.phone.wallpaper} ${locked ? "is-locked" : ""} ${app ? "in-app" : ""} ${keyboard ? "keyboard-open" : ""}`}
+          style={wallpaperStyle}
           data-app={app}
           onDragStart={(e) => e.preventDefault()}
           onPointerDown={(e) => {
@@ -386,6 +403,18 @@ function PhoneRuntime({
             }
           }}
         >
+          <AnimatePresence>
+            {wallpaperPickerOpen && (
+              <WallpaperPicker
+                current={wallpaperChoice}
+                onSelect={(value) => {
+                  setWallpaperChoice(value);
+                  try { localStorage.setItem("foundphone-lock-wallpaper", value); } catch { setLoadError("壁纸保存失败，图片可能过大。"); }
+                }}
+                onClose={() => setWallpaperPickerOpen(false)}
+              />
+            )}
+          </AnimatePresence>
           <div className="wallpaper-orb orb-one" />
           <div className="wallpaper-orb orb-two" />
           <div className="status-bar">
@@ -430,6 +459,7 @@ function PhoneRuntime({
                 error={pinError}
                 onUnlock={unlock}
                 onLight={() => setPanel("light")}
+                onWallpaperPicker={() => setWallpaperPickerOpen(true)}
                 onCamera={() => {
                   setQuickCamera(true);
                   open("camera");
