@@ -3871,6 +3871,31 @@ label {
   width: 0;
   height: 0;
 }
+/* Hide every visible scrollbar inside WeChat while keeping native touch/mouse scrolling. */
+.wechat-ui,
+.wechat-ui *,
+.wechat-ui *::before,
+.wechat-ui *::after {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.wechat-ui *::-webkit-scrollbar,
+.wechat-ui *::-webkit-scrollbar-track,
+.wechat-ui *::-webkit-scrollbar-thumb {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+.wechat-ui .skin-messages,
+.wechat-ui .cat-rescue-thread > .skin-messages,
+.wechat-ui .cat-rescue-choices,
+.wechat-ui .wx-chat-body,
+.wechat-ui .wx-page-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 .wechat-ui .skin-scroll {
   background: #ededed;
 }
