@@ -454,8 +454,11 @@ export function WeChatSkin(p: SkinProps) {
   // Keep the story UI active even before its first scripted message is saved.
   // The first choice is what starts the story, so requiring existing story
   // messages here prevents the initial choices from ever appearing.
+  // The broccoli story remains available until the story itself reaches
+  // the owner-chat handoff. Do not let a stale accepted-friend flag from an
+  // older save hide the opening choices (stage 0) or the broccoli branches.
   const catRescueActive = isBroccoliThread
-    ? !monsterFriendAccepted
+    ? (!monsterFriendAccepted || catRescue.stage < 9 || catRescue.stage === 10 || catRescue.stage === 11)
     : isMonsterThread && monsterFriendAccepted;
   const catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
