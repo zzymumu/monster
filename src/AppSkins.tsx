@@ -413,6 +413,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   9: [
     { id: "monster-prank", label: "我是你爸爸", nextStage: 17, branch: "monster-prank", lines: [
       { sender: "我", body: "我是你爸爸。" },
+      { sender: "大G", body: "……蛤？" },
+      { sender: "大G", body: "妳哪位？我不認識妳喔。" },
+      { sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" },
     ]},
     { id: "monster-cat-intro", label: "你好，我捡到了一只小黑猫……", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "你好，我捡到了一只小黑猫。它脖子上挂着挂牌，上面有你的联系方式，我就照着上面的微信号加你了。" },
