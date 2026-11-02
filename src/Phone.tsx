@@ -1073,6 +1073,12 @@ function AppContent({
 }) {
   const [detail, setDetail] = useState<Item | null>(null);
   const [thread, setThread] = useState(() => String(state.ui?.[app.id]?.openThread ?? ""));
+  // Notification taps can target a new contact while WeChat is already
+  // mounted. Keep the visible conversation synchronized with that deep link.
+  useEffect(() => {
+    const requestedThread = String(state.ui?.[app.id]?.openThread ?? "");
+    if (requestedThread && requestedThread !== thread) setThread(requestedThread);
+  }, [app.id, state.ui?.[app.id]?.openThread, thread]);
   const [tab, setTab] = useState(app.tabs[0]);
   const [q, setQ] = useState("");
   const [pw, setPw] = useState("");
