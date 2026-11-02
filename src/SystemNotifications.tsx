@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { AppArtwork } from "./AppArtwork";
 import type { Item, Work } from "./schema";
 export function notificationContent(text: string, apps: Work["apps"], items: Item[] = []) {
-  const wechat = text.match(/^微信[：:]\\s*([^：:]+)[：:]\\s*(.*)$/);
+  const wechat = text.match(/^微信[：:]\s*([^：:]+)[：:]\s*(.*)$/);
   if (wechat) {
     const contact = wechat[1].trim();
     const message = items.find((item) => item.title === contact || item.sender === contact);
