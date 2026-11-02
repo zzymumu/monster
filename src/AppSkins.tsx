@@ -266,9 +266,10 @@ export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, 
     [32, 33, 37, 38, 39, 63, 64, 65].includes(stage) &&
     currentThread !== "西蓝花" && currentThread !== "西兰花";
 }
-export function shouldCloseBroccoliAtStoryEnd(stage: number, pendingCount: number, currentThread: string): boolean {
-  return stage === 66 && pendingCount === 0 &&
-    (currentThread === "西蓝花" || currentThread === "西兰花");
+export function shouldCloseBroccoliAtStoryEnd(_stage: number, _pendingCount: number, _currentThread: string): boolean {
+  // Never force-close the chat at the end of the story. The player must be
+  // able to reopen the completed conversation and leave it manually.
+  return false;
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
   if (stage === 13 && branch === "monster-prank") return 16;
@@ -1300,11 +1301,7 @@ export function WeChatSkin(p: SkinProps) {
     // Broccoli only once every queued DaG message has appeared. Later, return
     // to DaG after the Broccoli follow-up is fully delivered.
     if (pendingCatLines.length > 0) return;
-    if (shouldCloseBroccoliAtStoryEnd(catRescue.stage, pendingCatLines.length, p.thread)) {
-      // The friend conversation has reached its final exchange. Return to
-      // the WeChat conversation list instead of trapping the player in chat.
-      p.onThread("");
-    } else if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
+    if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
       setTab("微信");
       p.onThread("西蓝花");
     } else if ([35, 40].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
