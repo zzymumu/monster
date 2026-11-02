@@ -40,7 +40,7 @@ import {
   Wallet,
   BookOpen,
 } from "lucide-react";
-import { safeMedia, type Item, type UiValue } from "./schema";
+import { makeItem, safeMedia, type Item, type UiValue } from "./schema";
 export type SkinProps = {
   ui?: Record<string, UiValue>;
   onUi?: (key: string, value: UiValue) => void;
@@ -160,10 +160,201 @@ function Compose({
     </div>
   );
 }
+
+
+type CatRescueState = { stage: number; branch: string; messages: Item[] };
+function parseCatRescueState(raw: string): CatRescueState {
+  try {
+    const value = JSON.parse(raw) as Partial<CatRescueState>;
+    return {
+      stage: Number.isFinite(value.stage) ? Number(value.stage) : 0,
+      branch: typeof value.branch === "string" ? value.branch : "",
+      messages: Array.isArray(value.messages) ? value.messages as Item[] : [],
+    };
+  } catch {
+    return { stage: 0, branch: "", messages: [] };
+  }
+}
+type CatLine = { sender: "我" | "西蓝花"; body: string };
+type CatChoice = {
+  id: string;
+  label: string;
+  nextStage: number;
+  branch?: string;
+  lines: CatLine[];
+};
+const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
+  0: [
+    {
+      id: "hesitate",
+      label: "想带它回家，可是 Vava 还在家，我怕有传染病……",
+      nextStage: 1,
+      branch: "hesitant",
+      lines: [
+        { sender: "我", body: "我有点想带它回家……可是 Vava 还在家，我怕有传染病。" },
+        { sender: "西蓝花", body: "你先别冲动！Vava 还在家呢，外面的猫情况不清楚，不能直接抱回去。" },
+        { sender: "我", body: "我知道呀，可是它一直跟着我，还一直喵喵叫……" },
+        { sender: "西蓝花", body: "我懂你心软，但先保持距离，别让它碰到 Vava。我们慢慢想办法。" },
+      ],
+    },
+    {
+      id: "decide",
+      label: "我已经决定带它回家了，先去医院检查！",
+      nextStage: 11,
+      branch: "decided",
+      lines: [
+        { sender: "我", body: "我已经决定带它回家了！我先带它去医院检查，Vava 那边我会隔离好。" },
+        { sender: "西蓝花", body: "……你这行动力也太快了吧！好吧，既然决定了，先去医院，别直接和 Vava 接触。" },
+        { sender: "我", body: "我现在就去，等下给你直播汇报！" },
+        { sender: "西蓝花", body: "去吧！记得问医生猫瘟、猫癣、耳螨和驱虫，检查完再安排。" },
+      ],
+    },
+  ],
+  1: [
+    {
+      id: "food",
+      label: "我先去买点吃的，陪它待一会儿",
+      nextStage: 2,
+      lines: [
+        { sender: "我", body: "我先去便利店买点吃的，陪它待一会儿。" },
+        { sender: "西蓝花", body: "可以，但先别徒手喂，买点猫粮或罐头，别喂牛奶哦。" },
+        { sender: "我", body: "它吃完还一直蹭我的鞋，眼巴巴看着我……" },
+        { sender: "西蓝花", body: "啊啊你不要用这种语气描述，我都能想象到了。但 Vava 真的要保护好。" },
+      ],
+    },
+    {
+      id: "box",
+      label: "我先找个纸箱，把它安置好",
+      nextStage: 2,
+      lines: [
+        { sender: "我", body: "我先找个纸箱，把它安置好，别让它乱跑。" },
+        { sender: "西蓝花", body: "对，箱子底下垫件旧衣服，注意保暖，别让它接触其他猫。" },
+        { sender: "我", body: "它乖乖蹲在里面，还一直看我，我心都化了。" },
+        { sender: "西蓝花", body: "你已经完蛋了……但先做好隔离，带回家也要给它单独空间。" },
+      ],
+    },
+  ],
+  2: [
+    {
+      id: "bathroom",
+      label: "我还是想带它回家，先让它在浴室隔离",
+      nextStage: 99,
+      lines: [
+        { sender: "我", body: "我还是想带它回家，先让它在浴室隔离，绝不让它碰到 Vava。" },
+        { sender: "西蓝花", body: "好吧……我就知道你会心软。先把浴室收拾干净，准备水和纸箱，Vava 的东西也别共用。" },
+        { sender: "我", body: "我真的不忍心把它丢在路边，先让它安全待着，明天一早就去医院。" },
+        { sender: "西蓝花", body: "那就先救急，但一定要隔离。摸完记得洗手换衣服，今天晚上也别让两只猫碰面。" },
+        { sender: "我", body: "到家啦！小黑猫先在浴室安置好了，Vava 完全没见到它。" },
+        { sender: "西蓝花", body: "做得好！先隔离，给它一点水和安静的地方。你也别太累啦。" },
+        { sender: "我", body: "我刚发现它脖子上有挂牌，上面写着温先生，还有一个电话号码。" },
+        { sender: "西蓝花", body: "那快打一下呀！也许主人正在找它。" },
+        { sender: "我", body: "打了两次都没人接，电话一直响到自动挂断……" },
+        { sender: "西蓝花", body: "电话不通的话，要不试试加微信？用号码或者名字搜一下，看看能不能联系到主人。" },
+      ],
+    },
+    {
+      id: "follow",
+      label: "它一直跟着我，我真的不忍心把它留在外面",
+      nextStage: 99,
+      lines: [
+        { sender: "我", body: "它一直跟着我，我真的不忍心把它留在外面……我带它回家吧。" },
+        { sender: "西蓝花", body: "唉，我就知道。那你先把它放在单独的房间，千万别和 Vava 接触，用品也分开。" },
+        { sender: "我", body: "嗯！我会注意的，先让它有个安全的地方，明天就带它检查。" },
+        { sender: "西蓝花", body: "好，今晚先别让它们见面。你到家记得告诉我，别光顾着撸猫！" },
+        { sender: "我", body: "到家啦！我把它安置在浴室了，Vava 还在客厅，完全没碰到。" },
+        { sender: "西蓝花", body: "呼……那就好。先让它休息，记得给水，别急着洗澡。" },
+        { sender: "我", body: "它脖子上有挂牌，写着温先生和一个电话。我打过去了，可是一直没人接。" },
+        { sender: "西蓝花", body: "那试试加微信呀！搜一下电话号码或名字，说不定能找到主人。" },
+      ],
+    },
+  ],
+  11: [
+    {
+      id: "healthy",
+      label: "医生说暂时没发现明显外伤，状态还可以",
+      nextStage: 99,
+      branch: "decided",
+      lines: [
+        { sender: "我", body: "医生先给它做了基础检查，说暂时没发现明显外伤，精神状态还可以。" },
+        { sender: "西蓝花", body: "那太好了！不过检查报告还是要等一下，先别急着和 Vava 接触。" },
+        { sender: "我", body: "然后医生用仪器扫了一下，居然发现它身体里有芯片！" },
+        { sender: "西蓝花", body: "真的？！那应该能查到主人信息吧？快问问医生！" },
+        { sender: "我", body: "芯片登记的是温先生，留了一个联系电话。" },
+        { sender: "西蓝花", body: "那你赶紧打电话问问是不是他家的，先确认一下小猫的情况。" },
+        { sender: "我", body: "我打过去了，可是一直没人接……响了很久也没接。" },
+        { sender: "西蓝花", body: "电话打不通的话，要不试试加微信？搜一下手机号或者名字看看。" },
+      ],
+    },
+    {
+      id: "dehydrated",
+      label: "医生说有点脱水和营养不良，要先观察",
+      nextStage: 99,
+      branch: "decided",
+      lines: [
+        { sender: "我", body: "医生说它有点脱水和营养不良，要先补水、观察一下。" },
+        { sender: "西蓝花", body: "可怜的小家伙……好在你带它去医院了，先听医生安排，别急着带回去和 Vava 接触。" },
+        { sender: "我", body: "医生又扫到它身体里有芯片，说可以查到主人信息。" },
+        { sender: "西蓝花", body: "那快问问主人是谁，说不定人家正急着找它！" },
+        { sender: "我", body: "芯片登记的是温先生，留了一个联系电话。" },
+        { sender: "西蓝花", body: "先打电话确认一下吧，也问问它之前有没有生病。" },
+        { sender: "我", body: "我打了，可是没人接，电话一直没人接听……" },
+        { sender: "西蓝花", body: "那你试试加微信呀！搜一下手机号或者名字，说不定能联系上。" },
+      ],
+    },
+  ],
+};
+
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
   const [query, setQuery] = useState("");
   const [moments, setMoments] = useState(false);
+
+  const [catRescueRaw, setCatRescueRaw] = useSkinState<string>(p, "catRescueState", "");
+  const catRescue = parseCatRescueState(catRescueRaw);
+  const allItems = [...p.items, ...catRescue.messages];
+  const catRescueActive = p.thread === "西蓝花" && allItems.some((item) => item.meta.storyId === "cat-rescue");
+  const [catDraft, setCatDraft] = useState("");
+  const catAvatar = allItems.find((item) => item.sender === "西蓝花" && item.avatar)?.avatar || "";
+  const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
+  const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
+    const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
+    const start = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
+    const created = lines.map((line, index) => {
+      const total = start + Math.floor(index / 2);
+      const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
+      return makeItem({
+        id: "cat-rescue-" + Date.now() + "-" + index + "-" + Math.random().toString(36).slice(2, 7),
+        title: "西蓝花",
+        sender: line.sender,
+        body: line.body,
+        time,
+        outgoing: line.sender === "我",
+        avatar: line.sender === "西蓝花" ? catAvatar : "",
+        meta: { storyId: "cat-rescue" },
+      });
+    });
+    setCatRescueRaw(JSON.stringify({
+      stage: nextStage,
+      branch,
+      messages: [...catRescue.messages, ...created],
+    }));
+  };
+  const chooseCatRescue = (choice: CatChoice) => {
+    appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
+  };
+  const sendCatDraft = () => {
+    const body = catDraft.trim();
+    if (!body) return;
+    const reply =
+      catRescue.stage === 99
+        ? "你先试试看！有消息马上告诉我，我陪你一起想办法。"
+        : catRescue.branch === "decided"
+          ? "我听着呢！你先按医生说的来，别着急，Vava 那边也一定要做好隔离。"
+          : "我在我在！你先别着急做决定，先照顾好自己，也别让小黑猫和 Vava 接触。";
+    appendCatLines([{ sender: "我", body }, { sender: "西蓝花", body: reply }]);
+    setCatDraft("");
+  };
+
   const initialOwnerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
   const [profileName, setProfileName] = useSkinState<string>(p, "wxProfileName", initialOwnerName);
   const [profileAvatar, setProfileAvatar] = useSkinState<string>(p, "wxProfileAvatar", "");
@@ -242,26 +433,26 @@ export function WeChatSkin(p: SkinProps) {
   };
 
   const conversations = Array.from(
-    new Set(p.items.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title)),
+    new Set(allItems.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title)),
   ).sort((a, b) => {
-    const aLast = p.items.filter((i) => i.title === a).at(-1)?.time ?? "";
-    const bLast = p.items.filter((i) => i.title === b).at(-1)?.time ?? "";
+    const aLast = allItems.filter((i) => i.title === a).at(-1)?.time ?? "";
+    const bLast = allItems.filter((i) => i.title === b).at(-1)?.time ?? "";
     return bLast.localeCompare(aLast);
   });
   const contacts = Array.from(new Set([
-    ...p.items.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
+    ...allItems.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
     ...addedFriends,
   ])).sort((a, b) => a.localeCompare(b, "zh-CN"));
-  const friendDirectory = Array.from(new Set(["温尚翊", "西兰花", "爸爸", "妈妈", ...p.items.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")]));
+  const friendDirectory = Array.from(new Set(["温尚翊", "西兰花", "爸爸", "妈妈", ...allItems.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")]));
   const friendMatches = addQuery.trim() ? friendDirectory.filter((name) => {
-    const related = p.items.filter((i) => i.title === name || i.sender === name);
+    const related = allItems.filter((i) => i.title === name || i.sender === name);
     const keys = [name, ...related.flatMap((i) => [i.meta.wechatId, i.meta.account, i.meta.phone, i.meta.handle])].filter(Boolean).join(" ").toLowerCase();
     return keys.includes(addQuery.trim().toLowerCase());
   }) : [];
-  const posts = p.items.filter((i) => i.folder === "朋友圈" || i.kind === "post");
+  const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
   const filteredConversations = conversations.filter((name) =>
     name.toLowerCase().includes(query.toLowerCase()) ||
-    p.items.some((i) => i.title === name && i.body.toLowerCase().includes(query.toLowerCase())),
+    allItems.some((i) => i.title === name && i.body.toLowerCase().includes(query.toLowerCase())),
   );
   const shortcutRows = [
     { label: "新的朋友", icon: Users, color: "#f4a23a" },
@@ -303,7 +494,7 @@ export function WeChatSkin(p: SkinProps) {
   ];
   const openUtility = (label: string) => setUtility(label);
   const openContact = (name: string) => {
-    const related = p.items.find((i) => i.sender === name || i.title === name);
+    const related = allItems.find((i) => i.sender === name || i.title === name);
     if (related) {
       p.onThread(related.title);
       p.onRead(related.title);
@@ -367,7 +558,7 @@ export function WeChatSkin(p: SkinProps) {
           {addQuery.trim() ? (
             <div className="wx-add-results">
               {friendMatches.length ? friendMatches.map((name) => {
-                const related = p.items.find((i) => i.title === name || i.sender === name);
+                const related = allItems.find((i) => i.title === name || i.sender === name);
                 const alreadyAdded = addedFriends.includes(name);
                 return (
                   <div className="wx-add-result" key={name}>
@@ -402,22 +593,41 @@ export function WeChatSkin(p: SkinProps) {
         <div className="skin-scroll wx-utility">
           {utility === "聊天信息" && (
             <div className="wx-members">
-              {Array.from(new Set(p.items.filter((i) => i.title === p.thread).map((i) => i.sender))).map((name) => (
-                <div key={name}><Avatar name={name} src={p.items.find((i) => i.sender === name)?.avatar} /><small>{name}</small></div>
+              {Array.from(new Set(allItems.filter((i) => i.title === p.thread).map((i) => i.sender))).map((name) => (
+                <div key={name}><Avatar name={name} src={allItems.find((i) => i.sender === name)?.avatar} /><small>{name}</small></div>
               ))}
             </div>
           )}
-          {p.items.filter((i) => i.folder === utility).map((i) => (
+          {allItems.filter((i) => i.folder === utility).map((i) => (
             <button key={i.id} className="wx-discovery" onClick={() => p.onItem(i)}>{i.title}<span>›</span></button>
           ))}
-          {!p.items.some((i) => i.folder === utility) && utility !== "聊天信息" && (
+          {!allItems.some((i) => i.folder === utility) && utility !== "聊天信息" && (
             <div className="wx-empty-state"><span>{utility}</span><p>这里还没有内容</p></div>
           )}
         </div>
       ) : p.thread ? (
         <>
-          <MessageList items={p.items.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} />
-          <Compose creator={p.creator} onAdd={p.onAdd} />
+          {catRescueActive ? (
+            <div className="cat-rescue-thread">
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} />
+              {catChoices.length > 0 && (
+                <div className="cat-rescue-choices" aria-label="剧情回复选项">
+                  {catChoices.map((choice) => (
+                    <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
+                  ))}
+                </div>
+              )}
+              <form className="cat-rescue-compose" onSubmit={(event) => { event.preventDefault(); sendCatDraft(); }}>
+                <input value={catDraft} onChange={(event) => setCatDraft(event.target.value)} placeholder="发消息…" aria-label="给西蓝花发送消息" />
+                <button type="submit" disabled={!catDraft.trim()}>发送</button>
+              </form>
+            </div>
+          ) : (
+            <>
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} />
+              <Compose creator={p.creator} onAdd={p.onAdd} />
+            </>
+          )}
         </>
       ) : moments ? (
         <div className="wx-moments">
@@ -469,7 +679,7 @@ export function WeChatSkin(p: SkinProps) {
               </button>
               <div className="wx-conversation-list">
                 {filteredConversations.map((name) => {
-                  const list = p.items.filter((i) => i.title === name);
+                  const list = allItems.filter((i) => i.title === name);
                   const last = list.at(-1)!;
                   const unread = !readThreads.includes(name) && list.some((i) => !i.read);
                   return (
@@ -507,7 +717,7 @@ export function WeChatSkin(p: SkinProps) {
               <div className="wx-contact-section-title">我的联系人</div>
               <div className="wx-contact-list">
                 {contacts.filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => {
-                  const avatarItem = p.items.find((i) => i.sender === name);
+                  const avatarItem = allItems.find((i) => i.sender === name);
                   return <button className="wx-contact-row" key={name} onClick={() => openContact(name)}>
                     <Avatar name={name} src={avatarItem?.avatar} /><span>{name}</span>
                   </button>;
