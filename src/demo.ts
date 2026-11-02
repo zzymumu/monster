@@ -114,6 +114,7 @@ export function createWork(title = "雨停之前"): Work {
     time: time as string,
     outgoing: outgoing as boolean,
     avatar: sender === "西蓝花" ? BROCCOLI_AVATAR : "",
+    meta: { storyId: "cat-rescue" },
   }));
 
   w.data.notes = [
