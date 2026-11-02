@@ -36,7 +36,8 @@ describe("WeChat cat-rescue story configuration", () => {
   it("keeps the Vava isolation objection before the go-home branch", () => {
     expect(CAT_RESCUE_CHOICES[67].some((choice) => choice.nextStage === 81)).toBe(true);
     expect(CAT_RESCUE_CHOICES[67].some((choice) => /隔离|隔離/.test(choice.label))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[81][0].lines.some((line) => /衣服、手、鞋子/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[67][0].lines.some((line) => /衣服、手、鞋子/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[67][0].lines.some((line) => /隔離也不是/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[81].every((choice) => choice.nextStage === 68)).toBe(true);
   });
 
