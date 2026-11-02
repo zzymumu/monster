@@ -212,7 +212,12 @@ function toSimplifiedChinese(value: string) {
     return index < 0 ? char : Array.from(SIMPLIFIED_CHARS)[index];
   }).join("");
 }
-const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
+export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
+  // Hospital arrival and clinic check-in remain in the friend's conversation.
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31]);
+  return broccoliStages.has(stage) ? "西蓝花" : "大G";
+}
+export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
     { id: "bring-home", label: "我真的不忍心把它留在这里……想带它回家", nextStage: 1, branch: "bring-home", lines: [
       { sender: "我", body: "我越看越舍不得……它一直在路边叫，我想先把它带回家。" },
@@ -255,19 +260,10 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "那我稍微放心一点了……但你真的确定要带它回家吗？" },
     ]},
   ],
-  30: [
-    { id: "arrived-hospital", label: "到了到了！我刚到医院，正在等医生", nextStage: 31, lines: [
-      { sender: "我", body: "到了到了！我刚到医院，正在等医生。" },
-      { sender: "西蓝花", body: "好！你先别急，医生有开始帮它检查了吗？" },
-    ]},
-    { id: "already-checking", label: "到了！医生已经开始检查了", nextStage: 31, lines: [
-      { sender: "我", body: "到了到了！医生已经开始帮它检查了。" },
-      { sender: "西蓝花", body: "那就好！记得问医生有没有晶片，也顺便确认一下它的健康状况。" },
-    ]},
-  ],
+  30: [],
   31: [
-    { id: "chip-check", label: "我会问的，等结果出来马上告诉你", nextStage: 4, lines: [
-      { sender: "我", body: "我会问的，等结果出来马上告诉你。" },
+    { id: "chip-check", label: "医生正在帮它检查，等一下会扫描晶片", nextStage: 4, lines: [
+      { sender: "我", body: "医生正在帮它检查，等一下要看看有没有晶片或主人资料。" },
       { sender: "西蓝花", body: "嗯嗯，那你先陪着它，别让它紧张。等医生检查完再跟我说！" },
     ]},
     { id: "worried-about-cat", label: "它看起来有点紧张，我先陪陪它", nextStage: 4, lines: [
@@ -468,21 +464,21 @@ export function WeChatSkin(p: SkinProps) {
   // Earlier versions classified outgoing prank/apology lines as broccoli chat.
   const isHospitalStoryMessage = (item: Item) =>
     /我會帶它去醫院先檢查|我会带它去医院先检查|你都說到這個份上了|你都说到这个份上了|放進外出籠|放进外出笼|路上小心.*到了記得|路上小心.*到了记得|你到了嗎|你到了吗|我帶它走.*先去醫院|我带它走.*先去医院|我不是不相信你啦|我會先讓醫生檢查|我会先让医生检查|我等你消息|醫生正在幫它檢查|医生正在帮它检查|醫生開始幫它檢查|医生开始帮它检查|先陪著它|先陪着它/.test(item.body);
-  const ownerConversationStart = catRescue.messages.findIndex((item) =>
+  const isOwnerStoryMessage = (item: Item) =>
     !isHospitalStoryMessage(item) && (
+      item.meta?.storyThread === "大G" ||
       item.title === "大G" ||
       item.title === "温尚翊" ||
-      item.meta?.storyThread === "大G" ||
       item.sender === "大G" ||
       item.sender === "温尚翊" ||
-      (item.sender === "我" && /我是你爸爸|對不起.*發錯|对不起.*发错|剛剛.*玩笑|刚刚.*玩笑|我撿到一隻小黑貓|我捡到了一只小黑猫|撿到你的小貓|捡到你的小猫/.test(item.body))
-    )
-  );
-  const friendStoryMessages = catRescue.messages.filter((item, index) =>
-    isHospitalStoryMessage(item) || ownerConversationStart < 0 || index < ownerConversationStart
-  );
+      /我是你爸爸|妳是？|妳哪位|不認識妳|不認識你|發錯人|发错人|小黑貓|小黑猫/.test(item.body)
+    );
+  const ownerConversationStart = catRescue.messages.findIndex(isOwnerStoryMessage);
   const ownerStoryMessages = catRescue.messages.filter((item, index) =>
-    !isHospitalStoryMessage(item) && ownerConversationStart >= 0 && index >= ownerConversationStart
+    isOwnerStoryMessage(item) || (ownerConversationStart >= 0 && index >= ownerConversationStart && !isHospitalStoryMessage(item))
+  );
+  const friendStoryMessages = catRescue.messages.filter((item) =>
+    isHospitalStoryMessage(item) || !ownerStoryMessages.includes(item)
   );
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
@@ -494,9 +490,9 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = catRescue.stage === 14 || catRescue.stage === 16 || catRescue.stage >= 20;
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26].includes(catRescue.stage);
   const catRescueActive = isBroccoliThread
-    ? (!monsterFriendAccepted || catRescue.stage < 9 || catRescue.stage === 10 || catRescue.stage === 11 || catRescue.stage === 30)
+    ? (!monsterFriendAccepted || [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31].includes(catRescue.stage))
     : isMonsterThread && (monsterFriendAccepted || ownerChatStarted);
   const catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
@@ -523,7 +519,7 @@ export function WeChatSkin(p: SkinProps) {
       const [hour, minute] = (storyClockRef.current || "14:24").split(":").map(Number);
       const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24) + catRescue.messages.length;
       const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
-      const ownerThread = catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11 && catRescue.stage !== 30;
+      const ownerThread = getCatRescueThreadForStage(catRescue.stage) === "大G";
       const created = makeItem({
         id: "cat-rescue-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
         title: line.thread || (ownerThread ? "大G" : "西蓝花"),
@@ -554,8 +550,7 @@ export function WeChatSkin(p: SkinProps) {
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
     // The story stage is authoritative; the currently visible thread can lag
     // behind while the friend-request sheet is open.
-    const destination: "西蓝花" | "大G" =
-      nextStage >= 9 && nextStage !== 10 && nextStage !== 11 && nextStage !== 30 ? "大G" : "西蓝花";
+    const destination = getCatRescueThreadForStage(nextStage);
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, branch }));
     setPendingCatLines((current) => [...current, ...lines.map((line) => ({ ...line, thread: line.thread || destination }))]);
   };
