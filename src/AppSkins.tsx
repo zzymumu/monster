@@ -558,15 +558,8 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   41: [
     { id: "cover-up-name-reaction", label: "哦哦哦没事没事！我觉得这个名字简直太好了！", nextStage: 32, lines: [
       { sender: "我", body: "哦哦哦沒事沒事！我只是覺得「玩玩」這個名字簡直太好了啦！超可愛的！", thread: "大G" },
-      { sender: "大G", body: "哈哈哈哈，牠小時候就很愛玩，才會取這個名字。平常叫牠，牠有時候還會故意裝沒聽見。" , thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈，牠小時候就很愛玩，才會取這個名字。平常叫牠，牠有時候還會故意裝沒聽見。", thread: "大G" },
       { sender: "我", body: "原來是這樣！感覺牠真的很有自己的個性欸，名字跟牠好搭！", thread: "大G" },
-      { sender: "大G", body: "牠真的很有個性，熟了之後會一直黏著人。這幾天就先麻煩妳陪陪牠了。" , thread: "大G" },
-      { sender: "我", body: "你放心！我會好好照顧玩玩的，讓牠在我這裡安心待著，等你回來再接牠。" , thread: "大G" },
-      { sender: "大G", body: "真的很謝謝妳，這幾天就要麻煩妳了。牠平常不太挑食，不過有些習慣我還是跟妳說一下。" , thread: "大G" },
-      { sender: "我", body: "對了，那玩玩平常喜歡吃什麼呀？有沒有特別愛吃的東西，或是什麼不能吃、需要注意的？" , thread: "大G" },
-      { sender: "大G", body: "牠平常吃固定的乾糧，晚一點可以把品牌和份量傳給妳。偶爾可以吃一點水煮雞胸肉，但不要加鹽或調味料，也別餵牠吃人的食物。水要記得隨時放新鮮的，牠有時候玩到忘記喝水。" , thread: "大G" },
-      { sender: "我", body: "好，我記下來了！我會照你說的準備，也會注意牠吃飯喝水的情況。有什麼需要注意的你再隨時告訴我。" , thread: "大G" },
-      { sender: "大G", body: "好，真的謝謝妳。等我回去再把牠平常用的東西和習慣仔細跟妳說，這幾天就先拜託妳了。" , thread: "大G" },
     ]},
   ],
   32: [
@@ -616,9 +609,34 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   40: [
-    { id: "tell-owner-safe-after-reveal", label: "玩玩现在很安全，我会先照顾好它", nextStage: 24, branch: "monster-cat", lines: [
-      { sender: "我", body: "玩玩現在很安全，我會先照顧好牠，你不用擔心。" , thread: "大G" },
-      { sender: "大G", body: "那就好……真的謝謝妳。玩玩就先拜託妳了，等我回去再好好跟妳道謝。" , thread: "大G" },
+    { id: "promise-care-wanwan", label: "你放心！我会好好照顾玩玩的，等你回来再接它", nextStage: 42, branch: "monster-cat", lines: [
+      { sender: "我", body: "你放心！我會好好照顧玩玩的，讓牠在我這裡安心待著，等你回來再接牠。", thread: "大G" },
+      { sender: "大G", body: "真的很謝謝妳，這幾天就要麻煩妳了。牠平常不太挑食，不過有些習慣我還是跟妳說一下。", thread: "大G" },
+    ]},
+    { id: "promise-care-calm", label: "我会先让它安心休息，有情况马上告诉你", nextStage: 42, branch: "monster-cat", lines: [
+      { sender: "我", body: "你放心，我會先讓玩玩安心休息，也會留意牠的狀況，有什麼情況我馬上告訴你。", thread: "大G" },
+      { sender: "大G", body: "好，真的謝謝妳。牠現在平安就好，我也比較放心了。", thread: "大G" },
+      { sender: "大G", body: "對了，牠平常的飲食和習慣我還是跟妳交代一下，免得妳照顧起來不方便。", thread: "大G" },
+    ]},
+  ],
+  42: [
+    { id: "ask-wanwan-food", label: "对了，玩玩平常喜欢吃什么呀？", nextStage: 43, lines: [
+      { sender: "我", body: "對了，那玩玩平常喜歡吃什麼呀？有沒有特別愛吃的東西，或是什麼不能吃、需要注意的？", thread: "大G" },
+      { sender: "大G", body: "牠平常吃固定的乾糧，晚一點可以把品牌和份量傳給妳。偶爾可以吃一點水煮雞胸肉，但不要加鹽或調味料，也別餵牠吃人的食物。水要記得隨時放新鮮的，牠有時候玩到忘記喝水。", thread: "大G" },
+      { sender: "我", body: "好，我記下來了！我會照你說的準備，也會注意牠吃飯喝水的情況。有什麼需要注意的你再隨時告訴我。", thread: "大G" },
+      { sender: "大G", body: "好，真的謝謝妳。等我回去再把牠平常用的東西和習慣仔細跟妳說，這幾天就先拜託妳了。", thread: "大G" },
+    ]},
+    { id: "ask-wanwan-habits", label: "它平常有什么习惯或需要注意的吗？", nextStage: 43, lines: [
+      { sender: "我", body: "那玩玩平常有什麼習慣呀？有沒有什麼我需要特別注意的？", thread: "大G" },
+      { sender: "大G", body: "牠有點黏人，剛到新地方可能會先躲一下，妳不用急著抱牠，讓牠自己慢慢熟悉環境就好。", thread: "大G" },
+      { sender: "我", body: "好，我會給牠一點時間，讓牠慢慢適應，不會勉強牠。", thread: "大G" },
+      { sender: "大G", body: "謝謝妳，真的很細心。玩玩就先交給妳照顧幾天了。", thread: "大G" },
+    ]},
+  ],
+  43: [
+    { id: "confirm-care-plan", label: "好，我知道了，我会照顾好玩玩", nextStage: 24, branch: "monster-cat", lines: [
+      { sender: "我", body: "好，我知道了！我會照顧好玩玩，有什麼情況都會第一時間告訴你。", thread: "大G" },
+      { sender: "大G", body: "好，那就拜託妳了。這幾天有任何事都可以隨時找我，辛苦妳了。", thread: "大G" },
     ]},
   ],
   34: [
