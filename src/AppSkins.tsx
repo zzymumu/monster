@@ -345,8 +345,12 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   9: [
-    { id: "monster-prank", label: "我是你爸爸", nextStage: 15, branch: "monster-prank", lines: [
+    { id: "monster-prank", label: "我是你爸爸", nextStage: 17, branch: "monster-prank", lines: [
       { sender: "我", body: "我是你爸爸。" },
+      { sender: "大G", body: "妳是？" },
+      { sender: "大G", body: "……蛤？" },
+      { sender: "大G", body: "妳哪位？我不認識妳喔。" },
+      { sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" },
     ]},
     { id: "monster-cat-intro", label: "你好，我捡到了一只小黑猫……", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "你好，我捡到了一只小黑猫。它脖子上挂着挂牌，上面有你的联系方式，我就照着上面的微信号加你了。" },
@@ -496,7 +500,18 @@ export function WeChatSkin(p: SkinProps) {
         avatar: line.sender === "西蓝花" ? catAvatar : "",
         meta: { storyId: "cat-rescue", storyThread: line.thread || (ownerThread ? "大G" : "西蓝花") },
       });
-      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, created] }));
+      const prankFinished = catRescue.stage === 17 && catRescue.branch === "monster-prank" && pendingCatLines.length === 1;
+      setCatRescueRaw(JSON.stringify({
+        ...catRescue,
+        version: 2,
+        ...(prankFinished ? { stage: 13 } : {}),
+        messages: [...catRescue.messages, created],
+      }));
+      if (prankFinished) {
+        setMonsterFriendAccepted(false);
+        setMonsterRemoved(true);
+        setAddedFriends((current) => current.filter((name) => name !== "大G"));
+      }
       setPendingCatLines((current) => current.slice(1));
     }, delay);
     return () => window.clearTimeout(timer);
@@ -513,11 +528,6 @@ export function WeChatSkin(p: SkinProps) {
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
     if (choice.nextStage === 8) { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
-    if (choice.nextStage === 15) {
-      setIdCopied(false);
-      setIdPasted(false);
-      window.setTimeout(() => setAddIdModal(true), 850);
-    }
     if (choice.nextStage === 13) {
       setMonsterRemoved(true);
       setAddedFriends((current) => current.filter((name) => name !== "大G"));
@@ -870,7 +880,37 @@ export function WeChatSkin(p: SkinProps) {
           ) : (
             <>
               <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
-              <Compose creator={p.creator} onAdd={p.onAdd} />
+              {isMonsterThread && monsterRemoved && catRescue.stage === 13 && (
+                <div className="wx-send-failed" role="status">
+                  <span aria-hidden="true">!</span>
+                  <button onClick={() => {
+                    setIdCopied(true);
+                    setIdPasted(true);
+                    setAddQuery("mo00oster111");
+                    setTab("通讯录");
+                    setUtility("添加朋友");
+                  }}>你不是对方的联系人，消息发送失败。点击重新添加好友</button>
+                </div>
+              )}
+              <Compose
+                creator={p.creator}
+                onAdd={p.onAdd}
+                onSend={isMonsterThread && monsterRemoved && catRescue.stage === 13 ? (value) => {
+                  const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
+                  const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
+                  const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
+                  const failed = makeItem({
+                    id: "monster-send-failed-" + Date.now(),
+                    title: "大G",
+                    sender: "我",
+                    body: value,
+                    time,
+                    outgoing: true,
+                    meta: { storyId: "cat-rescue", storyThread: "大G", sendFailed: true },
+                  });
+                  setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, failed] }));
+                } : undefined}
+              />
             </>
           )}
         </>
