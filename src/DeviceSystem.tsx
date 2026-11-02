@@ -283,7 +283,7 @@ export function WallpaperPicker({
         {presets.map((preset) => (
           <button key={preset.id} className={"wallpaper-preview " + (selected === preset.id ? "selected" : "")} onClick={() => setSelected(preset.id)}>
             <span className="wallpaper-preview-art" style={{ background: preset.background }}>
-              <small>周一 · 9:41</small><b>09:41</b><i>天气　日历</i>
+              <small>周一 · 9:41</small><b>09:41</b><i>天气 日历</i>
             </span>
             <span className="wallpaper-preview-name">{preset.name}</span>
             {selected === preset.id && <Check className="wallpaper-preview-check" size={18} />}
