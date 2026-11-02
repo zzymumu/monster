@@ -286,7 +286,16 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "那我稍微放心一点了……但你真的确定要带它回家吗？" },
     ]},
   ],
-  30: [],
+  30: [
+    { id: "arrived-hospital", label: "到了！我刚到医院，正在等医生", nextStage: 31, lines: [
+      { sender: "我", body: "到了到了！我刚到医院，正在等医生。" },
+      { sender: "西蓝花", body: "好！医生有开始帮它检查了吗？有没有先看看有没有晶片？" },
+    ]},
+    { id: "already-checking", label: "到了！医生已经开始帮它检查了", nextStage: 31, lines: [
+      { sender: "我", body: "到了！医生已经开始帮它检查了。" },
+      { sender: "西蓝花", body: "那就好！记得问医生有没有晶片，也顺便确认一下它的健康状况。" },
+    ]},
+  ],
   31: [
     { id: "chip-check", label: "医生正在帮它检查，等一下会扫描晶片", nextStage: 4, lines: [
       { sender: "我", body: "医生正在帮它检查，等一下要看看有没有晶片或主人资料。" },
