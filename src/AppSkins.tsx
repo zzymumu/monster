@@ -155,16 +155,18 @@ function MessageList({
 function Compose({
   creator,
   onAdd,
+  onSend,
   wa = false,
 }: {
   creator: boolean;
   onAdd: () => void;
+  onSend?: (value: string) => void;
   wa?: boolean;
 }) {
   return (
     <div className={`skin-compose ${wa ? "wa-compose" : ""}`}>
       {wa ? <Plus size={20} /> : <Mic size={20} />}
-      <NativeComposer creator={creator} onAdd={onAdd} />
+      <NativeComposer creator={creator} onAdd={onAdd} onSend={onSend} />
 
       <Smile size={21} />
       {wa ? <Mic size={20} /> : <Plus size={22} />}
@@ -419,6 +421,8 @@ export function WeChatSkin(p: SkinProps) {
 
   const [catRescueRaw, setCatRescueRaw] = useSkinState<string>(p, "catRescueState", "");
   const [pendingCatLines, setPendingCatLines] = useState<CatLine[]>([]);
+  const storyClockRef = useRef(p.virtualTime || "14:24");
+  storyClockRef.current = p.virtualTime || storyClockRef.current;
   const catRescue = parseCatRescueState(catRescueRaw);
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
@@ -446,7 +450,7 @@ export function WeChatSkin(p: SkinProps) {
     const line = pendingCatLines[0];
     const delay = Math.min(1750, Math.max(720, 520 + line.body.length * 24));
     const timer = window.setTimeout(() => {
-      const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
+      const [hour, minute] = (storyClockRef.current || "14:24").split(":").map(Number);
       const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24) + catRescue.messages.length;
       const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
       const ownerThread = catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11;
@@ -464,7 +468,7 @@ export function WeChatSkin(p: SkinProps) {
       setPendingCatLines((current) => current.slice(1));
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [pendingCatLines, catRescueRaw, p.virtualTime]);
+  }, [pendingCatLines, catRescueRaw]);
 
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, branch }));
@@ -818,7 +822,11 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {p.thread === "大G" && catRescue.stage >= 23 && <Compose creator={p.creator} onAdd={p.onAdd} />}
+              <Compose
+                creator={p.creator}
+                onAdd={p.onAdd}
+                onSend={(value) => appendCatLines([{ sender: "我", body: value }])}
+              />
             </div>
           ) : (
             <>
