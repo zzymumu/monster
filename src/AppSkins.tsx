@@ -613,10 +613,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "say-name-is-perfect", label: "没事没事，我就是觉得这个名字太好了哈哈哈", nextStage: 32, lines: [
       { sender: "我", body: "沒事沒事，我就是覺得這個名字太好了哈哈哈！", thread: "大G" },
       { sender: "大G", body: "哈哈，原來是這樣。牠的名字跟牠的個性真的很搭。", thread: "大G" },
+      { sender: "我", body: "對呀！我前面找牠找了半天，怎麼找都找不到，沒想到牠居然自己跑到我這邊來了！", thread: "大G" },
     ]},
     { id: "say-name-is-cute-to-owner", label: "我只是觉得玩玩这个名字也太可爱了", nextStage: 32, lines: [
       { sender: "我", body: "我只是覺得玩玩這個名字也太可愛了！", thread: "大G" },
       { sender: "大G", body: "哈哈，牠從小就很愛玩，家裡就一直這樣叫牠。", thread: "大G" },
+      { sender: "我", body: "對呀！我前面抓牠的時候怎麼找都找不到，真的沒想到牠叫玩玩！", thread: "大G" },
     ]},
   ],
   41: [
