@@ -1083,13 +1083,14 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   70: [
-    { id: "sudden-return", label: "不行！我还是要回去找它！", nextStage: 71, lines: [
-      { sender: "我", body: "不行！我真的沒辦法就這樣算了，我要回去找牠！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我就知道妳放不下……好啦，回去看可以，但路上注意安全，別自己硬抓牠！", thread: "西蓝花" },
+    { id: "home-smalltalk", label: "先不想小猫了，跟你聊点别的吧", nextStage: 76, lines: [
+      { sender: "我", body: "先不想小貓了……妳今天還有沒有遇到什麼好笑的事？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈有啊！我剛剛又想到一件事，今天有個客人把飲料拿錯了，還堅持說是我做錯，真的很好笑。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦，先不講工作了。妳今天也累了一天，等一下記得休息喔。", thread: "西蓝花" },
     ]},
-    { id: "cannot-ignore", label: "我越想越不对劲，我想亲眼确认它还好吗", nextStage: 71, lines: [
-      { sender: "我", body: "我越想越不對勁，我想親眼確認牠還好不好。就算不帶牠回家，我也想回去看看。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好吧，那妳去確認一下。真的需要幫忙就找附近的人或救援單位，不要勉強自己。", thread: "西蓝花" },
+    { id: "home-chat-more", label: "哈哈哈你今天真的好多故事，再跟我讲讲", nextStage: 76, lines: [
+      { sender: "我", body: "哈哈哈妳今天真的好多故事，再跟我講講啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "還不是因為今天上班太精彩！不過妳也先放鬆一下，別一直惦記著小貓，先喝點水。", thread: "西蓝花" },
     ]},
   ],
   71: [
