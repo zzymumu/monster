@@ -3,7 +3,7 @@
   "id": "monster-iphone-simulator",
   "title": "我的 iPhone",
   "description": "iOS 风格互动手机模拟器。上滑进入密码界面，输入六位密码后解锁。",
-  "revision": 4,
+  "revision": 5,
   "phone": {
     "owner": "我的 iPhone",
     "date": "2026-11-02",
@@ -292,7 +292,37 @@
       "once": true,
       "x": 40,
       "y": 50
+    },
+    {
+      "id": "story-validation-ending",
+      "label": "故事预览校验专用节点",
+      "type": "ending",
+      "event": "callEnded",
+      "target": "story-validation-only",
+      "actions": [
+        {
+          "type": "ending",
+          "key": "",
+          "value": "本段剧情暂时停在添加微信的悬念处。"
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 340,
+      "y": 50
     }
   ],
-  "tests": []
+  "tests": [
+    {
+      "name": "预览脚本校验路径",
+      "steps": [
+        {
+          "event": "callEnded",
+          "target": "story-validation-only"
+        }
+      ],
+      "ending": "本段剧情暂时停在添加微信的悬念处。",
+      "expectUnlocked": []
+    }
+  ]
 }
