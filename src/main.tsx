@@ -75,15 +75,11 @@ function Studio() {
         if (source) {
           const clean = structuredClone(source);
           clean.title = source.title + " · 全新剧情测试";
-          const storyMessage = (item: Item) =>
-            // Remove the entire prior cat-rescue conversation, including ordinary
-            // replies that contain no story keywords. Keep unrelated chats and
-            // all contact/avatar definitions intact.
-            ["西蓝花", "西兰花", "大G"].includes(item.title) ||
-            ["西蓝花", "西兰花", "大G"].includes(item.meta?.storyThread ?? "") ||
-            item.meta?.storyId === "cat-rescue" ||
-            /小黑貓|小黑猫|玩玩|名牌|溫尚翊|温尚翊|怪獸|怪兽|外出籠|外出笼|晶片|撿到.*貓|捡到.*猫|醫院|医院/.test(item.body);
-          clean.data.wechat = (clean.data.wechat ?? []).filter((item) => !storyMessage(item));
+          // This is a dedicated clean-play copy: clear the entire WeChat
+          // transcript, not keyword-matched fragments. This guarantees the
+          // player starts before the first kitten encounter with no stale
+          // replies, notifications, or partially completed contact threads.
+          clean.data.wechat = [];
           // The fresh copy starts with no saved in-app progress, choices or
           // queued story messages. Runtime UI state is reinitialized below.
           await useStudio.getState().add(clean);
