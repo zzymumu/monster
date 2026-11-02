@@ -455,7 +455,7 @@ export function WeChatSkin(p: SkinProps) {
       item.meta?.storyThread === "大G" ||
       item.sender === "大G" ||
       item.sender === "温尚翊" ||
-      (item.sender === "我" && /我是你爸爸|對不起.*發錯|对不起.*发错|剛剛.*玩笑|刚刚.*玩笑/.test(item.body))
+      (item.sender === "我" && /我是你爸爸|對不起.*發錯|对不起.*发错|剛剛.*玩笑|刚刚.*玩笑|我撿到一隻小黑貓|我捡到了一只小黑猫|撿到你的小貓|捡到你的小猫/.test(item.body))
     )
   );
   const friendStoryMessages = catRescue.messages.filter((item, index) =>
