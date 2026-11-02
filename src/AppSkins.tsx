@@ -726,7 +726,7 @@ export function WeChatSkin(p: SkinProps) {
   const catRescueActive = isBroccoliThread
     ? (!monsterFriendAccepted || [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34, 37, 38, 39].includes(catRescue.stage))
     : isMonsterThread && (monsterFriendAccepted || ownerChatStarted);
-  const catAvatar = GLOOMY_AVATAR;
+  const _catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
     item.sender !== "大G" &&
