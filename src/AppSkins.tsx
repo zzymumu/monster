@@ -987,7 +987,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
     { id: "answer-food", label: "还没吃呢……我等一下就去弄点东西", nextStage: 75, lines: [
       { sender: "我", body: "還沒吃啦……我等一下就去弄點東西，妳不要先罵我！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我就知道！快去吃一點，不要忙起來又忘記。等妳吃完我們再聊。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我就知道！快去弄點吃的，不要忙起來又忘記。妳吃東西的時候我跟妳講，我今天工作上也遇到一件超好笑的事！", thread: "西蓝花" },
     ]},
   ],
   75: [
@@ -1102,12 +1102,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   80: [
-    { id: "explain-nameplate", label: "铭牌！铭牌上写着温尚翊！！", nextStage: 48, lines: [
+    { id: "explain-nameplate", label: "铭牌！铭牌上写着温尚翊！！", nextStage: 49, lines: [
       { sender: "我", body: "銘牌！銘牌上寫著溫尚翊！！下面還有聯絡電話！", thread: "西蓝花" },
       { sender: "西蓝花", body: "等一下？？？溫尚翊？？？這不是怪獸的本名嗎？？？", thread: "西蓝花" },
       { sender: "西蓝花", body: "而且玩玩不是怪獸家那隻貓的名字嗎？？？妳先不要動，我現在整個人都傻了！！！", thread: "西蓝花" },
     ]},
-    { id: "confirm-tag", label: "真的！我没看错，铭牌上就是温尚翊，还有电话", nextStage: 48, lines: [
+    { id: "confirm-tag", label: "真的！我没看错，铭牌上就是温尚翊，还有电话", nextStage: 49, lines: [
       { sender: "我", body: "真的！我沒看錯，名牌上就是溫尚翊，旁邊還有電話！", thread: "西蓝花" },
       { sender: "西蓝花", body: "不是吧？？？貓叫玩玩，主人還叫溫尚翊？？？這也太巧了吧！！！", thread: "西蓝花" },
     ]},
