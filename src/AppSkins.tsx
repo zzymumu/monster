@@ -558,21 +558,15 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   32: [
     { id: "tell-broccoli-wanwan", label: "我靠我靠我靠，玩玩！！怪兽家的猫就叫玩玩！！！！", nextStage: 33, lines: [
       { sender: "我", body: "我靠我靠我靠，玩玩！！怪獸家的貓就叫玩玩！！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "等等等等？？？妳說什麼？？？怪獸家的玩玩？妳怎麼知道的？", thread: "西蓝花" },
-      { sender: "我", body: "我剛剛在跟大G確認貓的名字，他親口跟我說牠叫玩玩，而且名牌上的名字跟聯絡方式都對得上！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "不是吧……這也太巧了吧？！所以妳現在撿到的那隻小黑貓，真的是怪獸家的？", thread: "西蓝花" },
-      { sender: "我", body: "對！！！我現在整個人都傻掉了，我根本沒想到會是他家的貓！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "先冷靜先冷靜！妳確定沒有認錯嗎？名字跟名牌都核對過了？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "玩玩？？？怪獸的貓就叫玩玩啊！！！真的假的！！！", thread: "西蓝花" },
     ]},
   ],
   33: [
     { id: "tell-broccoli-the-truth", label: "对啊我知道！所以我才来找你啊啊啊！！！", nextStage: 37, lines: [
       { sender: "我", body: "對啊我知道所以我才來找你啊啊啊啊！他真的是怪獸啊啊啊啊啊啊啊啊！我靠我靠我靠我這什麼神仙運氣啊！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "玩玩？？？怪獸的貓就叫玩玩啊！！！真的假的！！！", thread: "西蓝花" },
-      { sender: "我", body: "對啊我知道所以我才來找你啊啊啊啊！他真的是怪獸啊啊啊啊啊啊啊啊！我靠我靠我靠我這什麼神仙運氣啊！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "啊啊啊啊啊救命！！！妳這是什麼神仙運氣啦！！！怎麼隨便撿隻貓都能撿到怪獸家的玩玩！！！", thread: "西蓝花" },
       { sender: "我", body: "我現在整個人都在抖，我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會直接撿到怪獸家的貓啦！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳這是什麼神仙運氣啦啊啊啊！！！先讓我尖叫三秒！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
     ]},
   ],
   37: [
@@ -789,11 +783,29 @@ export function WeChatSkin(p: SkinProps) {
   }, [pendingCatLines, catRescueRaw]);
 
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
-    // The story stage is authoritative; the currently visible thread can lag
-    // behind while the friend-request sheet is open.
+    // Persist the selected reply immediately. Remaining lines are delivered
+    // one by one by the queue effect, so a click always produces visible output.
     const destination = getCatRescueThreadForStage(nextStage);
-    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, branch }));
-    setPendingCatLines((current) => [...current, ...lines.map((line) => ({ ...line, thread: line.thread || destination }))]);
+    const prepared = lines.map((line) => ({ ...line, thread: line.thread || destination }));
+    const [first, ...rest] = prepared;
+    const immediate = first ? makeItem({
+      id: "cat-rescue-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
+      title: first.thread || destination,
+      sender: first.sender,
+      body: first.body,
+      time: "2026-11-02 " + (storyClockRef.current || "14:24"),
+      outgoing: first.sender === "我",
+      avatar: first.sender === "西蓝花" ? catAvatar : "",
+      meta: { storyId: "cat-rescue", storyThread: first.thread || destination },
+    }) : null;
+    setCatRescueRaw(JSON.stringify({
+      ...catRescue,
+      version: 2,
+      stage: nextStage,
+      branch,
+      messages: immediate ? [...catRescue.messages, immediate] : catRescue.messages,
+    }));
+    setPendingCatLines((current) => [...current, ...rest]);
   };
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
