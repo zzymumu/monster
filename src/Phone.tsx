@@ -75,6 +75,7 @@ export function AppIcon({
   custom = "",
   date,
   time,
+  badge = 0,
 }: {
   id: string;
   name?: string;
@@ -82,6 +83,7 @@ export function AppIcon({
   custom?: string;
   date?: string;
   time?: string;
+  badge?: number;
 }) {
   const a = getApp(id);
   const Icon = a.icon;
@@ -100,6 +102,7 @@ export function AppIcon({
           <Icon size={small ? 21 : 28} strokeWidth={1.65} />
         )}
       </span>
+      {badge > 0 && <span className="app-unread-badge">{badge > 99 ? "99+" : badge}</span>}
       {name && <span className="app-name">{name}</span>}
     </span>
   );
@@ -259,6 +262,15 @@ function PhoneRuntime({
   }, [creator, ready, work.id, work.updatedAt]);
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
+  };
+  const markWeChatThreadRead = (contact: string) => {
+    if (!contact) return;
+    const current = runtimeRef.current;
+    const prefix = "微信：" + contact + "：";
+    update({
+      ...current,
+      notifications: current.notifications.filter((notice) => !notice.startsWith(prefix)),
+    });
   };
   // A single phone-level FIFO scheduler. Only the head message receives a
   // deadline; the next deadline is created only after the current line ships.
@@ -463,6 +475,7 @@ function PhoneRuntime({
   const openNotification = (notice: ReturnType<typeof notificationContent>) => {
     setPanel("");
     if (notice.appId === "wechat" && notice.contact) {
+      markWeChatThreadRead(notice.contact);
       const current = runtimeRef.current;
       update({
         ...current,
@@ -643,7 +656,10 @@ function PhoneRuntime({
                   ]}
                   creator={creator}
                   state={s}
-                  onRead={(id) => event("read", id)}
+                  onRead={(id) => {
+                    event("read", id);
+                    if (app === "wechat") markWeChatThreadRead(id);
+                  }}
                   onEdit={(item) => onEdit?.(app, item)}
                   onAdd={() => onAdd?.(app)}
                   onBack={() => setApp("")}
@@ -693,6 +709,7 @@ function PhoneRuntime({
                     custom={a.icon}
                     date={s.date || work.phone.date}
                     time={s.time}
+                    badge={a.id === "wechat" ? s.notifications.filter((notice) => notice.startsWith("微信：")).length : 0}
                   />
                 )}
                 clearApp={(id) =>
@@ -873,6 +890,7 @@ function PhoneRuntime({
                 onClick={() => {
                   setBanner("");
                   if (notice.appId === "wechat" && notice.contact) {
+                    markWeChatThreadRead(notice.contact);
                     const current = runtimeRef.current;
                     update({
                       ...current,
