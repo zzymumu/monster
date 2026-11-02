@@ -13,10 +13,10 @@ import { makeItem } from "./schema";
 
 describe("WeChat cat-rescue story configuration", () => {
   it("routes every hospital stage to Broccoli and owner stages to DaG", () => {
-    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34]) {
+    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34, 37, 38, 39]) {
       expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
     }
-    for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35]) {
+    for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40]) {
       expect(getCatRescueThreadForStage(stage)).toBe("大G");
     }
   });
@@ -120,9 +120,15 @@ describe("WeChat cat-rescue story configuration", () => {
     ]);
     expect(CAT_RESCUE_CHOICES[32][0].lines.some((line) => line.body === "我靠我靠我靠，玩玩！！怪獸家的貓就叫玩玩！！！！" && line.thread === "西蓝花")).toBe(true);
     expect(CAT_RESCUE_CHOICES[32][0].lines.some((line) => line.sender === "西蓝花")).toBe(true);
-    expect(CAT_RESCUE_CHOICES[33]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[34][0].nextStage).toBe(35);
-    expect(CAT_RESCUE_CHOICES[35][0].nextStage).toBe(24);
+    expect(CAT_RESCUE_CHOICES[33]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[33][0].lines.map((line) => line.sender)).toEqual(["我", "西蓝花", "我", "西蓝花", "我", "西蓝花"]);
+    expect(CAT_RESCUE_CHOICES[33][0].lines[1].body).toContain("玩玩？？？怪獸的貓就叫玩玩啊");
+    expect(CAT_RESCUE_CHOICES[33][0].lines[2].body).toContain("對啊我知道所以我才來找你");
+    expect(CAT_RESCUE_CHOICES[33][0].nextStage).toBe(37);
+    expect(CAT_RESCUE_CHOICES[37]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[38]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[39][0].nextStage).toBe(40);
+    expect(CAT_RESCUE_CHOICES[40][0].nextStage).toBe(24);
   });
 
 
@@ -145,6 +151,14 @@ describe("WeChat cat-rescue story configuration", () => {
     const split = splitCatRescueMessages(mixed);
     expect(split.broccoli.map((item) => item.id)).toEqual(["clinic-wrong-title", "clinic-question"]);
     expect(split.owner.map((item) => item.id)).toEqual(["prank-wrong-title", "owner-reply"]);
+    const wanwanLines = [
+      makeItem({ id: "wanwan-owner-start", title: "大G", sender: "大G", body: "妳？？？怎麼啦？" }),
+      makeItem({ id: "wanwan-broccoli-reply", title: "大G", sender: "我", body: "我靠我靠我靠，玩玩！！", outgoing: true, meta: { storyThread: "西蓝花" } }),
+      makeItem({ id: "wanwan-broccoli-excitement", title: "大G", sender: "西蓝花", body: "玩玩？？？怪獸的貓就叫玩玩啊！！！", meta: { storyThread: "西蓝花" } }),
+    ];
+    const revealSplit = splitCatRescueMessages(wanwanLines);
+    expect(revealSplit.broccoli.map((item) => item.id)).toEqual(["wanwan-broccoli-reply", "wanwan-broccoli-excitement"]);
+    expect(revealSplit.owner.map((item) => item.id)).toEqual(["wanwan-owner-start"]);
   });
 
   it("returns the correct stage after initial add and after re-adding a deleted friend", () => {
