@@ -3,6 +3,7 @@ import {
   CAT_RESCUE_CHOICES,
   getCatRescueStageAfterFriendAdd,
   getCatRescueThreadForStage,
+  shouldMigrateLegacyPrankReadd,
   shouldShowPrankHistoryLine,
   splitCatRescueMessages,
 } from "./AppSkins";
@@ -58,8 +59,16 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[17]).toHaveLength(2);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "old-question", title: "大G", sender: "大G", body: "妳是？" }), "monster-prank")).toBe(false);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "old-delete", title: "大G", sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" }), "monster-prank")).toBe(false);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "old-question", title: "大G", sender: "大G", body: "……蛤？" }), "monster-cat", true)).toBe(false);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "first-greeting", title: "大G", sender: "大G", body: "妳是？" }), "monster-cat", true)).toBe(true);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "post-readd", title: "大G", sender: "大G", body: "？？？" }), "monster-cat", true)).toBe(true);
+    expect(shouldMigrateLegacyPrankReadd(14, true, true, true)).toBe(true);
+    expect(shouldMigrateLegacyPrankReadd(14, true, false, true)).toBe(false);
+    expect(shouldMigrateLegacyPrankReadd(14, false, true, true)).toBe(false);
     expect(CAT_RESCUE_CHOICES[17].some((choice) => /發錯人/.test(choice.lines[0].body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[17].every((choice) => choice.nextStage === 13)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[16]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[16].every((choice) => choice.nextStage === 20)).toBe(true);
     expect(apology?.nextStage).toBe(20);
     expect(apology?.lines.some((line) => /發錯人/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[20]).toHaveLength(2);
