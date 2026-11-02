@@ -975,13 +975,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "home-arrived-chat", label: "我到家啦！今天真的發生好多事", nextStage: 74, lines: [
       { sender: "我", body: "我到家啦！今天真的發生好多事，整個人都累了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "辛苦啦！先喝點水、坐下來休息。妳今天是不是又忙到沒好好吃東西？", thread: "西蓝花" },
-      { sender: "我", body: "有啦有啦……欸對了，妳上次說工作那個很雷的同事，後來怎麼樣了？", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈妳還記得喔！後來主管出面處理，他終於不敢再亂甩鍋了，想到就好笑。", thread: "西蓝花" },
     ]},
     { id: "home-food-chat", label: "我回家了，先跟你聊點別的轉換心情", nextStage: 74, lines: [
       { sender: "我", body: "我回家了，先跟妳聊點別的轉換一下心情，不然我腦袋一直都是那隻小貓。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啊！那妳今天晚餐想吃什麼？不要又隨便泡個東西就算了喔。", thread: "西蓝花" },
-      { sender: "我", body: "哈哈哈妳怎麼又在管我吃飯啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "因為妳真的很不會照顧自己啊！我不盯著妳，妳是不是又要忘記吃飯！", thread: "西蓝花" },
     ]},
   ],
@@ -989,7 +987,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "ask-more-about-work", label: "哈哈哈那你今天還遇到什麼好笑的事？", nextStage: 75, lines: [
       { sender: "我", body: "哈哈哈那妳今天還遇到什麼好笑的事？快講，我想聽。", thread: "西蓝花" },
       { sender: "西蓝花", body: "還有一個客人點錯飲料，喝了一口才發現，居然怪我做錯！我真的差點當場笑出來。", thread: "西蓝花" },
-      { sender: "我", body: "救命，怎麼會有人這樣啦哈哈哈哈。", thread: "西蓝花" },
       { sender: "西蓝花", body: "對吧！所以今天真的被搞得很累。欸，妳現在有沒有比較放鬆一點？", thread: "西蓝花" },
     ]},
     { id: "tell-her-resting", label: "好多了！我現在坐在沙發上休息", nextStage: 75, lines: [
@@ -1002,13 +999,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "still-thinking-cat", label: "可是我腦袋裡還是一直想到那隻小貓……", nextStage: 76, lines: [
       { sender: "我", body: "可是我腦袋裡還是一直想到那隻小貓……牠那麼小，現在不知道怎麼樣了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "我就知道妳還在想！但妳真的不能直接帶牠回家，Vava 的健康也要顧，先找有經驗的人幫忙比較好。", thread: "西蓝花" },
-      { sender: "我", body: "我知道啦，我沒有要把牠跟 Vava 放在一起……只是覺得把牠留在外面好可憐。", thread: "西蓝花" },
       { sender: "西蓝花", body: "我懂妳的意思，可是隔離也不是關上門就沒事。先確認牠有沒有主人、附近有沒有貓媽媽，真的比較穩妥。", thread: "西蓝花" },
     ]},
     { id: "ask-rescue-again", label: "那如果我找附近的救援先去看看呢？", nextStage: 76, lines: [
       { sender: "我", body: "那如果我找附近的救援先去看看呢？至少有人可以幫忙確認牠的狀況。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這樣可以啊！有經驗的人會知道怎麼接近牠，也能看看附近有沒有主人在找。妳不要自己硬抓就好。", thread: "西蓝花" },
-      { sender: "我", body: "嗯……可是我還是很想親自回去看看。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的很心軟欸……好啦，先把事情想清楚，但不要一直責怪自己。", thread: "西蓝花" },
     ]},
   ],
   76: [
@@ -1026,7 +1022,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "dinner-when", label: "他說等他回來再好好謝謝我，感覺是真的會請我吃飯欸！", nextStage: 78, lines: [
       { sender: "我", body: "而且他還說等他回來再好好謝謝我，感覺是真的會請我吃飯欸！", thread: "西蓝花" },
       { sender: "西蓝花", body: "等一下！！！所以不是客套一下而已喔？他有說等回來要請妳吃飯？", thread: "西蓝花" },
-      { sender: "我", body: "對啊！我也沒想到他會答應得這麼乾脆。", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳先不要自己傻笑了啦哈哈哈哈！他有沒有說要吃什麼？", thread: "西蓝花" },
     ]},
     { id: "dinner-still-surprised", label: "我現在還覺得很不真實，像做夢一樣", nextStage: 78, lines: [
