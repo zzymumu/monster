@@ -438,7 +438,7 @@ export function WeChatSkin(p: SkinProps) {
   // Stage 13 is the deliberate "deleted as a friend" state in the prank
   // branch. Preserve it even though the friend-accepted flag is now false,
   // otherwise the blocked-send UI can never appear.
-  const catRescue = !monsterFriendAccepted && parsedCatRescue.stage >= 9 && parsedCatRescue.stage !== 13
+  const catRescue = !monsterFriendAccepted && parsedCatRescue.stage >= 9 && parsedCatRescue.stage <= 12
     ? { ...parsedCatRescue, stage: 8 }
     : parsedCatRescue;
   const allItems = [...p.items, ...catRescue.messages];
@@ -464,9 +464,12 @@ export function WeChatSkin(p: SkinProps) {
   // The broccoli story remains available until the story itself reaches
   // the owner-chat handoff. Do not let a stale accepted-friend flag from an
   // older save hide the opening choices (stage 0) or the broccoli branches.
+  // Later owner-chat stages prove the friend-add flow already completed,
+  // even if an older save lost the separate accepted flag.
+  const ownerChatStarted = catRescue.stage === 14 || catRescue.stage === 16 || catRescue.stage >= 20;
   const catRescueActive = isBroccoliThread
     ? (!monsterFriendAccepted || catRescue.stage < 9 || catRescue.stage === 10 || catRescue.stage === 11)
-    : isMonsterThread && monsterFriendAccepted;
+    : isMonsterThread && (monsterFriendAccepted || ownerChatStarted);
   const catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
@@ -865,7 +868,7 @@ export function WeChatSkin(p: SkinProps) {
           {catRescueActive ? (
             <div className="cat-rescue-thread">
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
-              {catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
+              {isBroccoliThread && catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
               {catChoices.length > 0 && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
