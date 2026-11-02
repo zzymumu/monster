@@ -430,18 +430,18 @@ export function WeChatSkin(p: SkinProps) {
             </label>
           </div>
           <div className="wx-moment-compose-row">
-            <Avatar name={ownerName} />
+            <Avatar name={ownerName} src={profileAvatar} />
             <button className="wx-moment-publish" onClick={() => setMomentComposer(true)}><Plus size={16} /> 发布朋友圈</button>
           </div>
           {myMomentPosts.map((post) => (
             <div key={post.id} className="wx-moment-post wx-moment-user-post">
-              <Avatar name={ownerName} />
+              <Avatar name={ownerName} src={profileAvatar} />
               <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small></div>
             </div>
           ))}
           {posts.map((i) => (
             <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
-              <Avatar name={i.sender} src={i.avatar} />
+              <Avatar name={i.sender} src={i.sender === ownerName || i.sender === "我" || i.sender === "机主" ? profileAvatar : i.avatar} />
               <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
             </button>
           ))}
