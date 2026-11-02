@@ -122,6 +122,12 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[24]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
+    const dinnerPromise = CAT_RESCUE_CHOICES[25].find((choice) => choice.id === "tease-owner");
+    expect(dinnerPromise?.nextStage).toBe(54);
+    expect(dinnerPromise?.lines[2].body).toContain("不许赖账");
+    expect(dinnerPromise?.lines[3].body).toContain("答應妳的事");
+    expect(dinnerPromise?.lines[4].sender).toBe("大G");
+    expect(dinnerPromise?.lines[5].body).toContain("玩玩照顧小指南");
     expect(CAT_RESCUE_CHOICES[20].some((choice) => choice.id === "verify-owner-name")).toBe(true);
     expect(CAT_RESCUE_CHOICES[20].find((choice) => choice.id === "verify-owner-name")?.lines.some((line) => /我叫溫尚翊/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[21][0].lines[0].body).toContain("什麼時候方便回來接");
