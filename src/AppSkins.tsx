@@ -217,6 +217,32 @@ export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" 
   const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
+export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
+  if (stage === 13 && branch === "monster-prank") return 16;
+  if (stage === 13) return 14;
+  return 9;
+}
+export function splitCatRescueMessages(messages: Item[]): { broccoli: Item[]; owner: Item[] } {
+  const isHospitalStoryMessage = (item: Item) =>
+    /我會帶它去醫院先檢查|我会带它去医院先检查|你都說到這個份上了|你都说到这个份上了|放進外出籠|放进外出笼|路上小心.*到了記得|路上小心.*到了记得|你到了嗎|你到了吗|我帶它走.*先去醫院|我带它走.*先去医院|我不是不相信你啦|我會先讓醫生檢查|我会先让医生检查|我等你消息|醫生正在幫它檢查|医生正在帮它检查|醫生開始幫它檢查|医生开始帮它检查|醫生有開始幫它檢查|医生有开始帮它检查|先陪著它|先陪着它|到了到了|刚到医院|剛到醫院|晶片或主人資料|晶片或主人资料/.test(item.body);
+  const isOwnerStoryMessage = (item: Item) =>
+    !isHospitalStoryMessage(item) && (
+      item.meta?.storyThread === "大G" ||
+      item.title === "大G" ||
+      item.title === "温尚翊" ||
+      item.sender === "大G" ||
+      item.sender === "温尚翊" ||
+      /我是你爸爸|妳是？|妳哪位|不認識妳|不認識你|發錯人|发错人|你好.*捡到.*小黑猫|你好.*撿到.*小黑貓|其實是因為我撿到|其实是因为我捡到/.test(item.body)
+    );
+  const ownerStart = messages.findIndex(isOwnerStoryMessage);
+  const owner = messages.filter((item, index) =>
+    isOwnerStoryMessage(item) || (ownerStart >= 0 && index >= ownerStart && !isHospitalStoryMessage(item))
+  );
+  const broccoli = messages.filter((item) =>
+    isHospitalStoryMessage(item) || !owner.includes(item)
+  );
+  return { broccoli, owner };
+}
 export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
     { id: "bring-home", label: "我真的不忍心把它留在这里……想带它回家", nextStage: 1, branch: "bring-home", lines: [
@@ -501,24 +527,7 @@ export function WeChatSkin(p: SkinProps) {
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
   // Split by the saved conversation owner, not by the first incoming sender.
   // Earlier versions classified outgoing prank/apology lines as broccoli chat.
-  const isHospitalStoryMessage = (item: Item) =>
-    /我會帶它去醫院先檢查|我会带它去医院先检查|你都說到這個份上了|你都说到这个份上了|放進外出籠|放进外出笼|路上小心.*到了記得|路上小心.*到了记得|你到了嗎|你到了吗|我帶它走.*先去醫院|我带它走.*先去医院|我不是不相信你啦|我會先讓醫生檢查|我会先让医生检查|我等你消息|醫生正在幫它檢查|医生正在帮它检查|醫生開始幫它檢查|医生开始帮它检查|先陪著它|先陪着它/.test(item.body);
-  const isOwnerStoryMessage = (item: Item) =>
-    !isHospitalStoryMessage(item) && (
-      item.meta?.storyThread === "大G" ||
-      item.title === "大G" ||
-      item.title === "温尚翊" ||
-      item.sender === "大G" ||
-      item.sender === "温尚翊" ||
-      /我是你爸爸|妳是？|妳哪位|不認識妳|不認識你|發錯人|发错人|你好.*捡到.*小黑猫|你好.*撿到.*小黑貓|其實是因為我撿到|其实是因为我捡到/.test(item.body)
-    );
-  const ownerConversationStart = catRescue.messages.findIndex(isOwnerStoryMessage);
-  const ownerStoryMessages = catRescue.messages.filter((item, index) =>
-    isOwnerStoryMessage(item) || (ownerConversationStart >= 0 && index >= ownerConversationStart && !isHospitalStoryMessage(item))
-  );
-  const friendStoryMessages = catRescue.messages.filter((item) =>
-    isHospitalStoryMessage(item) || !ownerStoryMessages.includes(item)
-  );
+  const { broccoli: friendStoryMessages, owner: ownerStoryMessages } = splitCatRescueMessages(catRescue.messages);
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
   // Keep the story UI active even before its first scripted message is saved.
@@ -615,7 +624,7 @@ export function WeChatSkin(p: SkinProps) {
       makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend", storyThread: "大G" } }),
       ...(!readding ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", wechatId: "mo00oster111" } })] : []),
     ];
-    const nextStage = prankReadd ? 16 : readding ? 14 : 9;
+    const nextStage = getCatRescueStageAfterFriendAdd(catRescue.stage, catRescue.branch);
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, messages: [...catRescue.messages, ...created] }));
     if (prankReadd) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？", thread: "大G" }]);
     setMonsterRemoved(false);
