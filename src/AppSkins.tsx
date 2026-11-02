@@ -67,7 +67,7 @@ function Avatar({
   src?: string;
 }) {
   return (
-    <span className={`skin-avatar ${round ? "round" : ""}`}>
+    <span className={`skin-avatar ${round ? "round" : ""} ${name === "大G" || name === "温尚翊" ? "guitar-avatar" : ""}`}>
       {safeMedia(src)?.startsWith("data:image/") ? (
         <img src={safeMedia(src)} alt="" />
       ) : (
