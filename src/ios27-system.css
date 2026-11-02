@@ -2051,3 +2051,17 @@
   .phone-shell.ios27 .cc-reference-layout > .cc-status { top: 7.8% !important; }
   .phone-shell.ios27 .cc-reference-layout .cc-page-rail { gap: 2.8vh !important; }
 }
+
+
+/* WeChat uses a light navigation/status surface: keep time and system glyphs dark. */
+.phone-shell.ios27 .phone-screen:has(.wechat-ui) .status-bar {
+  color: #111;
+  background: #f4f4f6;
+  border-bottom: 1px solid rgba(60,60,67,.10);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.phone-shell.ios27 .phone-screen:has(.wechat-ui) .status-bar .status-time,
+.phone-shell.ios27 .phone-screen:has(.wechat-ui) .status-bar .signals {
+  color: #111;
+}
