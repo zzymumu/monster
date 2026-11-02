@@ -258,7 +258,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
@@ -582,13 +582,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "不用这么客气啦，你先忙，路上也注意安全。" },
       { sender: "大G", body: "嗯，牠就先拜託妳了。有任何狀況，隨時找我，不用客氣。" },
     ]},
-    { id: "tease-owner", label: "那你回来记得请我吃饭，算是小猫的感谢费", nextStage: 54, lines: [
-      { sender: "我", body: "那你回来记得请我吃饭，算是小猫的感谢费！" },
-      { sender: "大G", body: "哈哈，這樣就想敲我一頓喔？可以啦，等我回去請妳吃飯，妳想吃什麼再跟我說。" },
-      { sender: "我", body: "说好了，不许赖账！" },
-      { sender: "大G", body: "好啦，答應妳的事我記著，不會賴帳啦。" },
-      { sender: "大G", body: "對了，我把玩玩平常的照顧方式整理給妳，妳先看看，有不清楚的再問我。" },
-      { sender: "大G", body: "【玩玩照顧小指南】\n1. 吃飯：平常吃固定的乾糧，早晚各一餐，先照原本份量，不要突然換新食物。\n2. 喝水：每天換乾淨的水，水碗放在牠容易找到的地方。\n3. 零食：先不要餵人吃的東西，零食也別一次給太多。\n4. 貓砂：牠習慣在安靜的位置上廁所，記得每天清理。\n5. 休息：剛換環境可能會躲起來，讓牠自己慢慢熟悉，不用一直抱牠。\n6. 個性：玩玩很愛玩，也很黏人，熟了會自己跑來蹭妳。\n如果食慾、精神或排泄有明顯異常，先跟我說，也麻煩請醫生看看。" },
+    { id: "tease-owner", label: "那你回来记得请我吃饭，算是小猫的感谢费", nextStage: 58, lines: [
+      { sender: "我", body: "那你回来记得请我吃饭，算是小猫的感谢费！", thread: "大G" },
+      { sender: "大G", body: "哈哈，這樣就想敲我一頓喔？可以啦，等我回去請妳吃飯，妳想吃什麼再跟我說。", thread: "大G" },
     ]},
   ],
   26: [
@@ -874,6 +870,91 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   57: [],
+  58: [
+    { id: "promise-no-backing-out", label: "说好了，不许赖账！", nextStage: 59, lines: [
+      { sender: "我", body: "說好了，不許賴帳！", thread: "大G" },
+      { sender: "大G", body: "好啦，答應妳的事我記著，不會賴帳啦。", thread: "大G" },
+      { sender: "大G", body: "對了，我把玩玩平常的照顧方式整理給妳，妳先看看，有不清楚的再問我。", thread: "大G" },
+      { sender: "大G", body: "【玩玩照顧小指南】\n1. 吃飯：平常吃固定的乾糧，早晚各一餐，先照原本份量，不要突然換新食物。\n2. 喝水：每天換乾淨的水，水碗放在牠容易找到的地方。\n3. 零食：先不要餵人吃的東西，零食也別一次給太多。\n4. 貓砂：牠習慣在安靜的位置上廁所，記得每天清理。\n5. 休息：剛換環境可能會躲起來，讓牠自己慢慢熟悉，不用一直抱牠。\n6. 個性：玩玩很愛玩，也很黏人，熟了會自己跑來蹭妳。\n如果食慾、精神或排泄有明顯異常，先跟我說，也麻煩請醫生看看。", thread: "大G" },
+    ]},
+    { id: "remember-dinner", label: "那我记住啦！等你回来请我吃好吃的", nextStage: 59, lines: [
+      { sender: "我", body: "那我記住啦！等你回來請我吃好吃的！", thread: "大G" },
+      { sender: "大G", body: "哈哈，好，這次真的不賴帳。先把玩玩照顧好，牠的事情我也整理給妳了。", thread: "大G" },
+      { sender: "大G", body: "【玩玩照顧小指南】\n1. 吃飯：固定乾糧，早晚各一餐，先維持原本份量。\n2. 喝水：每天換乾淨的水。\n3. 零食：不要餵人吃的東西。\n4. 貓砂：放在安靜的位置並每天清理。\n5. 休息：讓牠慢慢適應，不要勉強抱牠。\n6. 個性：玩玩很愛玩，也很黏人，熟了會主動來蹭妳。", thread: "大G" },
+    ]},
+  ],
+  59: [
+    { id: "wow-guide", label: "哇！好详细！你连这些小习惯都记得", nextStage: 60, lines: [
+      { sender: "我", body: "哇！好詳細！你連這些小習慣都記得這麼清楚！", thread: "大G" },
+      { sender: "大G", body: "哈哈，牠每天都在我旁邊晃來晃去，想不記得也難。牠有自己的小脾氣啦。", thread: "大G" },
+    ]},
+    { id: "thank-you-guide", label: "收到！有这份指南我就放心多了", nextStage: 60, lines: [
+      { sender: "我", body: "收到！有這份指南我就放心多了，謝謝你整理得這麼仔細。", thread: "大G" },
+      { sender: "大G", body: "不客氣，這幾天先麻煩妳照顧牠。有不確定的地方隨時問我。", thread: "大G" },
+    ]},
+  ],
+  60: [
+    { id: "ask-playthings", label: "它平常最喜欢玩什么？", nextStage: 61, lines: [
+      { sender: "我", body: "牠平常最喜歡玩什麼？我找點東西陪牠。", thread: "大G" },
+      { sender: "大G", body: "逗貓棒跟小球都可以，牠看到會追半天。不過剛換環境先讓牠休息，等牠主動想玩再陪牠。", thread: "大G" },
+    ]},
+    { id: "ask-personality", label: "它真的很黏人吗？会主动找人吗？", nextStage: 61, lines: [
+      { sender: "我", body: "牠真的很黏人嗎？會主動跑來找人嗎？", thread: "大G" },
+      { sender: "大G", body: "會喔，熟了之後妳走到哪牠可能就跟到哪，還會在旁邊喵喵叫。", thread: "大G" },
+    ]},
+  ],
+  61: [
+    { id: "promise-care", label: "好啦，我会好好照顾它的，你放心", nextStage: 62, lines: [
+      { sender: "我", body: "好啦，我會好好照顧牠的，你放心。", thread: "大G" },
+      { sender: "大G", body: "嗯，謝謝妳。等牠適應一點，我再跟妳約時間去接牠。", thread: "大G" },
+    ]},
+    { id: "send-cat-photo", label: "等它适应了我拍照片给你看", nextStage: 62, lines: [
+      { sender: "我", body: "等牠適應了，我拍照片給你看。", thread: "大G" },
+      { sender: "大G", body: "好啊，我很期待。真的謝謝妳，晚點再聊。", thread: "大G" },
+    ]},
+  ],
+  62: [
+    { id: "tell-broccoli-dinner", label: "我先去跟西蓝花说！她肯定会激动死！", nextStage: 63, lines: [
+      { sender: "我", body: "好，那我先去忙玩玩，晚點再跟你說！", thread: "大G" },
+      { sender: "大G", body: "好，辛苦妳了。記得有事隨時找我。", thread: "大G" },
+    ]},
+    { id: "end-owner-chat", label: "好！那你也早点休息，晚点聊", nextStage: 63, lines: [
+      { sender: "我", body: "好！那你也早點休息，晚點聊。", thread: "大G" },
+      { sender: "大G", body: "嗯，妳也別太累，晚點聊。", thread: "大G" },
+    ]},
+  ],
+  63: [
+    { id: "tell-broccoli-he-promised-dinner", label: "嘻嘻！他要请我吃饭！", nextStage: 64, lines: [
+      { sender: "我", body: "嘻嘻！他要請我吃飯！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "啊啊啊啊啊！！！真的假的！！！妳居然讓怪獸答應請妳吃飯了？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我不行了我先尖叫三秒！！！所以妳們這是有來有往了是不是！！", thread: "西蓝花" },
+    ]},
+    { id: "tell-broccoli-dinner-casual", label: "欸嘿，他刚刚答应回来请我吃饭了！", nextStage: 64, lines: [
+      { sender: "我", body: "欸嘿，他剛剛答應回來請我吃飯了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下等一下！！！怪獸本人說要請妳吃飯？？？我現在比妳還激動欸！！！", thread: "西蓝花" },
+    ]},
+  ],
+  64: [
+    { id: "fangirl-details", label: "对啊！我只是开玩笑问他的，没想到他真的答应了", nextStage: 65, lines: [
+      { sender: "我", body: "對啊！我只是開玩笑問他的，沒想到他真的答應了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "救命，這是什麼偶像劇情節啦！妳快說，他有沒有講哪天？還是要等他忙完回來？", thread: "西蓝花" },
+    ]},
+    { id: "fangirl-scream", label: "你先别激动！我现在也还没反应过来", nextStage: 65, lines: [
+      { sender: "我", body: "妳先別激動！我現在也還沒反應過來啦。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我怎麼可能不激動！妳冷靜一點，我們先不要自己腦補太多，但這真的很值得尖叫欸！", thread: "西蓝花" },
+    ]},
+  ],
+  65: [
+    { id: "settle-down-broccoli", label: "哈哈哈先保密，等确定时间再告诉你", nextStage: 66, lines: [
+      { sender: "我", body: "哈哈哈先保密，等確定時間再告訴妳！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，我先把尖叫聲收起來！但妳一定要跟我報告後續，聽到沒有！", thread: "西蓝花" },
+    ]},
+    { id: "end-broccoli-chat", label: "好了好了，我先去照顾玩玩，晚点再跟你说", nextStage: 66, lines: [
+      { sender: "我", body: "好啦好啦，我先去照顧玩玩，晚點再跟妳說！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "去吧去吧！替我摸摸玩玩，還有——吃飯的事一定要回來跟我報告！！！", thread: "西蓝花" },
+    ]},
+  ],
+  66: [],
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
@@ -945,7 +1026,7 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 40, 41, 42, 43, 53, 54, 55, 56].includes(catRescue.stage);
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 40, 41, 42, 43, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].includes(catRescue.stage);
   // Keep both contact transcripts readable for the entire story, including
   // after the handoff. Hiding the Broccoli story view at later stages made
   // delivered replies appear in notifications but disappear when opened.
@@ -1040,7 +1121,7 @@ export function WeChatSkin(p: SkinProps) {
     // Broccoli only once every queued DaG message has appeared. Later, return
     // to DaG after the Broccoli follow-up is fully delivered.
     if (pendingCatLines.length > 0) return;
-    if ([32, 33, 37, 38, 39].includes(catRescue.stage) && p.thread !== "西蓝花" && p.thread !== "西兰花") {
+    if ([32, 33, 37, 38, 39, 63, 64, 65, 66].includes(catRescue.stage) && p.thread !== "西蓝花" && p.thread !== "西兰花") {
       setTab("微信");
       p.onThread("西蓝花");
     } else if ([35, 40].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
