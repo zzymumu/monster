@@ -341,7 +341,7 @@ function PhoneRuntime({
               x,
               y,
               time: Date.now(),
-              zone: y < 58 ? "top" : y > 818 ? "bottom" : locked ? "lock" : "",
+              zone: y < 90 ? "top" : y > 818 ? "bottom" : locked ? "lock" : "",
             };
           }}
           onPointerMove={(e) => {
@@ -355,7 +355,7 @@ function PhoneRuntime({
               y = (e.clientY - box.top) / deviceScale,
               g = gesture.current;
             const dy = y - g.y;
-            if (g.zone === "top" && dy > 65)
+            if (g.zone === "top" && dy > 45)
               setPanel(g.x > 230 ? "control" : "notification");
             else if ((g.zone === "bottom" || g.zone === "lock") && dy < -55) {
               gestureConsumed.current = true;
