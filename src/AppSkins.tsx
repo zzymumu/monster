@@ -433,6 +433,45 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "大G", body: "這幾天真的要麻煩妳了，謝謝妳願意幫忙。" },
     ]},
   ],
+  23: [
+    { id: "ask-food-routine", label: "那你把它平时吃什么、一天吃几次告诉我吧", nextStage: 24, lines: [
+      { sender: "我", body: "那你把它平时吃什么、一天吃几次告诉我吧，我先照着准备。" },
+      { sender: "大G", body: "牠平常吃固定的乾糧，一天分幾次少量給就好，旁邊記得放乾淨的水。突然換食物牠可能會不習慣。" },
+      { sender: "大G", body: "我晚點把飼料的照片跟份量傳給妳，妳先不要自己亂換喔。" },
+    ]},
+    { id: "ask-habits", label: "它平时有什么习惯？我想先熟悉一下", nextStage: 24, lines: [
+      { sender: "我", body: "它平时有什么习惯呀？我想先熟悉一下，免得它换环境不适应。" },
+      { sender: "大G", body: "牠有點黏人，晚上可能會在門口等人。剛到新地方先讓牠自己熟悉，不用一直抱牠。" },
+      { sender: "大G", body: "還有牠很愛玩小球，看到紙箱也會鑽進去，妳留意一下別讓牠咬到不該吃的東西。" },
+    ]},
+  ],
+  24: [
+    { id: "prepare-space", label: "我先给它准备一个安静的小空间", nextStage: 25, lines: [
+      { sender: "我", body: "好，我先给它准备一个安静的小空间，食物、水和猫砂都分开放好。" },
+      { sender: "大G", body: "這樣最好，先讓牠慢慢適應。真的很謝謝妳，連這些都幫我想到。" },
+      { sender: "我", body: "没事啦，它现在在我这里，我会照顾好它的。" },
+    ]},
+    { id: "send-photo", label: "等它安顿好了，我拍张照片给你", nextStage: 25, lines: [
+      { sender: "我", body: "等它安顿好了，我拍张照片给你看，你也能放心一点。" },
+      { sender: "大G", body: "好啊，我也想看看牠現在的樣子。麻煩妳了，記得先讓牠休息，不要為了拍照嚇到牠。" },
+      { sender: "我", body: "知道啦，我会等它自己放松下来。" },
+    ]},
+  ],
+  25: [
+    { id: "reassure-owner", label: "你先安心忙你的事，有消息我就告诉你", nextStage: 26, lines: [
+      { sender: "我", body: "你先安心忙你的事，有消息我就告诉你。小猫这边我会照顾好。" },
+      { sender: "大G", body: "好，真的謝謝妳。這次欠妳一個大人情，等我回去一定好好謝謝妳。" },
+      { sender: "我", body: "不用这么客气啦，你先忙，路上也注意安全。" },
+      { sender: "大G", body: "嗯，牠就先拜託妳了。有任何狀況，隨時找我，不用客氣。" },
+    ]},
+    { id: "tease-owner", label: "那你回来记得请我吃饭，算是小猫的感谢费", nextStage: 26, lines: [
+      { sender: "我", body: "那你回来记得请我吃饭，算是小猫的感谢费！" },
+      { sender: "大G", body: "哈哈，這樣就想敲我一頓喔？可以啦，等我回去請妳吃飯，妳想吃什麼再跟我說。" },
+      { sender: "我", body: "说好了，不许赖账！" },
+      { sender: "大G", body: "不會啦，答應妳的事我記著。" },
+    ]},
+  ],
+  26: [],
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
@@ -471,7 +510,7 @@ export function WeChatSkin(p: SkinProps) {
       item.title === "温尚翊" ||
       item.sender === "大G" ||
       item.sender === "温尚翊" ||
-      /我是你爸爸|妳是？|妳哪位|不認識妳|不認識你|發錯人|发错人|小黑貓|小黑猫/.test(item.body)
+      /我是你爸爸|妳是？|妳哪位|不認識妳|不認識你|發錯人|发错人|你好.*捡到.*小黑猫|你好.*撿到.*小黑貓|其實是因為我撿到|其实是因为我捡到/.test(item.body)
     );
   const ownerConversationStart = catRescue.messages.findIndex(isOwnerStoryMessage);
   const ownerStoryMessages = catRescue.messages.filter((item, index) =>
@@ -571,13 +610,14 @@ export function WeChatSkin(p: SkinProps) {
     const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
     const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
     const readding = catRescue.stage === 13;
-    const prankFlow = catRescue.stage === 15;
+    const prankReadd = readding && catRescue.branch === "monster-prank";
     const created = [
-      makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend" } }),
-      ...(!readding && !prankFlow ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } })] : []),
+      makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend", storyThread: "大G" } }),
+      ...(!readding ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", wechatId: "mo00oster111" } })] : []),
     ];
-    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: prankFlow ? 16 : readding ? 14 : 9, messages: [...catRescue.messages, ...created] }));
-    if (prankFlow) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？" }]);
+    const nextStage = prankReadd ? 16 : readding ? 14 : 9;
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, messages: [...catRescue.messages, ...created] }));
+    if (prankReadd) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？", thread: "大G" }]);
     setMonsterRemoved(false);
     setMonsterSendFailed(false);
     setMonsterFriendAccepted(true);
@@ -910,9 +950,12 @@ export function WeChatSkin(p: SkinProps) {
                   if (catRescue.stage === 30 && /(到了|到医院|到醫院|已经到|已經到)/.test(reply)) {
                     appendCatLines([
                       { sender: "我", body: reply },
-                      { sender: "西蓝花", body: "好！那医生开始帮它检查了吗？有没有先看看有没有晶片？" },
-                      { sender: "我", body: "医生正在帮它检查，等一下要看看有没有晶片或主人资料。" },
-                      { sender: "西蓝花", body: "嗯嗯，那你先陪着它，等医生检查完再告诉我结果！" },
+                      { sender: "西蓝花", body: "好！医生有开始帮它检查了吗？有没有先看看有没有晶片？" },
+                    ], 31, catRescue.branch);
+                  } else if (catRescue.stage === 31) {
+                    appendCatLines([
+                      { sender: "我", body: reply },
+                      { sender: "西蓝花", body: "嗯嗯，那你先陪着它，别让它紧张。等检查结果出来再告诉我！" },
                     ], 4, catRescue.branch);
                   } else {
                     appendCatLines([{ sender: "我", body: reply }]);
