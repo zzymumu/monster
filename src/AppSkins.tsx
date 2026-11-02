@@ -246,44 +246,46 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   4: [
-    { id: "chip", label: "医生扫到芯片了，主人信息居然是温尚翊？？？", nextStage: 5, lines: [
-      { sender: "我", body: "啊？？？医生扫到芯片了，主人信息居然显示——温尚翊？？？" },
-      { sender: "西蓝花", body: "？？？？？？你先等等？？温尚翊？？？不会吧？？" },
-      { sender: "我", body: "真的！我刚刚还以为自己看错了，名字就是温尚翊。" },
-      { sender: "西蓝花", body: "会不会只是重名啊？？先别自己吓自己，芯片上有联系方式吗？" },
+    { id: "chip", label: "芯片主人真的写着温尚翊……我是不是看错了？", nextStage: 5, lines: [
+      { sender: "我", body: "等一下……芯片登记的主人写的是温尚翊？" },
+      { sender: "西蓝花", body: "温尚翊？？啊？？你说谁？？？" },
+      { sender: "我", body: "五月天那个温尚翊啊！！！不会吧？？？" },
+      { sender: "西蓝花", body: "你先等等……真的假的？会不会只是同名啊？" },
     ]},
-    { id: "confirm", label: "医生说芯片登记了主人，名字是温尚翊，我人傻了", nextStage: 5, lines: [
-      { sender: "我", body: "医生说芯片登记了主人，名字是温尚翊，我人傻了……" },
-      { sender: "西蓝花", body: "等下等下，温尚翊？？？先冷静，会不会只是重名啊？" },
-      { sender: "我", body: "我也希望是重名……但我看到那个名字真的吓一跳。" },
-      { sender: "西蓝花", body: "先看有没有电话，打过去问问就知道了！" },
+    { id: "confirm", label: "医生把名字给我看了，真的是温尚翊三个字", nextStage: 5, lines: [
+      { sender: "我", body: "医生把登记资料给我看了，真的是温尚翊三个字。" },
+      { sender: "西蓝花", body: "啊？？？？温尚翊？？？我脑子突然空白了。" },
+      { sender: "我", body: "我也傻了，怎么会这么巧啊……" },
+      { sender: "西蓝花", body: "先冷静啦，世界上同名的人也不是没有吧！" },
     ]},
   ],
   5: [
-    { id: "call", label: "有联系电话，我现在打过去问问", nextStage: 6, lines: [
-      { sender: "我", body: "有联系电话，我现在打过去问问。" },
-      { sender: "西蓝花", body: "快打快打！先确认是不是他家的猫，也问问小猫叫什么名字。" },
-      { sender: "我", body: "我打过去了……一直响，没人接。" },
-      { sender: "西蓝花", body: "可能没听到吧？再等等看，或者换个方式联系。" },
+    { id: "same-name", label: "我也觉得可能是重名，但还是好不真实……", nextStage: 6, lines: [
+      { sender: "我", body: "可是这个名字也太巧了吧，我现在还是觉得很不真实。" },
+      { sender: "西蓝花", body: "名字一样不代表就是本人啦，先不要自己吓自己。" },
+      { sender: "我", body: "我知道啊，但如果真的是他呢？" },
+      { sender: "西蓝花", body: "那也先把猫咪的事情确认清楚，别想太远哈哈哈。" },
     ]},
-    { id: "retry", label: "我有点不敢打，但还是先确认一下", nextStage: 6, lines: [
-      { sender: "我", body: "我有点不敢打……但还是先确认一下吧。" },
-      { sender: "西蓝花", body: "哈哈哈哈你先别紧张，只是问问猫咪的事！" },
-      { sender: "我", body: "打了，没人接，电话一直响到自动挂断。" },
-      { sender: "西蓝花", body: "那就先别一直打啦，试试其他联系方式。" },
+    { id: "maybe-him", label: "你说会不会真的是他啊……", nextStage: 6, lines: [
+      { sender: "我", body: "你说……会不会真的是他啊？" },
+      { sender: "西蓝花", body: "啊？？你还真的开始想了？？？" },
+      { sender: "我", body: "我只是觉得太巧了嘛！" },
+      { sender: "西蓝花", body: "我也觉得很离谱，但还是先当作重名吧，别越猜越紧张。" },
     ]},
   ],
   6: [
-    { id: "wechat", label: "电话打不通，怎么办？", nextStage: 7, lines: [
-      { sender: "我", body: "电话还是打不通，怎么办？我现在有点懵。" },
-      { sender: "西蓝花", body: "那你试试看加微信呀！用芯片登记的电话搜一下，或者搜温尚翊的名字。" },
-      { sender: "我", body: "我试试看……如果真的是他，那也太巧了吧。" },
-      { sender: "西蓝花", body: "先别脑补！确认身份最重要。加上之后先礼貌说明小猫的情况。" },
+    { id: "call-owner", label: "行……我现在打电话过去问问。", nextStage: 7, lines: [
+      { sender: "西蓝花", body: "算了不管了，可能是重名吧！主人肯定也等得着急了，先打电话过去问问啦。" },
+      { sender: "我", body: "行……我现在打过去问问。" },
+      { sender: "我", body: "我打了……一直响，沒有人接。" },
+      { sender: "西蓝花", body: "电话打不通啊？要不试试看能不能通过手机号加微信？" },
     ]},
-    { id: "search", label: "我试着用电话和名字搜微信", nextStage: 7, lines: [
-      { sender: "我", body: "好，我试着用电话和名字搜微信。" },
-      { sender: "西蓝花", body: "对！找到之后先别急着说别的，先确认小猫是不是他家的。" },
-      { sender: "我", body: "好，我去搜一下……" },
+  ],
+  7: [
+    { id: "try-wechat", label: "好，我试试看用手机号加微信。", nextStage: 8, lines: [
+      { sender: "我", body: "好，我试试看用这个手机号加微信。" },
+      { sender: "西蓝花", body: "嗯嗯！先确认是不是本人，别一上来就把自己吓到。" },
+      { sender: "我", body: "我去微信看看……" },
     ]},
   ],
 };
@@ -323,6 +325,18 @@ export function WeChatSkin(p: SkinProps) {
   };
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage);
+    if (choice.nextStage === 8) { setIdCopied(false); setAddIdModal(true); }
+  };
+  const appendNewFriendConversation = () => {
+    const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
+    const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
+    const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
+    const created = [
+      makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: "你已添加了大G，現在可以開始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend" } }),
+      makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "你是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } }),
+    ];
+    setCatRescueRaw(JSON.stringify({ ...catRescue, stage: 9, messages: [...catRescue.messages, ...created] }));
+    setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
   };
 
 
@@ -367,6 +381,9 @@ export function WeChatSkin(p: SkinProps) {
   const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
   const [addedFriends, setAddedFriends] = useSkinState<string[]>(p, "wxAddedFriends", []);
   const [addQuery, setAddQuery] = useState("");
+  const [addIdModal, setAddIdModal] = useState(false);
+  const [idCopied, setIdCopied] = useState(false);
+  const [friendRequestModal, setFriendRequestModal] = useState<"" | "confirm" | "sent">("");
   const [momentCover, setMomentCover] = useSkinState<string>(p, "wxMomentCover", "");
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
   const [momentComposer, setMomentComposer] = useState(false);
@@ -414,12 +431,16 @@ export function WeChatSkin(p: SkinProps) {
     ...allItems.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
     ...addedFriends,
   ])).sort((a, b) => a.localeCompare(b, "zh-CN"));
-  const friendDirectory = Array.from(new Set(["温尚翊", "西兰花", "爸爸", "妈妈", ...allItems.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")]));
-  const friendMatches = addQuery.trim() ? friendDirectory.filter((name) => {
-    const related = allItems.filter((i) => i.title === name || i.sender === name);
-    const keys = [name, ...related.flatMap((i) => [i.meta.wechatId, i.meta.account, i.meta.phone, i.meta.handle])].filter(Boolean).join(" ").toLowerCase();
-    return keys.includes(addQuery.trim().toLowerCase());
-  }) : [];
+  const friendDirectory = Array.from(new Set(["西蓝花", "爸爸", "妈妈", ...allItems.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")]));
+  const friendMatches = addQuery.trim()
+    ? addQuery.trim().toLowerCase() === "mo00oster111" && catRescue.stage >= 8
+      ? ["温尚翊"]
+      : friendDirectory.filter((name) => {
+          const related = allItems.filter((i) => i.title === name || i.sender === name);
+          const keys = [name, ...related.flatMap((i) => [i.meta.wechatId, i.meta.account, i.meta.phone, i.meta.handle])].filter(Boolean).join(" ").toLowerCase();
+          return keys.includes(addQuery.trim().toLowerCase());
+        })
+    : [];
   const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
   const filteredConversations = conversations.filter((name) =>
     name.toLowerCase().includes(query.toLowerCase()) ||
