@@ -935,14 +935,23 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   86: [
-    { id: "accept-dinner-playfully", label: "好啊，不准反悔！我可是能吃很多的！", nextStage: 59, lines: [
+    { id: "accept-dinner-playfully", label: "好啊，不准反悔！我可是能吃很多的！", nextStage: 87, lines: [
       { sender: "我", body: "好啊，不准反悔！我可是能吃很多的！", thread: "大G" },
       { sender: "大G", body: "哈哈哈，答應妳的當然不反悔。那妳可要好好想想想吃什麼了。", thread: "大G" },
-      { sender: "大G", body: "不過現在先麻煩妳照顧玩玩，牠剛換地方，可能還需要一點時間適應。", thread: "大G" },
     ]},
-    { id: "accept-dinner-shyly", label: "那我就不客气啦，谢谢你！", nextStage: 59, lines: [
+    { id: "accept-dinner-shyly", label: "那我就不客气啦，谢谢你！", nextStage: 87, lines: [
       { sender: "我", body: "那我就不客氣啦，謝謝你！", thread: "大G" },
-      { sender: "大G", body: "哈哈，不用客氣，說好了就不會反悔。先讓玩玩好好適應，有狀況再跟我說。", thread: "大G" },
+      { sender: "大G", body: "哈哈，不用客氣，說好了就不會反悔。", thread: "大G" },
+    ]},
+  ],
+  87: [
+    { id: "owner-after-dinner-talk-care", label: "放心啦，我会先让玩玩慢慢适应", nextStage: 62, lines: [
+      { sender: "我", body: "放心啦，我會先讓玩玩慢慢適應，有什麼情況我再跟你說。", thread: "大G" },
+      { sender: "大G", body: "好，牠剛換地方可能會先躲起來，妳給牠一點時間。牠平常吃飯跟貓砂的習慣，我也可以再整理給妳。", thread: "大G" },
+    ]},
+    { id: "owner-after-dinner-ask-food", label: "那玩玩现在吃饭了吗？", nextStage: 62, lines: [
+      { sender: "我", body: "那玩玩現在吃飯了嗎？牠剛剛有沒有吃東西？", thread: "大G" },
+      { sender: "大G", body: "有吃一點就好，先不要突然換食物。真的謝謝妳，後面有狀況再傳訊息給我。", thread: "大G" },
     ]},
   ],
   83: [
