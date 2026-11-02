@@ -117,7 +117,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[21][0].lines[0].body).toContain("什麼時候方便回來接");
     expect(CAT_RESCUE_CHOICES[21][0].lines[1].body).toContain("這幾天都不在家");
     expect(CAT_RESCUE_CHOICES[22].every((choice) => choice.lines[0].sender === "我" && /照顧.{0,3}幾天/.test(choice.lines[0].body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[23]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[23][0].nextStage).toBe(27);
     expect(CAT_RESCUE_CHOICES[23][0].lines.map((line) => line.body)).toEqual([
       "對了，聊了半天我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？",
