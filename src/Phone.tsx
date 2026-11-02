@@ -711,11 +711,33 @@ function PhoneRuntime({
                       notices={s.notifications}
                       apps={work.apps}
                       items={notificationItems}
-                      onOpen={() => {
+                      onOpen={(notice) => {
                         setPanel("");
-                        if (locked) beginUnlock();
-                        else if (installedApps.some((a) => a.id === "messages"))
-                          open("messages");
+                        if (locked) {
+                          beginUnlock();
+                          return;
+                        }
+                        // A notification is a deep link to its exact app and
+                        // conversation, not a generic shortcut to Messages.
+                        if (notice.appId === "wechat" && notice.contact) {
+                          const current = runtimeRef.current;
+                          update({
+                            ...current,
+                            ui: {
+                              ...current.ui,
+                              wechat: {
+                                ...current.ui?.wechat,
+                                openThread: notice.contact,
+                              },
+                            },
+                          });
+                          open("wechat");
+                          return;
+                        }
+                        const target = installedApps.some((a) => a.id === notice.appId)
+                          ? notice.appId
+                          : installedApps.some((a) => a.id === "messages") ? "messages" : "";
+                        if (target) open(target);
                       }}
                       onDismiss={dismissNotice}
                     />
