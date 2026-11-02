@@ -874,13 +874,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   56: [
-    { id: "promise-care-well", label: "哈哈哈，那我先努力跟它培养感情", nextStage: 57, lines: [
-      { sender: "我", body: "哈哈哈，那我先努力跟牠培養感情，等牠願意親近我再說。", thread: "大G" },
-      { sender: "大G", body: "慢慢來就好，不用急。牠很聰明，知道誰對牠好。這幾天真的要麻煩妳了。", thread: "大G" },
+    { id: "promise-care-well", label: "哈哈哈，那我先努力跟它培养感情", nextStage: 61, lines: [
+      { sender: "我", body: "哈哈哈，那我先努力跟牠培養感情，等牠願意親近我再說。對了，等你回來是不是該請我吃頓飯？我開玩笑的啦！", thread: "大G" },
+      { sender: "大G", body: "哈哈，妳還真會挑時候討吃的。好啦，等我回去再好好謝謝妳，請妳吃飯，這次記著了。", thread: "大G" },
     ]},
-    { id: "send-updates", label: "等它适应一点，我再拍照片给你看", nextStage: 57, lines: [
-      { sender: "我", body: "等牠適應一點，我再拍照片給你看，讓你知道牠過得很好。", thread: "大G" },
-      { sender: "大G", body: "好啊，我很期待。謝謝妳願意照顧牠，有妳幫忙我安心很多。", thread: "大G" },
+    { id: "send-updates", label: "等它适应一点，我再拍照片给你看", nextStage: 61, lines: [
+      { sender: "我", body: "等牠適應一點，我再拍照片給你看。那你回來要請我吃飯喔，開玩笑啦！", thread: "大G" },
+      { sender: "大G", body: "哈哈，這哪算開玩笑，妳幫我照顧玩玩，我當然要好好謝謝妳。等我回去請妳吃飯。", thread: "大G" },
     ]},
   ],
   57: [],
