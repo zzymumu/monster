@@ -95,7 +95,7 @@ describe("WeChat cat-rescue story configuration", () => {
       "我是在路邊撿到一隻小黑貓，牠脖子上的牌子有你的微信號，所以才急著聯絡你。",
       "蛤？原來是這樣……小黑貓現在在哪裡？牠有沒有受傷？妳先跟我說一下。",
     ]);
-    expect(CAT_RESCUE_CHOICES[20]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[20]).toHaveLength(3);
     expect(CAT_RESCUE_CHOICES[21]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[22]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
