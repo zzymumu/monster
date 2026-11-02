@@ -32,6 +32,7 @@ import "./device-system.css";
 import "./ios/tokens.css";
 import "./ios/reference.css";
 import "./ios/status-bar.css";
+import "./ios27-system.css";
 import { WeChatSkin, WhatsAppSkin } from "./AppSkins";
 import { RichText } from "./RichText";
 import {
@@ -315,7 +316,7 @@ function PhoneRuntime({
     <div
       ref={shell}
       style={{ "--phone-scale": deviceScale } as CSSProperties}
-      className={`phone-shell ios18 ${work.phone.theme === "dark" ? "dark-phone" : ""}`}
+      className={`phone-shell ios18 ios27 ${work.phone.theme === "dark" ? "dark-phone" : ""}`}
     >
       <KeyboardContext.Provider value={setKeyboard}>
         <div
