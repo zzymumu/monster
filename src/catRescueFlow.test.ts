@@ -56,7 +56,7 @@ describe("WeChat cat-rescue story configuration", () => {
 
   it("shows two reply choices immediately after Broccoli asks whether the user arrived", () => {
     expect(CAT_RESCUE_CHOICES[12]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[12].every((choice) => choice.nextStage === 31)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[12].every((choice) => choice.nextStage === 30)).toBe(true);
     expect(CAT_RESCUE_CHOICES[30]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[30].every((choice) => choice.nextStage === 31)).toBe(true);
     expect(CAT_RESCUE_CHOICES[31]).toHaveLength(2);
