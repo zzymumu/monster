@@ -96,12 +96,14 @@ function MessageList({
   onItem,
   onRead,
   whatsapp = false,
+  wechat = false,
 }: {
   items: Item[];
   creator: boolean;
   onItem: (i: Item) => void;
   onRead: (id: string) => void;
   whatsapp?: boolean;
+  wechat?: boolean;
 }) {
   const messagesRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -112,8 +114,10 @@ function MessageList({
   return (
     <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""}`}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
-      {items.map((i) => (
-        <div
+      {items.map((i) => {
+        const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
+        const body = monsterMessage ? toTraditionalChinese(i.body) : i.body;
+        return <div
           key={i.id}
           className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
         >
@@ -128,11 +132,11 @@ function MessageList({
               <ItemMedia item={i} />
             ) : i.kind === "transfer" ? (
               <div className="skin-transfer">
-                ¥ {i.body}
+                ¥ {body}
                 <small>转账记录 · 虚构</small>
               </div>
             ) : (
-              i.body
+              body
             )}
             <small className={whatsapp ? undefined : "wx-message-time"}>
               {i.time.slice(-5)}{" "}
@@ -140,8 +144,8 @@ function MessageList({
             </small>
           </button>
           {!whatsapp && i.outgoing && <Avatar name={i.sender} src={i.avatar} />}
-        </div>
-      ))}
+        </div>;
+      })}
     </div>
   );
 }
@@ -190,6 +194,12 @@ type CatChoice = {
   lines: CatLine[];
 };
 const GLOOMY_AVATAR = "https://sacsbar.itembox.design/item/img/charactor/icon/GLOOMY_icon.png";
+const SIMPLIFIED_TO_TRADITIONAL: Record<string, string> = {
+  这:"這",边:"邊",显:"顯",发:"發",现:"現",后:"後",里:"裡",为:"為",会:"會",说:"說",话:"話",让:"讓",还:"還",没:"沒",对:"對",时:"時",间:"間",开:"開",关:"關",门:"門",来:"來",过:"過",进:"進",见:"見",听:"聽",问:"問",题:"題",吗:"嗎",吧:"吧",样:"樣",么:"麼",个:"個",们:"們",从:"從",头:"頭",长:"長",点:"點",爱:"愛",欢:"歡",乐:"樂",难:"難",当:"當",动:"動",还:"還",给:"給",气:"氣",车:"車",钱:"錢",买:"買",卖:"賣",东:"東",书:"書",读:"讀",写:"寫",认:"認",识:"識",记:"記",错:"錯",对:"對",实:"實",话:"話",觉:"覺",应:"應",该:"該",关:"關",系:"係",亲:"親",脸:"臉",声:"聲",远:"遠",近:"近",尽:"盡",别:"別",处:"處",万:"萬",无:"無",数:"數",机:"機",电:"電",脑:"腦",网:"網",线:"線",号:"號",种:"種",变:"變",带:"帶",帮:"幫",张:"張",条:"條",鱼:"魚",猫:"貓",鸟:"鳥",鸟:"鳥",药:"藥",医:"醫",检:"檢",验:"驗",结:"結",终:"終",错:"錯",简:"簡",体:"體",国:"國",台:"臺",湾:"灣",温:"溫",尚:"尚",翊:"翊",妳:"妳",为:"為",处:"處",够:"夠",随:"隨",虽:"雖",尽:"盡",压:"壓",惊:"驚",叹:"嘆",气:"氣",头:"頭",脸:"臉",过:"過",将:"將",样:"樣",变:"變",愿:"願",务:"務",业:"業",场:"場",关:"關",联:"聯",络:"絡",续:"續",读:"讀",卖:"賣",买:"買",亲:"親",热:"熱",爱:"愛",梦:"夢",欢:"歡",岁:"歲",岁:"歲",历:"歷",书:"書",门:"門",户:"戶",层:"層",楼:"樓",开:"開",关:"關",总:"總",办:"辦",处:"處",务:"務",响:"響",钟:"鐘",块:"塊",数:"數",够:"夠",简:"簡",单:"單",员:"員",职:"職",场:"場",线:"線",传:"傳",输:"輸",网:"網",页:"頁",图:"圖",标:"標",签:"籤",档:"檔",录:"錄",历:"曆",历:"歷",愿:"願",觉:"覺",惊:"驚",欢:"歡",乐:"樂",声:"聲",气:"氣",门:"門",间:"間",边:"邊",过:"過",这:"這",那:"那",哪:"哪",谁:"誰",什么:"什麼",为什么:"為什麼",然后:"然後",已经:"已經",现在:"現在",这样:"這樣",怎么:"怎麼",真的:"真的",知道:"知道",没有:"沒有",电话:"電話",微信:"微信",消息:"訊息"
+};
+function toTraditionalChinese(value: string) {
+  return value.replace(/[\\s\\S]/g, (char) => SIMPLIFIED_TO_TRADITIONAL[char] || char);
+}
 const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
     { id: "bring-home", label: "我真的不忍心把它留在这里……想带它回家", nextStage: 1, branch: "bring-home", lines: [
@@ -481,6 +491,7 @@ export function WeChatSkin(p: SkinProps) {
   const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
   const filteredConversations = conversations.filter((name) =>
     name.toLowerCase().includes(query.toLowerCase()) ||
+    displayName(name).toLowerCase().includes(query.toLowerCase()) ||
     allItems.some((i) => i.title === name && i.body.toLowerCase().includes(query.toLowerCase())),
   );
   const shortcutRows = [
@@ -560,7 +571,7 @@ export function WeChatSkin(p: SkinProps) {
             ) : (
               <>
                 <strong>好友申请已发送</strong>
-                <p>已向温尚翊发送好友申请</p>
+                <p>已向大G发送好友申请</p>
                 <div className="wx-friend-id">好友添加成功 · 微信名：大G</div>
                 <button className="wx-friend-flow-primary" onClick={() => { setFriendRequestModal(""); setUtility(""); setTab("微信"); p.onThread("大G"); }}>完成，查看消息</button>
               </>
@@ -678,7 +689,7 @@ export function WeChatSkin(p: SkinProps) {
         <>
           {catRescueActive ? (
             <div className="cat-rescue-thread">
-              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} />
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
               {catRescue.stage === 8 && !idCopied && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看對方的微信號</button></div>}
               {catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
@@ -691,7 +702,7 @@ export function WeChatSkin(p: SkinProps) {
             </div>
           ) : (
             <>
-              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} />
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
               <Compose creator={p.creator} onAdd={p.onAdd} />
             </>
           )}
@@ -759,7 +770,7 @@ export function WeChatSkin(p: SkinProps) {
                         <Avatar name={name} src={last.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} />
                         {unread && <b className="wx-unread">{list.filter((i) => !i.read).length || ""}</b>}
                       </span>
-                      <div className="wx-chat-copy"><strong>{name}</strong><p>{last.body}</p></div>
+                      <div className="wx-chat-copy"><strong>{displayName(name)}</strong><p>{last.body}</p></div>
                       <time>{last.time.slice(-5)}</time>
                     </button>
                   );
