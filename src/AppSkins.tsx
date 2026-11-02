@@ -938,28 +938,28 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   63: [
     { id: "tell-broccoli-he-promised-dinner", label: "嘻嘻！他要请我吃饭！", nextStage: 64, lines: [
-      { sender: "我", body: "嘻嘻！他要請我吃飯！", thread: "西蓝花" },
+      { sender: "我", body: "嘻嘻！他要请我吃饭！", thread: "西蓝花" },
       { sender: "西蓝花", body: "真的假的！！！他真的要請妳吃飯？妳運氣也太好了吧！你們吃什麼？", thread: "西蓝花" },
     ]},
     { id: "tell-broccoli-dinner-casual", label: "欸嘿，他刚刚答应回来请我吃饭了！", nextStage: 64, lines: [
-      { sender: "我", body: "欸嘿，他剛剛答應回來請我吃飯了！", thread: "西蓝花" },
+      { sender: "我", body: "欸嘿，他刚刚答应回来请我吃饭了！", thread: "西蓝花" },
       { sender: "西蓝花", body: "真的假的！！！他真的要請妳吃飯？妳運氣也太好了吧！你們吃什麼？", thread: "西蓝花" },
     ]},
   64: [
     { id: "fangirl-details", label: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", nextStage: 65, lines: [
-      { sender: "我", body: "我哪知道啊！我當時光顧著開心了，根本沒想到要問！", thread: "西蓝花" },
+      { sender: "我", body: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", thread: "西蓝花" },
     ]},
     { id: "fangirl-scream", label: "我哪知道啦！我当时整个人都懵了！", nextStage: 65, lines: [
-      { sender: "我", body: "我哪知道啦！我當時整個人都懵了，根本沒想到要問！", thread: "西蓝花" },
+      { sender: "我", body: "我哪知道啦！我当时整个人都懵了，根本没想到要问！", thread: "西蓝花" },
     ]},
   65: [
     { id: "settle-down-broccoli", label: "哈哈哈你不要笑我啦！", nextStage: 77, lines: [
-      { sender: "我", body: "哈哈哈妳不要笑我啦！", thread: "西蓝花" },
+      { sender: "我", body: "哈哈哈你不要笑我啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "我哪有笑妳！我是在替妳開心欸！不過妳也太可愛了吧，人家說請吃飯，妳連吃什麼都忘了問。", thread: "西蓝花" },
       { sender: "西蓝花", body: "那妳現在有沒有想好要吃什麼？先偷偷想一下嘛！", thread: "西蓝花" },
     ]},
     { id: "end-broccoli-chat", label: "先不想啦！等他回来再说", nextStage: 77, lines: [
-      { sender: "我", body: "先不想啦！等他回來再說，現在先把玩玩照顧好。", thread: "西蓝花" },
+      { sender: "我", body: "先不想啦！等他回来再说，现在先把玩玩照顾好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啦好啦，先照顧玩玩！但我一定會記得這頓飯，妳不准裝沒這回事。", thread: "西蓝花" },
     ]},
   72: [
