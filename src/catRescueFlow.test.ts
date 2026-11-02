@@ -139,12 +139,15 @@ describe("WeChat cat-rescue story configuration", () => {
       "玩玩……？我靠！",
       "妳？？？怎麼啦？",
     ]);
-    expect(CAT_RESCUE_CHOICES[27][0].nextStage).toBe(32);
-    expect(CAT_RESCUE_CHOICES[53]).toHaveLength(2); // legacy stage remains parseable, but active flow skips it
+    expect(CAT_RESCUE_CHOICES[27][0].nextStage).toBe(53);
+    expect(CAT_RESCUE_CHOICES[53]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[53][0].lines[0].body).toContain("名字太好了");
     expect(CAT_RESCUE_CHOICES[53].every((choice) => choice.nextStage === 32)).toBe(true);
     expect(getCatRescueThreadForStage(32)).toBe("西蓝花");
     expect(getCatRescueThreadForStage(53)).toBe("大G");
+    expect(CAT_RESCUE_CHOICES[53][0].nextStage).toBe(32);
+    expect(CAT_RESCUE_CHOICES[38][0].id).toBe("notice-traditional-typing");
+    expect(CAT_RESCUE_CHOICES[38][0].lines[1].body).toContain("五月天的怪獸本人");
     expect(CAT_RESCUE_CHOICES[32][0].lines[0].body).toContain("我靠我靠");
     expect(CAT_RESCUE_CHOICES[32][0].nextStage).toBe(33);
     expect(CAT_RESCUE_CHOICES[41]).toHaveLength(2);
