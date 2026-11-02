@@ -914,69 +914,18 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   61: [
     { id: "promise-care", label: "好啦，我会好好照顾它的，你放心", nextStage: 82, lines: [
       { sender: "我", body: "好啦，我會好好照顧牠的，你放心。", thread: "大G" },
-      { sender: "大G", body: "嗯，真的很謝謝妳願意幫忙照顧玩玩，我很放心把牠交給妳。", thread: "大G" },
+      { sender: "大G", body: "嗯，真的很謝謝妳。我這邊還有點事情要先處理，玩玩如果有什麼狀況，妳隨時傳訊息給我就好。", thread: "大G" },
+      { sender: "大G", body: "只是我可能沒辦法馬上回覆，訊息看到我就會盡快回妳喔。", thread: "大G" },
     ]},
     { id: "send-cat-photo", label: "等它适应了我拍照片给你看", nextStage: 82, lines: [
       { sender: "我", body: "等牠適應了，我拍照片給你看。", thread: "大G" },
-      { sender: "大G", body: "好啊，我很期待！真的謝謝妳願意照顧牠。", thread: "大G" },
+      { sender: "大G", body: "好啊，我很期待。真的謝謝妳。我這邊還有點事情要先處理，玩玩有什麼問題妳隨時找我就好。", thread: "大G" },
+      { sender: "大G", body: "不過我可能回覆得比較慢一點，妳先別介意喔。", thread: "大G" },
     ]},
   ],
   82: [
-    { id: "owner-thanks-and-dinner", label: "你这么感谢的话，不如请我吃顿饭吧？", nextStage: 86, lines: [
-      { sender: "我", body: "你這麼感謝我的話，不如請我吃頓飯吧？哈哈。", thread: "大G" },
-      { sender: "大G", body: "哈哈，好啊！等我回去請妳吃飯。", thread: "大G" },
-    ]},
-  ],
-  86: [
-    { id: "owner-dinner-just-kidding", label: "欸欸我开玩笑的啦，真的不用麻烦", nextStage: 87, lines: [
-      { sender: "我", body: "欸欸，我開玩笑的啦！真的不用麻煩你，照顧玩玩本來就是我願意做的。", thread: "大G" },
-      { sender: "大G", body: "沒事啦，我是認真的。妳幫我照顧玩玩，我請妳吃頓飯是應該的。", thread: "大G" },
-    ]},
-  ],
-  87: [
-    { id: "owner-thanks-wait-return", label: "那我就先谢谢你啦，等你回来再说，现在先把玩玩照顾好", nextStage: 88, lines: [
-      { sender: "我", body: "那我就先謝謝你啦！等你回來再說，現在先把玩玩照顧好。", thread: "大G" },
-      { sender: "大G", body: "好，就這麼說定。現在先麻煩妳照顧玩玩，真的謝謝妳。", thread: "大G" },
-    ]},
-  ],
-  88: [
-    { id: "owner-ask-food-habits", label: "对了，玩玩平常都喜欢吃什么？", nextStage: 89, lines: [
-      { sender: "我", body: "對了，玩玩平常都喜歡吃什麼？有沒有特別愛吃的？", thread: "大G" },
-      { sender: "大G", body: "牠平常吃固定的乾糧，偶爾會吃主食罐。口味不算挑，不過剛換環境先不要突然換食物。", thread: "大G" },
-    ]},
-    { id: "owner-ask-meal-times", label: "它平常吃饭时间固定吗？", nextStage: 89, lines: [
-      { sender: "我", body: "牠平常吃飯時間固定嗎？還是肚子餓了就自己去吃？", thread: "大G" },
-      { sender: "大G", body: "大致上固定，早晚都會吃一些。妳先照平常的份量放就好，不用勉強牠一次吃完。", thread: "大G" },
-    ]},
-  ],
-  89: [
-    { id: "owner-ask-personality", label: "它还有什么特别的生活习惯吗？", nextStage: 90, lines: [
-      { sender: "我", body: "那牠還有什麼特別的生活習慣嗎？有沒有什麼要注意的？", thread: "大G" },
-      { sender: "大G", body: "牠剛到陌生地方可能會先躲起來，妳不要急著抱牠，讓牠自己慢慢熟悉就好。熟了之後牠很黏人，會一直跟著人。", thread: "大G" },
-      { sender: "大G", body: "不好意思，我這邊還有點事情要先處理，等一下可能得先去忙了。", thread: "大G" },
-    ]},
-    { id: "owner-ask-favorite-toy", label: "它平常喜欢玩什么？", nextStage: 90, lines: [
-      { sender: "我", body: "牠平常喜歡玩什麼？我可以準備一下。", thread: "大G" },
-      { sender: "大G", body: "逗貓棒跟小球都可以，牠很喜歡追。等牠先適應環境，再陪牠玩就好。", thread: "大G" },
-      { sender: "大G", body: "對了，不好意思，我這邊還有點事情要先處理，等一下可能得先去忙了。", thread: "大G" },
-    ]},
-  ],
-  90: [
-    { id: "owner-goodbye-check-food", label: "没关系呀！掰掰，我去看看玩玩吃饭怎么样", nextStage: 91, lines: [
-      { sender: "我", body: "沒關係呀！掰掰，我去看看玩玩吃飯怎麼樣。", thread: "大G" },
-      { sender: "大G", body: "嗯嗯，辛苦妳！那我先去忙，玩玩有任何情況都可以傳訊息給我喔。", thread: "大G" },
-      { sender: "大G", body: "我這邊可能沒辦法馬上回覆，不過訊息看到我就會盡快回妳，妳先別介意喔。", thread: "大G" },
-    ]},
-  ],
-  91: [
-    { id: "owner-joke-slow-reply", label: "哈哈，回复慢是要我等到下个世纪吗？", nextStage: 63, lines: [
-      { sender: "我", body: "哈哈哈哈，回覆比較慢是要我等到下個世紀嗎？那我是不是還要先抽號碼牌？", thread: "大G" },
-      { sender: "大G", body: "哈哈哈哈，哪有這麼誇張啦！我有看到一定會回妳，只是有時候真的會忙到沒辦法馬上看。", thread: "大G" },
-      { sender: "大G", body: "好啦，我真的要去忙了，掰掰！有事再傳訊息給我。", thread: "大G" },
-    ]},
-    { id: "owner-joke-understood", label: "哈哈好啦知道了，你快去忙吧", nextStage: 63, lines: [
-      { sender: "我", body: "哈哈好啦，知道了！你快去忙吧，我有事再找你。", thread: "大G" },
-      { sender: "大G", body: "哈哈，好啦，真的要去忙了，掰掰！玩玩就先拜託妳了。", thread: "大G" },
+    { id: "owner-goodbye-and-check-wanwan", label: "好的，掰掰，那我去看玩玩吃饭了没有～", nextStage: 66, lines: [
+      { sender: "我", body: "好的，掰掰，那我去看玩玩吃飯了沒有～", thread: "大G" },
     ]},
   ],
   62: [
