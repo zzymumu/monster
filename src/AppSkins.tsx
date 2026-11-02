@@ -543,10 +543,19 @@ export function WeChatSkin(p: SkinProps) {
                   <button className="wx-me-name-edit" onClick={() => { setNameDraft(ownerName); setNameEditorOpen(true); }}>
                     <strong>{ownerName}</strong>
                   </button>
-                  <small>微信号：未设置</small>
-                  <button className="wx-profile-status" onClick={() => setStatusEditorOpen(true)}>{profileStatus ? "● " + profileStatus : "＋ 状态"}</button>
+                  <small>微信号：zzy332128272</small>
+                  <div className="wx-me-profile-actions">
+                    <button className="wx-profile-status" onClick={() => setStatusEditorOpen(true)}>{profileStatus ? "● " + profileStatus : "＋ 状态"}</button>
+                    <button className="wx-friends-status" onClick={() => openUtility("朋友状态")} aria-label="查看朋友状态">
+                      <span className="wx-friend-miniatures"><i>🐱</i><i>🐾</i><i>🌼</i></span>
+                      <span>等 41 个朋友</span><b />
+                    </button>
+                  </div>
                 </div>
-                <ChevronRight size={20} />
+                <div className="wx-me-profile-trailing">
+                  <button aria-label="我的二维码" onClick={() => openUtility("我的二维码")}><ScanLine size={25} /></button>
+                  <ChevronRight size={23} />
+                </div>
               </div>
               {nameEditorOpen && (
                 <div className="wx-profile-edit-backdrop" role="presentation">
