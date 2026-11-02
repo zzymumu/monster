@@ -1107,15 +1107,16 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   67: [
-    { id: "suggest-isolation", label: "要不我先带它回家，单独一个房间跟 Vava 隔离？", nextStage: 81, lines: [
-      { sender: "我", body: "可是牠一直在外面也不是辦法……要不我先帶牠回家？讓牠單獨住一個房間，跟 Vava 隔離，完全不碰面。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳先等等！隔離也不是把牠關進房間、關上門就沒事了啊。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳每天還是要走進走出，衣服、手、鞋子都有可能把病菌或寄生蟲帶來帶去，Vava 一樣有風險。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "而且小貓有沒有跳蚤、耳疥蟲或其他傳染病都還不知道，至少先確認健康狀況再說，好不好？", thread: "西蓝花" },
+    { id: "suggest-isolation", label: "我可以让它单独住一个房间，跟 Vava 隔离呀", nextStage: 81, lines: [
+      { sender: "我", body: "可是我可以讓牠單獨住一個房間啊！門關起來，不讓牠跟 Vava 接觸，這樣也不行嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳先等等！隔離不是把門關起來就沒事了啦。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳每天還是要進出房間，手、衣服、鞋子都可能把病菌或寄生蟲帶出來，Vava 一樣有風險。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且小貓有沒有跳蚤、耳疥蟲，甚至其他傳染病都還不知道，不能只靠隔離就放心。", thread: "西蓝花" },
     ]},
-    { id: "admit-going-home", label: "好吧……那我先回家好了", nextStage: 68, lines: [
-      { sender: "我", body: "好吧……我聽妳的，先不把牠帶回家了。我先回家冷靜一下，可是心裡還是有點放不下。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "這樣比較穩妥！妳不是不管牠，我們只是先用安全一點的方法幫牠。到家跟我說一聲喔。", thread: "西蓝花" },
+    { id: "still-wants-to-help", label: "可是我真的不想把它继续留在外面", nextStage: 81, lines: [
+      { sender: "我", body: "我知道妳是擔心 Vava，可是牠一直待在外面我真的很不放心……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我也心疼牠啊！但妳想想，萬一牠真的有傳染病，妳把牠帶回家，Vava 怎麼辦？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且妳照顧牠的時候走來走去，也可能把病菌帶到家裡其他地方。先確認健康狀況比較安全，好不好？", thread: "西蓝花" },
     ]},
   ],
   68: [
@@ -1167,13 +1168,14 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   81: [
-    { id: "agree-go-home-after-isolation", label: "好吧……你说得对，我先回家好了", nextStage: 68, lines: [
-      { sender: "我", body: "好吧……妳說得對，我先不把牠帶回家了。我先回家，可是想到牠還在那裡，心裡還是很難受。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我知道啦，我也會心疼。妳先回家休息，到家跟我說一聲，我們再一起想辦法。", thread: "西蓝花" },
+    { id: "agree-clinic-first", label: "好吧好吧，那我先带它去医院看看", nextStage: 3, lines: [
+      { sender: "我", body: "好吧好吧！妳說得也有道理，那我先帶牠去醫院看看，讓醫生檢查一下再決定怎麼安置。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "這樣最好！先確認牠有沒有傳染病或寄生蟲，也保護 Vava。妳帶牠去醫院的路上小心喔！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "如果牠不肯讓妳抱就不要硬來，安全第一，到了醫院記得跟我說！", thread: "西蓝花" },
     ]},
-    { id: "ask-rescue-instead", label: "那我先回家，想想有没有更安全的办法", nextStage: 68, lines: [
-      { sender: "我", body: "那我先回家，想想有沒有更安全的辦法可以幫牠。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "對嘛！先不要急著帶回家，確認牠的健康和有沒有主人比較重要。路上小心！", thread: "西蓝花" },
+    { id: "clinic-is-safest", label: "那就先检查，等医生说可以再考虑带回家", nextStage: 3, lines: [
+      { sender: "我", body: "好啦，我妥協！那我先帶牠去醫院檢查，等醫生確認沒問題，再考慮後面的事。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "乖啦！不是不讓妳救牠，是要把妳跟 Vava 都顧好。先去檢查，後面我們再一起想辦法。", thread: "西蓝花" },
     ]},
   ],
   80: [
