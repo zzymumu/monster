@@ -146,7 +146,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[32][0].lines[0].body).toContain("玩玩！那隻貓叫玩玩");
     expect(CAT_RESCUE_CHOICES[32][0].lines[1].body).toContain("玩玩？？？怪獸家的貓就叫玩玩啊");
     expect(CAT_RESCUE_CHOICES[32][0].lines[1].body).toContain("真的假的");
-    expect(CAT_RESCUE_CHOICES[33]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[33]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[33][0].lines.map((line) => line.sender)).toEqual(["我", "西蓝花", "我", "西蓝花"]);
     expect(CAT_RESCUE_CHOICES[33][0].lines[0].body).toContain("對啊我知道所以我才來找你");
     expect(CAT_RESCUE_CHOICES[33][0].lines[1].body).toContain("什麼神仙運氣");
