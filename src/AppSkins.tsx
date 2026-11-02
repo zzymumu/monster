@@ -541,9 +541,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   26: [
-    { id: "ask-kitten-name", label: "对了，这只猫叫什么名字呀？", nextStage: 27, lines: [
-      { sender: "我", body: "對了，我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？" },
-      { sender: "大G", body: "牠叫玩玩。" },
+    { id: "finish-care-checkin", label: "好，那你先忙，有情况我再联系你", nextStage: 36, lines: [
+      { sender: "我", body: "好，那你先忙，有情況我再聯絡你。玩玩這邊我會照顧好的。" },
+      { sender: "大G", body: "好，真的謝謝妳。等我忙完回去就去接牠，這幾天就先麻煩妳了。" },
     ]},
   ],
   27: [
@@ -583,11 +583,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   35: [
-    { id: "tell-owner-safe", label: "玩玩现在很安全，我会先照顾好它", nextStage: 23, branch: "monster-cat", lines: [
+    { id: "tell-owner-safe", label: "玩玩现在很安全，我会先照顾好它", nextStage: 24, branch: "monster-cat", lines: [
       { sender: "我", body: "玩玩現在很安全，我會先照顧好牠，你不用擔心。" , thread: "大G" },
       { sender: "大G", body: "那就好……真的謝謝妳。玩玩就先拜託妳了，等我回去再好好跟妳道謝。" , thread: "大G" },
     ]},
   ],
+  36: [],
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
