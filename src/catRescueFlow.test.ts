@@ -90,11 +90,13 @@ describe("WeChat cat-rescue story configuration", () => {
     }
   });
 
-  it("offers exactly two player-controlled replies at every active story turn", () => {
+  it("offers player-controlled replies at every active story turn", () => {
     const systemOrTerminalStages = new Set([8, 13, 57, 66]);
+    const intentionalSingleChoiceStages = new Set([82, 86, 87, 90]);
     for (const [stage, choices] of Object.entries(CAT_RESCUE_CHOICES)) {
       if (systemOrTerminalStages.has(Number(stage))) continue;
-      expect(choices, `stage ${stage} must have two choices`).toHaveLength(2);
+      const expectedCount = intentionalSingleChoiceStages.has(Number(stage)) ? 1 : 2;
+      expect(choices, `stage ${stage} must have ${expectedCount} choices`).toHaveLength(expectedCount);
     }
   });
 
@@ -194,8 +196,8 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[91].every((choice) => choice.nextStage === 63)).toBe(true);
     expect(CAT_RESCUE_CHOICES[83]).toBeUndefined();
     expect(CAT_RESCUE_CHOICES[85]).toBeUndefined();
-    for (const [stage, next] of [[56,61],[59,60],[60,61],[61,82],[82,86],[86,87],[87,88],[88,89],[89,90],[90,91],[91,63],[62,63],[63,64],[64,65],[65,77],[77,78],[78,79],[79,84],[84,66]] as const) {
-      expect(CAT_RESCUE_CHOICES[stage]).toHaveLength(2);
+    for (const [stage, next, count] of [[56,61,2],[59,60,2],[60,61,2],[61,82,2],[82,86,1],[86,87,1],[87,88,1],[88,89,2],[89,90,2],[90,91,1],[91,63,2],[62,63,2],[63,64,2],[64,65,2],[65,77,2],[77,78,2],[78,79,2],[79,84,2],[84,66,2]] as const) {
+      expect(CAT_RESCUE_CHOICES[stage]).toHaveLength(count);
       expect(CAT_RESCUE_CHOICES[stage].every((choice) => choice.nextStage === next)).toBe(true);
     }
     expect(CAT_RESCUE_CHOICES[62]).toHaveLength(2);
