@@ -918,9 +918,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   62: [
-    { id: "tell-broccoli-dinner", label: "我先去跟西蓝花说！她肯定会激动死！", nextStage: 63, lines: [
-      { sender: "我", body: "好，那我先去忙玩玩，晚點再跟你說！", thread: "大G" },
-      { sender: "大G", body: "好，辛苦妳了。記得有事隨時找我。", thread: "大G" },
+    { id: "tell-broccoli-dinner", label: "好！我这就去跟西蓝花说！", nextStage: 63, lines: [
+      { sender: "我", body: "好！那我先去找西藍花，跟她說這件事！", thread: "大G" },
+      { sender: "大G", body: "哈哈，好啊，去吧！記得替我跟她打聲招呼。", thread: "大G" },
     ]},
     { id: "end-owner-chat", label: "好！那你也早点休息，晚点聊", nextStage: 63, lines: [
       { sender: "我", body: "好！那你也早點休息，晚點聊。", thread: "大G" },
