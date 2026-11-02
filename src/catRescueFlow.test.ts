@@ -139,7 +139,10 @@ describe("WeChat cat-rescue story configuration", () => {
       "玩玩……？我靠！",
       "妳？？？怎麼啦？",
     ]);
-    expect(CAT_RESCUE_CHOICES[27][0].nextStage).toBe(32);
+    expect(CAT_RESCUE_CHOICES[27][0].nextStage).toBe(53);
+    expect(CAT_RESCUE_CHOICES[53]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[53][0].lines[0].body).toContain("名字太好了");
+    expect(CAT_RESCUE_CHOICES[53].every((choice) => choice.nextStage === 32)).toBe(true);
     expect(CAT_RESCUE_CHOICES[32][0].lines[0].body).toContain("名字太好了");
     expect(CAT_RESCUE_CHOICES[32][0].nextStage).toBe(33);
     expect(CAT_RESCUE_CHOICES[41]).toHaveLength(2);
