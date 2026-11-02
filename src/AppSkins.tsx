@@ -900,7 +900,9 @@ export function WeChatSkin(p: SkinProps) {
   // Keep both contact transcripts readable for the entire story, including
   // after the handoff. Hiding the Broccoli story view at later stages made
   // delivered replies appear in notifications but disappear when opened.
-  const catRescueActive = isBroccoliThread || (isMonsterThread && (monsterFriendAccepted || ownerChatStarted));
+  const catRescueActive =
+    isBroccoliThread ||
+    (isMonsterThread && (monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53));
   const _catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
@@ -956,9 +958,14 @@ export function WeChatSkin(p: SkinProps) {
   const isCurrentChoiceThread =
     (isBroccoliThread && choiceThread === "西蓝花") ||
     (isMonsterThread && choiceThread === "大G");
-  const catChoices = pendingCatLines.length === 0 && isCurrentChoiceThread
-    ? (CAT_RESCUE_CHOICES[catRescue.stage] || [])
-    : [];
+  const catChoices =
+    // Stage 53 is the explicit DaG follow-up after "妳？？？怎麼啦？".
+    // Keep its two replies visible in DaG's own chat even if an unrelated
+    // stale queue entry remains from the previous contact.
+    ((catRescue.stage === 53 && isMonsterThread) ||
+      (pendingCatLines.length === 0 && isCurrentChoiceThread))
+      ? (CAT_RESCUE_CHOICES[catRescue.stage] || [])
+      : [];
   useEffect(() => {
     // Rewrite the already-saved pickup exchange from the previous ordering so
     // existing testers see the corrected away-from-home explanation too.
