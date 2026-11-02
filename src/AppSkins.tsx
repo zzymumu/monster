@@ -259,8 +259,7 @@ export function splitCatRescueMessages(messages: Item[]): { broccoli: Item[]; ow
     );
   const ownerStart = messages.findIndex(isOwnerStoryMessage);
   const isExplicitBroccoliMessage = (item: Item) =>
-    item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花" ||
-    item.title === "西蓝花" || item.title === "西兰花";
+    item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花";
   const owner = messages.filter((item, index) =>
     !isExplicitBroccoliMessage(item) &&
     (isOwnerStoryMessage(item) || (ownerStart >= 0 && index >= ownerStart && !isHospitalStoryMessage(item)))
