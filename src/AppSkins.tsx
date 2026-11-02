@@ -1064,10 +1064,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "好吧……我聽妳的，先不把牠帶回家了。我先回家冷靜一下，可是心裡還是有點放不下。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這樣比較穩妥！妳不是不管牠，我們只是先用安全一點的方法幫牠。到家跟我說一聲喔。", thread: "西蓝花" },
     ]},
-    { id: "promise-not-bring-home", label: "嗯，我不把它带回家了，先回去再说", nextStage: 68, lines: [
-      { sender: "我", body: "嗯，我不把牠帶回家了，先回去再說。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "這樣比較穩妥！妳已經很有心了，先回家喝點水、休息一下。", thread: "西蓝花" },
-    ]},
   ],
   68: [
     { id: "home-chat-work", label: "我到家啦。对了，你上次说的工作后来怎么样了？", nextStage: 69, lines: [
