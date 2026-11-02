@@ -223,9 +223,13 @@ export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): 
   return 9;
 }
 export function recoverCatRescueStage(stage: number, branch: string, friendAccepted: boolean): number {
-  // "leave-first" stages 10–12 are still the return-to-find-the-cat branch.
-  // Never collapse them into stage 8 (the WeChat-ID handoff).
-  if (!friendAccepted && branch !== "leave-first" && stage >= 9 && stage <= 12) return 8;
+  // Stages 10–12 are active broccoli-side story beats (including the
+  // leave-first / return-for-the-kitten branch). A stale friend-accepted flag
+  // must never turn them into stage 8, which is exclusively the WeChat-ID step.
+  if (stage >= 10 && stage <= 12) return stage;
+  // Stage 9 is the post-add owner-chat handoff; keep it intact as well.
+  if (stage === 9) return 9;
+  if (!friendAccepted && stage >= 9 && stage <= 12) return 8;
   return stage;
 }
 export function shouldShowPrankHistoryLine(item: Item, branch: string): boolean {
@@ -536,13 +540,9 @@ export function WeChatSkin(p: SkinProps) {
   const storyClockRef = useRef(p.virtualTime || "14:24");
   storyClockRef.current = p.virtualTime || storyClockRef.current;
   const parsedCatRescue = parseCatRescueState(catRescueRaw);
-  // Recover stale friend-add sessions without overwriting the separate
-  // "leave-first" branch, which must return to the kitten before any WeChat step.
-  // The prank's deleted-friend stage 13 is also deliberately preserved.
-  const recoveredStage = recoverCatRescueStage(parsedCatRescue.stage, parsedCatRescue.branch, monsterFriendAccepted);
-  const catRescue = recoveredStage === parsedCatRescue.stage
-    ? parsedCatRescue
-    : { ...parsedCatRescue, stage: recoveredStage };
+  // Do not infer the WeChat-ID handoff from a stale friend-accepted flag:
+  // stage 8 is reached only by the explicit "try WeChat" choice.
+  const catRescue = parsedCatRescue;
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
