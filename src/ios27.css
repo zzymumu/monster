@@ -605,3 +605,37 @@
   background: #18191c;
   color: #f4f4f6;
 }
+
+.ios18 .wechat-ui .wx-contact-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px 14px;
+  background: #fff;
+  border-bottom: 1px solid #ededed;
+}
+.ios18 .wechat-ui .wx-contact-shortcuts button {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: #333;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.ios18 .wechat-ui .wx-contact-shortcuts button > span {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: #fff;
+  background: #8ab9a1;
+}
+.ios18 .wechat-ui .wx-contact-shortcuts button:nth-child(2) > span { background: #78a8d5; }
+.ios18 .wechat-ui .wx-contact-shortcuts button:nth-child(3) > span { background: #d5aa70; }
+.ios18 .wechat-ui .wx-contact-shortcuts button:nth-child(4) > span { background: #72a9c9; }
+.dark-phone.ios18 .wechat-ui .wx-contact-shortcuts {
+  background: #202124;
+  border-color: #343539;
+}
+.dark-phone.ios18 .wechat-ui .wx-contact-shortcuts button { color: #f2f2f4; }
