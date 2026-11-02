@@ -84,7 +84,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[16]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[16].every((choice) => choice.nextStage === 20)).toBe(true);
     expect(apology?.nextStage).toBe(20);
-    expect(apology?.lines.some((line) => /發錯人/.test(line.body))).toBe(true);
+    expect(apology?.lines.some((line) => /小黑貓/.test(line.body))).toBe(true);
     expect(apology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "我", "大G"]);
     expect(apology?.lines.map((line) => line.body)).toEqual([
       "真的對不起！我剛剛只是想開個玩笑，沒想到你真的把我刪掉了。",
