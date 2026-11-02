@@ -5481,3 +5481,145 @@ label {
 .wechat-ui.wx-reference-layout .wx-status-custom-sheet textarea { width:100%; min-height:90px; margin-top:14px; padding:10px; resize:none; border:0; border-radius:8px; background:#f6f6f6; color:#222; font-size:15px; box-shadow:none; }
 .wechat-ui.wx-reference-layout .wx-status-custom-sheet > small { display:block; text-align:right; color:#aaa; font-size:11px; }
 .wechat-ui.wx-reference-layout .wx-profile-status { width:max-content; max-width:150px; padding:4px 9px; border:1px solid #e5e5e5; border-radius:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#999; background:transparent; text-align:left; font-size:11px; }
+
+
+/* WeChat "Me" profile: align avatar, identity, status pills and QR like the reference. */
+.wechat-ui.wx-reference-layout .wx-me-page {
+  padding-top: 76px;
+  background: #ededed;
+}
+.wechat-ui.wx-reference-layout .wx-me-profile {
+  min-height: 138px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 27px 27px;
+  background: #fff;
+}
+.wechat-ui.wx-reference-layout .wx-me-avatar-edit {
+  flex: 0 0 62px;
+  width: 62px;
+  height: 62px;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.wechat-ui.wx-reference-layout .wx-me-avatar-edit .skin-avatar {
+  display: block;
+  width: 62px;
+  height: 62px;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.wechat-ui.wx-reference-layout .wx-me-avatar-edit .skin-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.wechat-ui.wx-reference-layout .wx-me-identity {
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 8px;
+}
+.wechat-ui.wx-reference-layout .wx-me-name-edit {
+  min-height: 27px;
+  line-height: 1.2;
+}
+.wechat-ui.wx-reference-layout .wx-me-name-edit strong {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -.3px;
+}
+.wechat-ui.wx-reference-layout .wx-me-identity > small {
+  color: #858585;
+  font-size: 15px;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.wechat-ui.wx-reference-layout .wx-me-profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+.wechat-ui.wx-reference-layout .wx-me-profile-actions .wx-profile-status {
+  min-height: 25px;
+  padding: 3px 10px;
+  font-size: 14px;
+  line-height: 1.2;
+  border-radius: 16px;
+}
+.wechat-ui.wx-reference-layout .wx-friends-status {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 9px 3px 5px;
+  border: 1px solid #e4e4e4;
+  border-radius: 18px;
+  color: #888;
+  background: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.wechat-ui.wx-reference-layout .wx-friend-miniatures {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 2px;
+}
+.wechat-ui.wx-reference-layout .wx-friend-miniatures i {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  margin-left: -3px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  background: #e9e0d4;
+  font-size: 11px;
+  font-style: normal;
+}
+.wechat-ui.wx-reference-layout .wx-friends-status b {
+  width: 8px;
+  height: 8px;
+  display: block;
+  margin-left: 1px;
+  border-radius: 50%;
+  background: #ed5960;
+}
+.wechat-ui.wx-reference-layout .wx-me-profile-trailing {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+  min-height: 68px;
+  margin-left: 2px;
+  color: #aeb4c0;
+}
+.wechat-ui.wx-reference-layout .wx-me-profile-trailing button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #7c879e;
+  background: transparent;
+}
+.wechat-ui.wx-reference-layout .wx-me-profile-trailing > svg {
+  color: #b5b5b5;
+  align-self: center;
+}
+@media (max-width: 390px) {
+  .wechat-ui.wx-reference-layout .wx-me-profile {
+    gap: 13px;
+    padding-left: 18px;
+    padding-right: 16px;
+  }
+  .wechat-ui.wx-reference-layout .wx-me-name-edit strong { font-size: 21px; }
+  .wechat-ui.wx-reference-layout .wx-me-identity > small { font-size: 13px; }
+  .wechat-ui.wx-reference-layout .wx-me-profile-actions { gap: 5px; }
+  .wechat-ui.wx-reference-layout .wx-friends-status { font-size: 11px; }
+}
