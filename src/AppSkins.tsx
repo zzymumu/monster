@@ -938,26 +938,27 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   64: [
-    { id: "fangirl-details", label: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", nextStage: 65, lines: [
-      { sender: "我", body: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈哈妳也太可愛了吧！人家都說要請妳吃飯了，妳居然連吃什麼都沒問。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "那他有沒有說什麼時候回來？還是也沒講？", thread: "西蓝花" },
+    { id: "forgot-to-ask-return-date", label: "嘶……我还真忘了问！", nextStage: 65, lines: [
+      { sender: "我", body: "嘶……我還真忘了問！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的是……這麼重要的事情也能忘！", thread: "西蓝花" },
+      { sender: "我", body: "小問題啦！我去查查五月天最近在哪開演唱會不就行了？反正他們每次都是特種兵行程，回來肯定特別快。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好像在北京吧？", thread: "西蓝花" },
     ]},
-    { id: "fangirl-scream", label: "我哪知道啦！我当时整个人都懵了！", nextStage: 65, lines: [
-      { sender: "我", body: "我哪知道啦！我當時整個人都懵了，根本沒想到要問！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈哈我真的要被妳笑死！妳是不是只記得他答應請妳吃飯，其他都忘光了？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "不過也正常啦，換成我我可能也會開心到忘記問。", thread: "西蓝花" },
+    { id: "forgot-but-can-check-tour", label: "嘶……我还真忘问了，不过我可以自己查！", nextStage: 65, lines: [
+      { sender: "我", body: "嘶……我還真忘了問！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的是……這麼重要的事情也能忘！", thread: "西蓝花" },
+      { sender: "我", body: "小問題啦！我去查查五月天最近在哪開演唱會不就行了？反正他們每次都是特種兵行程，回來肯定特別快。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好像在北京吧？", thread: "西蓝花" },
     ]},
   ],
   65: [
-    { id: "settle-down-broccoli", label: "哈哈哈你不要笑我啦！", nextStage: 77, lines: [
-      { sender: "我", body: "哈哈哈你不要笑我啦！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我哪有笑妳！我是在替妳開心欸！不過妳也太可愛了吧，人家說請吃飯，妳連吃什麼都忘了問。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "那妳現在有沒有想好要吃什麼？先偷偷想一下嘛！", thread: "西蓝花" },
+    { id: "not-thinking-yet", label: "哦哦，那先不想啦！等他回来再说", nextStage: 79, lines: [
+      { sender: "我", body: "哦哦，先不想啦！等他回來再說，現在先把玩玩照顧好。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，先照顧玩玩！不過妳記得有消息要第一時間跟我說喔！", thread: "西蓝花" },
     ]},
-    { id: "end-broccoli-chat", label: "先不想啦！等他回来再说", nextStage: 77, lines: [
-      { sender: "我", body: "先不想啦！等他回来再说，现在先把玩玩照顾好。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好啦好啦，先照顧玩玩！但我一定會記得這頓飯，妳不准裝沒這回事。", thread: "西蓝花" },
+    { id: "focus-on-wanwan", label: "哦哦！先照顾好玩玩，等他回来再说", nextStage: 79, lines: [
+      { sender: "我", body: "哦哦！那先不想啦，等他回來再說，現在先把玩玩照顧好。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "嗯嗯，先把玩玩照顧好！這頓飯妳可別忘了，等他回來再跟我報告！", thread: "西蓝花" },
     ]},
   ],
   77: [
