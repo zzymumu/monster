@@ -1464,7 +1464,7 @@
   bottom: 74px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: 2fr 1fr 1.35fr 1fr 1fr;
+  grid-template-rows: 1.45fr 1.45fr .78fr .9fr .9fr .9fr;
   gap: 12px;
   overflow: hidden;
 }
@@ -1555,14 +1555,15 @@
 .phone-shell.ios27 .device-control .cc-slider > svg {
   position: absolute; bottom: 13%; color: #f4d34e; margin: 0; z-index: 1;
 }
-.phone-shell.ios27 .device-control .cc-slider:nth-of-type(2) > svg { color: #21b7d6; }
-.phone-shell.ios27 .device-control .cc-tool-flashlight { grid-column: 1; grid-row: 4; }
-.phone-shell.ios27 .device-control .cc-tool-calculator { grid-column: 2; grid-row: 4; }
-.phone-shell.ios27 .device-control .cc-tool-camera { grid-column: 3; grid-row: 4; }
-.phone-shell.ios27 .device-control .cc-tool-record { grid-column: 4; grid-row: 4; }
-.phone-shell.ios27 .device-control .cc-tool-qr { grid-column: 1; grid-row: 5; }
-.phone-shell.ios27 .device-control .cc-tool-battery { grid-column: 2; grid-row: 5; }
-.phone-shell.ios27 .device-control .cc-tool-mirror { grid-column: 3; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-slider-volume > svg { color: #21b7d6; }
+.phone-shell.ios27 .device-control .cc-focus { grid-column: 1 / span 2; grid-row: 4; }
+.phone-shell.ios27 .device-control .cc-tool-flashlight { grid-column: 1; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-calculator { grid-column: 2; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-camera { grid-column: 3; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-record { grid-column: 4; grid-row: 5; }
+.phone-shell.ios27 .device-control .cc-tool-qr { grid-column: 1; grid-row: 6; }
+.phone-shell.ios27 .device-control .cc-tool-battery { grid-column: 2; grid-row: 6; }
+.phone-shell.ios27 .device-control .cc-tool-mirror { grid-column: 3; grid-row: 6; }
 .phone-shell.ios27 .device-control .cc-recording { color: #ff453a; }
 .phone-shell.ios27 .device-control .cc-tool {
   position: absolute; inset: 42% 48px auto 24px; z-index: 5;

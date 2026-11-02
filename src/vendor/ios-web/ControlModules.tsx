@@ -95,7 +95,7 @@ export function SliderModule({
 }) {
   const Icon = type === "brightness" ? Sun : Volume2;
   return (
-    <label className="cc-slider">
+    <label className={"cc-slider cc-slider-" + type}>
       <input
         aria-label={type === "brightness" ? "屏幕亮度" : "音量"}
         type="range"
