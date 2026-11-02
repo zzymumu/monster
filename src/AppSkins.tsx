@@ -546,10 +546,6 @@ export function WeChatSkin(p: SkinProps) {
                   <small>微信号：IloveMayday</small>
                   <div className="wx-me-profile-actions">
                     <button className="wx-profile-status" onClick={() => setStatusEditorOpen(true)}>{profileStatus ? "● " + profileStatus : "＋ 状态"}</button>
-                    <button className="wx-friends-status" onClick={() => openUtility("朋友状态")} aria-label="查看朋友状态">
-                      <span className="wx-friend-miniatures"><i>🐱</i><i>🐾</i><i>🌼</i></span>
-                      <span>等 41 个朋友</span><b />
-                    </button>
                   </div>
                 </div>
                 <div className="wx-me-profile-trailing">
