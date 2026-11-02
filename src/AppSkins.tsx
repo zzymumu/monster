@@ -663,7 +663,18 @@ export function WeChatSkin(p: SkinProps) {
   // flow. Older builds advanced the story stage too early, so stage alone
   // must never be treated as proof that the friend was actually added.
   const [monsterFriendAccepted, setMonsterFriendAccepted] = useSkinState<boolean>(p, "wxMonsterFriendAccepted", false);
-  const [pendingCatLines, setPendingCatLines] = useState<CatLine[]>([]);
+  const [pendingCatLinesRaw, setPendingCatLinesRaw] = useSkinState<string>(p, "wxCatPendingLines", "[]");
+  let pendingCatLines: CatLine[] = [];
+  try {
+    const parsed = JSON.parse(pendingCatLinesRaw);
+    if (Array.isArray(parsed)) pendingCatLines = parsed.filter((line) =>
+      line && typeof line.body === "string" && typeof line.sender === "string"
+    ) as CatLine[];
+  } catch { pendingCatLines = []; }
+  const setPendingCatLines = (next: CatLine[] | ((current: CatLine[]) => CatLine[])) => {
+    const updated = typeof next === "function" ? next(pendingCatLines) : next;
+    setPendingCatLinesRaw(JSON.stringify(updated));
+  };
   const storyClockRef = useRef(p.virtualTime || "14:24");
   storyClockRef.current = p.virtualTime || storyClockRef.current;
   const parsedCatRescue = parseCatRescueState(catRescueRaw);
@@ -780,39 +791,8 @@ export function WeChatSkin(p: SkinProps) {
         : [...current, { sender: "大G", body: "？？？", thread: "大G" }]);
     }
   }, [legacyPrankReaddPending]);
-  useEffect(() => {
-    if (!pendingCatLines.length) return;
-    const line = pendingCatLines[0];
-    const delay = Math.min(1750, Math.max(720, 520 + line.body.length * 24));
-    const timer = window.setTimeout(() => {
-      const [hour, minute] = (storyClockRef.current || "14:24").split(":").map(Number);
-      const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24) + catRescue.messages.length;
-      const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
-      const ownerThread = getCatRescueThreadForStage(catRescue.stage) === "大G";
-      const created = makeItem({
-        id: "cat-rescue-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
-        title: line.thread || (ownerThread ? "大G" : "西蓝花"),
-        sender: line.sender,
-        body: line.body,
-        time,
-        outgoing: line.sender === "我",
-        avatar: line.sender === "西蓝花" ? catAvatar : "",
-        meta: { storyId: "cat-rescue", storyThread: line.thread || (ownerThread ? "大G" : "西蓝花") },
-      });
-      const prankApologyFailed = catRescue.stage === 13 && catRescue.branch === "monster-prank" && line.sender === "我";
-      if (prankApologyFailed) setMonsterSendFailed(true);
-      // Do not auto-delete the friend when the initial prank message finishes.
-      // Stage 17 must remain active so the apology choices can render. The
-      // deletion happens only after the player chooses an attempted apology.
-      setCatRescueRaw(JSON.stringify({
-        ...catRescue,
-        version: 2,
-        messages: [...catRescue.messages, created],
-      }));
-      setPendingCatLines((current) => current.slice(1));
-    }, delay);
-    return () => window.clearTimeout(timer);
-  }, [pendingCatLines, catRescueRaw]);
+  // Pending replies are persisted in WeChat UI state and delivered by the
+  // phone-level scheduler, so they continue arriving while another app is open.
 
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
     // Persist the selected reply immediately. Remaining lines are delivered
