@@ -742,23 +742,28 @@ export function WeChatSkin(p: SkinProps) {
   const threadItems = isMonsterThread
     ? filterPrankHistoryLines([
         ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
-        ...ownerStoryMessages.filter(keepPrankHistoryClean),
+        ...catRescue.messages.filter((item) =>
+          (item.meta?.storyThread === "大G" || item.meta?.storyThread === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
+          keepPrankHistoryClean(item)
+        ),
       ], hasPrankPath)
     : isBroccoliThread
       ? [
           ...broccoliBaseItems,
-          // Opening surprise is context for the user's next reply, so place
-          // it before the story replies rather than appending it at the end.
           ...p.items.filter((item) =>
             (item.title === "西蓝花" || item.title === "西兰花") &&
             item.sender === "西蓝花" &&
             item.body.trim() === "？？？"
           ),
+          // Render every saved Broccoli story message directly from the
+          // canonical story transcript. This includes the opening question,
+          // the user's reply, and every delayed follow-up delivered later.
           ...catRescue.messages.filter((item) =>
-            item.body.trim() === "？？？" &&
-            (item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花" || item.title === "西蓝花" || item.title === "西兰花")
+            item.meta?.storyThread === "西蓝花" ||
+            item.meta?.storyThread === "西兰花" ||
+            item.title === "西蓝花" ||
+            item.title === "西兰花"
           ),
-          ...friendStoryMessages,
         ].filter((item, index, items) => items.findIndex((entry) => entry.id === item.id) === index)
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
