@@ -924,7 +924,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   82: [
-    { id: "owner-goodbye-and-check-wanwan", label: "好的，掰掰，那我去看玩玩吃饭了没有～", nextStage: 66, lines: [
+    { id: "owner-goodbye-and-check-wanwan", label: "好的，掰掰，那我去看玩玩吃饭了没有～", nextStage: 63, lines: [
       { sender: "我", body: "好的，掰掰，那我去看玩玩吃飯了沒有～", thread: "大G" },
     ]},
   ],
