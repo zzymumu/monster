@@ -334,8 +334,19 @@ function PhoneRuntime({
       if (first.sender !== "我" && (currentAppRef.current !== "wechat" || openThread !== thread)) {
         nextNotifications.push("微信：" + thread + "：" + first.body);
       }
+      const savedStoryMessages = Array.isArray(catState.messages) ? catState.messages : [];
+      // Persist every delivered story line in BOTH the canonical story
+      // transcript and the ordinary WeChat message collection. Notification
+      // delivery is only an alert; it must never be the thing that makes a
+      // message exist. This also makes missed/dismissed banners harmless.
+      const appendOnce = (items: Item[]) =>
+        items.some((item) => item.id === created.id) ? items : [...items, created];
       update({
         ...latest,
+        messages: {
+          ...latest.messages,
+          wechat: appendOnce(latest.messages.wechat ?? []),
+        },
         ui: {
           ...latest.ui,
           wechat: {
@@ -344,7 +355,7 @@ function PhoneRuntime({
               version: 2,
               stage: Number(catState.stage) || 0,
               branch: typeof catState.branch === "string" ? catState.branch : "",
-              messages: [...(Array.isArray(catState.messages) ? catState.messages : []), created],
+              messages: appendOnce(savedStoryMessages),
             }),
             // Do not set the next item's deadline here. The next effect pass
             // starts its own independent 30–60 second interval.
