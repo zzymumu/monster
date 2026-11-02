@@ -47,7 +47,7 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("offers exactly two player-controlled replies at every active story turn", () => {
-    const systemOrTerminalStages = new Set([8, 13, 57]);
+    const systemOrTerminalStages = new Set([8, 13, 57, 66]);
     for (const [stage, choices] of Object.entries(CAT_RESCUE_CHOICES)) {
       if (systemOrTerminalStages.has(Number(stage))) continue;
       expect(choices, `stage ${stage} must have two choices`).toHaveLength(2);
@@ -123,11 +123,27 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[24]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
     const dinnerPromise = CAT_RESCUE_CHOICES[25].find((choice) => choice.id === "tease-owner");
-    expect(dinnerPromise?.nextStage).toBe(54);
-    expect(dinnerPromise?.lines[2].body).toContain("不许赖账");
-    expect(dinnerPromise?.lines[3].body).toContain("答應妳的事");
-    expect(dinnerPromise?.lines[4].sender).toBe("大G");
-    expect(dinnerPromise?.lines[5].body).toContain("玩玩照顧小指南");
+    expect(dinnerPromise?.nextStage).toBe(58);
+    expect(dinnerPromise?.lines).toHaveLength(2);
+    expect(dinnerPromise?.lines[0].body).toContain("请我吃饭");
+    expect(dinnerPromise?.lines[1].body).toContain("請妳吃飯");
+    expect(CAT_RESCUE_CHOICES[58]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[58][0].label).toBe("说好了，不许赖账！");
+    expect(CAT_RESCUE_CHOICES[58][0].lines[0].body).toBe("說好了，不許賴帳！");
+    expect(CAT_RESCUE_CHOICES[58][0].lines[1].body).toContain("答應妳的事");
+    expect(CAT_RESCUE_CHOICES[58][0].lines[2].body).toContain("整理給妳");
+    expect(CAT_RESCUE_CHOICES[58][0].lines[3].body).toContain("玩玩照顧小指南");
+    expect(CAT_RESCUE_CHOICES[58].every((choice) => choice.nextStage === 59)).toBe(true);
+    for (const [stage, next] of [[59,60],[60,61],[61,62],[62,63],[63,64],[64,65],[65,66]] as const) {
+      expect(CAT_RESCUE_CHOICES[stage]).toHaveLength(2);
+      expect(CAT_RESCUE_CHOICES[stage].every((choice) => choice.nextStage === next)).toBe(true);
+    }
+    expect(CAT_RESCUE_CHOICES[63][0].lines[0].body).toBe("嘻嘻！他要請我吃飯！");
+    expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("真的假的");
+    expect(CAT_RESCUE_CHOICES[63][0].lines.every((line) => line.thread === "西蓝花")).toBe(true);
+    expect(getCatRescueThreadForStage(63)).toBe("西蓝花");
+    expect(getCatRescueThreadForStage(59)).toBe("大G");
+    expect(CAT_RESCUE_CHOICES[66]).toHaveLength(0);
     expect(CAT_RESCUE_CHOICES[20].some((choice) => choice.id === "verify-owner-name")).toBe(true);
     expect(CAT_RESCUE_CHOICES[20].find((choice) => choice.id === "verify-owner-name")?.lines.some((line) => /我叫溫尚翊/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[21][0].lines[0].body).toContain("什麼時候方便回來接");
