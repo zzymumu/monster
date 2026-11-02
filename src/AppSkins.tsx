@@ -934,7 +934,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
     { id: "owner-tease-dinner", label: "那你忙完记得回来看看它哦", nextStage: 83, lines: [
       { sender: "我", body: "那你忙完記得回來看看牠喔，牠應該也會想你。", thread: "大G" },
-      { sender: "大G", body: "一定會啦。等我回去，除了接牠，也請妳吃飯，這樣總可以吧？哈哈。", thread: "大G" },
+      { sender: "大G", body: "一定會啦。說起來，妳可是玩玩的救命恩人欸，我是不是也該請妳吃頓飯？哈哈。", thread: "大G" },
     ]},
   ],
   83: [
@@ -950,11 +950,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   62: [
     { id: "goodbye-check-dinner", label: "没关系呀！掰掰，我去看看玩玩吃饭怎么样", nextStage: 63, lines: [
       { sender: "我", body: "沒關係呀！掰掰，我去看看玩玩吃飯怎麼樣。", thread: "大G" },
-      { sender: "大G", body: "好啊，妳去看看玩玩吃飯怎麼樣。這幾天真的麻煩妳了，等我回去再好好謝謝妳。", thread: "大G" },
+      { sender: "大G", body: "嗯嗯，辛苦妳了！那我先去忙，有玩玩任何情況都可以傳訊息給我喔。", thread: "大G" },
     ]},
     { id: "goodbye-no-rush", label: "没事没事，你先忙！我去看看玩玩有没有乖乖吃饭", nextStage: 63, lines: [
       { sender: "我", body: "沒事沒事，你先忙！我去看看玩玩有沒有乖乖吃飯。", thread: "大G" },
-      { sender: "大G", body: "好，妳先去忙牠吧。真的謝謝妳，晚點有空再聊。", thread: "大G" },
+      { sender: "大G", body: "嗯嗯，辛苦妳了！有任何情況都可以傳訊息給我，妳先去看看玩玩吧。", thread: "大G" },
     ]},
   ],
   63: [
@@ -1064,16 +1064,26 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   79: [
-    { id: "report-dinner-later", label: "有消息我第一個告訴你！", nextStage: 66, lines: [
+    { id: "report-dinner-later", label: "有消息我第一個告訴你！", nextStage: 80, lines: [
       { sender: "我", body: "有消息我第一個告訴妳！", thread: "西蓝花" },
       { sender: "西蓝花", body: "說好了喔！我等妳消息，先去照顧玩玩吧！", thread: "西蓝花" },
     ]},
-    { id: "back-to-wanwan", label: "我先去看看玩玩，晚点再跟你聊", nextStage: 66, lines: [
+    { id: "back-to-wanwan", label: "我先去看看玩玩，晚点再跟你聊", nextStage: 80, lines: [
       { sender: "我", body: "我先去看看玩玩，晚點再跟妳聊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "去吧去吧！替我摸摸牠，記得吃飯喔！", thread: "西蓝花" },
     ]},
   ],
   66: [],
+  80: [
+    { id: "exit-wechat-after-broccoli", label: "好啦！我先去看看玩玩，退出微信", nextStage: 66, lines: [
+      { sender: "我", body: "好啦！我先去看看玩玩，晚點再跟妳聊。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "去吧去吧！有消息記得跟我說，替我摸摸玩玩！", thread: "西蓝花" },
+    ]},
+    { id: "one-more-broccoli-message", label: "再跟你聊一句，我真的太惊讶了", nextStage: 66, lines: [
+      { sender: "我", body: "我還是覺得好不可思議，今天也太戲劇化了吧！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈今天真的很精彩！好啦，先去陪玩玩，晚點再聊！", thread: "西蓝花" },
+    ]},
+  ],
   67: [
     { id: "suggest-isolation", label: "要不我先带它回家，单独一个房间跟 Vava 隔离？", nextStage: 81, lines: [
       { sender: "我", body: "可是牠一直在外面也不是辦法……要不我先帶牠回家？讓牠單獨住一個房間，跟 Vava 隔離，完全不碰面。", thread: "西蓝花" },
