@@ -175,6 +175,15 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[58][0].lines[2].body).toContain("整理給妳");
     expect(CAT_RESCUE_CHOICES[58][0].lines[3].body).toContain("玩玩照顧小指南");
     expect(CAT_RESCUE_CHOICES[58].every((choice) => choice.nextStage === 59)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[82].find((choice) => choice.id === "owner-thanks-and-dinner")?.nextStage).toBe(86);
+    expect(CAT_RESCUE_CHOICES[82].find((choice) => choice.id === "owner-tease-dinner")?.nextStage).toBe(83);
+    expect(CAT_RESCUE_CHOICES[86]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[86].every((choice) => choice.nextStage === 87)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[87]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[87].every((choice) => choice.nextStage === 62)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[83].some((choice) => /麻煩你/.test(choice.label))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[83].every((choice) => choice.nextStage === 85)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[85].every((choice) => choice.nextStage === 62)).toBe(true);
     for (const [stage, next] of [[56,61],[59,60],[60,61],[61,82],[62,63],[63,64],[64,65],[65,77],[77,78],[78,79],[79,84],[84,66]] as const) {
       expect(CAT_RESCUE_CHOICES[stage]).toHaveLength(2);
       expect(CAT_RESCUE_CHOICES[stage].every((choice) => choice.nextStage === next)).toBe(true);
