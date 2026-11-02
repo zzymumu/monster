@@ -394,6 +394,26 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "好！動作輕一點，別嚇到牠。妳自己也要小心，到了醫院再跟我說。" },
     ]},
   ],
+  10: [
+    { id: "talk-about-day", label: "先聊点别的吧，你今天不是说有件事要跟我讲？", nextStage: 11, lines: [
+      { sender: "我", body: "我先不想小貓的事了……對了，妳今天不是說有件事要跟我講？" },
+      { sender: "西蓝花", body: "哈哈哈哈妳終於想到別的事了！我今天上班真的遇到一個超誇張的人。" },
+    ]},
+    { id: "chat-food", label: "你先陪我聊聊天，我现在心里乱乱的", nextStage: 11, lines: [
+      { sender: "我", body: "妳先陪我聊聊天嘛，我現在心裡亂亂的，想轉移一下注意力。" },
+      { sender: "西蓝花", body: "好啦好啦，我在！那妳今天有沒有好好吃飯？" },
+    ]},
+  ],
+  11: [
+    { id: "go-back", label: "不行，我还是放心不下，我想回去看看它", nextStage: 5, lines: [
+      { sender: "我", body: "不行……我還是放心不下。牠那麼小一隻，我真的沒辦法當作沒看見，我回去看看。" },
+      { sender: "西蓝花", body: "我就知道妳一定會回去啦！慢慢走，注意安全。" },
+    ]},
+    { id: "return-anyway", label: "我想了一路，还是决定回头找它", nextStage: 5, lines: [
+      { sender: "我", body: "我本來想回家了，可是越走越不對勁……我還是回頭找牠好了。" },
+      { sender: "西蓝花", body: "去吧去吧，但不要跑，注意車！" },
+    ]},
+  ],
   4: [
     { id: "tag-check", label: "我把牌子拍給你看了，真的是温尚翊", nextStage: 5, lines: [
       { sender: "我", body: "医生刚刚看了它脖子上的挂牌，上面清清楚楚写着主人：温尚翊。" },
