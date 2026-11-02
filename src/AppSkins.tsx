@@ -164,6 +164,30 @@ export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
   const [query, setQuery] = useState("");
   const [moments, setMoments] = useState(false);
+  const initialOwnerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
+  const [profileName, setProfileName] = useSkinState<string>(p, "wxProfileName", initialOwnerName);
+  const [profileAvatar, setProfileAvatar] = useSkinState<string>(p, "wxProfileAvatar", "");
+  const [nameEditorOpen, setNameEditorOpen] = useState(false);
+  const [nameDraft, setNameDraft] = useState(profileName || initialOwnerName);
+  const ownerName = profileName || initialOwnerName;
+  const saveProfileName = () => {
+    const nextName = nameDraft.trim();
+    if (!nextName) return;
+    setProfileName(nextName);
+    setNameEditorOpen(false);
+  };
+  const updateProfileAvatar = (file?: File) => {
+    if (!file || !file.type.startsWith("image/")) return;
+    if (file.size > 3 * 1024 * 1024) {
+      window.alert("头像图片请控制在 3MB 以内");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") setProfileAvatar(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
   const [menu, setMenu] = useState(false);
   const [utility, setUtility] = useState("");
   const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
@@ -223,7 +247,6 @@ export function WeChatSkin(p: SkinProps) {
     return keys.includes(addQuery.trim().toLowerCase());
   }) : [];
   const posts = p.items.filter((i) => i.folder === "朋友圈" || i.kind === "post");
-  const ownerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
   const filteredConversations = conversations.filter((name) =>
     name.toLowerCase().includes(query.toLowerCase()) ||
     p.items.some((i) => i.title === name && i.body.toLowerCase().includes(query.toLowerCase())),
@@ -477,11 +500,29 @@ export function WeChatSkin(p: SkinProps) {
 
           {tab === "我" && (
             <div className="wx-me-page">
-              <button className="wx-me-profile" onClick={() => openUtility("个人资料")}>
-                <Avatar name={ownerName} />
-                <span className="wx-me-identity"><strong>{ownerName}</strong><small>微信号：未设置</small><em>＋ 状态</em></span>
+              <div className="wx-me-profile">
+                <label className="wx-me-avatar-edit" title="更换头像">
+                  <Avatar name={ownerName} src={profileAvatar} />
+                  <input aria-label="更换头像" type="file" accept="image/*" onChange={(e) => updateProfileAvatar(e.target.files?.[0])} />
+                </label>
+                <div className="wx-me-identity">
+                  <button className="wx-me-name-edit" onClick={() => { setNameDraft(ownerName); setNameEditorOpen(true); }}>
+                    <strong>{ownerName}</strong>
+                  </button>
+                  <small>微信号：未设置</small>
+                  <em>＋ 状态</em>
+                </div>
                 <ChevronRight size={20} />
-              </button>
+              </div>
+              {nameEditorOpen && (
+                <div className="wx-profile-edit-backdrop" role="presentation">
+                  <section className="wx-profile-edit-sheet" role="dialog" aria-modal="true" aria-label="修改昵称">
+                    <header><button onClick={() => setNameEditorOpen(false)}>取消</button><strong>修改昵称</strong><span /></header>
+                    <input autoFocus maxLength={24} value={nameDraft} onChange={(e) => setNameDraft(e.target.value)} placeholder="请输入昵称" aria-label="输入新昵称" />
+                    <button className="wx-profile-confirm" disabled={!nameDraft.trim()} onClick={saveProfileName}>确认</button>
+                  </section>
+                </div>
+              )}
               <div className="wx-me-group">
                 {profileRows.slice(0, 1).map(({label, icon: Icon, color}) => <button key={label} onClick={() => openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
               </div>
