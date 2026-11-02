@@ -616,9 +616,22 @@ export function WeChatSkin(p: SkinProps) {
   // stage 8 is reached only by the explicit "try WeChat" choice. The one
   // legacy prank save that already re-added the friend at stage 14 is migrated
   // to stage 16 so the missing "？？？" and cat-explanation choice can resume.
+  const correctedPickupMessages = parsedCatRescue.messages.map((item) => {
+    if (item.body.trim() === "那你什么时候回来接它呀？我可以先帮你照看，不过想先知道大概多久。") {
+      return { ...item, body: "那你什麼時候方便回來接牠呀？我可以先幫你照看，不過想先知道你大概什麼時候回來。" };
+    }
+    if (/我這邊還有事情要處理，應該還要幾天才回得去/.test(item.body) ||
+        /我這幾天都在外地，還要幾天才回得去/.test(item.body)) {
+      return { ...item, body: "我這幾天都不在家，人在外地還有事情要處理，暫時沒辦法回去接牠。原本真的不知道牠自己跑出門了……" };
+    }
+    return item;
+  });
+  const pickupMessagesWereMigrated = correctedPickupMessages.some((item, index) =>
+    item.body !== parsedCatRescue.messages[index]?.body
+  );
   const catRescue = legacyPrankReaddPending
-    ? { ...parsedCatRescue, stage: 16, branch: "monster-prank" }
-    : parsedCatRescue;
+    ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
+    : { ...parsedCatRescue, messages: correctedPickupMessages };
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
@@ -661,6 +674,12 @@ export function WeChatSkin(p: SkinProps) {
       ? [...broccoliBaseItems, ...friendStoryMessages]
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
+  useEffect(() => {
+    // Rewrite the already-saved pickup exchange from the previous ordering so
+    // existing testers see the corrected away-from-home explanation too.
+    if (!pickupMessagesWereMigrated) return;
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2 }));
+  }, [pickupMessagesWereMigrated, catRescue.stage, catRescue.messages]);
   useEffect(() => {
     // Repair saves made by the broken build where the player had already sent
     // "我是你爸爸" but the three incoming reactions and reply choices vanished.
