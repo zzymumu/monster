@@ -142,22 +142,8 @@ function PhoneRuntime({
     try { return localStorage.getItem("foundphone-lock-wallpaper") || "default"; } catch { return "default"; }
   });
   const [wallpaperPickerOpen, setWallpaperPickerOpen] = useState(false);
-  const [defaultWallpaperUrl, setDefaultWallpaperUrl] = useState("");
-  useEffect(() => {
-    let active = true;
-    Promise.all([
-      "./wallpapers/monster-default-1.txt",
-      "./wallpapers/monster-default-2.txt",
-      "./wallpapers/monster-default-3.txt",
-    ].map(async (path) => {
-      const response = await fetch(path);
-      if (!response.ok) throw new Error("默认壁纸加载失败");
-      return response.text();
-    })).then((parts) => {
-      if (active) setDefaultWallpaperUrl("data:image/webp;base64," + parts.join(""));
-    }).catch(() => {});
-    return () => { active = false; };
-  }, []);
+  // Load the original uploaded JPG directly; do not concatenate or transcode thumbnails.
+  const defaultWallpaperUrl = "./wallpapers/monster-default.jpg?v=dddd2d5a44f3efafeb8af027c1ed0ab0f168919f";
   const [pinOpen, setPinOpen] = useState(false);
   const [quickCamera, setQuickCamera] = useState(false);
   const [keyboard, setKeyboard] = useState(false);
@@ -325,7 +311,7 @@ function PhoneRuntime({
   const wallpaperStyle: CSSProperties = wallpaperChoice.startsWith("data:image/")
     ? { backgroundImage: `url(${wallpaperChoice})`, backgroundSize: "cover", backgroundPosition: "center" }
     : wallpaperChoice === "default"
-      ? { backgroundImage: defaultWallpaperUrl ? `url(${defaultWallpaperUrl})` : "linear-gradient(145deg,#607c9e,#d9c9ad 48%,#243d36)", backgroundSize: "cover", backgroundPosition: "center" }
+      ? { backgroundImage: `url("${defaultWallpaperUrl}")`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", imageRendering: "auto" }
       : wallpaperBackgrounds[wallpaperChoice]
         ? { backgroundImage: wallpaperBackgrounds[wallpaperChoice], backgroundSize: "cover", backgroundPosition: "center" }
         : {};
