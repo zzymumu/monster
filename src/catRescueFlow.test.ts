@@ -3,6 +3,7 @@ import {
   CAT_RESCUE_CHOICES,
   getCatRescueStageAfterFriendAdd,
   getCatRescueThreadForStage,
+  filterPrankHistoryLines,
   shouldMigrateLegacyPrankReadd,
   shouldShowPrankHistoryLine,
   splitCatRescueMessages,
@@ -56,12 +57,26 @@ describe("WeChat cat-rescue story configuration", () => {
     const apology = CAT_RESCUE_CHOICES[16].find((choice) => choice.id === "monster-apology-after-prank");
     expect(prank?.nextStage).toBe(17);
     expect(prank?.lines.map((line) => line.body)).toEqual(["我是你爸爸。"]);
+    expect(prank?.lines.map((line) => line.body)).toEqual([
+      "我是你爸爸。", "……蛤？", "妳哪位？我不認識妳喔。", "好喔，那我先把妳刪掉了。掰。",
+    ]);
     expect(CAT_RESCUE_CHOICES[17]).toHaveLength(2);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "first-greeting", title: "大G", sender: "大G", body: "妳是？" }), "monster-prank")).toBe(true);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "old-delete", title: "大G", sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" }), "monster-prank")).toBe(false);
-    expect(shouldShowPrankHistoryLine(makeItem({ id: "old-question", title: "大G", sender: "大G", body: "……蛤？" }), "monster-cat", true)).toBe(false);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "old-question", title: "大G", sender: "大G", body: "……蛤？" }), "monster-cat", true)).toBe(true);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "owner-reply", title: "大G", sender: "大G", body: "妳哪位？我不認識妳喔。" }), "monster-cat", true)).toBe(true);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "delete-notice", title: "大G", sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" }), "monster-cat", true)).toBe(true);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "first-greeting", title: "大G", sender: "大G", body: "妳是？" }), "monster-cat", true)).toBe(true);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "post-readd", title: "大G", sender: "大G", body: "？？？" }), "monster-cat", true)).toBe(true);
+    const prankHistory = filterPrankHistoryLines([
+      makeItem({ id: "greeting", body: "妳是？" }),
+      makeItem({ id: "prank", body: "我是你爸爸。" }),
+      makeItem({ id: "duplicate-greeting", body: "妳是？" }),
+      makeItem({ id: "confused", body: "……蛤？" }),
+      makeItem({ id: "who", body: "妳哪位？我不認識妳喔。" }),
+      makeItem({ id: "deleted", body: "好喔，那我先把妳刪掉了。掰。" }),
+    ], true);
+    expect(prankHistory.map((item) => item.id)).toEqual(["greeting", "prank", "confused", "who", "deleted"]);
     expect(shouldMigrateLegacyPrankReadd(14, true, true, true)).toBe(true);
     expect(shouldMigrateLegacyPrankReadd(14, true, false, true)).toBe(false);
     expect(shouldMigrateLegacyPrankReadd(14, false, true, true)).toBe(false);
