@@ -47,7 +47,7 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("offers exactly two player-controlled replies at every active story turn", () => {
-    const systemOrTerminalStages = new Set([8, 13, 36]);
+    const systemOrTerminalStages = new Set([8, 13, 57]);
     for (const [stage, choices] of Object.entries(CAT_RESCUE_CHOICES)) {
       if (systemOrTerminalStages.has(Number(stage))) continue;
       expect(choices, `stage ${stage} must have two choices`).toHaveLength(2);
@@ -135,6 +135,17 @@ describe("WeChat cat-rescue story configuration", () => {
     ]);
     expect(CAT_RESCUE_CHOICES[26]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[26][0].lines.some((line) => /情況我再聯絡你/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[26].every((choice) => choice.nextStage === 36)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[36]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[36].every((choice) => choice.nextStage === 54)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[36][0].lines[2].body).toContain("玩玩照顧小指南");
+    expect(CAT_RESCUE_CHOICES[54]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[54].every((choice) => choice.nextStage === 55)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[55]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[55].every((choice) => choice.nextStage === 56)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[56]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[56].every((choice) => choice.nextStage === 57)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[57]).toHaveLength(0);
     expect(CAT_RESCUE_CHOICES[27][0].lines.map((line) => line.body)).toEqual([
       "玩玩……？我靠！",
       "妳？？？怎麼啦？",
