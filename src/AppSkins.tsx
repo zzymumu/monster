@@ -435,9 +435,14 @@ export function WeChatSkin(p: SkinProps) {
     : firstOwnerMessageIndex >= 0 ? firstOwnerMessageIndex : catRescue.messages.length;
   const friendStoryMessages = catRescue.messages.slice(0, ownerConversationStart);
   const ownerStoryMessages = catRescue.messages.slice(ownerConversationStart);
-  const catRescueActive = p.thread === "西蓝花"
-    ? !ownerConversation && friendStoryMessages.length > 0
-    : p.thread === "大G" && ownerConversation && catRescue.messages.length > 0;
+  const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
+  const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
+  // Keep the story UI active even before its first scripted message is saved.
+  // The first choice is what starts the story, so requiring existing story
+  // messages here prevents the initial choices from ever appearing.
+  const catRescueActive = isBroccoliThread
+    ? !ownerConversation
+    : isMonsterThread && ownerConversation;
   const catAvatar = GLOOMY_AVATAR;
   const threadItems = p.thread === "大G"
     ? [...p.items.filter((item) => item.title === "大G" || item.title === "温尚翊"), ...ownerStoryMessages]
