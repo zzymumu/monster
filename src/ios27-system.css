@@ -1,0 +1,507 @@
+/*
+ * iOS 27.2 visual calibration layer.
+ * Loaded after legacy iOS18 compatibility styles so the current system
+ * design, not the legacy reference layer, owns the final presentation.
+ */
+.phone-shell.ios27 {
+  --ios27-blue: #0a84ff;
+  --ios27-green: #30d158;
+  --ios27-label: #f5f5f7;
+  --ios27-secondary: #a1a1aa;
+  --ios27-separator: rgba(255,255,255,.13);
+  --ios27-glass: rgba(31,33,39,.62);
+  --ios27-glass-solid: rgba(35,37,44,.84);
+  --ios27-glass-edge: rgba(255,255,255,.24);
+  --ios27-glass-highlight: rgba(255,255,255,.18);
+  --ios27-shadow: 0 18px 54px rgba(0,0,0,.28);
+  color-scheme: light;
+  isolation: isolate;
+}
+.phone-shell.ios27 .phone-screen {
+  overflow: hidden;
+  background: #090a0d;
+  color: #f7f7f8;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+  letter-spacing: -.18px;
+  -webkit-font-smoothing: antialiased;
+}
+.phone-shell.ios27.dark-phone {
+  color-scheme: dark;
+}
+.phone-shell.ios27 .status-bar {
+  z-index: 90;
+  height: 59px;
+  padding: 0 31px 3px 35px;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -.3px;
+  background: transparent;
+}
+.phone-shell.ios27 .dynamic-island {
+  top: 10px;
+  width: 125px;
+  height: 36px;
+  border-radius: 24px;
+  background: #000;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.08), 0 1px 3px rgba(0,0,0,.22);
+}
+.phone-shell.ios27 .signals {
+  gap: 6px;
+}
+.phone-shell.ios27 .home-indicator {
+  z-index: 100;
+}
+.phone-shell.ios27 .home-indicator:after {
+  width: 136px;
+  height: 5px;
+  border-radius: 99px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+
+/* Lock Screen: large SF clock, compact date, notification stacks and low-profile quick actions. */
+.phone-shell.ios27 .device-lock {
+  background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.08) 48%, rgba(0,0,0,.34));
+  color: #fff;
+}
+.phone-shell.ios27 .lock-clock-block {
+  top: 83px;
+}
+.phone-shell.ios27 .lock-clock-block > svg {
+  display: none;
+}
+.phone-shell.ios27 .lock-clock-block > p {
+  margin: 0 0 4px;
+  font-size: 21px;
+  line-height: 27px;
+  font-weight: 620;
+  letter-spacing: -.25px;
+  text-shadow: 0 1px 14px rgba(0,0,0,.24);
+}
+.phone-shell.ios27 .lock-clock-block > h1 {
+  margin: 0;
+  font-size: 102px;
+  line-height: .98;
+  font-weight: 580;
+  letter-spacing: -5.5px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255,255,255,.94);
+  text-shadow: 0 2px 22px rgba(0,0,0,.16);
+}
+.phone-shell.ios27 .lock-notifications {
+  left: 10px;
+  right: 10px;
+  bottom: 132px;
+  display: grid;
+  gap: 8px;
+}
+.phone-shell.ios27 .lock-notice {
+  padding: 13px 14px;
+  gap: 11px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.38);
+  background: rgba(245,246,250,.78);
+  color: #17181c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.58), 0 8px 26px rgba(0,0,0,.10);
+  -webkit-backdrop-filter: blur(34px) saturate(1.65);
+  backdrop-filter: blur(34px) saturate(1.65);
+}
+.phone-shell.ios27 .lock-notice strong {
+  font-size: 14px;
+  font-weight: 650;
+}
+.phone-shell.ios27 .lock-notice p {
+  font-size: 14px;
+  line-height: 1.35;
+}
+.phone-shell.ios27 .lock-notice small {
+  font-size: 11px;
+  color: #73747c;
+}
+.phone-shell.ios27 .lock-tools {
+  left: 39px;
+  right: 39px;
+  bottom: 46px;
+}
+.phone-shell.ios27 .lock-tools button {
+  width: 51px;
+  height: 51px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff;
+  background: rgba(30,32,38,.38);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.15);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  backdrop-filter: blur(24px) saturate(1.4);
+}
+.phone-shell.ios27 .swipe-unlock {
+  bottom: 17px;
+  font-size: 13px;
+  font-weight: 560;
+  color: rgba(255,255,255,.92);
+}
+.phone-shell.ios27 .pin-open {
+  background: rgba(16,17,23,.78);
+  -webkit-backdrop-filter: blur(38px) saturate(1.35);
+  backdrop-filter: blur(38px) saturate(1.35);
+}
+.phone-shell.ios27 .device-passcode h2 {
+  font-size: 21px;
+  font-weight: 620;
+}
+.phone-shell.ios27 .passcode-dots {
+  gap: 22px;
+}
+.phone-shell.ios27 .passcode-dots i {
+  width: 12px;
+  height: 12px;
+  border-width: 1.3px;
+}
+.phone-shell.ios27 .pin-keypad button {
+  background: rgba(235,237,244,.19);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+.phone-shell.ios27 .pin-keypad button:active {
+  background: rgba(245,247,252,.38);
+}
+
+/* Home Screen: restrained translucent widget surfaces, crisp icons and a continuous dock. */
+.phone-shell.ios27 .home-screen.interactive-home {
+  color: #fff;
+}
+.phone-shell.ios27 .interactive-home .launcher-toolbar button {
+  color: #fff;
+  background: rgba(30,32,38,.36);
+  border: 1px solid rgba(255,255,255,.20);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+  -webkit-backdrop-filter: blur(26px) saturate(1.5);
+  backdrop-filter: blur(26px) saturate(1.5);
+}
+.phone-shell.ios27 .launcher-cell .app-icon {
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 2px 7px rgba(0,0,0,.22), inset 0 1px 1px rgba(255,255,255,.30);
+  transform: translateZ(0);
+}
+.phone-shell.ios27 .launcher-cell .app-icon:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(145deg, rgba(255,255,255,.17), transparent 40%, rgba(0,0,0,.05));
+  box-shadow: inset 0 0 0 .6px rgba(255,255,255,.22);
+}
+.phone-shell.ios27 .launcher-cell .app-name {
+  color: rgba(255,255,255,.98);
+  font-size: 12px;
+  font-weight: 560;
+  letter-spacing: -.1px;
+  text-shadow: 0 1px 5px rgba(0,0,0,.42);
+}
+.phone-shell.ios27 .widget-face {
+  border-radius: 25px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 7px 20px rgba(0,0,0,.12);
+  overflow: hidden;
+}
+.phone-shell.ios27 .widget-face.widget-weather {
+  background: linear-gradient(145deg, #4d8acb, #275b9a);
+}
+.phone-shell.ios27 .widget-face.widget-calendar,
+.phone-shell.ios27 .widget-face.widget-clock,
+.phone-shell.ios27 .widget-face.widget-notes,
+.phone-shell.ios27 .widget-face.widget-battery {
+  background: rgba(247,248,252,.88);
+  color: #18191d;
+}
+.phone-shell.ios27 .widget-face small {
+  font-size: 12px;
+  font-weight: 560;
+}
+.phone-shell.ios27 .widget-face b {
+  font-size: 34px;
+  font-weight: 650;
+  letter-spacing: -1px;
+}
+.phone-shell.ios27 .interactive-home .dock {
+  height: 94px;
+  min-height: 94px;
+  margin: 0 12px;
+  padding: 15px 9px;
+  border-radius: 31px;
+  gap: 0;
+  background: rgba(232,235,244,.28);
+  border: 1px solid rgba(255,255,255,.32);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.40), 0 8px 28px rgba(0,0,0,.14);
+  -webkit-backdrop-filter: blur(34px) saturate(1.8);
+  backdrop-filter: blur(34px) saturate(1.8);
+}
+.phone-shell.ios27 .interactive-home .dock .app-icon {
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.20), inset 0 1px 1px rgba(255,255,255,.3);
+}
+.phone-shell.ios27 .launcher-bottom-tools .home-search {
+  color: #fff;
+  background: rgba(25,27,33,.32);
+  border: 1px solid rgba(255,255,255,.20);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+.phone-shell.ios27 .home-page-dots button {
+  background: rgba(255,255,255,.48);
+}
+.phone-shell.ios27 .home-page-dots button[aria-current] {
+  background: #fff;
+}
+
+/* Control Center: distinct modules with stronger contrast and more coherent glass edges. */
+.phone-shell.ios27 .system-panel.device-control {
+  padding: 95px 25px 48px;
+  color: #fff;
+  background: rgba(20,22,29,.52);
+  -webkit-backdrop-filter: blur(48px) saturate(1.8);
+  backdrop-filter: blur(48px) saturate(1.8);
+}
+.phone-shell.ios27 .device-control .cc-current {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -.1px;
+}
+.phone-shell.ios27 .device-control .cc-status {
+  top: 58px;
+  left: 27px;
+  right: 27px;
+  margin: 0;
+  font-size: 12px;
+  opacity: .9;
+}
+.phone-shell.ios27 .device-control .cc-status > div {
+  display: flex;
+  gap: 12px;
+}
+.phone-shell.ios27 .device-control .cc-status > div > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.phone-shell.ios27 .device-control .cc-grid {
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  grid-auto-rows: 69px;
+  gap: 12px;
+}
+.phone-shell.ios27 .device-control .cc-connect,
+.phone-shell.ios27 .device-control .cc-music,
+.phone-shell.ios27 .device-control .cc-home,
+.phone-shell.ios27 .device-control .cc-square,
+.phone-shell.ios27 .device-control .cc-focus,
+.phone-shell.ios27 .device-control .cc-slider {
+  border: 1px solid rgba(255,255,255,.23);
+  background: linear-gradient(145deg, rgba(255,255,255,.27), rgba(255,255,255,.10));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 5px 18px rgba(0,0,0,.12);
+  -webkit-backdrop-filter: blur(26px) saturate(1.55);
+  backdrop-filter: blur(26px) saturate(1.55);
+}
+.phone-shell.ios27 .device-control .cc-connect,
+.phone-shell.ios27 .device-control .cc-music {
+  border-radius: 27px;
+}
+.phone-shell.ios27 .device-control .cc-connect > button {
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.16);
+}
+.phone-shell.ios27 .device-control .cc-connect > button.blue,
+.phone-shell.ios27 .device-control .cc-connect .blue {
+  background: #1688f8;
+}
+.phone-shell.ios27 .device-control .cc-connect > button.green {
+  background: #25bd64;
+}
+.phone-shell.ios27 .device-control .cc-square {
+  border-radius: 22px;
+}
+.phone-shell.ios27 .device-control .cc-focus {
+  border-radius: 25px;
+}
+.phone-shell.ios27 .device-control .cc-slider {
+  border-radius: 28px;
+}
+.phone-shell.ios27 .device-control .cc-close,
+.phone-shell.ios27 .device-control .cc-edit {
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.20);
+  border-radius: 50%;
+}
+.phone-shell.ios27 .device-control .cc-dismiss {
+  color: rgba(255,255,255,.82);
+  bottom: 25px;
+}
+
+/* Notification Center and system sheets use a consistent glass material hierarchy. */
+.phone-shell.ios27 .system-panel:not(.device-control) {
+  background: rgba(20,22,29,.48);
+  color: #fff;
+  -webkit-backdrop-filter: blur(44px) saturate(1.65);
+  backdrop-filter: blur(44px) saturate(1.65);
+}
+.phone-shell.ios27 .system-panel .system-notice {
+  border-radius: 23px;
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(245,246,250,.82);
+  color: #17181c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 8px 22px rgba(0,0,0,.12);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+  backdrop-filter: blur(30px) saturate(1.6);
+}
+.phone-shell.ios27 .folder-overlay {
+  background: rgba(16,18,24,.36);
+  -webkit-backdrop-filter: blur(34px) saturate(1.5);
+  backdrop-filter: blur(34px) saturate(1.5);
+}
+.phone-shell.ios27 .folder-apps {
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(238,240,246,.26);
+  -webkit-backdrop-filter: blur(30px) saturate(1.5);
+  backdrop-filter: blur(30px) saturate(1.5);
+}
+
+/* Settings: update the system's own version surfaces and current navigation treatment. */
+.phone-shell.ios27 .native-settings {
+  background: #f2f2f7;
+  color: #17181c;
+}
+.phone-shell.ios27 .native-settings .settings-native-nav {
+  background: rgba(247,247,250,.86);
+  -webkit-backdrop-filter: blur(28px) saturate(1.7);
+  backdrop-filter: blur(28px) saturate(1.7);
+}
+.phone-shell.ios27 .native-settings .settings-group {
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.035);
+}
+.phone-shell.ios27 .native-settings .settings-native-row {
+  min-height: 52px;
+  font-size: 16px;
+}
+.phone-shell.ios27 .native-settings .settings-native-row:after {
+  background: rgba(60,60,67,.15);
+}
+.phone-shell.ios27 .native-settings .settings-search {
+  background: rgba(226,226,232,.92);
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(22px);
+}
+.phone-shell.ios27 .settings-native-row .ios-toggle .toggle-track {
+  transition: background .22s ease;
+}
+
+/* Photos: cleaner full-bleed grid, native-looking collections and shared album controls. */
+.phone-shell.ios27 .ios27-photos {
+  background: #f5f5f7;
+  color: #17181c;
+}
+.phone-shell.ios27 .ios27-photos .photos-title-row h1 {
+  font-size: 34px;
+  font-weight: 720;
+  letter-spacing: -.8px;
+}
+.phone-shell.ios27 .ios27-photos .photo-mosaic {
+  gap: 2px;
+  padding: 0;
+}
+.phone-shell.ios27 .ios27-photos .photo-mosaic > button {
+  border-radius: 0;
+}
+.phone-shell.ios27 .ios27-photos .catalog-tabs {
+  background: rgba(248,248,250,.88) !important;
+  border-top: .5px solid rgba(60,60,67,.18) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+  backdrop-filter: blur(30px) saturate(1.8);
+}
+.phone-shell.ios27 .ios27-photos .catalog-tabs button.selected {
+  color: #0a84ff;
+}
+.phone-shell.ios27 .ios27-photos .shared-album-list,
+.phone-shell.ios27 .ios27-photos .shared-album-hero,
+.phone-shell.ios27 .ios27-photos .shared-members-panel,
+.phone-shell.ios27 .ios27-photos .shared-photos-panel,
+.phone-shell.ios27 .ios27-photos .shared-comments-panel {
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.phone-shell.ios27 .ios27-photos .shared-primary-action {
+  background: #0a84ff;
+  border-radius: 14px;
+}
+.phone-shell.ios27 .ios27-photos .shared-create-row,
+.phone-shell.ios27 .ios27-photos .shared-invite-row,
+.phone-shell.ios27 .ios27-photos .shared-comment-compose {
+  border-radius: 14px;
+  background: #e9e9ee;
+}
+.phone-shell.ios27 .ios27-photos .shared-album-cover {
+  border-radius: 12px;
+}
+.phone-shell.ios27 .ios27-photos .shared-album-card {
+  min-height: 84px;
+}
+.phone-shell.ios27 .ios27-photos .shared-local-note {
+  line-height: 1.5;
+}
+
+/* App surfaces retain each app's own identity; system glass is limited to system chrome. */
+.phone-shell.ios27 .app-screen {
+  background: #f5f5f7;
+  color: #17181c;
+}
+.phone-shell.ios27 .app-screen .app-nav {
+  background: rgba(248,248,250,.88);
+  border-bottom: .5px solid rgba(60,60,67,.16);
+  -webkit-backdrop-filter: blur(28px) saturate(1.7);
+  backdrop-filter: blur(28px) saturate(1.7);
+}
+.phone-shell.ios27 .app-screen button:focus-visible,
+.phone-shell.ios27 .app-screen input:focus-visible {
+  outline: 2px solid var(--ios27-blue);
+  outline-offset: 2px;
+}
+.phone-shell.ios27.dark-phone .native-settings,
+.phone-shell.ios27.dark-phone .app-screen {
+  background: #101114;
+  color: #f5f5f7;
+}
+.phone-shell.ios27.dark-phone .native-settings .settings-group,
+.phone-shell.ios27.dark-phone .native-settings .settings-native-row {
+  background: #242529;
+  color: #f5f5f7;
+}
+.phone-shell.ios27.dark-phone .native-settings .settings-native-row:after {
+  background: rgba(255,255,255,.12);
+}
+.phone-shell.ios27.dark-phone .ios27-photos {
+  background: #101114;
+  color: #f5f5f7;
+}
+.phone-shell.ios27.dark-phone .ios27-photos .shared-album-list,
+.phone-shell.ios27.dark-phone .ios27-photos .shared-album-hero,
+.phone-shell.ios27.dark-phone .ios27-photos .shared-members-panel,
+.phone-shell.ios27.dark-phone .ios27-photos .shared-photos-panel,
+.phone-shell.ios27.dark-phone .ios27-photos .shared-comments-panel {
+  background: #242529;
+}
+@media (prefers-reduced-motion: reduce) {
+  .phone-shell.ios27 *,
+  .phone-shell.ios27 *::before,
+  .phone-shell.ios27 *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
