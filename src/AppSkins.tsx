@@ -582,7 +582,6 @@ export function WeChatSkin(p: SkinProps) {
             <Search size={19} />
             <input aria-label="搜索微信号或手机号" placeholder="账号/手机号" value={addQuery} onChange={(e) => setAddQuery(e.target.value)} />
             {catRescue.stage >= 8 && idCopied && <button type="button" className="wx-add-paste" onClick={() => setAddQuery("mo00oster111")}>粘贴</button>}
-            {catRescue.stage >= 8 && idCopied && <button type="button" className="wx-add-paste" onClick={() => setAddQuery("mo00oster111")}>粘贴</button>}
             {addQuery && <button aria-label="清空搜索" onClick={() => setAddQuery("")}>×</button>}
           </label>
           {addQuery.trim() ? (
