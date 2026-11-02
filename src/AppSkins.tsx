@@ -420,10 +420,20 @@ export function WeChatSkin(p: SkinProps) {
   const [moments, setMoments] = useState(false);
 
   const [catRescueRaw, setCatRescueRaw] = useSkinState<string>(p, "catRescueState", "");
+  // This flag is written only when the user explicitly finishes the friend-add
+  // flow. Older builds advanced the story stage too early, so stage alone
+  // must never be treated as proof that the friend was actually added.
+  const [monsterFriendAccepted, setMonsterFriendAccepted] = useSkinState<boolean>(p, "wxMonsterFriendAccepted", false);
   const [pendingCatLines, setPendingCatLines] = useState<CatLine[]>([]);
   const storyClockRef = useRef(p.virtualTime || "14:24");
   storyClockRef.current = p.virtualTime || storyClockRef.current;
-  const catRescue = parseCatRescueState(catRescueRaw);
+  const parsedCatRescue = parseCatRescueState(catRescueRaw);
+  // Recover stale sessions from older buggy builds: if the user has not
+  // completed the explicit add-friend confirmation, keep the story on the
+  // broccoli side (stage 8 is the WeChat-ID handoff).
+  const catRescue = !monsterFriendAccepted && parsedCatRescue.stage >= 9
+    ? { ...parsedCatRescue, stage: 8 }
+    : parsedCatRescue;
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
@@ -446,13 +456,20 @@ export function WeChatSkin(p: SkinProps) {
   // The first choice is what starts the story, so requiring existing story
   // messages here prevents the initial choices from ever appearing.
   const catRescueActive = isBroccoliThread
-    ? !ownerConversation
-    : isMonsterThread && ownerConversation;
+    ? !monsterFriendAccepted
+    : isMonsterThread && monsterFriendAccepted;
   const catAvatar = GLOOMY_AVATAR;
+  const broccoliBaseItems = p.items.filter((item) =>
+    (item.title === "西蓝花" || item.title === "西兰花") &&
+    item.sender !== "大G" &&
+    item.sender !== "温尚翊" &&
+    item.meta?.storyThread !== "大G" &&
+    !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|？？？|對不起.*發錯|对不起.*发错/.test(item.body)
+  );
   const threadItems = isMonsterThread
     ? [...p.items.filter((item) => item.title === "大G" || item.title === "温尚翊"), ...ownerStoryMessages]
     : isBroccoliThread
-      ? [...p.items.filter((item) => item.title === "西蓝花" || item.title === "西兰花"), ...friendStoryMessages]
+      ? [...broccoliBaseItems, ...friendStoryMessages]
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
   useEffect(() => {
@@ -518,6 +535,7 @@ export function WeChatSkin(p: SkinProps) {
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: prankFlow ? 16 : readding ? 14 : 9, messages: [...catRescue.messages, ...created] }));
     if (prankFlow) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？" }]);
     setMonsterRemoved(false);
+    setMonsterFriendAccepted(true);
     setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
     // Do not navigate here: this function is called while the friend-request
     // sheet is still open. The explicit "完成，查看消息" action owns navigation.
