@@ -256,19 +256,19 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   3: [
-    { id: "promise-check", label: "放心吧，我会先带它去医院检查，绝对不会让它碰到 Vava", nextStage: 4, lines: [
+    { id: "promise-check", label: "放心吧，我会先带它去医院检查，绝对不会让它碰到 Vava", nextStage: 30, lines: [
       { sender: "我", body: "放心吧，我会带它去医院先检查，医生确认安全之前绝对不会让它碰到 Vava。" },
       { sender: "西蓝花", body: "好啦……你都说到这个份上了，我就相信你一次。先带它去检查，其他的等医生说了再决定。" },
       { sender: "我", body: "好！我把它放进外出笼了，现在就去医院。" },
       { sender: "西蓝花", body: "路上小心！到了记得跟我说，还有不要忘记问医生有没有晶片哦。" },
-      { sender: "我", body: "到了，医生先帮它做基本检查，等一下看看能不能找到主人资料。" },
+      { sender: "西蓝花", body: "欸，你到了嗎？" },
     ]},
-    { id: "go-now", label: "好啦好啦，我带它走，先去医院再说", nextStage: 4, lines: [
+    { id: "go-now", label: "好啦好啦，我带它走，先去医院再说", nextStage: 30, lines: [
       { sender: "我", body: "好啦好啦，我带它走，先去医院再说。你放心，我不会让它直接接触 Vava。" },
       { sender: "西蓝花", body: "我不是不相信你啦，我是怕你一心软就什么都忘了！" },
       { sender: "我", body: "知道啦，我会先让医生检查，回家也会隔离。" },
       { sender: "西蓝花", body: "那就好……快去吧，我等你消息。" },
-      { sender: "我", body: "医生正在帮它检查，等一下要看看有没有晶片或主人资料。" },
+      { sender: "西蓝花", body: "欸，你到了嗎？" },
     ]},
   ],
   10: [
@@ -435,7 +435,10 @@ export function WeChatSkin(p: SkinProps) {
   // Recover stale sessions from older buggy builds: if the user has not
   // completed the explicit add-friend confirmation, keep the story on the
   // broccoli side (stage 8 is the WeChat-ID handoff).
-  const catRescue = !monsterFriendAccepted && parsedCatRescue.stage >= 9
+  // Stage 13 is the deliberate "deleted as a friend" state in the prank
+  // branch. Preserve it even though the friend-accepted flag is now false,
+  // otherwise the blocked-send UI can never appear.
+  const catRescue = !monsterFriendAccepted && parsedCatRescue.stage >= 9 && parsedCatRescue.stage !== 13
     ? { ...parsedCatRescue, stage: 8 }
     : parsedCatRescue;
   const allItems = [...p.items, ...catRescue.messages];
@@ -874,7 +877,19 @@ export function WeChatSkin(p: SkinProps) {
               <Compose
                 creator={p.creator}
                 onAdd={p.onAdd}
-                onSend={(value) => appendCatLines([{ sender: "我", body: value }])}
+                onSend={(value) => {
+                  const reply = value.trim();
+                  if (catRescue.stage === 30 && /(到了|到医院|到醫院|已经到|已經到)/.test(reply)) {
+                    appendCatLines([
+                      { sender: "我", body: reply },
+                      { sender: "西蓝花", body: "好！那医生开始帮它检查了吗？有没有先看看有没有晶片？" },
+                      { sender: "我", body: "医生正在帮它检查，等一下要看看有没有晶片或主人资料。" },
+                      { sender: "西蓝花", body: "嗯嗯，那你先陪着它，等医生检查完再告诉我结果！" },
+                    ], 4, catRescue.branch);
+                  } else {
+                    appendCatLines([{ sender: "我", body: reply }]);
+                  }
+                }}
               />
             </div>
           ) : (
