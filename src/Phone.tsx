@@ -325,6 +325,7 @@ function PhoneRuntime({
     }
     noticesSeen.current = count;
   }, [s.notifications.length, locked, work.phone.notifications]);
+  const notificationItems = [...(work.data.wechat ?? []), ...(s.messages.wechat ?? [])];
   const dismissNotice = (index: number) =>
     update({
       ...runtimeRef.current,
@@ -459,6 +460,7 @@ function PhoneRuntime({
                 }
                 time={displayTime}
                 notices={s.notifications}
+                notificationItems={notificationItems}
                 onDismiss={dismissNotice}
                 pinOpen={pinOpen}
                 setPinOpen={setPinOpen}
@@ -715,24 +717,38 @@ function PhoneRuntime({
               </div>
             </div>
           )}
-          {banner && !locked && (
-            <button
-              className="device-banner"
-              onClick={() => {
-                setBanner("");
-                setPanel("notification");
-              }}
-            >
-              <AppIcon
-                id={notificationContent(banner, work.apps).appId}
-                small
-              />
-              <span>
-                <strong>{notificationContent(banner, work.apps).title}</strong>
-                <span>{notificationContent(banner, work.apps).body}</span>
-              </span>
-            </button>
-          )}
+          {banner && !locked && (() => {
+            const notice = notificationContent(banner, work.apps, notificationItems);
+            return (
+              <button
+                className="device-banner"
+                onClick={() => {
+                  setBanner("");
+                  if (notice.appId === "wechat" && notice.contact) {
+                    const current = runtimeRef.current;
+                    update({
+                      ...current,
+                      ui: {
+                        ...current.ui,
+                        wechat: { ...current.ui?.wechat, openThread: notice.contact },
+                      },
+                    });
+                    open("wechat");
+                  } else setPanel("notification");
+                }}
+              >
+                {notice.avatar.startsWith("data:image/") ? (
+                  <img className="device-banner-avatar" src={notice.avatar} alt="" />
+                ) : (
+                  <AppIcon id={notice.appId} small />
+                )}
+                <span>
+                  <strong>{notice.title}</strong>
+                  <span>{notice.body}</span>
+                </span>
+              </button>
+            );
+          })()}
           {panel === "switcher" && (
             <div className="device-switcher">
               <div className="switcher-cards">
