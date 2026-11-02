@@ -173,6 +173,9 @@ function PhoneRuntime({
   const [own, setOwn] = useState(() => initialRuntime(work));
   const [ready, setReady] = useState(creator || !!external);
   const [loadError, setLoadError] = useState("");
+  // A release-specific save key keeps every published test build independent.
+  const releaseId = new URLSearchParams(window.location.search).get("release") || "default";
+  const saveId = `${work.id}::${releaseId}`;
   useEffect(() => {
     const el = shell.current;
     if (!el) return;
@@ -209,7 +212,7 @@ function PhoneRuntime({
     let active = true;
     if (creator || external) return;
     void db.saves
-      .get(work.id)
+      .get(saveId)
       .then((saved) => {
         if (!active) return;
         if (saved && saved.state.revision === work.updatedAt)
@@ -228,13 +231,13 @@ function PhoneRuntime({
     return () => {
       active = false;
     };
-  }, [work.id, work.updatedAt, creator, external]);
+  }, [work.id, work.updatedAt, saveId, creator, external]);
   useEffect(() => {
     if (!creator && !external && ready)
       void db.saves
-        .put({ id: work.id, state: own })
+        .put({ id: saveId, state: own })
         .catch(() => setLoadError("存档失败，请检查浏览器存储权限。"));
-  }, [own, creator, work.id, external, ready]);
+  }, [own, creator, work.id, saveId, external, ready]);
   useEffect(() => {
     if (creator || !ready) return;
     const interval = setInterval(() => {
