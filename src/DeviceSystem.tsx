@@ -87,6 +87,8 @@ export function DeviceLock({
 }) {
   const [code, setCode] = useState("");
   const [emergencyOpen, setEmergencyOpen] = useState(false);
+  const lockWeather = work.data.weather?.[0];
+  const lockCalendar = (work.data.calendar || []).slice(0, 2);
   useEffect(() => {
     if (error) setCode("");
   }, [error]);
@@ -129,17 +131,21 @@ export function DeviceLock({
           </div>
           <div className="lock-widgets" aria-label="锁屏小组件">
             <section className="lock-widget lock-widget-weather" aria-label="天气小组件">
-              <div className="lock-widget-topline"><span><MapPin size={12} /> 洛杉矶</span><CloudSun size={19} /></div>
-              <div className="lock-weather-temperature">22°</div>
-              <div className="lock-weather-condition">晴朗</div>
-              <div className="lock-weather-range"><span><Sun size={12} /> 最高 25°</span><span>最低 16°</span></div>
+              <div className="lock-widget-topline"><span><MapPin size={12} /> {lockWeather?.title || "天气"}</span><CloudSun size={19} /></div>
+              <div className="lock-weather-temperature">{lockWeather?.meta.temperature ? `${lockWeather.meta.temperature}°` : "—"}</div>
+              <div className="lock-weather-condition">{lockWeather?.meta.condition || "暂无天气数据"}</div>
+              <div className="lock-weather-range">
+                <span><Sun size={12} /> 最高 {lockWeather?.meta.high ? `${lockWeather.meta.high}°` : "—"}</span>
+                <span>最低 {lockWeather?.meta.low ? `${lockWeather.meta.low}°` : "—"}</span>
+              </div>
             </section>
             <section className="lock-widget lock-widget-calendar" aria-label="日历小组件">
               <div className="lock-widget-topline"><span><CalendarDays size={13} /> 日历</span><span className="lock-calendar-month">{new Intl.DateTimeFormat("zh-CN", { month: "long", timeZone: "UTC" }).format(new Date((work.phone.date || new Date().toISOString().slice(0, 10)) + "T12:00:00Z"))}</span></div>
               <div className="lock-calendar-day">{new Date((work.phone.date || new Date().toISOString().slice(0, 10)) + "T12:00:00Z").getUTCDate()}</div>
               <div className="lock-calendar-events">
-                <div><b>10:00</b><span>今日待办事项</span></div>
-                <div><b>14:30</b><span>与朋友见面</span></div>
+                {lockCalendar.length ? lockCalendar.map((event) => (
+                  <div key={event.id}><b>{event.meta.time || event.time || "全天"}</b><span>{event.title}</span></div>
+                )) : <div><b>—</b><span>今天没有日程</span></div>}
               </div>
             </section>
           </div>
