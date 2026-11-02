@@ -343,11 +343,8 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   9: [
-    { id: "monster-prank", label: "我是你爸爸", nextStage: 13, branch: "monster-prank", lines: [
+    { id: "monster-prank", label: "我是你爸爸", nextStage: 15, branch: "monster-prank", lines: [
       { sender: "我", body: "我是你爸爸。" },
-      { sender: "大G", body: "……蛤？" },
-      { sender: "大G", body: "妳哪位？我不認識妳喔。" },
-      { sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" },
     ]},
     { id: "monster-cat-intro", label: "你好，我捡到了一只小黑猫……", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "你好，我捡到了一只小黑猫。它脖子上挂着挂牌，上面有你的联系方式，我就照着上面的微信号加你了。" },
@@ -359,10 +356,17 @@ const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   ],
   13: [],
   14: [
-    { id: "monster-apology", label: "对不起我开玩笑的……我是真的捡到你的猫了", nextStage: 20, branch: "monster-cat", lines: [
-      { sender: "我", body: "对不起我开玩笑的……我是真的捡到你的猫了，不好意思啦。" },
-      { sender: "大G", body: "……妳真的很會鬧欸，我剛剛還想說到底遇到什麼人。" },
-      { sender: "大G", body: "好啦，沒事。妳說牠在妳那邊？那我們先講正事，牠現在狀況還好嗎？" },
+    { id: "monster-apology-legacy", label: "对不起我开玩笑的……我是真的捡到你的猫了", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "對不起，剛剛那句真的發錯了……我不是故意鬧你的。" },
+      { sender: "我", body: "其實是因為我撿到一隻小黑貓，牠身上的牌子留了你的微信號，我才加你的。" },
+      { sender: "大G", body: "蛤？小黑貓？妳在哪裡看到牠的？牠現在還好嗎？" },
+    ]},
+  ],
+  16: [
+    { id: "monster-apology-after-prank", label: "对不起，刚刚发错人了……其实我是捡到你的小猫了", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "對不起，剛剛那句發錯人了啦……我不是故意要鬧你的。" },
+      { sender: "我", body: "其實我撿到一隻小黑貓，牠脖子上掛著牌子，上面留了你的微信號，所以才想聯絡你。" },
+      { sender: "大G", body: "蛤？小黑貓？妳在哪裡看到牠的？牠現在還好嗎？有沒有受傷？" },
     ]},
   ],
   20: [
@@ -414,6 +418,7 @@ export function WeChatSkin(p: SkinProps) {
   const [moments, setMoments] = useState(false);
 
   const [catRescueRaw, setCatRescueRaw] = useSkinState<string>(p, "catRescueState", "");
+  const [pendingCatLines, setPendingCatLines] = useState<CatLine[]>([]);
   const catRescue = parseCatRescueState(catRescueRaw);
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
@@ -436,15 +441,17 @@ export function WeChatSkin(p: SkinProps) {
       ? [...p.items.filter((item) => item.title === "西蓝花" || item.title === "西兰花"), ...friendStoryMessages]
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
-  const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
-    const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
-    const start = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
-    const created = lines.map((line, index) => {
-      const total = start + Math.floor(index / 2);
+  useEffect(() => {
+    if (!pendingCatLines.length) return;
+    const line = pendingCatLines[0];
+    const delay = Math.min(1750, Math.max(720, 520 + line.body.length * 24));
+    const timer = window.setTimeout(() => {
+      const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
+      const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24) + catRescue.messages.length;
       const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
-      const ownerThread = (nextStage >= 9 && nextStage !== 10 && nextStage !== 11) || (catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11);
-      return makeItem({
-        id: "cat-rescue-" + Date.now() + "-" + index + "-" + Math.random().toString(36).slice(2, 7),
+      const ownerThread = catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11;
+      const created = makeItem({
+        id: "cat-rescue-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
         title: ownerThread ? "大G" : "西蓝花",
         sender: line.sender,
         body: line.body,
@@ -453,17 +460,23 @@ export function WeChatSkin(p: SkinProps) {
         avatar: line.sender === "西蓝花" ? catAvatar : "",
         meta: { storyId: "cat-rescue" },
       });
-    });
-    setCatRescueRaw(JSON.stringify({
-      version: 2,
-      stage: nextStage,
-      branch,
-      messages: [...catRescue.messages, ...created],
-    }));
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, created] }));
+      setPendingCatLines((current) => current.slice(1));
+    }, delay);
+    return () => window.clearTimeout(timer);
+  }, [pendingCatLines, catRescueRaw, p.virtualTime]);
+
+  const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, branch }));
+    setPendingCatLines((current) => [...current, ...lines]);
   };
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
     if (choice.nextStage === 8) { setIdCopied(false); setAddIdModal(true); }
+    if (choice.nextStage === 15) {
+      setIdCopied(false);
+      window.setTimeout(() => setAddIdModal(true), 850);
+    }
     if (choice.nextStage === 13) {
       setMonsterRemoved(true);
       setAddedFriends((current) => current.filter((name) => name !== "大G"));
@@ -478,11 +491,13 @@ export function WeChatSkin(p: SkinProps) {
     const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
     const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
     const readding = catRescue.stage === 13;
+    const prankFlow = catRescue.stage === 15;
     const created = [
       makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend" } }),
-      ...(!readding ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } })] : []),
+      ...(!readding && !prankFlow ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } })] : []),
+      ...(prankFlow ? [makeItem({ id: "monster-question-" + Date.now(), title: "大G", sender: "大G", body: "？？？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } })] : []),
     ];
-    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: readding ? 14 : 9, messages: [...catRescue.messages, ...created] }));
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: prankFlow ? 16 : readding ? 14 : 9, messages: [...catRescue.messages, ...created] }));
     setMonsterRemoved(false);
     setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
   };
@@ -654,7 +669,7 @@ export function WeChatSkin(p: SkinProps) {
             <p>可以試著用這個微信號添加對方</p>
             <div className="wx-friend-id">mo00oster111</div>
             <button className="wx-friend-flow-primary" onClick={() => { void navigator.clipboard?.writeText("mo00oster111").catch(() => undefined); setIdCopied(true); }}>{idCopied ? "已复制" : "复制微信号"}</button>
-            {idCopied && <button className="wx-friend-flow-secondary" onClick={() => setAddIdModal(false)}>返回微信</button>}
+            {idCopied && <button className="wx-friend-flow-secondary" onClick={() => { setAddIdModal(false); setTab("通讯录"); setUtility("添加朋友"); setAddQuery(""); }}>前往通讯录，粘贴微信号添加</button>}
           </section>
         </div>
       )}
@@ -732,7 +747,7 @@ export function WeChatSkin(p: SkinProps) {
           <label className="wx-add-search">
             <Search size={19} />
             <input aria-label="搜索微信号或手机号" placeholder="账号/手机号" value={addQuery} onChange={(e) => setAddQuery(e.target.value)} />
-            {catRescue.stage >= 8 && idCopied && <button type="button" className="wx-add-paste" onClick={() => setAddQuery("mo00oster111")}>粘贴</button>}
+            {idCopied && <button type="button" className="wx-add-paste" onClick={() => setAddQuery("mo00oster111")}>粘贴</button>}
             {addQuery && <button aria-label="清空搜索" onClick={() => setAddQuery("")}>×</button>}
           </label>
           {addQuery.trim() ? (
@@ -792,8 +807,8 @@ export function WeChatSkin(p: SkinProps) {
           {catRescueActive ? (
             <div className="cat-rescue-thread">
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
-              {catRescue.stage === 8 && !idCopied && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
-              {catChoices.length > 0 && (
+              {catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
+              {catChoices.length > 0 && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
