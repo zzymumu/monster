@@ -630,13 +630,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   32: [
-    { id: "tell-broccoli-name-is-perfect", label: "没事没事，我就是觉得这个名字太好了哈哈哈", nextStage: 33, lines: [
-      { sender: "我", body: "沒事沒事，我就是覺得這個名字太好了哈哈哈！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "蛤？名字太好了？妳反應也太大了吧！妳是不是想到什麼了？", thread: "西蓝花" },
+    { id: "shock-wanwan-name", label: "我靠我靠！！！牠叫玩玩？？？", nextStage: 33, lines: [
+      { sender: "我", body: "我靠我靠！！！牠叫玩玩？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？？等一下！！！怪獸家的貓就叫玩玩？？？妳說的是五月天那個怪獸嗎？？？", thread: "西蓝花" },
     ]},
-    { id: "say-name-is-cute", label: "我只是觉得玩玩这个名字也太可爱了吧", nextStage: 33, lines: [
-      { sender: "我", body: "我只是覺得玩玩這個名字也太可愛了吧！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈哈真的很可愛！但妳剛剛那個反應，感覺不只是覺得名字可愛欸？", thread: "西蓝花" },
+    { id: "double-check-wanwan", label: "等等等等，你说它叫玩玩？这也太巧了吧！", nextStage: 33, lines: [
+      { sender: "我", body: "等等等等，妳說牠叫玩玩？這也太巧了吧！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "蛤？？？妳怎麼突然這麼激動？怪獸家的貓就叫玩玩？？？", thread: "西蓝花" },
     ]},
   ],
   33: [
