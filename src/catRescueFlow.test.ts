@@ -36,7 +36,10 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("keeps the Vava isolation objection and then takes the kitten to the clinic", () => {
-    expect(CAT_RESCUE_CHOICES[0].find((choice) => choice.id === "leave-first")?.nextStage).toBe(1);
+    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.nextStage === 1)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.lines[0].body.includes("帶") && !/隔離/.test(choice.lines[0].body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.lines[1].body.includes("Vava") && /傳染病/.test(choice.lines[1].body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[1].some((choice) => /隔離/.test(choice.label))).toBe(true);
     expect(CAT_RESCUE_CHOICES[1].every((choice) => choice.nextStage === 2)).toBe(true);
     expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.nextStage === 3)).toBe(true);
     expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.lines.some((line) => /醫院|医院/.test(line.body)))).toBe(true);
