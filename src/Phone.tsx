@@ -425,7 +425,17 @@ function PhoneRuntime({
     }
     noticesSeen.current = count;
   }, [s.notifications.length, locked, work.phone.notifications]);
-  const notificationItems = [...(work.data.wechat ?? []), ...(s.messages.wechat ?? [])];
+  const notificationItems = (() => {
+    let storyMessages: Item[] = [];
+    const raw = s.ui?.wechat?.wxCatRescue;
+    if (typeof raw === "string") {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed.messages)) storyMessages = parsed.messages;
+      } catch { storyMessages = []; }
+    }
+    return [...(work.data.wechat ?? []), ...(s.messages.wechat ?? []), ...storyMessages];
+  })();
   const dismissNotice = (index: number) =>
     update({
       ...runtimeRef.current,
