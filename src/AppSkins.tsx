@@ -357,7 +357,7 @@ export function WeChatSkin(p: SkinProps) {
             <textarea autoFocus maxLength={30} value={customStatusDraft} onChange={(e) => setCustomStatusDraft(e.target.value)} placeholder="此刻的心情或正在做的事..." /><small>{customStatusDraft.length}/30</small>
           </section></div>}
         </div>
-      ) :       {utility === "添加朋友" ? (
+      ) : utility === "添加朋友" ? (
         <div className="wx-add-friend-page">
           <label className="wx-add-search">
             <Search size={19} />
