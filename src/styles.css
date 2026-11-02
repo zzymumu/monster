@@ -5984,3 +5984,31 @@ label {
   object-position: center;
   border-radius: inherit;
 }
+
+/* Keep WeChat address-book rows firmly left aligned on every viewport. */
+.wechat-ui.wx-reference-layout .wx-contacts-page .wx-contact-list {
+  display: block !important;
+  width: 100% !important;
+}
+.wechat-ui.wx-reference-layout .wx-contacts-page .wx-contact-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  gap: 12px !important;
+  text-align: left !important;
+}
+.wechat-ui.wx-reference-layout .wx-contacts-page .wx-contact-row > .skin-avatar {
+  flex: 0 0 38px !important;
+  margin: 0 !important;
+}
+.wechat-ui.wx-reference-layout .wx-contacts-page .wx-contact-row > span:last-child {
+  flex: 1 1 auto !important;
+  display: block !important;
+  width: auto !important;
+  text-align: left !important;
+}
