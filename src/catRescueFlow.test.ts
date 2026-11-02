@@ -139,13 +139,16 @@ describe("WeChat cat-rescue story configuration", () => {
       "玩玩……？我靠！",
       "妳？？？怎麼啦？",
     ]);
-    expect(CAT_RESCUE_CHOICES[27][0].nextStage).toBe(41);
+    expect(CAT_RESCUE_CHOICES[27][0].nextStage).toBe(32);
+    expect(CAT_RESCUE_CHOICES[32][0].lines[0].body).toContain("名字太好了");
+    expect(CAT_RESCUE_CHOICES[32][0].nextStage).toBe(33);
     expect(CAT_RESCUE_CHOICES[41]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[41][0].lines[1].body).toContain("怪獸");
     expect(CAT_RESCUE_CHOICES[41][0].nextStage).toBe(42);
     expect(CAT_RESCUE_CHOICES[40]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[40].every((choice) => choice.nextStage === 41)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[40][0].lines[0].body).toContain("溫尚翊");
+    expect(CAT_RESCUE_CHOICES[40].every((choice) => choice.nextStage === 35)).toBe(true);
+    expect(getCatRescueThreadForStage(40)).toBe("大G");
+    expect(CAT_RESCUE_CHOICES[40][0].lines[0].body).toContain("不好意思");
     expect(CAT_RESCUE_CHOICES[42]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[42][0].lines.some((line) => /同名同姓/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[42][0].nextStage).toBe(43);
@@ -156,13 +159,13 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[45]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[45].every((choice) => choice.nextStage === 8)).toBe(true);
     expect(CAT_RESCUE_CHOICES[32][0].lines.map((line) => line.sender)).toEqual(["我", "西蓝花"]);
-    expect(CAT_RESCUE_CHOICES[32][0].lines[0].body).toContain("玩玩！那隻貓叫玩玩");
-    expect(CAT_RESCUE_CHOICES[32][0].lines[1].body).toContain("玩玩？？？怪獸家的貓就叫玩玩啊");
-    expect(CAT_RESCUE_CHOICES[32][0].lines[1].body).toContain("真的假的");
+    expect(CAT_RESCUE_CHOICES[32][0].lines[0].body).toContain("名字太好了");
+    expect(CAT_RESCUE_CHOICES[32][0].lines[1].body).toContain("名字太好了");
+    expect(CAT_RESCUE_CHOICES[32][0].lines[1].body).toContain("反應也太大");
     expect(CAT_RESCUE_CHOICES[33]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[33][0].lines.map((line) => line.sender)).toEqual(["我", "西蓝花", "我", "西蓝花"]);
-    expect(CAT_RESCUE_CHOICES[33][0].lines[0].body).toContain("對啊我知道所以我才來找你");
-    expect(CAT_RESCUE_CHOICES[33][0].lines[1].body).toContain("什麼神仙運氣");
+    expect(CAT_RESCUE_CHOICES[33][0].lines[0].body).toContain("沒想到牠會叫玩玩");
+    expect(CAT_RESCUE_CHOICES[33][0].lines[1].body).toContain("先相信妳");
     expect(CAT_RESCUE_CHOICES[33][0].nextStage).toBe(37);
     expect(CAT_RESCUE_CHOICES[37]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[38]).toHaveLength(2);
