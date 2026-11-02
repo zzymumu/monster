@@ -114,14 +114,16 @@ export function DeviceLock({
           <div className="lock-clock-block">
             <LockKeyhole size={18} />
             <p>
-              {new Intl.DateTimeFormat("zh-CN", {
-                month: "long",
-                day: "numeric",
-                weekday: "long",
-                timeZone: "UTC",
-              }).format(
-                new Date((work.phone.date || "2026-09-01") + "T12:00:00Z"),
-              )}
+              {(() => {
+                const date = new Date((work.phone.date || "2026-09-01") + "T12:00:00Z");
+                const solar = new Intl.DateTimeFormat("zh-CN", {
+                  month: "long", day: "numeric", weekday: "short", timeZone: "UTC",
+                }).format(date);
+                const lunar = new Intl.DateTimeFormat("zh-CN-u-ca-chinese", {
+                  month: "long", day: "numeric", timeZone: "UTC",
+                }).format(date);
+                return solar + " · " + lunar;
+              })()}
             </p>
             <h1>{time}</h1>
           </div>
