@@ -615,6 +615,19 @@ export function WeChatSkin(p: SkinProps) {
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
   useEffect(() => {
+    // Repair saves made by the broken build where the player had already sent
+    // "我是你爸爸" but the three incoming reactions and reply choices vanished.
+    if (catRescue.stage !== 17 || !hasPrankPath) return;
+    const allBodies = new Set([...p.items, ...catRescue.messages].map((item) => item.body.trim()));
+    const missing: CatLine[] = [
+      { sender: "大G", body: "……蛤？", thread: "大G" },
+      { sender: "大G", body: "妳哪位？我不認識妳喔。", thread: "大G" },
+      { sender: "大G", body: "好喔，那我先把妳刪掉了。掰。", thread: "大G" },
+    ].filter((line) => !allBodies.has(line.body) &&
+      !pendingCatLines.some((pending) => pending.body === line.body));
+    if (missing.length) setPendingCatLines((current) => [...current, ...missing]);
+  }, [catRescue.stage, catRescue.branch, catRescue.messages.length, hasPrankPath, pendingCatLines, p.items]);
+  useEffect(() => {
     if (!legacyPrankReaddPending) return;
     setCatRescueRaw(JSON.stringify({ ...parsedCatRescue, version: 2, stage: 16, branch: "monster-prank" }));
     const alreadyHasQuestion = [...p.items, ...parsedCatRescue.messages].some((item) => item.body.trim() === "？？？");
