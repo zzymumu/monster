@@ -918,7 +918,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "大G", body: "好啊，我很期待。真的謝謝妳。我這邊還有點事情要先處理，玩玩有什麼問題妳隨時找我就好。", thread: "大G" },
       { sender: "大G", body: "不過我可能回覆得比較慢一點，妳先別介意喔。", thread: "大G" },
     ]},
-  ]
+  ],
   62: [
     { id: "goodbye-check-dinner", label: "没关系呀！掰掰，我去看看玩玩吃饭了", nextStage: 63, lines: [
       { sender: "我", body: "沒關係呀！掰掰，我去看看玩玩吃飯了。", thread: "大G" },
@@ -928,7 +928,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "沒事沒事，你先忙！我去看看玩玩有沒有乖乖吃飯。", thread: "大G" },
       { sender: "大G", body: "哈哈，好，辛苦妳了。玩玩就先麻煩妳照顧，我忙完再看訊息。", thread: "大G" },
     ]},
-  ]
+  ],
   63: [
     { id: "tell-broccoli-he-promised-dinner", label: "嘻嘻！他要请我吃饭！", nextStage: 64, lines: [
       { sender: "我", body: "嘻嘻！他要请我吃饭！", thread: "西蓝花" },
