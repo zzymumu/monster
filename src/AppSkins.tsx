@@ -258,7 +258,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -954,13 +954,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "欸？會不會太麻煩你了？照顧玩玩本來就是我應該做的，不用特地請我吃飯啦。", thread: "大G" },
       { sender: "大G", body: "不麻煩啦，這怎麼會麻煩？妳幫我照顧玩玩，我請妳吃頓飯也是應該的啊。妳就別跟我客氣了，哈哈。", thread: "大G" },
     ]},
-    { id: "owner-chat-cat-habits", label: "哈哈，那我可记下来了", nextStage: 62, lines: [
-      { sender: "我", body: "哈哈，那我可記下來了，你到時候可別忘記。", thread: "大G" },
-      { sender: "大G", body: "不會啦，答應妳的我記著。玩玩剛換地方可能會先躲一下，妳別急著把牠抱出來，讓牠自己熟悉就好。", thread: "大G" },
-    ]},
-    { id: "owner-chat-no-rush", label: "知道啦，我会让它慢慢适应", nextStage: 62, lines: [
-      { sender: "我", body: "知道啦，我會讓牠慢慢適應，不會勉強牠。", thread: "大G" },
-      { sender: "大G", body: "那就好。真的很謝謝妳，妳先陪牠，我也得回去忙了。", thread: "大G" },
+    { id: "owner-accept-after-tease", label: "那我就先谢谢你啦！等你回来再说", nextStage: 85, lines: [
+      { sender: "我", body: "那我就先謝謝你啦！等你回來再說，現在先把玩玩照顧好。", thread: "大G" },
+      { sender: "大G", body: "好，說定了。妳先照顧牠，有任何狀況都可以傳訊息給我。", thread: "大G" },
     ]},
   ],
   85: [
@@ -1161,11 +1157,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   71: [
-    { id: "kitten-still-there", label: "！！！（小猫居然还在原地！）", nextStage: 84, lines: [
+    { id: "kitten-still-there", label: "！！！（小猫居然还在原地！）", nextStage: 80, lines: [
       { sender: "我", body: "！！！牠居然還在原地！我剛剛還怕牠已經不見了……", thread: "西蓝花" },
       { sender: "西蓝花", body: "？？？怎麼了怎麼了？妳找到牠了嗎？發生什麼事？", thread: "西蓝花" },
     ]},
-    { id: "kitten-still-there-again", label: "！！！我回去看了，小猫居然还在！", nextStage: 84, lines: [
+    { id: "kitten-still-there-again", label: "！！！我回去看了，小猫居然还在！", nextStage: 80, lines: [
       { sender: "我", body: "！！！我回去看了，牠居然還在原地！我還以為牠已經不見了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "？？？怎麼了？妳找到牠了嗎？快跟我說！", thread: "西蓝花" },
     ]},
