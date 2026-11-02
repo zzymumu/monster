@@ -880,7 +880,7 @@ export function WeChatSkin(p: SkinProps) {
           ) : (
             <>
               <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
-              {isMonsterThread && monsterRemoved && catRescue.stage === 13 && catRescue.messages.some((item) => item.meta?.sendFailed === true) && (
+              {isMonsterThread && monsterRemoved && catRescue.stage === 13 && catRescue.messages.some((item) => item.meta?.sendFailed === "true") && (
                 <div className="wx-send-failed" role="status" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", color: "#d93025", fontSize: 12 }}>
                   <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 16, height: 16, borderRadius: "50%", background: "#d93025", color: "#fff", fontWeight: 700 }}>!</span>
                   <button style={{ color: "#d93025", textAlign: "left", background: "transparent", border: 0, padding: 0 }} onClick={() => {
@@ -906,7 +906,7 @@ export function WeChatSkin(p: SkinProps) {
                     body: value,
                     time,
                     outgoing: true,
-                    meta: { storyId: "cat-rescue", storyThread: "大G", sendFailed: true },
+                    meta: { storyId: "cat-rescue", storyThread: "大G", sendFailed: "true" },
                   });
                   setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, failed] }));
                 } : undefined}
