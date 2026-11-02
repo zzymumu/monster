@@ -325,17 +325,13 @@ export function splitCatRescueMessages(messages: Item[]): { broccoli: Item[]; ow
 }
 export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
-    { id: "bring-home", label: "我真的不忍心把它留在这里……想带它回家", nextStage: 1, branch: "bring-home", lines: [
-      { sender: "我", body: "我越看越舍不得……它一直在路边叫，我想先把它带回家。" },
-      { sender: "西蓝花", body: "等等等等！！你先不要衝動啦！你家裡還有 Vava 耶！" },
-      { sender: "西蓝花", body: "而且牠這麼小，身邊有沒有貓媽媽也還不知道，不能看到牠可憐就直接抱走喔。" },
-      { sender: "西蓝花", body: "我不是不讓你救牠啦，我是怕牠身上有跳蚤或傳染病，回家碰到 Vava 怎麼辦？" },
+    { id: "bring-home", label: "要不我先带它回家？", nextStage: 1, branch: "bring-home", lines: [
+      { sender: "我", body: "牠一直待在外面也不是辦法……要不我先帶牠回家？" },
+      { sender: "西蓝花", body: "不行啦！妳家裡還有 Vava 耶，萬一小貓身上有傳染病怎麼辦？不能這樣直接帶回家啦！" },
     ]},
-    { id: "leave-first", label: "要不我先带它回家？让它单独住一个房间，跟 Vava 隔离", nextStage: 1, branch: "leave-first", lines: [
-      { sender: "我", body: "可是牠一直在外面也不是辦法……要不我先帶牠回家？讓牠單獨住一個房間，跟 Vava 隔離，完全不碰面。" },
-      { sender: "西蓝花", body: "妳先等等！隔離也不是把牠關進房間、關上門就沒事了啊。" },
-      { sender: "西蓝花", body: "妳每天還是要走進走出，衣服、手、鞋子都有可能把病菌或寄生蟲帶來帶去，Vava 一樣有風險。" },
-      { sender: "西蓝花", body: "而且小貓有沒有跳蚤、耳疥蟲或其他傳染病都還不知道，至少先確認健康狀況再說，好不好？" },
+    { id: "leave-first", label: "我真的不忍心把它留在这里……想带它回家", nextStage: 1, branch: "leave-first", lines: [
+      { sender: "我", body: "我真的不忍心把牠留在這裡……想先帶牠回家。" },
+      { sender: "西蓝花", body: "不行啦！妳家裡還有 Vava，萬一小貓有傳染病怎麼辦？先不要急著帶回家！" },
     ]},
   ],
   1: [
