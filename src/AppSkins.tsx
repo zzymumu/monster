@@ -180,130 +180,107 @@ type CatChoice = {
   id: string;
   label: string;
   nextStage: number;
-  branch?: string;
   lines: CatLine[];
 };
 const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
-    {
-      id: "hesitate",
-      label: "想带它回家，可是 Vava 还在家，我怕有传染病……",
-      nextStage: 1,
-      branch: "hesitant",
-      lines: [
-        { sender: "我", body: "我有点想带它回家……可是 Vava 还在家，我怕有传染病。" },
-        { sender: "西蓝花", body: "你先别冲动！Vava 还在家呢，外面的猫情况不清楚，不能直接抱回去。" },
-        { sender: "我", body: "我知道呀，可是它一直跟着我，还一直喵喵叫……" },
-        { sender: "西蓝花", body: "我懂你心软，但先保持距离，别让它碰到 Vava。我们慢慢想办法。" },
-      ],
-    },
-    {
-      id: "decide",
-      label: "我已经决定带它回家了，先去医院检查！",
-      nextStage: 11,
-      branch: "decided",
-      lines: [
-        { sender: "我", body: "我已经决定带它回家了！我先带它去医院检查，Vava 那边我会隔离好。" },
-        { sender: "西蓝花", body: "……你这行动力也太快了吧！好吧，既然决定了，先去医院，别直接和 Vava 接触。" },
-        { sender: "我", body: "我现在就去，等下给你直播汇报！" },
-        { sender: "西蓝花", body: "去吧！记得问医生猫瘟、猫癣、耳螨和驱虫，检查完再安排。" },
-      ],
-    },
+    { id: "pity", label: "它看起来好可怜，瘦瘦小小的，一直在路边叫", nextStage: 1, lines: [
+      { sender: "我", body: "它看起来好可怜，瘦瘦小小的，一直在路边叫，我都不忍心走了。" },
+      { sender: "西蓝花", body: "等一下！！你家里不是还有 Vava 吗？先别急着带回家呀！" },
+      { sender: "我", body: "我知道……可是它真的好小一只，身边也没有猫妈妈。" },
+      { sender: "西蓝花", body: "我懂我懂，但流浪猫的健康情况不清楚，Vava 也要保护好，不能直接放一起。" },
+    ]},
+    { id: "cute", label: "它真的好可爱啊啊啊，我已经蹲在旁边看它十分钟了", nextStage: 1, lines: [
+      { sender: "我", body: "它真的好可爱啊啊啊，我已经蹲在旁边看它十分钟了！" },
+      { sender: "西蓝花", body: "你先站起来！！哈哈哈哈。等等，你家不是有 Vava 了吗？" },
+      { sender: "我", body: "可是它一直用圆圆的眼睛看我，我真的走不动……" },
+      { sender: "西蓝花", body: "可爱归可爱，健康风险也要考虑。先别让它接触 Vava，好不好？" },
+    ]},
   ],
   1: [
-    {
-      id: "food",
-      label: "我先去买点吃的，陪它待一会儿",
-      nextStage: 2,
-      lines: [
-        { sender: "我", body: "我先去便利店买点吃的，陪它待一会儿。" },
-        { sender: "西蓝花", body: "可以，但先别徒手喂，买点猫粮或罐头，别喂牛奶哦。" },
-        { sender: "我", body: "它吃完还一直蹭我的鞋，眼巴巴看着我……" },
-        { sender: "西蓝花", body: "啊啊你不要用这种语气描述，我都能想象到了。但 Vava 真的要保护好。" },
-      ],
-    },
-    {
-      id: "box",
-      label: "我先找个纸箱，把它安置好",
-      nextStage: 2,
-      lines: [
-        { sender: "我", body: "我先找个纸箱，把它安置好，别让它乱跑。" },
-        { sender: "西蓝花", body: "对，箱子底下垫件旧衣服，注意保暖，别让它接触其他猫。" },
-        { sender: "我", body: "它乖乖蹲在里面，还一直看我，我心都化了。" },
-        { sender: "西蓝花", body: "你已经完蛋了……但先做好隔离，带回家也要给它单独空间。" },
-      ],
-    },
+    { id: "hesitate", label: "我也知道，可是把它留在这里我会一直惦记", nextStage: 2, lines: [
+      { sender: "我", body: "我也知道，可是把它留在这里我会一直惦记。万一它晚上还在外面怎么办？" },
+      { sender: "西蓝花", body: "唉……你这个人就是心太软。那至少先别直接抱回家，找个安全的方式安置它。" },
+      { sender: "我", body: "它刚刚还主动蹭我的鞋，感觉一点都不怕我。" },
+      { sender: "西蓝花", body: "啊啊啊你不要再描述了，我也要心软了！但 Vava 真的不能冒险。" },
+    ]},
+    { id: "vava", label: "我会把它和 Vava 完全隔离的，先带它去医院检查", nextStage: 2, lines: [
+      { sender: "我", body: "我会把它和 Vava 完全隔离的，先带它去医院检查，可以吗？" },
+      { sender: "西蓝花", body: "你已经开始计划了是吧……好吧，先去医院检查是比较稳妥的，别让它们接触。" },
+      { sender: "我", body: "嗯，我会准备单独的航空箱，回家也单独隔离。" },
+      { sender: "西蓝花", body: "那就先去医院！记得问医生传染病筛查、驱虫和芯片，路上小心。" },
+    ]},
   ],
   2: [
-    {
-      id: "bathroom",
-      label: "我还是想带它回家，先让它在浴室隔离",
-      nextStage: 99,
-      lines: [
-        { sender: "我", body: "我还是想带它回家，先让它在浴室隔离，绝不让它碰到 Vava。" },
-        { sender: "西蓝花", body: "好吧……我就知道你会心软。先把浴室收拾干净，准备水和纸箱，Vava 的东西也别共用。" },
-        { sender: "我", body: "我真的不忍心把它丢在路边，先让它安全待着，明天一早就去医院。" },
-        { sender: "西蓝花", body: "那就先救急，但一定要隔离。摸完记得洗手换衣服，今天晚上也别让两只猫碰面。" },
-        { sender: "我", body: "到家啦！小黑猫先在浴室安置好了，Vava 完全没见到它。" },
-        { sender: "西蓝花", body: "做得好！先隔离，给它一点水和安静的地方。你也别太累啦。" },
-        { sender: "我", body: "我刚发现它脖子上有挂牌，上面写着温先生，还有一个电话号码。" },
-        { sender: "西蓝花", body: "那快打一下呀！也许主人正在找它。" },
-        { sender: "我", body: "打了两次都没人接，电话一直响到自动挂断……" },
-        { sender: "西蓝花", body: "电话不通的话，要不试试加微信？用号码或者名字搜一下，看看能不能联系到主人。" },
-      ],
-    },
-    {
-      id: "follow",
-      label: "它一直跟着我，我真的不忍心把它留在外面",
-      nextStage: 99,
-      lines: [
-        { sender: "我", body: "它一直跟着我，我真的不忍心把它留在外面……我带它回家吧。" },
-        { sender: "西蓝花", body: "唉，我就知道。那你先把它放在单独的房间，千万别和 Vava 接触，用品也分开。" },
-        { sender: "我", body: "嗯！我会注意的，先让它有个安全的地方，明天就带它检查。" },
-        { sender: "西蓝花", body: "好，今晚先别让它们见面。你到家记得告诉我，别光顾着撸猫！" },
-        { sender: "我", body: "到家啦！我把它安置在浴室了，Vava 还在客厅，完全没碰到。" },
-        { sender: "西蓝花", body: "呼……那就好。先让它休息，记得给水，别急着洗澡。" },
-        { sender: "我", body: "它脖子上有挂牌，写着温先生和一个电话。我打过去了，可是一直没人接。" },
-        { sender: "西蓝花", body: "那试试加微信呀！搜一下电话号码或名字，说不定能找到主人。" },
-      ],
-    },
+    { id: "go-clinic", label: "好，我决定了，先带它去医院，检查完再说", nextStage: 3, lines: [
+      { sender: "我", body: "好，我决定了，先带它去医院，检查完再说。我真的不放心把它留在路边。" },
+      { sender: "西蓝花", body: "好吧好吧，知道你会心软。先去医院是对的，Vava 那边一定要隔离好！" },
+      { sender: "我", body: "我已经叫到车了，小黑猫乖乖待在箱子里，希望它没事。" },
+      { sender: "西蓝花", body: "你到了没有？路上还顺利吗？检查完第一时间告诉我！" },
+    ]},
+    { id: "ask-help", label: "我先联系附近医院，问问能不能马上接诊", nextStage: 3, lines: [
+      { sender: "我", body: "我先联系附近医院，问问能不能马上接诊，确认好就带它过去。" },
+      { sender: "西蓝花", body: "可以！你先确认医院能接诊，路上注意保暖。Vava 先不要接触它哦。" },
+      { sender: "我", body: "联系好了，我现在带它过去。" },
+      { sender: "西蓝花", body: "到了没有？我在等你的消息，千万别自己吓自己！" },
+    ]},
   ],
-  11: [
-    {
-      id: "healthy",
-      label: "医生说暂时没发现明显外伤，状态还可以",
-      nextStage: 99,
-      branch: "decided",
-      lines: [
-        { sender: "我", body: "医生先给它做了基础检查，说暂时没发现明显外伤，精神状态还可以。" },
-        { sender: "西蓝花", body: "那太好了！不过检查报告还是要等一下，先别急着和 Vava 接触。" },
-        { sender: "我", body: "然后医生用仪器扫了一下，居然发现它身体里有芯片！" },
-        { sender: "西蓝花", body: "真的？！那应该能查到主人信息吧？快问问医生！" },
-        { sender: "我", body: "芯片登记的是温先生，留了一个联系电话。" },
-        { sender: "西蓝花", body: "那你赶紧打电话问问是不是他家的，先确认一下小猫的情况。" },
-        { sender: "我", body: "我打过去了，可是一直没人接……响了很久也没接。" },
-        { sender: "西蓝花", body: "电话打不通的话，要不试试加微信？搜一下手机号或者名字看看。" },
-      ],
-    },
-    {
-      id: "dehydrated",
-      label: "医生说有点脱水和营养不良，要先观察",
-      nextStage: 99,
-      branch: "decided",
-      lines: [
-        { sender: "我", body: "医生说它有点脱水和营养不良，要先补水、观察一下。" },
-        { sender: "西蓝花", body: "可怜的小家伙……好在你带它去医院了，先听医生安排，别急着带回去和 Vava 接触。" },
-        { sender: "我", body: "医生又扫到它身体里有芯片，说可以查到主人信息。" },
-        { sender: "西蓝花", body: "那快问问主人是谁，说不定人家正急着找它！" },
-        { sender: "我", body: "芯片登记的是温先生，留了一个联系电话。" },
-        { sender: "西蓝花", body: "先打电话确认一下吧，也问问它之前有没有生病。" },
-        { sender: "我", body: "我打了，可是没人接，电话一直没人接听……" },
-        { sender: "西蓝花", body: "那你试试加微信呀！搜一下手机号或者名字，说不定能联系上。" },
-      ],
-    },
+  3: [
+    { id: "arrived", label: "到了！医生正在给它做基础检查", nextStage: 4, lines: [
+      { sender: "我", body: "到了！医生正在给它做基础检查，我先在外面等一下。" },
+      { sender: "西蓝花", body: "呼……终于到了。你也别紧张，先听医生怎么说。" },
+      { sender: "我", body: "医生说先检查皮肤、耳朵和基础体征，再做一下传染病筛查。" },
+      { sender: "西蓝花", body: "好专业！希望小家伙健健康康的。对了，记得问问有没有主人信息。" },
+    ]},
+    { id: "waiting", label: "刚到，正在排队，猫猫有点紧张", nextStage: 4, lines: [
+      { sender: "我", body: "刚到，正在排队，小猫有点紧张，一直缩在箱子角落里。" },
+      { sender: "西蓝花", body: "可怜的小朋友……你把箱子放稳一点，别一直围着它，让它安心待着。" },
+      { sender: "我", body: "轮到我们了，医生开始检查了！" },
+      { sender: "西蓝花", body: "好，等结果！你记得问问有没有芯片，看看能不能找到主人。" },
+    ]},
+  ],
+  4: [
+    { id: "chip", label: "医生扫到芯片了，主人信息居然是温尚翊？？？", nextStage: 5, lines: [
+      { sender: "我", body: "啊？？？医生扫到芯片了，主人信息居然显示——温尚翊？？？" },
+      { sender: "西蓝花", body: "？？？？？？你先等等？？温尚翊？？？不会吧？？" },
+      { sender: "我", body: "真的！我刚刚还以为自己看错了，名字就是温尚翊。" },
+      { sender: "西蓝花", body: "会不会只是重名啊？？先别自己吓自己，芯片上有联系方式吗？" },
+    ]},
+    { id: "confirm", label: "医生说芯片登记了主人，名字是温尚翊，我人傻了", nextStage: 5, lines: [
+      { sender: "我", body: "医生说芯片登记了主人，名字是温尚翊，我人傻了……" },
+      { sender: "西蓝花", body: "等下等下，温尚翊？？？先冷静，会不会只是重名啊？" },
+      { sender: "我", body: "我也希望是重名……但我看到那个名字真的吓一跳。" },
+      { sender: "西蓝花", body: "先看有没有电话，打过去问问就知道了！" },
+    ]},
+  ],
+  5: [
+    { id: "call", label: "有联系电话，我现在打过去问问", nextStage: 6, lines: [
+      { sender: "我", body: "有联系电话，我现在打过去问问。" },
+      { sender: "西蓝花", body: "快打快打！先确认是不是他家的猫，也问问小猫叫什么名字。" },
+      { sender: "我", body: "我打过去了……一直响，没人接。" },
+      { sender: "西蓝花", body: "可能没听到吧？再等等看，或者换个方式联系。" },
+    ]},
+    { id: "retry", label: "我有点不敢打，但还是先确认一下", nextStage: 6, lines: [
+      { sender: "我", body: "我有点不敢打……但还是先确认一下吧。" },
+      { sender: "西蓝花", body: "哈哈哈哈你先别紧张，只是问问猫咪的事！" },
+      { sender: "我", body: "打了，没人接，电话一直响到自动挂断。" },
+      { sender: "西蓝花", body: "那就先别一直打啦，试试其他联系方式。" },
+    ]},
+  ],
+  6: [
+    { id: "wechat", label: "电话打不通，怎么办？", nextStage: 7, lines: [
+      { sender: "我", body: "电话还是打不通，怎么办？我现在有点懵。" },
+      { sender: "西蓝花", body: "那你试试看加微信呀！用芯片登记的电话搜一下，或者搜温尚翊的名字。" },
+      { sender: "我", body: "我试试看……如果真的是他，那也太巧了吧。" },
+      { sender: "西蓝花", body: "先别脑补！确认身份最重要。加上之后先礼貌说明小猫的情况。" },
+    ]},
+    { id: "search", label: "我试着用电话和名字搜微信", nextStage: 7, lines: [
+      { sender: "我", body: "好，我试着用电话和名字搜微信。" },
+      { sender: "西蓝花", body: "对！找到之后先别急着说别的，先确认小猫是不是他家的。" },
+      { sender: "我", body: "好，我去搜一下……" },
+    ]},
   ],
 };
-
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
   const [query, setQuery] = useState("");
@@ -313,7 +290,6 @@ export function WeChatSkin(p: SkinProps) {
   const catRescue = parseCatRescueState(catRescueRaw);
   const allItems = [...p.items, ...catRescue.messages];
   const catRescueActive = p.thread === "西蓝花" && allItems.some((item) => item.meta.storyId === "cat-rescue");
-  const [catDraft, setCatDraft] = useState("");
   const catAvatar = allItems.find((item) => item.sender === "西蓝花" && item.avatar)?.avatar || "";
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
@@ -342,18 +318,7 @@ export function WeChatSkin(p: SkinProps) {
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
   };
-  const sendCatDraft = () => {
-    const body = catDraft.trim();
-    if (!body) return;
-    const reply =
-      catRescue.stage === 99
-        ? "你先试试看！有消息马上告诉我，我陪你一起想办法。"
-        : catRescue.branch === "decided"
-          ? "我听着呢！你先按医生说的来，别着急，Vava 那边也一定要做好隔离。"
-          : "我在我在！你先别着急做决定，先照顾好自己，也别让小黑猫和 Vava 接触。";
-    appendCatLines([{ sender: "我", body }, { sender: "西蓝花", body: reply }]);
-    setCatDraft("");
-  };
+
 
   const initialOwnerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
   const [profileName, setProfileName] = useSkinState<string>(p, "wxProfileName", initialOwnerName);
@@ -617,10 +582,7 @@ export function WeChatSkin(p: SkinProps) {
                   ))}
                 </div>
               )}
-              <form className="cat-rescue-compose" onSubmit={(event) => { event.preventDefault(); sendCatDraft(); }}>
-                <input value={catDraft} onChange={(event) => setCatDraft(event.target.value)} placeholder="发消息…" aria-label="给西蓝花发送消息" />
-                <button type="submit" disabled={!catDraft.trim()}>发送</button>
-              </form>
+              <div className="cat-rescue-option-hint">选择一条回复发送</div>
             </div>
           ) : (
             <>
