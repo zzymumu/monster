@@ -3,6 +3,7 @@ import {
   CAT_RESCUE_CHOICES,
   getCatRescueStageAfterFriendAdd,
   getCatRescueThreadForStage,
+  shouldAutoReturnToBroccoli,
   filterPrankHistoryLines,
   shouldMigrateLegacyPrankReadd,
   shouldShowPrankHistoryLine,
@@ -20,6 +21,14 @@ describe("WeChat cat-rescue story configuration", () => {
     for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 53]) {
       expect(getCatRescueThreadForStage(stage)).toBe("大G");
     }
+  });
+
+  it("does not force the terminal Broccoli conversation open after the user exits", () => {
+    expect(shouldAutoReturnToBroccoli(65, 0, "")).toBe(true);
+    expect(shouldAutoReturnToBroccoli(66, 0, "")).toBe(false);
+    expect(shouldAutoReturnToBroccoli(66, 0, "大G")).toBe(false);
+    expect(shouldAutoReturnToBroccoli(65, 1, "")).toBe(false);
+    expect(shouldAutoReturnToBroccoli(66, 0, "西蓝花")).toBe(false);
   });
 
   it("keeps the leave-first return-to-kitten choices in the Broccoli thread", () => {
