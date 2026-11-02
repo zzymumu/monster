@@ -746,6 +746,20 @@
   border-radius: 17px;
   padding: 5px 12px;
 }
+.ios18 .keyboard-draft > button {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #34363a;
+  background: #eceef1;
+}
+.ios18 .keyboard-draft > button[aria-label="发送消息"] {
+  color: #fff;
+  background: #07c160;
+}
 .ios18 .keyboard-candidates {
   height: 39px;
   display: flex;
