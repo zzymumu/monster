@@ -5445,3 +5445,39 @@ label {
   opacity: 0;
   cursor: pointer;
 }
+
+
+/* WeChat 24-hour status editor, based on the supplied reference. */
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-nav {
+  background: linear-gradient(135deg,#a66d43 0%,#b9785c 48%,#b96e69 100%);
+  color: #fff; border: 0; min-height: 54px;
+}
+.wechat-ui.wx-reference-layout[data-status-editor="true"] .wx-nav button { color: #fff; }
+.wechat-ui.wx-reference-layout .wx-status-close { display:block; font-size:31px; line-height:1; font-weight:300; }
+.wechat-ui.wx-reference-layout .wx-status-editor {
+  flex:1; min-height:0; overflow-y:auto; padding:0 12px 24px; color:#fff;
+  background:linear-gradient(160deg,#a66d43 0%,#b4775c 48%,#b96f6b 100%);
+}
+.wechat-ui.wx-reference-layout .wx-status-subtitle { padding:0 0 17px; text-align:center; color:rgba(255,255,255,.56); font-size:12px; }
+.wechat-ui.wx-reference-layout .wx-status-custom-tile {
+  width:100%; min-height:112px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; border:1px solid rgba(255,255,255,.08); border-radius:13px; background:rgba(255,255,255,.10); color:rgba(255,255,255,.88);
+}
+.wechat-ui.wx-reference-layout .wx-status-custom-plus { font-size:30px; line-height:1; font-weight:200; }
+.wechat-ui.wx-reference-layout .wx-status-custom-tile strong { font-size:14px; font-weight:500; }
+.wechat-ui.wx-reference-layout .wx-status-category { margin-top:10px; padding:13px 10px 17px; border:1px solid rgba(255,255,255,.045); border-radius:12px; background:rgba(255,255,255,.095); }
+.wechat-ui.wx-reference-layout .wx-status-category h3 { margin:0 0 13px; color:rgba(255,255,255,.55); font-size:13px; font-weight:400; }
+.wechat-ui.wx-reference-layout .wx-status-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); row-gap:16px; column-gap:3px; }
+.wechat-ui.wx-reference-layout .wx-status-grid button { min-width:0; min-height:61px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:3px 0; color:rgba(255,255,255,.9); background:transparent; }
+.wechat-ui.wx-reference-layout .wx-status-grid button span { font-size:24px; line-height:1.2; font-weight:500; }
+.wechat-ui.wx-reference-layout .wx-status-grid button small { color:rgba(255,255,255,.68); font-size:11px; white-space:nowrap; }
+.wechat-ui.wx-reference-layout .wx-status-custom-backdrop { position:absolute; z-index:130; inset:0; display:flex; align-items:flex-end; padding:10px; background:rgba(0,0,0,.35); }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet { width:100%; padding:14px; border-radius:15px; background:#fff; color:#171717; }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet header strong { font-size:15px; }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet header button { color:#666; font-size:13px; }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet header button:last-child { color:#07c160; }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet header button:disabled { opacity:.35; }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet textarea { width:100%; min-height:90px; margin-top:14px; padding:10px; resize:none; border:0; border-radius:8px; background:#f6f6f6; color:#222; font-size:15px; box-shadow:none; }
+.wechat-ui.wx-reference-layout .wx-status-custom-sheet > small { display:block; text-align:right; color:#aaa; font-size:11px; }
+.wechat-ui.wx-reference-layout .wx-profile-status { width:max-content; max-width:150px; padding:4px 9px; border:1px solid #e5e5e5; border-radius:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#999; background:transparent; text-align:left; font-size:11px; }
