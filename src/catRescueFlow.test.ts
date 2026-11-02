@@ -14,7 +14,7 @@ import { makeItem } from "./schema";
 
 describe("WeChat cat-rescue story configuration", () => {
   it("routes every hospital stage to Broccoli and owner stages to DaG", () => {
-    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]) {
+    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 67, 68, 69, 70, 71]) {
       expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
     }
     for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 53]) {
@@ -29,6 +29,29 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[11]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[10].every((choice) => choice.nextStage !== 8)).toBe(true);
     expect(CAT_RESCUE_CHOICES[11].every((choice) => choice.nextStage !== 8)).toBe(true);
+  });
+
+  it("offers a longer leave-first route that returns home, chats, then finds the kitten and rejoins the rescue path", () => {
+    const leaveFirst = CAT_RESCUE_CHOICES[0].find((choice) => choice.id === "leave-first");
+    expect(leaveFirst?.nextStage).toBe(10);
+    expect(CAT_RESCUE_CHOICES[10]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[10].every((choice) => choice.nextStage === 67)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[67]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[67].every((choice) => choice.nextStage === 68)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[67].some((choice) => /回家/.test(choice.label))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[68]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[68].every((choice) => choice.nextStage === 69)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[69]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[69].every((choice) => choice.nextStage === 70)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[70]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[70].every((choice) => choice.nextStage === 71)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[70].some((choice) => /不行/.test(choice.label))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[71]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.nextStage === 3)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[71].some((choice) => /還在原地/.test(choice.lines.map((line) => line.body).join(" "))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.lines.every((line) => line.thread === "西蓝花"))).toBe(true);
+    expect(getCatRescueThreadForStage(71)).toBe("西蓝花");
+    expect(getCatRescueThreadForStage(3)).toBe("西蓝花");
   });
 
   it("has a defined next state for every visible story choice", () => {
