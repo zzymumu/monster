@@ -39,7 +39,7 @@ export function SystemNotifications({
   notices: string[];
   apps: Work["apps"];
   items?: Item[];
-  onOpen: () => void;
+  onOpen: (notice: ReturnType<typeof notificationContent>) => void;
   onDismiss: (index: number) => void;
   compact?: boolean;
 }) {
@@ -70,7 +70,7 @@ export function SystemNotifications({
                 if (info.offset.x < -80) onDismiss(index);
               }}
             >
-              <button className="notice-open" onClick={onOpen}>
+              <button className="notice-open" onClick={() => onOpen(n)}>
                 <span className="notice-app-art">
                   {n.avatar.startsWith("data:image/") ? <img className="notice-contact-avatar" src={n.avatar} alt="" /> : <AppArtwork id={n.appId} />}
                 </span>
