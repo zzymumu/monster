@@ -141,6 +141,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].body).toBe("嘻嘻！他要請我吃飯！");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("真的假的");
     expect(CAT_RESCUE_CHOICES[63][0].lines.every((line) => line.thread === "西蓝花")).toBe(true);
+    expect(CAT_RESCUE_CHOICES[63].every((choice) => choice.lines.every((line) => !/[妳們這個麼為會說話讓還沒對時來過進見聽問題樣長點愛歡樂難當動給氣車錢買賣東書讀寫認識記錯實覺應該係親臉聲遠近盡別處萬無數機電腦網線號種變帶幫張條魚貓鳥藥醫檢驗結終簡體國臺灣溫尚翊]/.test(line.body)))).toBe(true);
     expect(getCatRescueThreadForStage(63)).toBe("西蓝花");
     expect(getCatRescueThreadForStage(59)).toBe("大G");
     expect(CAT_RESCUE_CHOICES[66]).toHaveLength(0);
