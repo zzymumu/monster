@@ -62,8 +62,34 @@ function Studio() {
   const [side, setSide] = useState(true);
   const [phoneKey, setPhoneKey] = useState(0);
   const input = useRef<HTMLInputElement>(null);
+  const freshLaunchHandled = useRef(false);
   useEffect(() => {
-    void useStudio.getState().load();
+    const boot = async () => {
+      await useStudio.getState().load();
+      // ?freshphone=1 creates a separate copy of the current phone project,
+      // resets its player runtime, and leaves the existing project untouched.
+      if (!freshLaunchHandled.current && new URLSearchParams(window.location.search).get("freshphone") === "1") {
+        freshLaunchHandled.current = true;
+        const source = useStudio.getState().work;
+        if (source) {
+          await useStudio.getState().add({
+            ...structuredClone(source),
+            title: source.title + " · 全新测试",
+          });
+          const freshWork = useStudio.getState().work;
+          if (freshWork) {
+            const snapshot = structuredClone(freshWork);
+            setPreview(snapshot);
+            setRuntime(dispatch(snapshot, initialRuntime(snapshot), "start"));
+            setView("phone");
+          }
+        }
+        const url = new URL(window.location.href);
+        url.searchParams.delete("freshphone");
+        window.history.replaceState({}, "", url.toString());
+      }
+    };
+    void boot();
     const handler = () => {
       void useStudio.getState().flush();
     };
