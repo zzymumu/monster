@@ -284,7 +284,7 @@ function PhoneRuntime({
       const scheduled = [{
         ...first,
         id: first.id || "story-" + now + "-" + Math.random().toString(36).slice(2, 8),
-        dueAt: now + 30000 + Math.floor(Math.random() * 30001),
+        dueAt: now + 10000 + Math.floor(Math.random() * 20001),
       }, ...queue.slice(1)];
       update({
         ...runtimeRef.current,
