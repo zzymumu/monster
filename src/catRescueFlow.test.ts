@@ -88,7 +88,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(apology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "我", "大G"]);
     expect(apology?.lines.map((line) => line.body)).toEqual([
       "真的對不起！我剛剛只是想開個玩笑，沒想到你真的把我刪掉了。",
-      "我說呢，怎麼有人一上來就講這些奇奇怪怪的話……原來是想跟我開玩笑啊。",
+      "我說呢，怎麼有人一上來就說奇奇怪怪的話，原來是這樣喔……",
       "我是在路邊撿到一隻小黑貓，牠脖子上的牌子有你的微信號，所以才急著聯絡你。",
       "蛤？原來是這樣……小黑貓現在在哪裡？牠有沒有受傷？妳先跟我說一下。",
     ]);
