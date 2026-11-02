@@ -602,18 +602,14 @@ export function WeChatSkin(p: SkinProps) {
       });
       const prankApologyFailed = catRescue.stage === 13 && catRescue.branch === "monster-prank" && line.sender === "我";
       if (prankApologyFailed) setMonsterSendFailed(true);
-      const prankFinished = catRescue.stage === 17 && catRescue.branch === "monster-prank" && pendingCatLines.length === 1;
+      // Do not auto-delete the friend when the initial prank message finishes.
+      // Stage 17 must remain active so the apology choices can render. The
+      // deletion happens only after the player chooses an attempted apology.
       setCatRescueRaw(JSON.stringify({
         ...catRescue,
         version: 2,
-        ...(prankFinished ? { stage: 13 } : {}),
         messages: [...catRescue.messages, created],
       }));
-      if (prankFinished) {
-        setMonsterFriendAccepted(false);
-        setMonsterRemoved(true);
-        setAddedFriends((current) => current.filter((name) => name !== "大G"));
-      }
       setPendingCatLines((current) => current.slice(1));
     }, delay);
     return () => window.clearTimeout(timer);
