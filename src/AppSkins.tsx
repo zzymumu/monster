@@ -170,6 +170,28 @@ export function WeChatSkin(p: SkinProps) {
   const [addedFriends, setAddedFriends] = useSkinState<string[]>(p, "wxAddedFriends", []);
   const [addQuery, setAddQuery] = useState("");
   const [momentCover, setMomentCover] = useSkinState<string>(p, "wxMomentCover", "");
+  const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
+  const [momentComposer, setMomentComposer] = useState(false);
+  const [momentDraft, setMomentDraft] = useState("");
+  const myMomentPosts = momentPostData.flatMap((raw) => {
+    try {
+      const post = JSON.parse(raw) as { id: string; body: string; time: string };
+      return post.id && post.body ? [post] : [];
+    } catch {
+      return [];
+    }
+  });
+  const publishMoment = () => {
+    const body = momentDraft.trim();
+    if (!body) return;
+    setMomentPostData((current) => [...current, JSON.stringify({
+      id: `moment-${Date.now()}`,
+      body,
+      time: new Date().toLocaleString("zh-CN", { hour12: false }),
+    })]);
+    setMomentDraft("");
+    setMomentComposer(false);
+  };
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
     if (file.size > 4 * 1024 * 1024) {
@@ -352,15 +374,30 @@ export function WeChatSkin(p: SkinProps) {
           </div>
           <div className="wx-moment-compose-row">
             <Avatar name={ownerName} />
-            <button className="wx-moment-publish" onClick={p.onAdd}><Plus size={16} /> 发布朋友圈</button>
+            <button className="wx-moment-publish" onClick={() => setMomentComposer(true)}><Plus size={16} /> 发布朋友圈</button>
           </div>
+          {myMomentPosts.map((post) => (
+            <div key={post.id} className="wx-moment-post wx-moment-user-post">
+              <Avatar name={ownerName} />
+              <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small></div>
+            </div>
+          ))}
           {posts.map((i) => (
             <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
               <Avatar name={i.sender} src={i.avatar} />
               <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
             </button>
           ))}
-          {!posts.length && <p className="skin-empty">还没有动态，发布一条朋友圈吧</p>}
+          {!posts.length && !myMomentPosts.length && <p className="skin-empty">还没有动态，发布一条朋友圈吧</p>}
+          {momentComposer && (
+            <div className="wx-moment-composer-backdrop">
+              <section className="wx-moment-composer">
+                <header><button onClick={() => { setMomentComposer(false); setMomentDraft(""); }}>取消</button><strong>发表文字</strong><button disabled={!momentDraft.trim()} onClick={publishMoment}>发表</button></header>
+                <textarea autoFocus value={momentDraft} onChange={(e) => setMomentDraft(e.target.value)} placeholder="这一刻的想法..." />
+                <small>分享此刻的心情</small>
+              </section>
+            </div>
+          )}
         </div>
       ) : (
         <div className="wx-page-scroll">
