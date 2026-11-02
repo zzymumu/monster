@@ -873,12 +873,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   ],
   56: [
     { id: "promise-care-well", label: "哈哈哈，那我先努力跟它培养感情", nextStage: 61, lines: [
-      { sender: "我", body: "哈哈哈，那我先努力跟牠培養感情，等牠願意親近我再說。對了，等你回來是不是該請我吃頓飯？我開玩笑的啦！", thread: "大G" },
-      { sender: "大G", body: "哈哈，妳還真會挑時候討吃的。好啦，等我回去再好好謝謝妳，請妳吃飯，這次記著了。", thread: "大G" },
+      { sender: "我", body: "哈哈哈，那我先努力跟牠培養感情，等牠願意親近我再說。", thread: "大G" },
+      { sender: "大G", body: "慢慢來就好，不用急。牠很聰明，知道誰對牠好。這幾天真的要麻煩妳了。", thread: "大G" },
     ]},
     { id: "send-updates", label: "等它适应一点，我再拍照片给你看", nextStage: 61, lines: [
-      { sender: "我", body: "等牠適應一點，我再拍照片給你看。那你回來要請我吃飯喔，開玩笑啦！", thread: "大G" },
-      { sender: "大G", body: "哈哈，這哪算開玩笑，妳幫我照顧玩玩，我當然要好好謝謝妳。等我回去請妳吃飯。", thread: "大G" },
+      { sender: "我", body: "等牠適應一點，我再拍照片給你看。", thread: "大G" },
+      { sender: "大G", body: "好啊，等牠放鬆一點再拍就好，不用急。這幾天真的麻煩妳了。", thread: "大G" },
     ]},
   ],
   57: [],
@@ -916,15 +916,35 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   61: [
-    { id: "promise-care", label: "好啦，我会好好照顾它的，你放心", nextStage: 62, lines: [
+    { id: "promise-care", label: "好啦，我会好好照顾它的，你放心", nextStage: 82, lines: [
       { sender: "我", body: "好啦，我會好好照顧牠的，你放心。", thread: "大G" },
       { sender: "大G", body: "嗯，真的很謝謝妳。我這邊還有點事情要先處理，玩玩如果有什麼狀況，妳隨時傳訊息給我就好。", thread: "大G" },
       { sender: "大G", body: "只是我可能沒辦法馬上回覆，訊息看到我就會盡快回妳喔。", thread: "大G" },
     ]},
-    { id: "send-cat-photo", label: "等它适应了我拍照片给你看", nextStage: 62, lines: [
+    { id: "send-cat-photo", label: "等它适应了我拍照片给你看", nextStage: 82, lines: [
       { sender: "我", body: "等牠適應了，我拍照片給你看。", thread: "大G" },
       { sender: "大G", body: "好啊，我很期待。真的謝謝妳。我這邊還有點事情要先處理，玩玩有什麼問題妳隨時找我就好。", thread: "大G" },
       { sender: "大G", body: "不過我可能回覆得比較慢一點，妳先別介意喔。", thread: "大G" },
+    ]},
+  ],
+  82: [
+    { id: "owner-thanks-and-dinner", label: "你先忙吧，玩玩这边我会照顾好的", nextStage: 83, lines: [
+      { sender: "我", body: "好呀，你先忙你的，玩玩這邊我會照顧好的。有狀況我再跟你說。", thread: "大G" },
+      { sender: "大G", body: "好，真的謝謝妳。等我回去一定要好好謝謝妳……不然請妳吃頓飯好了，總不能一直讓妳白忙。", thread: "大G" },
+    ]},
+    { id: "owner-tease-dinner", label: "那你忙完记得回来看看它哦", nextStage: 83, lines: [
+      { sender: "我", body: "那你忙完記得回來看看牠喔，牠應該也會想你。", thread: "大G" },
+      { sender: "大G", body: "一定會啦。等我回去，除了接牠，也請妳吃飯，這樣總可以吧？哈哈。", thread: "大G" },
+    ]},
+  ],
+  83: [
+    { id: "owner-chat-cat-habits", label: "哈哈，那我可记下来了", nextStage: 62, lines: [
+      { sender: "我", body: "哈哈，那我可記下來了，你到時候可別忘記。", thread: "大G" },
+      { sender: "大G", body: "不會啦，答應妳的我記著。玩玩剛換地方可能會先躲一下，妳別急著把牠抱出來，讓牠自己熟悉就好。", thread: "大G" },
+    ]},
+    { id: "owner-chat-no-rush", label: "知道啦，我会让它慢慢适应", nextStage: 62, lines: [
+      { sender: "我", body: "知道啦，我會讓牠慢慢適應，不會勉強牠。", thread: "大G" },
+      { sender: "大G", body: "那就好。真的很謝謝妳，妳先陪牠，我也得回去忙了。", thread: "大G" },
     ]},
   ],
   62: [
