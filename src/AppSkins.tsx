@@ -600,11 +600,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   27: [
-    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 53, lines: [
+    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 32, lines: [
       { sender: "我", body: "玩玩……？我靠！", thread: "大G" },
       { sender: "大G", body: "妳？？？怎麼啦？", thread: "大G" },
     ]},
-    { id: "ask-name-again", label: "等一下……你刚刚说它叫玩玩？", nextStage: 53, lines: [
+    { id: "ask-name-again", label: "等一下……你刚刚说它叫玩玩？", nextStage: 32, lines: [
       { sender: "我", body: "等一下……你剛剛說牠叫玩玩？", thread: "大G" },
       { sender: "大G", body: "對啊，牠叫玩玩。怎麼了嗎？", thread: "大G" },
     ]},
@@ -877,9 +877,12 @@ export function WeChatSkin(p: SkinProps) {
   const pickupMessagesWereMigrated = correctedPickupMessages.some((item, index) =>
     item.body !== parsedCatRescue.messages[index]?.body
   );
+  // Stage 53 was an accidental extra DaG reply step. Existing saves on
+  // that step must resume at the intended Broccoli reaction choices (stage 32).
+  const normalizedStoryStage = parsedCatRescue.stage === 53 ? 32 : parsedCatRescue.stage;
   const catRescue = legacyPrankReaddPending
     ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
-    : { ...parsedCatRescue, messages: correctedPickupMessages };
+    : { ...parsedCatRescue, messages: correctedPickupMessages, stage: normalizedStoryStage };
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
