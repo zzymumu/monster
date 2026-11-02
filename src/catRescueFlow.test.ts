@@ -132,6 +132,14 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[62].every((choice) => choice.lines[0].sender === "我")).toBe(true);
     expect(CAT_RESCUE_CHOICES[62].every((choice) => choice.lines[0].body.includes("玩玩"))).toBe(true);
     expect(CAT_RESCUE_CHOICES[62].every((choice) => choice.lines.every((line) => line.thread === "大G"))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[56][0].lines[0].body).not.toMatch(/請.*吃飯|请.*吃饭/);
+    expect(CAT_RESCUE_CHOICES[56][0].lines[1].body).toContain("慢慢來就好");
+    expect(CAT_RESCUE_CHOICES[61].every((choice) => choice.nextStage === 82)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[82].every((choice) => choice.nextStage === 83)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[82].every((choice) => choice.lines.some((line) => /請妳吃飯|請妳吃頓飯/.test(line.body)))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[83].every((choice) => choice.nextStage === 62)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[82].every((choice) => choice.lines.every((line) => line.thread === "大G"))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[83].every((choice) => choice.lines.every((line) => line.thread === "大G"))).toBe(true);
     expect(CAT_RESCUE_CHOICES[71].some((choice) => /還在原地/.test(choice.lines.map((line) => line.body).join(" ")))).toBe(true);
     expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.lines.every((line) => line.thread === "西蓝花"))).toBe(true);
     expect(getCatRescueThreadForStage(71)).toBe("西蓝花");
