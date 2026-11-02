@@ -5281,3 +5281,99 @@ label {
   color: #aaa;
   font-size: 11px;
 }
+
+
+/* WeChat profile editing: independently tappable avatar and nickname controls. */
+.wechat-ui.wx-reference-layout .wx-me-profile {
+  cursor: default;
+}
+.wechat-ui.wx-reference-layout .wx-me-avatar-edit {
+  position: relative;
+  display: block;
+  flex: 0 0 62px;
+  width: 62px;
+  height: 62px;
+  overflow: hidden;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.wechat-ui.wx-reference-layout .wx-me-avatar-edit .skin-avatar {
+  width: 62px;
+  height: 62px;
+  font-size: 22px;
+}
+.wechat-ui.wx-reference-layout .wx-me-avatar-edit input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.wechat-ui.wx-reference-layout .wx-me-name-edit {
+  justify-content: flex-start;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  color: #171717;
+}
+.wechat-ui.wx-reference-layout .wx-me-name-edit strong {
+  font-size: 19px;
+  font-weight: 600;
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-backdrop {
+  position: absolute;
+  z-index: 120;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  background: rgba(0,0,0,.38);
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-sheet {
+  width: 100%;
+  max-width: 340px;
+  padding: 16px;
+  border-radius: 15px;
+  background: #fff;
+  color: #171717;
+  box-shadow: 0 14px 42px rgba(0,0,0,.2);
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-sheet header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-sheet header strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-sheet header button {
+  color: #777;
+  font-size: 13px;
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-sheet header span {
+  width: 30px;
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-sheet > input {
+  width: 100%;
+  height: 43px;
+  padding: 0 11px;
+  border: 1px solid #e3e3e5;
+  border-radius: 8px;
+  background: #f6f6f7;
+  color: #171717;
+  font-size: 15px;
+  box-shadow: none;
+}
+.wechat-ui.wx-reference-layout .wx-profile-edit-sheet .wx-profile-confirm {
+  width: 100%;
+  height: 42px;
+  margin-top: 15px;
+  border-radius: 8px;
+  background: #07c160;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
