@@ -619,11 +619,12 @@ export function WeChatSkin(p: SkinProps) {
     // "我是你爸爸" but the three incoming reactions and reply choices vanished.
     if (catRescue.stage !== 17 || !hasPrankPath) return;
     const allBodies = new Set([...p.items, ...catRescue.messages].map((item) => item.body.trim()));
-    const missing: CatLine[] = [
+    const candidates: CatLine[] = [
       { sender: "大G", body: "……蛤？", thread: "大G" },
       { sender: "大G", body: "妳哪位？我不認識妳喔。", thread: "大G" },
       { sender: "大G", body: "好喔，那我先把妳刪掉了。掰。", thread: "大G" },
-    ].filter((line) => !allBodies.has(line.body) &&
+    ];
+    const missing = candidates.filter((line) => !allBodies.has(line.body) &&
       !pendingCatLines.some((pending) => pending.body === line.body));
     if (missing.length) setPendingCatLines((current) => [...current, ...missing]);
   }, [catRescue.stage, catRescue.branch, catRescue.messages.length, hasPrankPath, pendingCatLines, p.items]);
