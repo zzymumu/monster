@@ -167,6 +167,18 @@ export function WeChatSkin(p: SkinProps) {
   const initialOwnerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
   const [profileName, setProfileName] = useSkinState<string>(p, "wxProfileName", initialOwnerName);
   const [profileAvatar, setProfileAvatar] = useSkinState<string>(p, "wxProfileAvatar", "");
+  const [profileStatus, setProfileStatus] = useSkinState<string>(p, "wxProfileStatus", "");
+  const [statusEditorOpen, setStatusEditorOpen] = useState(false);
+  const [customStatusOpen, setCustomStatusOpen] = useState(false);
+  const [customStatusDraft, setCustomStatusDraft] = useState("");
+  const saveProfileStatus = (value: string) => {
+    const nextStatus = value.trim();
+    if (!nextStatus) return;
+    setProfileStatus(nextStatus);
+    setStatusEditorOpen(false);
+    setCustomStatusOpen(false);
+    setCustomStatusDraft("");
+  };
   const [nameEditorOpen, setNameEditorOpen] = useState(false);
   const [nameDraft, setNameDraft] = useState(profileName || initialOwnerName);
   const ownerName = profileName || initialOwnerName;
@@ -298,7 +310,7 @@ export function WeChatSkin(p: SkinProps) {
     } else setUtility(name);
   };
   return (
-    <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility}>
+    <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility} data-status-editor={statusEditorOpen}>
       <div className="app-nav wx-nav">
         <button aria-label={utility || p.thread || moments ? "返回" : tab === "微信" ? "收藏" : "返回"} onClick={() => {
           if (utility) setUtility("");
@@ -309,7 +321,7 @@ export function WeChatSkin(p: SkinProps) {
         }}>
           {utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
         </button>
-        <strong>{utility || p.thread || (moments ? "朋友圈" : tab)}</strong>
+        <strong>{statusEditorOpen ? "设个状态" : utility || p.thread || (moments ? "朋友圈" : tab)}</strong>
         <button aria-label={p.thread ? "聊天详情" : "微信菜单"} onClick={() => p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>
           {p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}
         </button>
@@ -510,7 +522,7 @@ export function WeChatSkin(p: SkinProps) {
                     <strong>{ownerName}</strong>
                   </button>
                   <small>微信号：未设置</small>
-                  <em>＋ 状态</em>
+                  <button className="wx-profile-status" onClick={() => setStatusEditorOpen(true)}>{profileStatus ? "● " + profileStatus : "＋ 状态"}</button>
                 </div>
                 <ChevronRight size={20} />
               </div>
