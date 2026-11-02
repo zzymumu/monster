@@ -1469,3 +1469,50 @@
     bottom: 25px;
   }
 }
+
+
+/* Lock screen revision from the latest user reference:
+   date first, balanced iOS clock weight, and no now-playing card. */
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block {
+  top: 78px !important;
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+}
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block .lock-unlock-hint {
+  display: block !important;
+  margin: 0 0 5px !important;
+  color: rgba(255,255,255,.98);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  font-size: 16px !important;
+  line-height: 22px !important;
+  font-weight: 600 !important;
+  letter-spacing: -.2px;
+  text-shadow: 0 1px 8px rgba(0,0,0,.25);
+}
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
+  margin: 0 !important;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+  font-size: clamp(96px, 25.5vw, 114px) !important;
+  line-height: .98 !important;
+  font-weight: 400 !important;
+  letter-spacing: -5px !important;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 16px rgba(0,0,0,.10);
+}
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-now-playing {
+  display: none !important;
+}
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-tools {
+  bottom: 34px;
+}
+@media (max-height: 760px) {
+  .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block {
+    top: 66px !important;
+  }
+  .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
+    font-size: 96px !important;
+  }
+}
