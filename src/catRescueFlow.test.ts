@@ -103,12 +103,17 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[20].some((choice) => choice.id === "verify-owner-name")).toBe(true);
     expect(CAT_RESCUE_CHOICES[20].find((choice) => choice.id === "verify-owner-name")?.lines.some((line) => /我叫溫尚翊/.test(line.body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[21].every((choice) => choice.lines.some((line) => /這幾天都在外地/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[26]).toHaveLength(1);
-    expect(CAT_RESCUE_CHOICES[26][0].lines.map((line) => line.body)).toEqual([
-      "對了，我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？",
+    expect(CAT_RESCUE_CHOICES[21][0].lines[0].body).toContain("什麼時候方便回來接");
+    expect(CAT_RESCUE_CHOICES[21][0].lines[1].body).toContain("這幾天都不在家");
+    expect(CAT_RESCUE_CHOICES[22].every((choice) => choice.lines[0].sender === "我" && /照顧牠幾天/.test(choice.lines[0].body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[23]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[23][0].nextStage).toBe(27);
+    expect(CAT_RESCUE_CHOICES[23][0].lines.map((line) => line.body)).toEqual([
+      "對了，聊了半天我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？",
       "牠叫玩玩。",
     ]);
+    expect(CAT_RESCUE_CHOICES[26]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[26][0].lines.some((line) => /情況我再聯絡你/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[27][0].lines.map((line) => line.body)).toEqual([
       "玩玩……？我靠！",
       "妳？？？怎麼啦？",
@@ -117,7 +122,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[32][0].lines.some((line) => line.sender === "西蓝花")).toBe(true);
     expect(CAT_RESCUE_CHOICES[33]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[34][0].nextStage).toBe(35);
-    expect(CAT_RESCUE_CHOICES[35][0].nextStage).toBe(23);
+    expect(CAT_RESCUE_CHOICES[35][0].nextStage).toBe(24);
   });
 
 
