@@ -222,12 +222,20 @@ export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): 
   if (stage === 13) return 14;
   return 9;
 }
-export function shouldShowPrankHistoryLine(item: Item, branch: string, prankPath = branch === "monster-prank"): boolean {
-  if (!prankPath) return true;
-  // Keep the first "妳是？" greeting, but hide the obsolete auto-replies
-  // that used to be sent after "我是你爸爸" and before the apology choices.
-  const obsoletePrankReply = /^(……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
-  return !obsoletePrankReply.test(item.body.trim());
+export function shouldShowPrankHistoryLine(_item: Item, _branch: string, _prankPath = _branch === "monster-prank"): boolean {
+  // The full exchange (……蛤？ / 妳哪位？ / deletion notice) is intentional.
+  // Duplicate "妳是？" greetings are handled by sequence-aware filtering below.
+  return true;
+}
+export function filterPrankHistoryLines(items: Item[], prankPath: boolean): Item[] {
+  if (!prankPath) return items;
+  let prankWasSent = false;
+  return items.filter((item) => {
+    const body = item.body.trim();
+    if (body === "我是你爸爸。" || body === "我是你爸爸") prankWasSent = true;
+    if (prankWasSent && body === "妳是？") return false;
+    return true;
+  });
 }
 export function shouldMigrateLegacyPrankReadd(
   stage: number,
@@ -598,10 +606,10 @@ export function WeChatSkin(p: SkinProps) {
   const keepPrankHistoryClean = (item: Item) =>
     shouldShowPrankHistoryLine(item, catRescue.branch, hasPrankPath);
   const threadItems = isMonsterThread
-    ? [
+    ? filterPrankHistoryLines([
         ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
         ...ownerStoryMessages.filter(keepPrankHistoryClean),
-      ]
+      ], hasPrankPath)
     : isBroccoliThread
       ? [...broccoliBaseItems, ...friendStoryMessages]
       : allItems.filter((item) => item.title === p.thread);
