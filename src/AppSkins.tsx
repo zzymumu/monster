@@ -559,7 +559,7 @@ export function WeChatSkin(p: SkinProps) {
       {friendRequestModal && (
         <div className="wx-friend-flow-backdrop">
           <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="好友申请">
-            <div className="wx-friend-flow-avatar"><Avatar name="温尚翊" /></div>
+            <div className="wx-friend-flow-avatar"><Avatar name="大G" /></div>
             {friendRequestModal === "confirm" ? (
               <>
                 <strong>添加到通讯录</strong>
