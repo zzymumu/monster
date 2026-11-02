@@ -630,37 +630,37 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   32: [
-    { id: "shock-wanwan-name", label: "我靠我靠！！！牠叫玩玩？？？", nextStage: 33, lines: [
+    { id: "shock-same-cat-name", label: "我靠我靠！！！牠叫玩玩？？？", nextStage: 33, lines: [
       { sender: "我", body: "我靠我靠！！！牠叫玩玩？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "？？？？等一下！！！怪獸家的貓就叫玩玩？？？妳說的是五月天那個怪獸嗎？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "蛤？？？玩玩？？？跟怪獸家那隻貓同一個名字？？？等一下，妳剛剛說名牌上的主人叫什麼？溫尚翊？？？", thread: "西蓝花" },
     ]},
-    { id: "double-check-wanwan", label: "等等等等，你说它叫玩玩？这也太巧了吧！", nextStage: 33, lines: [
-      { sender: "我", body: "等等等等，妳說牠叫玩玩？這也太巧了吧！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "蛤？？？妳怎麼突然這麼激動？怪獸家的貓就叫玩玩？？？", thread: "西蓝花" },
+    { id: "shock-owner-and-cat-names", label: "等等！！！猫叫玩玩，主人还叫温尚翊？？？", nextStage: 33, lines: [
+      { sender: "我", body: "等等！！！牠叫玩玩，主人還叫溫尚翊？？？這也太巧了吧！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不是吧？？？玩玩是怪獸家貓咪的名字，溫尚翊又是怪獸本名欸！妳撿到的該不會真的是他家的貓吧？？？", thread: "西蓝花" },
     ]},
   ],
   33: [
-    { id: "explain-just-lucky-coincidence", label: "真的啦！只是觉得太巧了，没想到会叫玩玩", nextStage: 37, lines: [
-      { sender: "我", body: "真的啦！只是覺得太巧了，沒想到牠會叫玩玩，我一時有點反應不過來。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好啦好啦，先相信妳！但這名字真的很有記憶點，妳先別在大G面前露餡喔。", thread: "西蓝花" },
+    { id: "insist-same-name", label: "可、可能……可能只是重名！", nextStage: 37, lines: [
+      { sender: "我", body: "可、可能……可能只是重名！世界上同名同姓、同名的貓也不是不可能嘛！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳拉倒吧！主人名字跟寵物名字都重合嗎？妳怎麼不說明天地球毀滅呢？", thread: "西蓝花" },
     ]},
-    { id: "keep-it-to-myself", label: "我先不告诉你原因，等一下慢慢跟你说", nextStage: 37, lines: [
-      { sender: "我", body: "我先不告訴妳原因啦，等一下慢慢跟妳說，現在真的有點亂。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好！我等妳整理好再說。可是妳這個反應真的很可疑欸！", thread: "西蓝花" },
+    { id: "try-to-explain-coincidence", label: "也、也不是不可能吧？你先别激动！", nextStage: 37, lines: [
+      { sender: "我", body: "也、也不是不可能吧？妳先別激動啦！說不定真的只是剛好撞名啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "……妳自己聽聽看這合理嗎？連貓的名字都一樣，主人還剛好叫溫尚翊？", thread: "西蓝花" },
     ]},
   ],
   37: [
-    { id: "ask-should-tell", label: "我要不要直接告诉大G我知道他是谁啊？", nextStage: 38, lines: [
-      { sender: "我", body: "可是我現在有點猶豫欸……我要不要直接跟大G說我知道他是誰啊？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "先等等！！！妳先不要一激動就全招了啦！他現在還不知道妳認出他了吧？", thread: "西蓝花" },
-      { sender: "我", body: "對啊，他應該還以為我只是撿到貓、照著名牌聯絡他的路人而已……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "那就先自然一點啊！先把玩玩照顧好，等他回來接貓再看情況。這種事慢慢來比較有趣！", thread: "西蓝花" },
+    { id: "double-down-coincidence", label: "我觉得也不是不可能嘛……真的有这么巧吧！", nextStage: 38, lines: [
+      { sender: "我", body: "我覺得也不是不可能嘛……真的有這麼巧吧！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "……我真的不知道該怎麼吐槽妳。好啦，先不跟妳爭，妳現在是在醫院對不對？", thread: "西蓝花" },
+      { sender: "我", body: "對啊，我還在等醫生確認玩玩的狀況。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那先顧好玩玩啦！不管主人是不是怪獸，牠現在需要妳。等一下妳再想想要怎麼跟那個失主聊。", thread: "西蓝花" },
     ]},
-    { id: "still-cant-believe", label: "我真的还在震惊，这也太离谱了吧！", nextStage: 38, lines: [
-      { sender: "我", body: "我真的還在震驚……這也太離譜了吧！我到現在都覺得像在做夢。" , thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈哈妳先冷靜！但我完全懂妳為什麼會瘋掉，這機率也太低了吧！" , thread: "西蓝花" },
-      { sender: "我", body: "而且我剛剛還跟他說我可以幫忙照顧玩玩，我現在突然覺得好不真實。" , thread: "西蓝花" },
-      { sender: "西蓝花", body: "那妳就好好照顧牠呀！這可是怪獸家的小朋友，先把牠平平安安照顧好最重要！" , thread: "西蓝花" },
+    { id: "admit-too-coincidental", label: "好啦……我也觉得巧得有点离谱", nextStage: 38, lines: [
+      { sender: "我", body: "好啦……我也覺得巧得有點離譜，我現在腦袋整個亂掉。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "這才正常！妳剛剛還硬要說重名，真的快被妳笑死。", thread: "西蓝花" },
+      { sender: "我", body: "我只是還不敢相信嘛……先讓我冷靜一下。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦，深呼吸。先把玩玩照顧好，之後再跟大G確認清楚。", thread: "西蓝花" },
     ]},
   ],
   38: [
