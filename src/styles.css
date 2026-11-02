@@ -5972,3 +5972,5 @@ label {
   justify-content: flex-start;
   text-align: left;
 }
+
+.wechat-ui.wx-reference-layout .skin-avatar.guitar-avatar { background: linear-gradient(145deg,#dfc39a,#91603d); color:#fff8e8; font-size:23px; }
