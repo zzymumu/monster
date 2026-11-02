@@ -437,7 +437,6 @@ export function WeChatSkin(p: SkinProps) {
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
-  const ownerConversation = catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11;
   // Split by the saved conversation owner, not by the first incoming sender.
   // Earlier versions classified outgoing prank/apology lines as broccoli chat.
   const ownerConversationStart = catRescue.messages.findIndex((item) =>
@@ -464,6 +463,8 @@ export function WeChatSkin(p: SkinProps) {
     item.sender !== "大G" &&
     item.sender !== "温尚翊" &&
     item.meta?.storyThread !== "大G" &&
+    item.meta?.storyId !== "cat-rescue" &&
+    item.meta?.storyId !== "cat-rescue-add-friend" &&
     !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|？？？|對不起.*發錯|对不起.*发错/.test(item.body)
   );
   const threadItems = isMonsterThread
