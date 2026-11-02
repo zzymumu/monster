@@ -169,6 +169,19 @@ export function WeChatSkin(p: SkinProps) {
   const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
   const [addedFriends, setAddedFriends] = useSkinState<string[]>(p, "wxAddedFriends", []);
   const [addQuery, setAddQuery] = useState("");
+  const [momentCover, setMomentCover] = useSkinState<string>(p, "wxMomentCover", "");
+  const updateMomentCover = (file?: File) => {
+    if (!file || !file.type.startsWith("image/")) return;
+    if (file.size > 4 * 1024 * 1024) {
+      window.alert("图片请控制在 4MB 以内");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") setMomentCover(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const conversations = Array.from(
     new Set(p.items.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title)),
@@ -329,15 +342,25 @@ export function WeChatSkin(p: SkinProps) {
         </>
       ) : moments ? (
         <div className="wx-moments">
-          <div className="wx-moment-cover"><Camera size={32} /><span>朋友圈</span></div>
+          <div className="wx-moment-cover" style={momentCover ? { backgroundImage: `linear-gradient(#0002,#0002), url("${momentCover}")` } : undefined}>
+            <span>朋友圈</span>
+            <label className="wx-moment-cover-edit" title="更换朋友圈背景">
+              <Camera size={17} />
+              <span>更换背景</span>
+              <input type="file" accept="image/*" onChange={(e) => updateMomentCover(e.target.files?.[0])} />
+            </label>
+          </div>
+          <div className="wx-moment-compose-row">
+            <Avatar name={ownerName} />
+            <button className="wx-moment-publish" onClick={p.onAdd}><Plus size={16} /> 发布朋友圈</button>
+          </div>
           {posts.map((i) => (
             <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
               <Avatar name={i.sender} src={i.avatar} />
               <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
             </button>
           ))}
-          {!posts.length && <p className="skin-empty">暂时还没有朋友圈动态</p>}
-          {p.creator && <button className="phone-add" onClick={p.onAdd}>发布朋友圈</button>}
+          {!posts.length && <p className="skin-empty">还没有动态，发布一条朋友圈吧</p>}
         </div>
       ) : (
         <div className="wx-page-scroll">
