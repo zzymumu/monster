@@ -31,6 +31,10 @@ import {
   Radio,
   Wifi,
   Battery,
+  CloudSun,
+  CalendarDays,
+  MapPin,
+  Sun,
   Heart,
   Music2,
   Airplay,
@@ -128,16 +132,20 @@ export function DeviceLock({
             <h1>{time}</h1>
           </div>
           <div className="lock-widgets" aria-label="锁屏小组件">
-            <div className="lock-widget lock-widget-battery">
-              <div className="lock-widget-heading"><Battery size={19} /><strong>{work.phone.battery}%</strong></div>
-              <div className="lock-widget-title">你才是 iphone</div>
-              <div className="lock-widget-track"><span style={{ width: `${work.phone.battery}%` }} /></div>
-            </div>
-            <div className="lock-widget lock-widget-now-playing">
-              <div className="lock-widget-heading"><Music2 size={19} /><strong>马上播放</strong></div>
-              <div className="lock-widget-title">星探 (Live)</div>
-              <div className="lock-widget-track"><span style={{ width: "8%" }} /></div>
-            </div>
+            <section className="lock-widget lock-widget-weather" aria-label="天气小组件">
+              <div className="lock-widget-topline"><span><MapPin size={12} /> 洛杉矶</span><CloudSun size={19} /></div>
+              <div className="lock-weather-temperature">22°</div>
+              <div className="lock-weather-condition">晴朗</div>
+              <div className="lock-weather-range"><span><Sun size={12} /> 最高 25°</span><span>最低 16°</span></div>
+            </section>
+            <section className="lock-widget lock-widget-calendar" aria-label="日历小组件">
+              <div className="lock-widget-topline"><span><CalendarDays size={13} /> 日历</span><span className="lock-calendar-month">{new Intl.DateTimeFormat("zh-CN", { month: "long", timeZone: "UTC" }).format(new Date((work.phone.date || new Date().toISOString().slice(0, 10)) + "T12:00:00Z"))}</span></div>
+              <div className="lock-calendar-day">{new Date((work.phone.date || new Date().toISOString().slice(0, 10)) + "T12:00:00Z").getUTCDate()}</div>
+              <div className="lock-calendar-events">
+                <div><b>10:00</b><span>今日待办事项</span></div>
+                <div><b>14:30</b><span>与朋友见面</span></div>
+              </div>
+            </section>
           </div>
           <div className="lock-notifications">
             {work.phone.notifications && (
