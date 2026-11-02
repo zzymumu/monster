@@ -519,10 +519,8 @@ export function WeChatSkin(p: SkinProps) {
     if (prankFlow) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？" }]);
     setMonsterRemoved(false);
     setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
-    // Once the friend request is accepted, move into the owner's own chat.
-    // Leaving the user in the broccoli thread made the owner dialogue appear
-    // under the wrong contact and hid the stage-9 reply choices.
-    p.onThread("大G");
+    // Do not navigate here: this function is called while the friend-request
+    // sheet is still open. The explicit "完成，查看消息" action owns navigation.
   };
 
 
@@ -567,11 +565,6 @@ export function WeChatSkin(p: SkinProps) {
   const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
   const [addedFriends, setAddedFriends] = useSkinState<string[]>(p, "wxAddedFriends", []);
   const [monsterRemoved, setMonsterRemoved] = useSkinState<boolean>(p, "wxMonsterRemoved", false);
-  useEffect(() => {
-    if (ownerConversation && isBroccoliThread && addedFriends.includes("大G")) {
-      p.onThread("大G");
-    }
-  }, [ownerConversation, isBroccoliThread, addedFriends, p.onThread]);
   const [addQuery, setAddQuery] = useState("");
   const [addIdModal, setAddIdModal] = useState(false);
   const [idCopied, setIdCopied] = useState(false);
@@ -680,12 +673,12 @@ export function WeChatSkin(p: SkinProps) {
   ];
   const openUtility = (label: string) => setUtility(label);
   const openContact = (name: string) => {
+    // A sender name is not a conversation owner: a message sent by 大G can
+    // still be part of another contact's thread. Always open the tapped
+    // contact's canonical title, never infer it from the sender field.
     const canonicalName = isMonsterName(name) ? "大G" : name;
-    const related = allItems.find((i) => displayName(i.title) === canonicalName || displayName(i.sender) === canonicalName);
-    if (related) {
-      p.onThread(related.title);
-      p.onRead(related.title);
-    } else setUtility(canonicalName);
+    p.onThread(canonicalName);
+    p.onRead(canonicalName);
   };
   return (
     <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility} data-status-editor={statusEditorOpen}>
@@ -711,7 +704,7 @@ export function WeChatSkin(p: SkinProps) {
                 <strong>添加到通讯录</strong>
                 <p>大G · 微信号 mo00oster111</p>
                 <div className="wx-friend-id">你可以向对方发送好友申请</div>
-                <button className="wx-friend-flow-primary" onClick={() => { appendNewFriendConversation(); setFriendRequestModal("sent"); }}>发送好友申请</button>
+                <button className="wx-friend-flow-primary" onClick={() => { setFriendRequestModal("sent"); }}>发送好友申请</button>
                 <button className="wx-friend-flow-secondary" onClick={() => setFriendRequestModal("")}>取消</button>
               </>
             ) : (
@@ -719,7 +712,7 @@ export function WeChatSkin(p: SkinProps) {
                 <strong>好友申请已发送</strong>
                 <p>已向大G发送好友申请</p>
                 <div className="wx-friend-id">好友添加成功 · 微信名：大G</div>
-                <button className="wx-friend-flow-primary" onClick={() => { setFriendRequestModal(""); setUtility(""); setTab("微信"); p.onThread("大G"); }}>完成，查看消息</button>
+                <button className="wx-friend-flow-primary" onClick={() => { appendNewFriendConversation(); setFriendRequestModal(""); setUtility(""); setTab("微信"); p.onThread("大G"); }}>完成，查看消息</button>
               </>
             )}
           </section>
