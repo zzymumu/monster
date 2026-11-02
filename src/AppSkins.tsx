@@ -938,6 +938,10 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   83: [
+    { id: "owner-fake-refuse-dinner", label: "会不会太麻烦你了？照顾玩玩本来就是我应该做的", nextStage: 85, lines: [
+      { sender: "我", body: "欸？會不會太麻煩你了？照顧玩玩本來就是我應該做的，不用特地請我吃飯啦。", thread: "大G" },
+      { sender: "大G", body: "不麻煩啦，這怎麼會麻煩？妳幫我照顧玩玩，我請妳吃頓飯也是應該的啊。妳就別跟我客氣了，哈哈。", thread: "大G" },
+    ]},
     { id: "owner-chat-cat-habits", label: "哈哈，那我可记下来了", nextStage: 62, lines: [
       { sender: "我", body: "哈哈，那我可記下來了，你到時候可別忘記。", thread: "大G" },
       { sender: "大G", body: "不會啦，答應妳的我記著。玩玩剛換地方可能會先躲一下，妳別急著把牠抱出來，讓牠自己熟悉就好。", thread: "大G" },
@@ -945,6 +949,16 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "owner-chat-no-rush", label: "知道啦，我会让它慢慢适应", nextStage: 62, lines: [
       { sender: "我", body: "知道啦，我會讓牠慢慢適應，不會勉強牠。", thread: "大G" },
       { sender: "大G", body: "那就好。真的很謝謝妳，妳先陪牠，我也得回去忙了。", thread: "大G" },
+    ]},
+  ],
+  85: [
+    { id: "owner-accept-dinner-kindly", label: "那我就先谢谢你啦！等你回来再说", nextStage: 62, lines: [
+      { sender: "我", body: "那我就先謝謝你啦！等你回來再說，現在先把玩玩照顧好。", thread: "大G" },
+      { sender: "大G", body: "好，說定了。妳先照顧牠，有任何狀況都可以傳訊息給我。我這邊也差不多要去忙了。", thread: "大G" },
+    ]},
+    { id: "owner-still-polite", label: "哈哈，那我就不跟你客气啦", nextStage: 62, lines: [
+      { sender: "我", body: "哈哈，那我就不跟你客氣啦！不過你先忙，不用特地為了這件事費心。", thread: "大G" },
+      { sender: "大G", body: "不會費心啦，妳放心。那我先去忙，玩玩就麻煩妳了，有事隨時找我。", thread: "大G" },
     ]},
   ],
   62: [
