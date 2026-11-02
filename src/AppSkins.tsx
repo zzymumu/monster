@@ -819,27 +819,38 @@ export function WeChatSkin(p: SkinProps) {
     // one by one by the queue effect, so a click always produces visible output.
     const destination = getCatRescueThreadForStage(nextStage);
     const prepared = lines.map((line) => ({ ...line, thread: line.thread || destination }));
-    // Player's chosen line appears immediately; every incoming line,
-    // including the first "？？？", is queued for the 30–60 second timer.
-    const [first, ...rest] = prepared;
-    const immediateLine = first?.sender === "我" ? first : null;
-    const queuedLines = immediateLine ? rest : prepared;
-    const immediate = immediateLine ? makeItem({
-      id: "cat-rescue-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
-      title: immediateLine.thread || destination,
-      sender: immediateLine.sender,
-      body: immediateLine.body,
+    // Player's selected reply appears immediately. The opening "？？？"
+    // reaction from either friend also appears immediately when that chat is
+    // opened; only subsequent incoming messages enter the 30–60s queue.
+    const immediateLines: CatLine[] = [];
+    let firstIncomingQuestionUsed = false;
+    for (const line of prepared) {
+      if (line.sender === "我") {
+        immediateLines.push(line);
+      } else if (!firstIncomingQuestionUsed && line.body.includes("？？？")) {
+        immediateLines.push(line);
+        firstIncomingQuestionUsed = true;
+      } else {
+        break;
+      }
+    }
+    const queuedLines = prepared.slice(immediateLines.length);
+    const immediateItems = immediateLines.map((line, index) => makeItem({
+      id: "cat-rescue-" + Date.now() + "-" + index + "-" + Math.random().toString(36).slice(2, 7),
+      title: line.thread || destination,
+      sender: line.sender,
+      body: line.body,
       time: "2026-11-02 " + (storyClockRef.current || "14:24"),
-      outgoing: true,
+      outgoing: line.sender === "我",
       avatar: "",
-      meta: { storyId: "cat-rescue", storyThread: immediateLine.thread || destination },
-    }) : null;
+      meta: { storyId: "cat-rescue", storyThread: line.thread || destination },
+    }));
     setCatRescueRaw(JSON.stringify({
       ...catRescue,
       version: 2,
       stage: nextStage,
       branch,
-      messages: immediate ? [...catRescue.messages, immediate] : catRescue.messages,
+      messages: immediateItems.length ? [...catRescue.messages, ...immediateItems] : catRescue.messages,
     }));
     setPendingCatLines((current) => [...current, ...queuedLines]);
   };
