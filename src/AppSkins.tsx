@@ -335,7 +335,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   1: [
-    { id: "separate-room", label: "我可以让它住另一个房间，完全不碰到 Vava", nextStage: 2, lines: [
+    { id: "separate-room", label: "我可以让它单独隔离在另一个房间，完全不碰到 Vava", nextStage: 2, lines: [
       { sender: "我", body: "我可以讓牠先住另一個房間，門關起來，完全不讓牠碰到 Vava。" },
       { sender: "西蓝花", body: "可是妳進出房間也可能把病菌帶來帶去，而且牠的健康狀況我們都不知道。" },
       { sender: "西蓝花", body: "還有跳蚤、耳疥蟲這些問題，沒有檢查前真的不能太放心。" },
