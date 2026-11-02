@@ -14,6 +14,7 @@ export const layoutSchema = z
     version: z.literal(1),
     workId: z.string(),
     previewLayoutRevision: z.number().int().min(0).default(0),
+    widgetSeedRevision: z.number().int().min(0).default(0),
     apps: workSchema.shape.apps,
     widgets: z.array(widgetSchema).max(24),
     order: z.array(z.string().max(150)).max(500),
@@ -58,6 +59,7 @@ export function defaultLayout(input: Work): DeviceLayout {
     version: 1,
     workId: w.id,
     previewLayoutRevision: w.id === "ui-test-phone-v2" ? 1 : 0,
+    widgetSeedRevision: 1,
     apps: structuredClone(w.apps)
       .sort((a, b) => (a.id === "appstore" ? -1 : b.id === "appstore" ? 1 : 0))
       .map((a) =>
@@ -65,8 +67,11 @@ export function defaultLayout(input: Work): DeviceLayout {
           ? { ...a, installed: true, visible: true, folder: "", dock: false }
           : a,
       ),
-    widgets: [],
-    order: [],
+    widgets: [
+      { id: "widget-weather-default", type: "weather", size: "small" },
+      { id: "widget-calendar-default", type: "calendar", size: "small" },
+    ],
+    order: ["widget-weather-default", "widget-calendar-default"],
     cleared: [],
     positions: {},
   };
@@ -93,6 +98,22 @@ export function validateLayout(raw: unknown, input: Work) {
     store.installed = true;
     store.visible = true;
     store.folder = "";
+  }
+  if (layout.widgetSeedRevision < 1) {
+    if (layout.widgets.length === 0) {
+      layout.widgets.push(
+        { id: "widget-weather-default", type: "weather", size: "small" },
+        { id: "widget-calendar-default", type: "calendar", size: "small" },
+      );
+      layout.order = [
+        "widget-weather-default",
+        "widget-calendar-default",
+        ...layout.order.filter(
+          (id) => id !== "widget-weather-default" && id !== "widget-calendar-default",
+        ),
+      ];
+    }
+    layout.widgetSeedRevision = 1;
   }
   if (w.id === "ui-test-phone-v2" && layout.previewLayoutRevision < 1) {
     const visibleApps = ["wechat", "douyin"];
