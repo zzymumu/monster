@@ -312,18 +312,19 @@ export function WeChatSkin(p: SkinProps) {
   return (
     <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility} data-status-editor={statusEditorOpen}>
       <div className="app-nav wx-nav">
-        <button aria-label={utility || p.thread || moments ? "返回" : tab === "微信" ? "收藏" : "返回"} onClick={() => {
-          if (utility) setUtility("");
+        <button aria-label={statusEditorOpen ? "关闭状态编辑" : "返回"} onClick={() => {
+          if (statusEditorOpen) { setStatusEditorOpen(false); setCustomStatusOpen(false); }
+          else if (utility) setUtility("");
           else if (p.thread) p.onThread("");
           else if (moments) setMoments(false);
           else if (tab !== "微信") setTab("微信");
           else setUtility("收藏");
         }}>
-          {utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
+          {statusEditorOpen ? <span className="wx-status-close">×</span> : utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
         </button>
         <strong>{statusEditorOpen ? "设个状态" : utility || p.thread || (moments ? "朋友圈" : tab)}</strong>
-        <button aria-label={p.thread ? "聊天详情" : "微信菜单"} onClick={() => p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>
-          {p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}
+        <button aria-label={statusEditorOpen ? " " : p.thread ? "聊天详情" : "微信菜单"} onClick={() => statusEditorOpen ? undefined : p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>
+          {statusEditorOpen ? null : p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}
         </button>
       </div>
 
@@ -335,7 +336,28 @@ export function WeChatSkin(p: SkinProps) {
         </div>
       )}
 
-      {utility === "添加朋友" ? (
+      {statusEditorOpen ? (
+        <div className="wx-status-editor">
+          <div className="wx-status-subtitle">朋友 24 小时内可见</div>
+          <button className="wx-status-custom-tile" onClick={() => { setCustomStatusDraft(profileStatus); setCustomStatusOpen(true); }}>
+            <span className="wx-status-custom-plus">＋</span>
+            <strong>{profileStatus || "填写状态"}</strong>
+          </button>
+          <section className="wx-status-category"><h3>心情想法</h3><div className="wx-status-grid">
+            {[[ "☺","美滋滋"],["♧","裂开"],["♨","求锦鲤"],["☼","等天晴"],["☕","疲惫"],["☂","发呆"],["↗","冲"],["〰","emo"],["☁","胡思乱想"],["✦","元气满满"],["▣","bot"]].map(([icon,label]) => <button key={label} onClick={() => saveProfileStatus(label)}><span>{icon}</span><small>{label}</small></button>)}
+          </div></section>
+          <section className="wx-status-category"><h3>工作学习</h3><div className="wx-status-grid">
+            {[[ "♟","搬砖"],["⌁","沉迷学习"],["♙","忙"],["♧","摸鱼"],["✈","出差"],["➶","飞奔回家"],["☾","勿扰模式"]].map(([icon,label]) => <button key={label} onClick={() => saveProfileStatus(label)}><span>{icon}</span><small>{label}</small></button>)}
+          </div></section>
+          <section className="wx-status-category"><h3>活动</h3><div className="wx-status-grid">
+            {[[ "♬","浪"],["✌","打卡"],["↗","运动"],["☕","喝咖啡"],["▤","喝奶茶"],["♫","听音乐"],["⌂","在家"]].map(([icon,label]) => <button key={label} onClick={() => saveProfileStatus(label)}><span>{icon}</span><small>{label}</small></button>)}
+          </div></section>
+          {customStatusOpen && <div className="wx-status-custom-backdrop"><section className="wx-status-custom-sheet" role="dialog" aria-modal="true" aria-label="自定义状态">
+            <header><button onClick={() => setCustomStatusOpen(false)}>取消</button><strong>填写状态</strong><button disabled={!customStatusDraft.trim()} onClick={() => saveProfileStatus(customStatusDraft)}>确认</button></header>
+            <textarea autoFocus maxLength={30} value={customStatusDraft} onChange={(e) => setCustomStatusDraft(e.target.value)} placeholder="此刻的心情或正在做的事..." /><small>{customStatusDraft.length}/30</small>
+          </section></div>}
+        </div>
+      ) :       {utility === "添加朋友" ? (
         <div className="wx-add-friend-page">
           <label className="wx-add-search">
             <Search size={19} />
