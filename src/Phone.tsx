@@ -396,8 +396,7 @@ function PhoneRuntime({
               className="status-time"
               aria-label="通知中心"
             >
-              {displayTime}
-              <StatusGlyph kind="silent" />
+              中国移动
             </button>
             <div className="dynamic-island" />
             <button
