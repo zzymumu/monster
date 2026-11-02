@@ -225,8 +225,7 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
       // Story messages carry millisecond delivery timestamps. Use those
       // before the display clock (which only has minute precision), so a
       // later player reply can never be moved above an earlier incoming line.
-      if (a.precise && b.precise && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
-      if (a.precise !== b.precise) return a.precise ? 1 : -1;
+      if (Number.isFinite(a.timestamp) && Number.isFinite(b.timestamp) && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
       const aValid = Number.isFinite(a.timestamp);
       const bValid = Number.isFinite(b.timestamp);
       if (aValid && bValid && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
