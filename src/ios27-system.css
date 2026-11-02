@@ -922,3 +922,49 @@
   color: #ffb7b7;
   font-size: 12px;
 }
+
+
+.phone-shell.ios27 .device-passcode .pin-emergency {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 28px;
+  background: rgba(15,16,21,.92);
+  color: #fff;
+  text-align: center;
+  -webkit-backdrop-filter: blur(35px);
+  backdrop-filter: blur(35px);
+}
+.phone-shell.ios27 .device-passcode .pin-emergency h3 {
+  margin: 0;
+  font-size: 26px;
+}
+.phone-shell.ios27 .device-passcode .pin-emergency p {
+  font-size: 13px;
+  opacity: .75;
+}
+.phone-shell.ios27 .device-passcode .pin-emergency div {
+  display: flex;
+  gap: 16px;
+}
+.phone-shell.ios27 .device-passcode .pin-emergency div span {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.24);
+  background: rgba(255,255,255,.13);
+  font-size: 18px;
+}
+.phone-shell.ios27 .device-passcode .pin-emergency button {
+  color: #fff;
+  border: 0;
+  background: transparent;
+  padding: 12px 24px;
+}
