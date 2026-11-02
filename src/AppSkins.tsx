@@ -1250,7 +1250,7 @@ export function WeChatSkin(p: SkinProps) {
             <div className="cat-rescue-thread">
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
               {isBroccoliThread && catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
-              {catChoices.length > 0 && pendingCatLines.length === 0 && (
+              {catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
