@@ -452,6 +452,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   16: [
     { id: "monster-apology-after-prank", label: "对不起，刚刚发错人了……其实我是捡到你的小猫了", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "對不起，剛剛那句發錯人了啦……我不是故意要鬧你的。" },
+      { sender: "大G", body: "我說呢，怎麼有人一上來就說奇奇怪怪的話，原來是這樣喔……" },
       { sender: "我", body: "其實我撿到一隻小黑貓，牠脖子上掛著牌子，上面留了你的微信號，所以才想聯絡你。" },
       { sender: "大G", body: "蛤？小黑貓？妳在哪裡看到牠的？牠現在還好嗎？有沒有受傷？" },
     ]},
