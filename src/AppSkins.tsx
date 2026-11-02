@@ -428,13 +428,18 @@ export function WeChatSkin(p: SkinProps) {
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
   const ownerConversation = catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11;
-  const firstOwnerMessageIndex = catRescue.messages.findIndex((item) => item.sender === "大G" || item.sender === "温尚翊");
-  const firstOwnerGroup = firstOwnerMessageIndex >= 0 ? catRescue.messages[firstOwnerMessageIndex].id.match(/^cat-rescue-(\d+)-/)?.[1] : undefined;
-  const ownerConversationStart = firstOwnerGroup
-    ? catRescue.messages.findIndex((item) => item.id.startsWith("cat-rescue-" + firstOwnerGroup + "-"))
-    : firstOwnerMessageIndex >= 0 ? firstOwnerMessageIndex : catRescue.messages.length;
-  const friendStoryMessages = catRescue.messages.slice(0, ownerConversationStart);
-  const ownerStoryMessages = catRescue.messages.slice(ownerConversationStart);
+  // Split by the saved conversation owner, not by the first incoming sender.
+  // Earlier versions classified outgoing prank/apology lines as broccoli chat.
+  const ownerConversationStart = catRescue.messages.findIndex((item) =>
+    item.title === "大G" ||
+    item.title === "温尚翊" ||
+    item.meta?.storyThread === "大G" ||
+    item.sender === "大G" ||
+    item.sender === "温尚翊" ||
+    (item.sender === "我" && /我是你爸爸|對不起.*發錯|对不起.*发错|剛剛.*玩笑|刚刚.*玩笑/.test(item.body))
+  );
+  const friendStoryMessages = catRescue.messages.slice(0, ownerConversationStart < 0 ? catRescue.messages.length : ownerConversationStart);
+  const ownerStoryMessages = ownerConversationStart < 0 ? [] : catRescue.messages.slice(ownerConversationStart);
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
   // Keep the story UI active even before its first scripted message is saved.
@@ -467,7 +472,7 @@ export function WeChatSkin(p: SkinProps) {
         time,
         outgoing: line.sender === "我",
         avatar: line.sender === "西蓝花" ? catAvatar : "",
-        meta: { storyId: "cat-rescue" },
+        meta: { storyId: "cat-rescue", storyThread: line.thread || (ownerThread ? "大G" : "西蓝花") },
       });
       setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, created] }));
       setPendingCatLines((current) => current.slice(1));
@@ -476,7 +481,10 @@ export function WeChatSkin(p: SkinProps) {
   }, [pendingCatLines, catRescueRaw]);
 
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
-    const destination: "西蓝花" | "大G" = isMonsterThread ? "大G" : "西蓝花";
+    // The story stage is authoritative; the currently visible thread can lag
+    // behind while the friend-request sheet is open.
+    const destination: "西蓝花" | "大G" =
+      nextStage >= 9 && nextStage !== 10 && nextStage !== 11 ? "大G" : "西蓝花";
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, branch }));
     setPendingCatLines((current) => [...current, ...lines.map((line) => ({ ...line, thread: line.thread || destination }))]);
   };
@@ -559,6 +567,11 @@ export function WeChatSkin(p: SkinProps) {
   const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
   const [addedFriends, setAddedFriends] = useSkinState<string[]>(p, "wxAddedFriends", []);
   const [monsterRemoved, setMonsterRemoved] = useSkinState<boolean>(p, "wxMonsterRemoved", false);
+  useEffect(() => {
+    if (ownerConversation && isBroccoliThread && addedFriends.includes("大G")) {
+      p.onThread("大G");
+    }
+  }, [ownerConversation, isBroccoliThread, addedFriends, p.onThread]);
   const [addQuery, setAddQuery] = useState("");
   const [addIdModal, setAddIdModal] = useState(false);
   const [idCopied, setIdCopied] = useState(false);
