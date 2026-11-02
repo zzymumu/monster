@@ -494,6 +494,42 @@ export function WeChatSkin(p: SkinProps) {
   };
   return (
     <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility} data-status-editor={statusEditorOpen}>
+      {addIdModal && (
+        <div className="wx-friend-flow-backdrop">
+          <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="微信号">
+            <button className="wx-friend-flow-close" onClick={() => setAddIdModal(false)}>×</button>
+            <div className="wx-friend-flow-avatar"><Avatar name="温尚翊" /></div>
+            <strong>找到一個微信號</strong>
+            <p>可以試著用這個微信號添加對方</p>
+            <div className="wx-friend-id">mo00oster111</div>
+            <button className="wx-friend-flow-primary" onClick={() => { try { void navigator.clipboard?.writeText("mo00oster111"); } catch {} setIdCopied(true); }}>{idCopied ? "已复制" : "复制微信号"}</button>
+            {idCopied && <button className="wx-friend-flow-secondary" onClick={() => setAddIdModal(false)}>返回微信</button>}
+          </section>
+        </div>
+      )}
+      {friendRequestModal && (
+        <div className="wx-friend-flow-backdrop">
+          <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="好友申请">
+            <div className="wx-friend-flow-avatar"><Avatar name="温尚翊" /></div>
+            {friendRequestModal === "confirm" ? (
+              <>
+                <strong>添加到通讯录</strong>
+                <p>温尚翊 · 微信号 mo00oster111</p>
+                <div className="wx-friend-id">你可以向对方发送好友申请</div>
+                <button className="wx-friend-flow-primary" onClick={() => { appendNewFriendConversation(); setFriendRequestModal("sent"); }}>发送好友申请</button>
+                <button className="wx-friend-flow-secondary" onClick={() => setFriendRequestModal("")}>取消</button>
+              </>
+            ) : (
+              <>
+                <strong>好友申请已发送</strong>
+                <p>已向温尚翊发送好友申请</p>
+                <div className="wx-friend-id">好友添加成功 · 微信名：大G</div>
+                <button className="wx-friend-flow-primary" onClick={() => { setFriendRequestModal(""); setUtility(""); setTab("微信"); p.onThread("大G"); }}>完成，查看消息</button>
+              </>
+            )}
+          </section>
+        </div>
+      )}
       <div className="app-nav wx-nav">
         <button aria-label={statusEditorOpen ? "关闭状态编辑" : "返回"} onClick={() => {
           if (statusEditorOpen) { setStatusEditorOpen(false); setCustomStatusOpen(false); }
@@ -545,18 +581,20 @@ export function WeChatSkin(p: SkinProps) {
           <label className="wx-add-search">
             <Search size={19} />
             <input aria-label="搜索微信号或手机号" placeholder="账号/手机号" value={addQuery} onChange={(e) => setAddQuery(e.target.value)} />
+            {catRescue.stage >= 8 && idCopied && <button type="button" className="wx-add-paste" onClick={() => setAddQuery("mo00oster111")}>粘贴</button>}
             {addQuery && <button aria-label="清空搜索" onClick={() => setAddQuery("")}>×</button>}
           </label>
           {addQuery.trim() ? (
             <div className="wx-add-results">
               {friendMatches.length ? friendMatches.map((name) => {
                 const related = allItems.find((i) => i.title === name || i.sender === name);
-                const alreadyAdded = addedFriends.includes(name);
+                const isMonster = name === "温尚翊";
+                const alreadyAdded = addedFriends.includes(isMonster ? "大G" : name);
                 return (
                   <div className="wx-add-result" key={name}>
-                    <Avatar name={name} src={related?.avatar} />
-                    <span><strong>{name}</strong><small>微信号：{related?.meta.wechatId || related?.meta.account || name}</small></span>
-                    <button disabled={alreadyAdded} onClick={() => setAddedFriends((v) => v.includes(name) ? v : [...v, name])}>{alreadyAdded ? "已添加" : "添加"}</button>
+                    <Avatar name={isMonster ? "大G" : name} src={related?.avatar} />
+                    <span><strong>{name}</strong><small>微信号：{isMonster ? "mo00oster111" : related?.meta.wechatId || related?.meta.account || name}</small></span>
+                    <button disabled={alreadyAdded} onClick={() => isMonster ? setFriendRequestModal("confirm") : setAddedFriends((v) => v.includes(name) ? v : [...v, name])}>{alreadyAdded ? "已添加" : isMonster ? "添加到通讯录" : "添加"}</button>
                   </div>
                 );
               }) : <div className="wx-add-no-results"><Search size={27} /><strong>没有找到相关用户</strong><span>请检查微信号或手机号是否正确</span></div>}
@@ -602,6 +640,7 @@ export function WeChatSkin(p: SkinProps) {
           {catRescueActive ? (
             <div className="cat-rescue-thread">
               <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} />
+              {catRescue.stage === 8 && !idCopied && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看對方的微信號</button></div>}
               {catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
