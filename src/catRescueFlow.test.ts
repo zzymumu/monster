@@ -42,11 +42,13 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("separates the name surprise from the nameplate explanation", () => {
-    expect(CAT_RESCUE_CHOICES[71][0].lines[0].body).toContain("溫尚翊？？？");
-    expect(CAT_RESCUE_CHOICES[71][0].lines[0].body).not.toContain("名牌");
-    expect(CAT_RESCUE_CHOICES[71][0].lines[1].body).toContain("怎麼突然這麼驚訝");
+    expect(CAT_RESCUE_CHOICES[71][0].lines[0].body).toContain("！！！");
+    expect(CAT_RESCUE_CHOICES[71][0].lines[0].body).not.toContain("溫尚翊");
+    expect(CAT_RESCUE_CHOICES[71][0].lines[1].body).toContain("怎麼了");
     expect(CAT_RESCUE_CHOICES[80][0].lines[0].body).toContain("銘牌");
     expect(CAT_RESCUE_CHOICES[80][0].lines[0].body).toContain("溫尚翊");
+    expect(CAT_RESCUE_CHOICES[77][1].lines.some((line) => /吃什麼/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[78][0].lines[0].body).toContain("我哪知道啦");
   });
 
   it("does not force the terminal Broccoli conversation open after the user exits", () => {
