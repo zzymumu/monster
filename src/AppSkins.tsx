@@ -472,9 +472,10 @@ export function WeChatSkin(p: SkinProps) {
   };
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
-    if (choice.nextStage === 8) { setIdCopied(false); setAddIdModal(true); }
+    if (choice.nextStage === 8) { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
     if (choice.nextStage === 15) {
       setIdCopied(false);
+      setIdPasted(false);
       window.setTimeout(() => setAddIdModal(true), 850);
     }
     if (choice.nextStage === 13) {
@@ -495,9 +496,9 @@ export function WeChatSkin(p: SkinProps) {
     const created = [
       makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend" } }),
       ...(!readding && !prankFlow ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } })] : []),
-      ...(prankFlow ? [makeItem({ id: "monster-question-" + Date.now(), title: "大G", sender: "大G", body: "？？？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", wechatId: "mo00oster111" } })] : []),
     ];
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: prankFlow ? 16 : readding ? 14 : 9, messages: [...catRescue.messages, ...created] }));
+    if (prankFlow) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？" }]);
     setMonsterRemoved(false);
     setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
   };
@@ -547,6 +548,7 @@ export function WeChatSkin(p: SkinProps) {
   const [addQuery, setAddQuery] = useState("");
   const [addIdModal, setAddIdModal] = useState(false);
   const [idCopied, setIdCopied] = useState(false);
+  const [idPasted, setIdPasted] = useState(false);
   const [friendRequestModal, setFriendRequestModal] = useState<"" | "confirm" | "sent">("");
   const [momentCover, setMomentCover] = useSkinState<string>(p, "wxMomentCover", "");
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
@@ -597,7 +599,7 @@ export function WeChatSkin(p: SkinProps) {
   ])).filter((name) => !(monsterRemoved && name === "大G")).sort((a, b) => a.localeCompare(b, "zh-CN"));
   const friendDirectory = Array.from(new Set(["西蓝花", "爸爸", "妈妈", ...allItems.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")]));
   const friendMatches = addQuery.trim()
-    ? addQuery.trim().toLowerCase() === "mo00oster111" && catRescue.stage >= 8
+    ? addQuery.trim().toLowerCase() === "mo00oster111" && idPasted && catRescue.stage >= 8
       ? ["大G"]
       : friendDirectory.filter((name) => {
           const related = allItems.filter((i) => i.title === name || i.sender === name);
@@ -663,7 +665,7 @@ export function WeChatSkin(p: SkinProps) {
       {addIdModal && (
         <div className="wx-friend-flow-backdrop">
           <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="微信号">
-            <button className="wx-friend-flow-close" onClick={() => setAddIdModal(false)}>×</button>
+            <button className="wx-friend-flow-close" disabled={catRescue.stage === 15 && !idCopied} onClick={() => setAddIdModal(false)>×</button>
             <div className="wx-friend-flow-avatar"><Avatar name="大G" /></div>
             <strong>找到一個微信號</strong>
             <p>可以試著用這個微信號添加對方</p>
@@ -747,7 +749,7 @@ export function WeChatSkin(p: SkinProps) {
           <label className="wx-add-search">
             <Search size={19} />
             <input aria-label="搜索微信号或手机号" placeholder="账号/手机号" value={addQuery} onChange={(e) => setAddQuery(e.target.value)} />
-            {idCopied && <button type="button" className="wx-add-paste" onClick={() => setAddQuery("mo00oster111")}>粘贴</button>}
+            {idCopied && <button type="button" className="wx-add-paste" onClick={() => { setAddQuery("mo00oster111"); setIdPasted(true); }}>粘贴</button>}
             {addQuery && <button aria-label="清空搜索" onClick={() => setAddQuery("")}>×</button>}
           </label>
           {addQuery.trim() ? (
