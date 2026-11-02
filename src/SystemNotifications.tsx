@@ -2,15 +2,20 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { X } from "lucide-react";
 import { AppArtwork } from "./AppArtwork";
-import { GLOOMY_AVATAR } from "./AppSkins";
+import { GLOOMY_AVATAR } from "./gloomyAvatar";
 import type { Item, Work } from "./schema";
 export function notificationContent(text: string, apps: Work["apps"], items: Item[] = []) {
-  const wechat = text.match(/^微信[：:]\s*([^：:]+)[：:]\s*(.*)$/);
-  if (wechat) {
-    const contact = wechat[1].trim();
+  const wechat = text.match(/^(?:微信(?:消息)?[：:]\s*)?([^：:]+)[：:]\s*(.*)$/);
+  const broccoliNotice = /西蓝花|西兰花/.test(text);
+  if (wechat && (/西蓝花|西兰花/.test(wechat[1]) || text.startsWith("微信"))) {
+    const contact = /西蓝花|西兰花/.test(wechat[1]) ? "西蓝花" : wechat[1].trim();
     const message = items.find((item) => item.title === contact || item.sender === contact);
-    const contactAvatar = contact === "西蓝花" || contact === "西兰花" ? GLOOMY_AVATAR : message?.avatar || "";
+    const contactAvatar = contact === "西蓝花" ? GLOOMY_AVATAR : message?.avatar || "";
     return { title: contact, body: wechat[2], appId: "wechat", avatar: contactAvatar, contact };
+  }
+  if (broccoliNotice) {
+    const body = text.replace(/.*?(?:西蓝花|西兰花)[：:]?\s*/, "").trim() || "？？？";
+    return { title: "西蓝花", body, appId: "wechat", avatar: GLOOMY_AVATAR, contact: "西蓝花" };
   }
   const separator = text.search(/[:：]/);
   const sender = separator > 0 ? text.slice(0, separator) : "信息";
