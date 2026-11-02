@@ -5872,3 +5872,103 @@ label {
   text-align: center;
   font-size: 10px;
 }
+
+
+/* WeChat friend-add story overlays */
+.wechat-ui.wx-reference-layout .wx-friend-flow-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.38);
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-sheet {
+  position: relative;
+  width: min(100%, 300px);
+  padding: 28px 22px 20px;
+  border-radius: 16px;
+  background: #fff;
+  color: #222;
+  text-align: center;
+  box-shadow: 0 12px 38px rgba(0,0,0,.18);
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-close {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  color: #999;
+  font-size: 24px;
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-avatar .skin-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  background: linear-gradient(145deg,#d8c3a4,#8b6747);
+  font-size: 30px;
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-sheet > strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-sheet > p {
+  margin: 9px 0 14px;
+  color: #888;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.wechat-ui.wx-reference-layout .wx-friend-id {
+  margin: 14px 0;
+  padding: 13px 10px;
+  border-radius: 8px;
+  background: #f5f6f5;
+  color: #333;
+  font-size: 16px;
+  letter-spacing: .5px;
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-primary,
+.wechat-ui.wx-reference-layout .wx-friend-flow-secondary {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  margin-top: 9px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-primary {
+  background: #07c160;
+  color: #fff;
+}
+.wechat-ui.wx-reference-layout .wx-friend-flow-secondary {
+  background: #f4f4f4;
+  color: #555;
+}
+.wechat-ui.wx-reference-layout .wx-add-search .wx-add-paste {
+  flex: none;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #edf8f1;
+  color: #07a85a;
+  font-size: 12px;
+}
+/* Keep the native iPhone Contacts list flush-left instead of centering its rows. */
+.phone-screen[data-app="contacts"] .phone-content {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.phone-screen[data-app="contacts"] .contact-row {
+  display: flex;
+  width: 100%;
+  align-self: stretch;
+  justify-content: flex-start;
+  text-align: left;
+}
