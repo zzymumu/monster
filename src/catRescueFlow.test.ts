@@ -122,6 +122,9 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[41][0].lines[0].body).toContain("沒事沒事");
     expect(CAT_RESCUE_CHOICES[41][0].lines[0].body).toContain("名字簡直太好了");
     expect(CAT_RESCUE_CHOICES[41][0].lines[1].sender).toBe("大G");
+    expect(CAT_RESCUE_CHOICES[41][0].lines.some((line) => /好好照顧玩玩/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[41][0].lines.some((line) => /玩玩平常喜歡吃什麼/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[41][0].lines.some((line) => /固定的乾糧/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[41][0].nextStage).toBe(32);
     expect(CAT_RESCUE_CHOICES[32][0].lines.map((line) => line.sender)).toEqual(["我", "西蓝花"]);
     expect(CAT_RESCUE_CHOICES[32][0].lines[1].body).toContain("玩玩？？？怪獸的貓就叫玩玩啊");
