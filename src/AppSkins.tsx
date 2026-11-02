@@ -502,7 +502,7 @@ export function WeChatSkin(p: SkinProps) {
             <strong>找到一個微信號</strong>
             <p>可以試著用這個微信號添加對方</p>
             <div className="wx-friend-id">mo00oster111</div>
-            <button className="wx-friend-flow-primary" onClick={() => { try { void navigator.clipboard?.writeText("mo00oster111"); } catch {} setIdCopied(true); }}>{idCopied ? "已复制" : "复制微信号"}</button>
+            <button className="wx-friend-flow-primary" onClick={() => { void navigator.clipboard?.writeText("mo00oster111").catch(() => undefined); setIdCopied(true); }}>{idCopied ? "已复制" : "复制微信号"}</button>
             {idCopied && <button className="wx-friend-flow-secondary" onClick={() => setAddIdModal(false)}>返回微信</button>}
           </section>
         </div>
