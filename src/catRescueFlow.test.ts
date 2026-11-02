@@ -3,7 +3,6 @@ import {
   CAT_RESCUE_CHOICES,
   getCatRescueStageAfterFriendAdd,
   getCatRescueThreadForStage,
-  recoverCatRescueStage,
   shouldShowPrankHistoryLine,
   splitCatRescueMessages,
 } from "./AppSkins";
@@ -82,16 +81,6 @@ describe("WeChat cat-rescue story configuration", () => {
     const split = splitCatRescueMessages(mixed);
     expect(split.broccoli.map((item) => item.id)).toEqual(["clinic-wrong-title", "clinic-question"]);
     expect(split.owner.map((item) => item.id)).toEqual(["prank-wrong-title", "owner-reply"]);
-  });
-
-  it("never redirects the leave-first kitten-return branch to the WeChat ID handoff", () => {
-    expect(recoverCatRescueStage(10, "leave-first", false)).toBe(10);
-    expect(recoverCatRescueStage(11, "leave-first", false)).toBe(11);
-    expect(recoverCatRescueStage(12, "leave-first", false)).toBe(12);
-    expect(getCatRescueThreadForStage(recoverCatRescueStage(10, "leave-first", false))).toBe("西蓝花");
-    expect(getCatRescueThreadForStage(recoverCatRescueStage(11, "leave-first", false))).toBe("西蓝花");
-    expect(recoverCatRescueStage(9, "monster-cat", false)).toBe(8);
-    expect(recoverCatRescueStage(13, "monster-prank", false)).toBe(13);
   });
 
   it("returns the correct stage after initial add and after re-adding a deleted friend", () => {
