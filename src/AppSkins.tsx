@@ -664,6 +664,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   38: [
+    { id: "notice-traditional-typing", label: "等等！我突然想起来，那个人打字一直是繁体字！", nextStage: 39, lines: [
+      { sender: "我", body: "等等等等！我突然想起来一件事！那个人刚刚回我的消息一直都是繁体字欸！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳現在才想到喔？？？他就是五月天的怪獸本人啊！台灣人打繁體字很正常吧！名字、貓咪名字都對上了，妳還要硬說是重名是不是啦！", thread: "西蓝花" },
+      { sender: "我", body: "我刚刚真的脑袋一片空白嘛……现在想起来更不对劲了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "拜託，這已經不是巧合了啦！妳先冷靜，等一下再去跟他確認玩玩的事情。", thread: "西蓝花" },
+    ]},
     { id: "keep-natural", label: "好，我先不说破，正常跟他聊玩玩的事", nextStage: 39, lines: [
       { sender: "我", body: "好啦，我先不說破，先正常跟他聊玩玩的事情好了。" , thread: "西蓝花" },
       { sender: "西蓝花", body: "對！就當作普通失主聯絡，別突然把人家嚇到。妳有新消息一定要第一時間跟我說！" , thread: "西蓝花" },
