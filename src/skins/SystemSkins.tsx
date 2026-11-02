@@ -17,6 +17,10 @@ import {
   Image,
   LockKeyhole,
   MapPin,
+  MessageCircle,
+  Plus,
+  Share2,
+  X,
   Music,
   Phone,
   Search,
@@ -182,44 +186,197 @@ export function ContactsSkin(p: Props) {
     </div>
   );
 }
+type SharedPhotoAlbum = {
+  id: string;
+  name: string;
+  photoIds: string[];
+  members: string[];
+  comments: string[];
+  createdAt: string;
+};
 export function PhotosSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "图库");
   const [album, setAlbum] = useState("");
+  const [sharedRaw, setSharedRaw] = useSkinState<string[]>(p, "sharedAlbums", []);
+  const [newAlbumName, setNewAlbumName] = useState("");
+  const [activeShared, setActiveShared] = useState("");
+  const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
+  const [memberName, setMemberName] = useState("");
+  const [commentText, setCommentText] = useState("");
+  const sharedAlbums: SharedPhotoAlbum[] = sharedRaw.flatMap((raw) => {
+    try {
+      const value = JSON.parse(raw) as SharedPhotoAlbum;
+      return value && typeof value.id === "string" && typeof value.name === "string" ? [value] : [];
+    } catch {
+      return [];
+    }
+  });
+  const activeAlbum = sharedAlbums.find((a) => a.id === activeShared);
   const list =
     tab === "收藏"
       ? items.filter((i) => i.favorite)
       : album
         ? items.filter((i) => (i.folder || "未分类") === album)
-        : items;
+        : items.filter((i) => (i.title + i.body).toLowerCase().includes(q.toLowerCase()));
+  const saveAlbums = (next: SharedPhotoAlbum[]) => setSharedRaw(next.map((a) => JSON.stringify(a)));
+  const createSharedAlbum = () => {
+    const name = newAlbumName.trim();
+    if (!name) return;
+    const created: SharedPhotoAlbum = {
+      id: `shared-${Date.now().toString(36)}`,
+      name,
+      photoIds: [],
+      members: ["我"],
+      comments: [],
+      createdAt: new Date().toLocaleDateString("zh-CN"),
+    };
+    saveAlbums([...sharedAlbums, created]);
+    setNewAlbumName("");
+    setActiveShared(created.id);
+  };
+  const updateActive = (patch: Partial<SharedPhotoAlbum>) => {
+    if (!activeAlbum) return;
+    saveAlbums(sharedAlbums.map((a) => a.id === activeAlbum.id ? { ...a, ...patch } : a));
+  };
+  const addSelectedPhotos = () => {
+    if (!activeAlbum || !selectedPhotos.length) return;
+    updateActive({ photoIds: [...new Set([...activeAlbum.photoIds, ...selectedPhotos])] });
+    setSelectedPhotos([]);
+  };
+  const addMember = () => {
+    const name = memberName.trim();
+    if (!activeAlbum || !name || activeAlbum.members.includes(name)) return;
+    updateActive({ members: [...activeAlbum.members, name] });
+    setMemberName("");
+  };
+  const addComment = () => {
+    const comment = commentText.trim();
+    if (!activeAlbum || !comment) return;
+    updateActive({ comments: [...activeAlbum.comments, `我：${comment}`] });
+    setCommentText("");
+  };
   return (
-    <div className="catalog-skin native-photos">
+    <div className="catalog-skin native-photos ios27-photos">
       <Header p={p} />
       <div className="catalog-scroll">
-        <h1>{album || tab}</h1>
-        {tab === "相簿" && !album ? (
-          <div className="album-grid">
-            {groupItems(items, "未分类").map((g) => (
-              <button key={g} onClick={() => setAlbum(g)}>
-                <Media
-                  item={items.find((i) => (i.folder || "未分类") === g)!}
-                />
-                <strong>{g}</strong>
-                <small>
-                  {items.filter((i) => (i.folder || "未分类") === g).length} 项
-                </small>
-              </button>
-            ))}
+        <div className="photos-title-row">
+          {activeAlbum ? (
+            <button className="photos-back" onClick={() => { setActiveShared(""); setSelectedPhotos([]); }}>
+              <ChevronLeft size={21} /> 共享相簿
+            </button>
+          ) : (
+            <span className="photos-library-label">照片图库</span>
+          )}
+          <h1>{activeAlbum ? activeAlbum.name : album || (tab === "图库" ? "图库" : tab === "收藏" ? "收藏" : tab === "共享" ? "共享相簿" : tab)}</h1>
+          {activeAlbum && <span className="photos-shared-count">{activeAlbum.members.length} 位成员</span>}
+        </div>
+        {activeAlbum ? (
+          <div className="shared-album-detail">
+            <div className="shared-album-hero">
+              <div className="shared-album-hero-art">
+                {activeAlbum.photoIds[0] && items.find((i) => i.id === activeAlbum.photoIds[0]) ? (
+                  <Media item={items.find((i) => i.id === activeAlbum.photoIds[0])!} />
+                ) : <Image size={36} />}
+              </div>
+              <div>
+                <strong>{activeAlbum.name}</strong>
+                <small>共享相簿 · 创建于 {activeAlbum.createdAt}</small>
+                <small>此为模拟器内的本地共享体验</small>
+              </div>
+            </div>
+            <section className="shared-members-panel">
+              <div className="shared-section-heading"><strong>成员</strong><span>{activeAlbum.members.length} 人</span></div>
+              <div className="shared-members-list">
+                {activeAlbum.members.map((member) => (
+                  <div key={member} className="shared-member"><Avatar name={member} /><small>{member}</small></div>
+                ))}
+                <button className="shared-invite-avatar" onClick={() => document.getElementById("shared-member-name")?.focus()} aria-label="邀请成员"><Plus /></button>
+              </div>
+              <div className="shared-invite-row">
+                <input id="shared-member-name" value={memberName} onChange={(e) => setMemberName(e.target.value)} placeholder="输入要邀请的成员昵称" />
+                <button onClick={addMember} disabled={!memberName.trim()}>邀请</button>
+              </div>
+            </section>
+            <section className="shared-photos-panel">
+              <div className="shared-section-heading"><strong>照片</strong><span>{activeAlbum.photoIds.length} 张</span></div>
+              <div className="photo-mosaic">
+                {activeAlbum.photoIds.map((id) => {
+                  const item = items.find((i) => i.id === id);
+                  return item ? <button key={id} onClick={() => p.onItem(item)}><Media item={item} /></button> : null;
+                })}
+              </div>
+              {!activeAlbum.photoIds.length && <p className="shared-empty">这个共享相簿还没有照片</p>}
+              <div className="shared-add-heading"><strong>从图库添加照片</strong><small>点选照片后添加到共享相簿</small></div>
+              <div className="photo-mosaic shared-picker">
+                {items.map((item) => (
+                  <button key={item.id} className={selectedPhotos.includes(item.id) ? "picked" : ""} onClick={() => setSelectedPhotos((v) => v.includes(item.id) ? v.filter((id) => id !== item.id) : [...v, item.id])}>
+                    <Media item={item} />
+                    {selectedPhotos.includes(item.id) && <span className="shared-picked-check">✓</span>}
+                  </button>
+                ))}
+              </div>
+              <button className="shared-primary-action" disabled={!selectedPhotos.length} onClick={addSelectedPhotos}>添加 {selectedPhotos.length || ""} 张照片</button>
+            </section>
+            <section className="shared-comments-panel">
+              <div className="shared-section-heading"><strong>评论</strong><span>{activeAlbum.comments.length} 条</span></div>
+              {activeAlbum.comments.map((comment, index) => <p className="shared-comment" key={index}>{comment}</p>)}
+              <div className="shared-comment-compose">
+                <input value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="添加评论…" />
+                <button onClick={addComment} disabled={!commentText.trim()}><MessageCircle size={18} /></button>
+              </div>
+            </section>
+          </div>
+        ) : tab === "共享" ? (
+          <div className="shared-albums-page">
+            <div className="shared-albums-intro">
+              <div className="shared-albums-icon"><Users size={25} /></div>
+              <h2>与家人和朋友共享照片</h2>
+              <p>创建共享相簿，邀请成员一起添加照片、视频和评论。</p>
+            </div>
+            <div className="shared-create-row">
+              <input value={newAlbumName} onChange={(e) => setNewAlbumName(e.target.value)} placeholder="新共享相簿名，例如：周末旅行" aria-label="新共享相簿名" />
+              <button onClick={createSharedAlbum} disabled={!newAlbumName.trim()}><Plus size={18} /> 新建</button>
+            </div>
+            <div className="shared-album-list">
+              {sharedAlbums.map((shared) => {
+                const cover = items.find((i) => i.id === shared.photoIds[0]);
+                return (
+                  <button className="shared-album-card" key={shared.id} onClick={() => setActiveShared(shared.id)}>
+                    <span className="shared-album-cover">{cover ? <Media item={cover} /> : <Image size={28} />}</span>
+                    <span className="shared-album-info"><strong>{shared.name}</strong><small>{shared.photoIds.length} 张照片 · {shared.members.length} 位成员</small></span>
+                    <ChevronRight size={18} />
+                  </button>
+                );
+              })}
+              {!sharedAlbums.length && <div className="shared-empty-card"><Image size={30} /><strong>还没有共享相簿</strong><small>创建一个相簿，开始和朋友共享回忆</small></div>}
+            </div>
+            <p className="shared-local-note"><Share2 size={14} /> 共享内容保存在当前浏览器的模拟器存档中，不会向真实 iCloud 或其他设备发送邀请。</p>
+          </div>
+        ) : tab === "相簿" && !album ? (
+          <div className="photos-collections">
+            <div className="photos-collection-section">
+              <h3>我的相簿</h3>
+              <div className="album-grid">
+                {groupItems(items, "未分类").map((g) => (
+                  <button key={g} onClick={() => setAlbum(g)}>
+                    <Media item={items.find((i) => (i.folder || "未分类") === g)!} />
+                    <strong>{g}</strong>
+                    <small>{items.filter((i) => (i.folder || "未分类") === g).length} 项</small>
+                  </button>
+                ))}
+                <button className="photos-shared-shortcut" onClick={() => setTab("共享")}>
+                  <span><Users size={28} /></span><strong>共享相簿</strong><small>{sharedAlbums.length} 个</small>
+                </button>
+              </div>
+            </div>
+            <div className="photos-collection-section"><h3>共享</h3><button className="photos-shared-row" onClick={() => setTab("共享")}><Users size={22} /><span><strong>共享相簿</strong><small>与你共享的照片和视频</small></span><ChevronRight /></button></div>
           </div>
         ) : (
           <>
             <SearchBox value={q} set={setQ} />
             <div className="photo-mosaic">
               {list.map((i) => (
-                <button
-                  aria-label={`查看${i.title}`}
-                  key={i.id}
-                  onClick={() => p.onItem(i)}
-                >
+                <button aria-label={`查看${i.title}`} key={i.id} onClick={() => p.onItem(i)}>
                   <Media item={i} />
                   {i.favorite && <Heart size={12} fill="white" />}
                 </button>
@@ -228,16 +385,13 @@ export function PhotosSkin(p: Props) {
             <p className="media-count">{list.length} 个项目</p>
           </>
         )}
-        <Empty items={list} />
+        {!activeAlbum && tab !== "共享" && <Empty items={list} />}
       </div>
       <Tabs
-        tabs={["图库", "相簿", "收藏"]}
+        tabs={["图库", "相簿", "共享", "收藏"]}
         value={tab}
-        set={(t) => {
-          setTab(t);
-          setAlbum("");
-        }}
-        icons={[<Image />, <Folder />, <Heart />]}
+        set={(t) => { setTab(t); setAlbum(""); setActiveShared(""); setSelectedPhotos([]); }}
+        icons={[<Image />, <Folder />, <Users />, <Heart />]}
       />
     </div>
   );
