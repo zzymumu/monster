@@ -2068,3 +2068,38 @@
 .phone-shell.ios27 .phone-screen:has(.wechat-ui) .status-bar .signals {
   color: #111;
 }
+
+
+/* Control Center: keep media transport controls inside the media tile and
+   give the brightness/volume sliders their own lower row area. */
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-music {
+  grid-row: 1 / span 3 !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  padding-bottom: 14px !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-media-controls {
+  margin-top: auto !important;
+  padding-top: 8px !important;
+  min-height: 34px !important;
+  flex: none !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-media-controls button {
+  min-width: 28px !important;
+  min-height: 30px !important;
+  display: grid !important;
+  place-items: center !important;
+}
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-slider-brightness,
+.phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-slider-volume {
+  grid-row: 4 / span 2 !important;
+}
+@media (max-height: 680px) {
+  .phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-music {
+    grid-row: 1 / span 3 !important;
+  }
+  .phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-slider-brightness,
+  .phone-shell.ios27 .cc-reference-layout .cc-grid > .cc-slider-volume {
+    grid-row: 4 / span 2 !important;
+  }
+}
