@@ -709,9 +709,9 @@ export function WeChatSkin(p: SkinProps) {
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
-  // Split by the saved conversation owner, not by the first incoming sender.
-  // Earlier versions classified outgoing prank/apology lines as broccoli chat.
-  const { broccoli: friendStoryMessages, owner: ownerStoryMessages } = splitCatRescueMessages(catRescue.messages);
+  // The canonical story transcript stores an explicit destination on every
+  // line. Render it directly in that contact's conversation; do not infer
+  // ownership from sender text (the player's lines otherwise get misplaced).
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
   // Keep the story UI active even before its first scripted message is saved.
@@ -723,9 +723,10 @@ export function WeChatSkin(p: SkinProps) {
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
   const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41, 42, 43].includes(catRescue.stage);
-  const catRescueActive = isBroccoliThread
-    ? (!monsterFriendAccepted || [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34, 37, 38, 39].includes(catRescue.stage))
-    : isMonsterThread && (monsterFriendAccepted || ownerChatStarted);
+  // Keep both contact transcripts readable for the entire story, including
+  // after the handoff. Hiding the Broccoli story view at later stages made
+  // delivered replies appear in notifications but disappear when opened.
+  const catRescueActive = isBroccoliThread || (isMonsterThread && (monsterFriendAccepted || ownerChatStarted));
   const _catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
@@ -746,7 +747,7 @@ export function WeChatSkin(p: SkinProps) {
           (item.meta?.storyThread === "大G" || item.meta?.storyThread === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
           keepPrankHistoryClean(item)
         ),
-      ], hasPrankPath)
+      ].filter((item, index, items) => items.findIndex((entry) => entry.id === item.id) === index), hasPrankPath)
     : isBroccoliThread
       ? [
           ...broccoliBaseItems,
