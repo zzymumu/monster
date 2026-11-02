@@ -813,7 +813,12 @@ export function WeChatSkin(p: SkinProps) {
           ),
         ])
       : allItems.filter((item) => item.title === p.thread);
-  const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
+  // Never expose the next interaction branch while any scripted line is
+  // still waiting to arrive. The stage advances when the player chooses, but
+  // the next choice belongs after the complete incoming exchange, not before it.
+  const catChoices = pendingCatLines.length === 0
+    ? (CAT_RESCUE_CHOICES[catRescue.stage] || [])
+    : [];
   useEffect(() => {
     // Rewrite the already-saved pickup exchange from the previous ordering so
     // existing testers see the corrected away-from-home explanation too.
