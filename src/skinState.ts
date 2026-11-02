@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import type { SkinProps } from "./AppSkins";
 import type { UiValue } from "./schema";
 function matches(value: unknown, initial: UiValue): value is UiValue {
@@ -12,12 +12,17 @@ export function useSkinState<T extends UiValue>(
   key: string,
   initial: T,
 ): [T, Dispatch<SetStateAction<T>>] {
-  const [local, setLocal] = useState(initial);
   const stored = p.ui?.[key];
-  const value = (matches(stored, initial) ? stored : local) as T;
+  const [local, setLocal] = useState<T>(() =>
+    (matches(stored, initial) ? stored : initial) as T
+  );
+  useEffect(() => {
+    if (matches(stored, initial)) setLocal(stored as T);
+  }, [stored, key]);
+  const value = local;
   const set: Dispatch<SetStateAction<T>> = (next) => {
     const updated =
-      typeof next === "function" ? (next as (value: T) => T)(value) : next;
+      typeof next === "function" ? (next as (value: T) => T)(local) : next;
     setLocal(updated);
     p.onUi?.(key, updated);
   };
