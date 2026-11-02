@@ -357,13 +357,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   30: [
-    { id: "arrived-hospital", label: "到了！我刚到医院，正在等医生", nextStage: 31, lines: [
-      { sender: "我", body: "到了到了！我刚到医院，正在等医生。" },
-      { sender: "西蓝花", body: "好！医生有开始帮它检查了吗？有没有先看看有没有晶片？" },
+    { id: "still-on-way", label: "还在路上，快到了，我会小心", nextStage: 31, lines: [
+      { sender: "我", body: "還在路上，應該快到了，我會小心開車，外出籠也有固定好。" },
+      { sender: "西蓝花", body: "好！不要趕，安全最重要。到了先讓醫生幫牠檢查，再跟我說結果喔。" },
     ]},
-    { id: "already-checking", label: "到了！医生已经开始帮它检查了", nextStage: 31, lines: [
-      { sender: "我", body: "到了！医生已经开始帮它检查了。" },
-      { sender: "西蓝花", body: "那就好！记得问医生有没有晶片，也顺便确认一下它的健康状况。" },
+    { id: "arrived-waiting", label: "到了！我刚到医院，正在等医生", nextStage: 31, lines: [
+      { sender: "我", body: "到了！我剛到醫院，正在等醫生，玩玩先在外出籠裡休息。" },
+      { sender: "西蓝花", body: "好！醫生有開始幫牠檢查了嗎？有沒有先掃描晶片或確認主人資料？" },
     ]},
   ],
   31: [
@@ -377,13 +377,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   3: [
-    { id: "hold-gently", label: "我先蹲下来慢慢靠近它，等它愿意了再轻轻抱起来", nextStage: 12, lines: [
-      { sender: "我", body: "我先蹲下來慢慢靠近牠，不會勉強牠，等牠願意了再輕輕抱起來。" },
-      { sender: "西蓝花", body: "對對對！先讓牠自己靠近妳比較安全，別急，慢慢來就好。" },
+    { id: "carrier-and-treats", label: "我把外出笼放低一点，用零食慢慢引它进去", nextStage: 12, lines: [
+      { sender: "我", body: "牠一直往後縮，我先把外出籠放低一點，拿零食慢慢引牠進去，不敢硬抓。" },
+      { sender: "西蓝花", body: "對對對，先別追牠！讓牠自己靠近外出籠，妳也小心不要讓牠嚇到或抓傷妳。" },
     ]},
-    { id: "kitten-approached", label: "它没有躲我，还主动蹭我的手，应该愿意让我抱", nextStage: 12, lines: [
-      { sender: "我", body: "牠沒有躲我，還主動蹭我的手，看起來應該願意讓我抱。我會很小心的。" },
-      { sender: "西蓝花", body: "那就好！但還是要托好牠，別讓牠突然掙扎，外出籠也先準備好喔。" },
+    { id: "towel-gently", label: "它一直躲，我想用毛巾輕輕包住再放進外出籠", nextStage: 12, lines: [
+      { sender: "我", body: "牠一直躲來躲去，我想用毛巾輕輕包住牠，再穩穩地放進外出籠。" },
+      { sender: "西蓝花", body: "可以先讓醫院的人教妳怎麼做，別突然撲過去喔！小心牠掙扎，也不要弄傷牠。" },
     ]},
   ],
   10: [
@@ -407,13 +407,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   12: [
-    { id: "arrived-waiting", label: "我到了！现在正在医院等医生", nextStage: 31, lines: [
-      { sender: "我", body: "我到了！現在正在醫院等醫生，玩玩先在外出籠裡休息。" },
-      { sender: "西蓝花", body: "好！醫生有開始幫牠檢查了嗎？有沒有先掃描晶片或確認主人資料？" },
+    { id: "finally-in-carrier", label: "好不容易把它安抚下来，终于进外出笼了", nextStage: 30, lines: [
+      { sender: "我", body: "好不容易！牠終於安靜下來，也順利進外出籠了，我現在準備帶牠去醫院。" },
+      { sender: "西蓝花", body: "太好了！妳先確認外出籠有關好，路上小心……妳到醫院了嗎？" },
     ]},
-    { id: "doctor-started", label: "我已经到医院了，医生正在开始检查", nextStage: 31, lines: [
-      { sender: "我", body: "我已經到醫院了，醫生正在開始幫牠檢查，也會確認有沒有晶片。" },
-      { sender: "西蓝花", body: "那就好！妳先陪著牠，檢查結果出來記得跟我說喔。" },
+    { id: "staff-helped-carrier", label: "刚刚请附近的人帮忙，已经安全放进外出笼", nextStage: 30, lines: [
+      { sender: "我", body: "剛剛請旁邊的人幫忙，終於安全把牠放進外出籠了，現在要出發去醫院。" },
+      { sender: "西蓝花", body: "呼……那我放心一點了！記得把外出籠固定好，妳到醫院了嗎？" },
     ]},
   ],
   4: [
