@@ -463,8 +463,9 @@ export function WeChatSkin(p: SkinProps) {
     item.sender !== "大G" &&
     item.sender !== "温尚翊" &&
     item.meta?.storyThread !== "大G" &&
-    item.meta?.storyId !== "cat-rescue" &&
-    item.meta?.storyId !== "cat-rescue-add-friend" &&
+    // Keep the original seeded chat history: those messages also carry the
+    // cat-rescue storyId, but belong to the broccoli conversation. Only
+    // remove unmistakable owner-prank lines from legacy mixed saves.
     !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|？？？|對不起.*發錯|对不起.*发错/.test(item.body)
   );
   const threadItems = isMonsterThread
