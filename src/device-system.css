@@ -1088,50 +1088,104 @@
   color: #111;
   text-align: left;
 }
-.ios18 .notice-open {
+/* Notification Center: separate app identity, message and timestamp into clear lanes. */
+.ios18 .notice-cards {
+  gap: 12px;
+  max-height: min(68vh, 620px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 2px 2px 18px;
+}
+.ios18 .device-notice {
   width: 100%;
-  display: flex;
-  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #ffffff42;
+  border-radius: 22px;
+  background: #f3f3f6d9;
+  box-shadow: 0 5px 18px #00000018;
+}
+.ios18 .notice-open {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  column-gap: 12px;
   align-items: start;
   text-align: left;
-  padding: 12px 14px;
-  min-height: 70px;
+  padding: 15px 16px 16px;
+  min-height: 82px;
 }
 .ios18 .notice-app-art {
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
   overflow: hidden;
-  flex: none;
+  grid-column: 1;
+  grid-row: 1 / span 2;
 }
 .ios18 .notice-app-art svg {
   width: 100%;
   height: 100%;
 }
 .ios18 .notice-copy {
-  flex: 1;
+  display: block;
   min-width: 0;
+  padding: 0 48px 0 0;
+  grid-column: 2;
 }
 .ios18 .notice-copy strong {
   display: block;
-  font-size: 15px;
-  font-weight: 600;
+  min-width: 0;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 650;
   line-height: 19px;
+  overflow-wrap: anywhere;
 }
 .ios18 .notice-copy > span {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 15px;
-  line-height: 19px;
-  margin-top: 1px;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 4px;
+  padding-right: 16px;
 }
 .ios18 .notice-open time {
-  font-size: 12px;
+  position: absolute;
+  top: 15px;
+  right: 16px;
+  max-width: 44px;
+  font-size: 11px;
+  line-height: 16px;
   white-space: nowrap;
-  color: #555;
+  color: #777;
 }
+.ios18 .notice-remove {
+  right: 10px;
+  bottom: 10px;
+  width: 24px;
+  height: 24px;
+  background: #00000012;
+}
+.ios18 .notice-expand {
+  margin: 8px auto 2px;
+}
+.ios18 .system-panel:not(.device-control) {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.ios18 .system-panel:not(.device-control) h2 {
+  margin: 8px 0 18px;
+  line-height: 1.15;
+}
+.ios18 .system-panel:not(.device-control) .device-notices {
+  min-width: 0;
+}
+
 .ios18 .notice-remove {
   position: absolute;
   right: 7px;
