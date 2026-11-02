@@ -284,7 +284,7 @@ function PhoneRuntime({
     try {
       const parsed = JSON.parse(pendingStoryQueueRaw);
       if (Array.isArray(parsed)) queue = parsed.filter((line) =>
-        line && typeof line.sender === "string" && typeof line.body === "string"
+        line && typeof line.sender === "string" && typeof line.body === "string" && line.sender !== "我"
       );
     } catch { queue = []; }
     if (!queue.length) return;
