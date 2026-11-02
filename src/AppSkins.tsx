@@ -950,9 +950,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   64: [
     { id: "fangirl-details", label: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", nextStage: 65, lines: [
       { sender: "我", body: "我哪知道啊！我当时光顾着开心了，根本没想到要问！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈妳也太可愛了吧！人家都說要請妳吃飯了，妳居然連吃什麼都沒問。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那他有沒有說什麼時候回來？還是也沒講？", thread: "西蓝花" },
     ]},
     { id: "fangirl-scream", label: "我哪知道啦！我当时整个人都懵了！", nextStage: 65, lines: [
-      { sender: "我", body: "我哪知道啦！我当时整个人都懵了，根本没想到要问！", thread: "西蓝花" },
+      { sender: "我", body: "我哪知道啦！我當時整個人都懵了，根本沒想到要問！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈我真的要被妳笑死！妳是不是只記得他答應請妳吃飯，其他都忘光了？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不過也正常啦，換成我我可能也會開心到忘記問。", thread: "西蓝花" },
     ]},
   ],
   65: [
