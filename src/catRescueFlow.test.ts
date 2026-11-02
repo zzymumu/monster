@@ -48,7 +48,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[70].some((choice) => /不行/.test(choice.label))).toBe(true);
     expect(CAT_RESCUE_CHOICES[71]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.nextStage === 3)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[71].some((choice) => /還在原地/.test(choice.lines.map((line) => line.body).join(" "))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[71].some((choice) => /還在原地/.test(choice.lines.map((line) => line.body).join(" ")))).toBe(true);
     expect(CAT_RESCUE_CHOICES[71].every((choice) => choice.lines.every((line) => line.thread === "西蓝花"))).toBe(true);
     expect(getCatRescueThreadForStage(71)).toBe("西蓝花");
     expect(getCatRescueThreadForStage(3)).toBe("西蓝花");
