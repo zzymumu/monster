@@ -368,12 +368,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   ],
   31: [
     { id: "chip-check", label: "医生正在帮它检查，等一下会扫描晶片", nextStage: 4, lines: [
-      { sender: "我", body: "医生正在帮它检查，等一下要看看有没有晶片或主人资料。" },
-      { sender: "西蓝花", body: "嗯嗯，那你先陪着它，别让它紧张。等医生检查完再跟我说！" },
+      { sender: "我", body: "醫生正在幫牠檢查，等一下會掃描晶片，也會看看有沒有主人資料。" },
+      { sender: "西蓝花", body: "嗯嗯，那妳先陪著牠，檢查完記得把挂牌上的資料也確認一下！" },
     ]},
     { id: "worried-about-cat", label: "它看起来有点紧张，我先陪陪它", nextStage: 4, lines: [
-      { sender: "我", body: "它看起来有点紧张，我先陪陪它，等医生检查完再说。" },
-      { sender: "西蓝花", body: "好可怜喔……你陪着它就好，检查结果出来记得第一时间告诉我！" },
+      { sender: "我", body: "牠看起來有點緊張，我先陪陪牠，等醫生檢查完再說。" },
+      { sender: "西蓝花", body: "好可憐喔……妳陪著牠就好，檢查結果出來記得跟我說，也看看挂牌上的資料！" },
     ]},
   ],
   3: [
@@ -407,13 +407,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   12: [
-    { id: "go-to-clinic-carefully", label: "我会小心把它放进外出笼，现在就带它去医院", nextStage: 30, lines: [
-      { sender: "我", body: "我會小心把牠放進外出籠，現在就帶牠去醫院，先確認健康狀況。" },
-      { sender: "西蓝花", body: "好！路上小心，到了醫院記得跟我說一聲，我等妳消息。" },
+    { id: "arrived-waiting", label: "我到了！现在正在医院等医生", nextStage: 31, lines: [
+      { sender: "我", body: "我到了！現在正在醫院等醫生，玩玩先在外出籠裡休息。" },
+      { sender: "西蓝花", body: "好！醫生有開始幫牠檢查了嗎？有沒有先掃描晶片或確認主人資料？" },
     ]},
-    { id: "ask-staff-for-help", label: "我先请工作人员帮忙安置，再带它去检查", nextStage: 30, lines: [
-      { sender: "我", body: "我先請工作人員幫忙安置牠，再一起帶牠去檢查，這樣比較安全。" },
-      { sender: "西蓝花", body: "這樣很穩妥！妳也別急，到了醫院再告訴我檢查情況。" },
+    { id: "doctor-started", label: "我已经到医院了，医生正在开始检查", nextStage: 31, lines: [
+      { sender: "我", body: "我已經到醫院了，醫生正在開始幫牠檢查，也會確認有沒有晶片。" },
+      { sender: "西蓝花", body: "那就好！妳先陪著牠，檢查結果出來記得跟我說喔。" },
     ]},
   ],
   4: [
