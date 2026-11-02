@@ -310,7 +310,7 @@ function PhoneRuntime({
 
       const thread = first.thread || getCatRescueThreadForStage((() => {
         try {
-          const raw = latest.ui?.wechat?.wxCatRescue;
+          const raw = latest.ui?.wechat?.catRescueState;
           return typeof raw === "string" ? Number(JSON.parse(raw).stage) || 0 : 0;
         } catch { return 0; }
       })());
@@ -325,7 +325,7 @@ function PhoneRuntime({
       });
       let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
       try {
-        const raw = latest.ui?.wechat?.wxCatRescue;
+        const raw = latest.ui?.wechat?.catRescueState;
         if (typeof raw === "string") catState = JSON.parse(raw);
       } catch { catState = {}; }
 
@@ -340,7 +340,7 @@ function PhoneRuntime({
           ...latest.ui,
           wechat: {
             ...latest.ui?.wechat,
-            wxCatRescue: JSON.stringify({
+            catRescueState: JSON.stringify({
               version: 2,
               stage: Number(catState.stage) || 0,
               branch: typeof catState.branch === "string" ? catState.branch : "",
@@ -433,7 +433,7 @@ function PhoneRuntime({
   }, [s.notifications.length, locked, work.phone.notifications]);
   const notificationItems = (() => {
     let storyMessages: Item[] = [];
-    const raw = s.ui?.wechat?.wxCatRescue;
+    const raw = s.ui?.wechat?.catRescueState;
     if (typeof raw === "string") {
       try {
         const parsed = JSON.parse(raw);
