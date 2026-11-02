@@ -48,6 +48,7 @@ import {
   Plus,
   Search,
   LockKeyhole,
+  ScanFace,
   Heart,
   MessageCircle,
   MoreHorizontal,
@@ -402,7 +403,7 @@ function PhoneRuntime({
               {locked && (
                 <span className="island-lock-state">
                   <LockKeyhole size={19} fill="currentColor" />
-                  {pinOpen && <StatusGlyph kind="cellular" />}
+                  {pinOpen && <ScanFace className="island-face-id" size={22} />}
                 </span>
               )}
             </div>
