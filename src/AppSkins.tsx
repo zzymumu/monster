@@ -910,23 +910,25 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   61: [
     { id: "promise-care", label: "好啦，我会好好照顾它的，你放心", nextStage: 62, lines: [
       { sender: "我", body: "好啦，我會好好照顧牠的，你放心。", thread: "大G" },
-      { sender: "大G", body: "嗯，謝謝妳。等牠適應一點，我再跟妳約時間去接牠。", thread: "大G" },
+      { sender: "大G", body: "嗯，真的很謝謝妳。我這邊還有點事情要先處理，玩玩如果有什麼狀況，妳隨時傳訊息給我就好。", thread: "大G" },
+      { sender: "大G", body: "只是我可能沒辦法馬上回覆，訊息看到我就會盡快回妳喔。", thread: "大G" },
     ]},
     { id: "send-cat-photo", label: "等它适应了我拍照片给你看", nextStage: 62, lines: [
       { sender: "我", body: "等牠適應了，我拍照片給你看。", thread: "大G" },
-      { sender: "大G", body: "好啊，我很期待。真的謝謝妳，晚點再聊。", thread: "大G" },
+      { sender: "大G", body: "好啊，我很期待。真的謝謝妳。我這邊還有點事情要先處理，玩玩有什麼問題妳隨時找我就好。", thread: "大G" },
+      { sender: "大G", body: "不過我可能回覆得比較慢一點，妳先別介意喔。", thread: "大G" },
     ]},
-  ],
+  ]
   62: [
-    { id: "end-owner-chat", label: "好！那今天先聊到这里，你也早点休息", nextStage: 63, lines: [
-      { sender: "我", body: "好！那今天先聊到這裡，你也早點休息。", thread: "大G" },
-      { sender: "大G", body: "嗯，妳也別太累，晚點聊。", thread: "大G" },
+    { id: "goodbye-check-dinner", label: "没关系呀！掰掰，我去看看玩玩吃饭了", nextStage: 63, lines: [
+      { sender: "我", body: "沒關係呀！掰掰，我去看看玩玩吃飯了。", thread: "大G" },
+      { sender: "大G", body: "好，那妳先去忙牠吧。真的謝謝妳，晚點有空再聊。", thread: "大G" },
     ]},
-    { id: "end-owner-chat-warm", label: "好啦，那你先忙，有空再聊", nextStage: 63, lines: [
-      { sender: "我", body: "好啦，那你先忙，有空再聊。", thread: "大G" },
-      { sender: "大G", body: "好，謝謝妳今天照顧牠。晚點聊。", thread: "大G" },
+    { id: "goodbye-no-rush", label: "没事没事，你先忙！我去看看玩玩有没有乖乖吃饭", nextStage: 63, lines: [
+      { sender: "我", body: "沒事沒事，你先忙！我去看看玩玩有沒有乖乖吃飯。", thread: "大G" },
+      { sender: "大G", body: "哈哈，好，辛苦妳了。玩玩就先麻煩妳照顧，我忙完再看訊息。", thread: "大G" },
     ]},
-  ],
+  ]
   63: [
     { id: "tell-broccoli-he-promised-dinner", label: "嘻嘻！他要请我吃饭！", nextStage: 64, lines: [
       { sender: "我", body: "嘻嘻！他要请我吃饭！", thread: "西蓝花" },
@@ -1007,17 +1009,19 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   71: [
-    { id: "kitten-still-there", label: "它居然还在原地！我看到它脖子上有个小牌子", nextStage: 3, lines: [
+    { id: "kitten-still-there", label: "它居然还在原地！等等，铭牌上写着温尚翊？？？", nextStage: 48, lines: [
       { sender: "我", body: "我回來了……牠居然還在原地！看到我還小小聲叫了一下。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "天啊，牠真的還在喔？妳先別急著抱，看看附近有沒有人在找牠。", thread: "西蓝花" },
-      { sender: "我", body: "等一下！牠脖子上好像有個小牌子，我靠近一點看看……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "有牌子？那上面會不會有主人聯絡方式？妳先看清楚，這樣就有機會找到牠的家人了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "天啊，牠真的還在喔？妳先別急，看看牠脖子上有沒有項圈或名牌。", thread: "西蓝花" },
+      { sender: "我", body: "等一下！牠脖子上真的掛著一個牌子……上面寫著主人名字：溫尚翊？？？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊？？？？等一下！！！妳說的是溫尚翊？？？", thread: "西蓝花" },
     ]},
-    { id: "notice-nameplate", label: "我发现它脖子上挂着铭牌，应该能找到主人", nextStage: 3, lines: [
-      { sender: "我", body: "牠還在！而且我剛剛看到牠脖子上掛著一個小牌子，應該能找到主人。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "真的嗎？那太好了！妳先看一下上面有沒有名字或電話，這樣就不用猜了。", thread: "西蓝花" },
+    { id: "notice-nameplate", label: "小猫还在！它的铭牌上有主人名字和电话", nextStage: 48, lines: [
+      { sender: "我", body: "牠還在！而且脖子上掛著一個牌子，上面有主人名字跟聯絡電話。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的嗎？快看看名字！至少終於能聯絡到主人了。", thread: "西蓝花" },
+      { sender: "我", body: "名字是溫尚翊……下面還有電話。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "蛤？？？溫尚翊？？？妳先等一下，這名字怎麼這麼耳熟！", thread: "西蓝花" },
     ]},
-  ],
+  ]
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
