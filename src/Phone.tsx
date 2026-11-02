@@ -594,6 +594,7 @@ function PhoneRuntime({
                     <SystemNotifications
                       notices={s.notifications}
                       apps={work.apps}
+                      items={notificationItems}
                       onOpen={() => {
                         setPanel("");
                         if (locked) beginUnlock();
