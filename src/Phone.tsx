@@ -290,6 +290,10 @@ function PhoneRuntime({
     if (!work.phone.passcode || pin === work.phone.passcode) {
       setLocked(false);
       setPinOpen(false);
+      if (work.phone.notifications && s.notifications.length) {
+        setBanner(s.notifications.at(-1) || "");
+        setTimeout(() => setBanner(""), 5000);
+      }
       event("password", pin);
     } else {
       setPinError("密码不正确");
