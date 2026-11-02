@@ -211,8 +211,22 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
     all.findIndex((candidate) => candidate.id === item.id) === index
   );
   return unique
-    .map((item, index) => ({ item, index, timestamp: Date.parse(item.time) }))
+    .map((item, index) => {
+      const precise = Number(item.meta?.storyOrderAt);
+      const hasPrecise = Number.isFinite(precise) && precise > 0;
+      return {
+        item,
+        index,
+        timestamp: hasPrecise ? precise : Date.parse(item.time),
+        precise: hasPrecise,
+      };
+    })
     .sort((a, b) => {
+      // Story messages carry millisecond delivery timestamps. Use those
+      // before the display clock (which only has minute precision), so a
+      // later player reply can never be moved above an earlier incoming line.
+      if (a.precise && b.precise && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
+      if (a.precise !== b.precise) return a.precise ? 1 : -1;
       const aValid = Number.isFinite(a.timestamp);
       const bValid = Number.isFinite(b.timestamp);
       if (aValid && bValid && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
@@ -890,7 +904,7 @@ export function WeChatSkin(p: SkinProps) {
       time: "2026-11-02 " + (storyClockRef.current || "14:24"),
       outgoing: line.sender === "我",
       avatar: "",
-      meta: { storyId: "cat-rescue", storyThread: line.thread || destination },
+      meta: { storyId: "cat-rescue", storyThread: line.thread || destination, storyOrderAt: String(Date.now() + index) },
     }));
     setCatRescueRaw(JSON.stringify({
       ...catRescue,
@@ -1309,7 +1323,7 @@ export function WeChatSkin(p: SkinProps) {
                     body: value,
                     time,
                     outgoing: true,
-                    meta: { storyId: "cat-rescue", storyThread: "大G", sendFailed: "true" },
+                    meta: { storyId: "cat-rescue", storyThread: "大G", sendFailed: "true", storyOrderAt: String(Date.now()) },
                   });
                   setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, failed] }));
                   setMonsterSendFailed(true);
