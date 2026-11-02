@@ -5205,3 +5205,79 @@ label {
 .dark-phone .phone-screen:has(.wechat-ui) .status-bar .signals {
   color: #111 !important;
 }
+
+
+.wechat-ui.wx-reference-layout .wx-moment-user-post {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 14px 15px;
+  background: #fff;
+  border-bottom: 1px solid #f1f1f1;
+  text-align: left;
+}
+.wechat-ui.wx-reference-layout .wx-moment-user-post > .skin-avatar {
+  width: 40px;
+  height: 40px;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 55px 12px 12px;
+  background: #0006;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 35px #0002;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 34px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 9px;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer header strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer header button {
+  color: #555;
+  font-size: 13px;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer header button:last-child {
+  padding: 6px 13px;
+  border-radius: 5px;
+  background: #07c160;
+  color: #fff;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer header button:disabled {
+  opacity: .45;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer textarea {
+  width: 100%;
+  min-height: 145px;
+  margin: 12px 0 5px;
+  padding: 8px 3px;
+  resize: vertical;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  background: #fff;
+  color: #222;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.wechat-ui.wx-reference-layout .wx-moment-composer > small {
+  color: #aaa;
+  font-size: 11px;
+}
