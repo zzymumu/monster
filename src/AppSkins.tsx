@@ -190,7 +190,7 @@ function parseCatRescueState(raw: string): CatRescueState {
     return { version: 2, stage: 0, branch: "", messages: [] };
   }
 }
-type CatLine = { sender: "我" | "西蓝花" | "大G"; body: string };
+type CatLine = { sender: "我" | "西蓝花" | "大G"; body: string; thread?: "西蓝花" | "大G" };
 type CatChoice = {
   id: string;
   label: string;
@@ -444,9 +444,9 @@ export function WeChatSkin(p: SkinProps) {
     ? !ownerConversation
     : isMonsterThread && ownerConversation;
   const catAvatar = GLOOMY_AVATAR;
-  const threadItems = p.thread === "大G"
+  const threadItems = isMonsterThread
     ? [...p.items.filter((item) => item.title === "大G" || item.title === "温尚翊"), ...ownerStoryMessages]
-    : p.thread === "西蓝花"
+    : isBroccoliThread
       ? [...p.items.filter((item) => item.title === "西蓝花" || item.title === "西兰花"), ...friendStoryMessages]
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
@@ -461,7 +461,7 @@ export function WeChatSkin(p: SkinProps) {
       const ownerThread = catRescue.stage >= 9 && catRescue.stage !== 10 && catRescue.stage !== 11;
       const created = makeItem({
         id: "cat-rescue-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
-        title: ownerThread ? "大G" : "西蓝花",
+        title: line.thread || (ownerThread ? "大G" : "西蓝花"),
         sender: line.sender,
         body: line.body,
         time,
@@ -476,8 +476,9 @@ export function WeChatSkin(p: SkinProps) {
   }, [pendingCatLines, catRescueRaw]);
 
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
+    const destination: "西蓝花" | "大G" = isMonsterThread ? "大G" : "西蓝花";
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, branch }));
-    setPendingCatLines((current) => [...current, ...lines]);
+    setPendingCatLines((current) => [...current, ...lines.map((line) => ({ ...line, thread: line.thread || destination }))]);
   };
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
@@ -510,6 +511,10 @@ export function WeChatSkin(p: SkinProps) {
     if (prankFlow) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？" }]);
     setMonsterRemoved(false);
     setAddedFriends((current) => current.includes("大G") ? current : [...current, "大G"]);
+    // Once the friend request is accepted, move into the owner's own chat.
+    // Leaving the user in the broccoli thread made the owner dialogue appear
+    // under the wrong contact and hid the stage-9 reply choices.
+    p.onThread("大G");
   };
 
 
