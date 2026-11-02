@@ -214,7 +214,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): number {
@@ -476,17 +476,23 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "它现在很安全，你先不用担心。" },
       { sender: "大G", body: "嗯，謝謝妳。真的麻煩妳了。" },
     ]},
+    { id: "verify-owner-name", label: "你叫什么名字？我想核对一下和名牌上的名字对不对", nextStage: 21, lines: [
+      { sender: "我", body: "對了，你叫什麼名字？我想核對一下，看看是不是跟牠名牌上的名字對得上。" },
+      { sender: "大G", body: "我叫溫尚翊。這幾天都在外地，完全不知道牠會自己從家裡跑出去……也是剛剛才知道牠不見了。" },
+      { sender: "我", body: "好，名牌上確實是這個名字，應該沒有找錯人。" },
+      { sender: "大G", body: "嗯，那就沒錯了。真的謝謝妳特地聯絡我。" },
+    ]},
   ],
   21: [
     { id: "ask-return", label: "那你什么时候回来接它呀？", nextStage: 22, lines: [
       { sender: "我", body: "那你什么时候回来接它呀？我可以先帮你照看，不过想先知道大概多久。" },
-      { sender: "大G", body: "我這邊還有事情要處理，應該還要幾天才回得去。原本以為牠乖乖待在家，沒想到給我跑出去了。" },
+      { sender: "大G", body: "我這幾天都在外地，還要幾天才回得去，完全不知道牠竟然自己從家裡跑出去了。要不是妳聯絡我，我可能還不知道牠不見了。" },
       { sender: "我", body: "没关系，你先把事情处理好，小猫这边我会留意。" },
       { sender: "大G", body: "妳人也太好了吧……我都還沒開口拜託妳。" },
     ]},
     { id: "offer-care", label: "要不我先帮你照顾它几天，等你回来再接走？", nextStage: 22, lines: [
       { sender: "我", body: "要不我先帮你照顾它几天吧，等你回来再接走就好。" },
-      { sender: "大G", body: "這樣真的可以嗎？我這幾天都不在家，原本還在想要怎麼安排牠。" },
+      { sender: "大G", body: "這樣真的可以嗎？我這幾天都在外地，根本不知道牠從家裡跑出去了，還好妳先發現牠。" },
       { sender: "我", body: "可以呀，反正它现在也在我这里，我会照顾好它的。" },
       { sender: "大G", body: "那我真的欠妳一個人情了……" },
     ]},
@@ -543,7 +549,54 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "大G", body: "不會啦，答應妳的事我記著。" },
     ]},
   ],
-  26: [],
+  26: [
+    { id: "ask-kitten-name", label: "对了，这只猫叫什么名字呀？", nextStage: 27, lines: [
+      { sender: "我", body: "對了，我還不知道牠叫什麼名字呢？這隻貓叫什麼呀？" },
+      { sender: "大G", body: "牠叫玩玩。" },
+    ]},
+  ],
+  27: [
+    { id: "recognize-wanwan", label: "玩玩……？我靠！", nextStage: 32, lines: [
+      { sender: "我", body: "玩玩……？我靠！", thread: "大G" },
+      { sender: "大G", body: "妳？？？怎麼啦？", thread: "大G" },
+    ]},
+  ],
+  32: [
+    { id: "tell-broccoli-wanwan", label: "我靠我靠我靠，玩玩！！怪兽家的猫就叫玩玩！！！！", nextStage: 33, lines: [
+      { sender: "我", body: "我靠我靠我靠，玩玩！！怪獸家的貓就叫玩玩！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等等等等？？？妳說什麼？？？怪獸家的玩玩？妳怎麼知道的？", thread: "西蓝花" },
+      { sender: "我", body: "我剛剛在跟大G確認貓的名字，他親口跟我說牠叫玩玩，而且名牌上的名字跟聯絡方式都對得上！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不是吧……這也太巧了吧？！所以妳現在撿到的那隻小黑貓，真的是怪獸家的？", thread: "西蓝花" },
+      { sender: "我", body: "對！！！我現在整個人都傻掉了，我根本沒想到會是他家的貓！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "先冷靜先冷靜！妳確定沒有認錯嗎？名字跟名牌都核對過了？", thread: "西蓝花" },
+    ]},
+  ],
+  33: [
+    { id: "confirm-wanwan", label: "我确定！名字和名牌上的联系方式都对上了！", nextStage: 34, lines: [
+      { sender: "我", body: "我確定！名字和名牌上的聯絡方式都對上了，而且大G也說牠這幾天一直在外地。" , thread: "西蓝花" },
+      { sender: "西蓝花", body: "救命……這是什麼偶像劇情節啦！妳先不要激動，先把玩玩照顧好，其他的慢慢來。" , thread: "西蓝花" },
+      { sender: "我", body: "我現在真的不知道該怎麼辦，腦袋一片空白……" , thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈我懂！但妳先別自己嚇自己，牠現在最需要的是有人好好照顧牠。" , thread: "西蓝花" },
+    ]},
+    { id: "keep-secret", label: "我还没告诉大G我知道他是谁，先不说破！", nextStage: 34, lines: [
+      { sender: "我", body: "我還沒告訴大G我知道他是誰，先不說破好了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對對對，先別急著說破！妳就當作不知道，正常跟他聊玩玩的事情就好。" , thread: "西蓝花" },
+      { sender: "我", body: "可是我真的快忍不住了啊啊啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那妳先來跟我尖叫一下，哈哈哈哈！但記得不要嚇到玩玩喔。" , thread: "西蓝花" },
+    ]},
+  ],
+  34: [
+    { id: "back-to-owner", label: "我先回去跟大G说玩玩现在很安全", nextStage: 35, branch: "monster-cat", lines: [
+      { sender: "我", body: "我先回去跟大G說玩玩現在很安全，不能讓他太擔心。" , thread: "大G" },
+      { sender: "西蓝花", body: "好啦，快去！記得有新消息再回來跟我說，我要聽後續！" , thread: "西蓝花" },
+    ]},
+  ],
+  35: [
+    { id: "tell-owner-safe", label: "玩玩现在很安全，我会先照顾好它", nextStage: 23, branch: "monster-cat", lines: [
+      { sender: "我", body: "玩玩現在很安全，我會先照顧好牠，你不用擔心。" , thread: "大G" },
+      { sender: "大G", body: "那就好……真的謝謝妳。玩玩就先拜託妳了，等我回去再好好跟妳道謝。" , thread: "大G" },
+    ]},
+  ],
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
@@ -590,9 +643,9 @@ export function WeChatSkin(p: SkinProps) {
   // older save hide the opening choices (stage 0) or the broccoli branches.
   // Later owner-chat stages prove the friend-add flow already completed,
   // even if an older save lost the separate accepted flag.
-  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26].includes(catRescue.stage);
+  const ownerChatStarted = [9, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35].includes(catRescue.stage);
   const catRescueActive = isBroccoliThread
-    ? (!monsterFriendAccepted || [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31].includes(catRescue.stage))
+    ? (!monsterFriendAccepted || [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34].includes(catRescue.stage))
     : isMonsterThread && (monsterFriendAccepted || ownerChatStarted);
   const catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
