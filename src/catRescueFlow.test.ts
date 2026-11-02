@@ -172,7 +172,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(dinnerPromise?.nextStage).toBe(58);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(1);
     expect(dinnerPromise?.lines).toHaveLength(8);
-    expect(dinnerPromise?.lines[0].body).toContain("请我吃饭");
+    expect(dinnerPromise?.lines[0].body).toContain("請我吃飯");
     expect(dinnerPromise?.lines[1].body).toContain("請妳吃飯");
     expect(dinnerPromise?.lines.map((line) => line.body).join("\n")).toContain("開玩笑");
     expect(dinnerPromise?.lines.map((line) => line.body).join("\n")).toContain("飯量很大");
