@@ -57,7 +57,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(prank?.nextStage).toBe(17);
     expect(prank?.lines.map((line) => line.body)).toEqual(["我是你爸爸。"]);
     expect(CAT_RESCUE_CHOICES[17]).toHaveLength(2);
-    expect(shouldShowPrankHistoryLine(makeItem({ id: "old-question", title: "大G", sender: "大G", body: "妳是？" }), "monster-prank")).toBe(false);
+    expect(shouldShowPrankHistoryLine(makeItem({ id: "first-greeting", title: "大G", sender: "大G", body: "妳是？" }), "monster-prank")).toBe(true);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "old-delete", title: "大G", sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" }), "monster-prank")).toBe(false);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "old-question", title: "大G", sender: "大G", body: "……蛤？" }), "monster-cat", true)).toBe(false);
     expect(shouldShowPrankHistoryLine(makeItem({ id: "first-greeting", title: "大G", sender: "大G", body: "妳是？" }), "monster-cat", true)).toBe(true);
