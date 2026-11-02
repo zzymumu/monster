@@ -939,8 +939,8 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   63: [
-    { id: "tell-broccoli-he-promised-dinner", label: "嘻嘻！他要请我吃饭！", nextStage: 64, lines: [
-      { sender: "我", body: "嘻嘻！他要请我吃饭！", thread: "西蓝花" },
+    { id: "tell-broccoli-he-promised-dinner", label: "你敢信！！他要请我吃饭！！！！", nextStage: 64, lines: [
+      { sender: "我", body: "你敢信！！他要請我吃飯！！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "真的假的！！！他真的要請妳吃飯？妳運氣也太好了吧！你們吃什麼？", thread: "西蓝花" },
     ]},
     { id: "tell-broccoli-dinner-casual", label: "欸嘿，他刚刚答应回来请我吃饭了！", nextStage: 64, lines: [
