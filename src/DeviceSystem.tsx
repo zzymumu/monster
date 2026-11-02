@@ -3,7 +3,6 @@ import {
   ConnectivityModule,
   SliderModule,
 } from "./vendor/ios-web/ControlModules";
-import { UnlockHandle } from "./vendor/ios-web/UnlockHandle";
 import { useState, useEffect, useRef, createContext, useContext } from "react";
 import {
   LockKeyhole,
@@ -32,10 +31,6 @@ import {
   Radio,
   Wifi,
   Battery,
-  CloudSun,
-  CalendarDays,
-  MapPin,
-  Sun,
   Heart,
   Music2,
   Airplay,
@@ -109,8 +104,6 @@ export function DeviceLock({
     setMusicProgress(0);
     if (musicPlaying) void audio.play().catch(() => setMusicPlaying(false));
   }, [trackIndex, currentTrack?.id]);
-  const lockWeather = work.data.weather?.[0];
-  const lockCalendar = (work.data.calendar || []).slice(0, 2);
   useEffect(() => {
     if (error) setCode("");
   }, [error]);
