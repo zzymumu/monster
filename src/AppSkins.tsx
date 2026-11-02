@@ -222,9 +222,20 @@ export function getCatRescueStageAfterFriendAdd(stage: number, branch: string): 
   if (stage === 13) return 14;
   return 9;
 }
-export function shouldShowPrankHistoryLine(item: Item, branch: string): boolean {
-  const obsoletePrankReply = /^(妳是？|……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
-  return branch !== "monster-prank" || !obsoletePrankReply.test(item.body);
+export function shouldShowPrankHistoryLine(item: Item, branch: string, prankPath = branch === "monster-prank"): boolean {
+  if (!prankPath) return true;
+  // Keep the first "妳是？" greeting, but hide the obsolete auto-replies
+  // that used to be sent after "我是你爸爸" and before the apology choices.
+  const obsoletePrankReply = /^(……蛤？|妳哪位？我不認識妳喔。|好喔，那我先把妳刪掉了。掰。)$/;
+  return !obsoletePrankReply.test(item.body.trim());
+}
+export function shouldMigrateLegacyPrankReadd(
+  stage: number,
+  friendAccepted: boolean,
+  hasPrankHistory: boolean,
+  hasReaddedEvent: boolean,
+): boolean {
+  return stage === 14 && friendAccepted && hasPrankHistory && hasReaddedEvent;
 }
 export function splitCatRescueMessages(messages: Item[]): { broccoli: Item[]; owner: Item[] } {
   const isHospitalStoryMessage = (item: Item) =>
@@ -530,9 +541,21 @@ export function WeChatSkin(p: SkinProps) {
   const storyClockRef = useRef(p.virtualTime || "14:24");
   storyClockRef.current = p.virtualTime || storyClockRef.current;
   const parsedCatRescue = parseCatRescueState(catRescueRaw);
+  const hasPrankPath = parsedCatRescue.branch === "monster-prank" ||
+    [...p.items, ...parsedCatRescue.messages].some((item) => item.body.trim() === "我是你爸爸。");
+  const hasReaddedEvent = [...p.items, ...parsedCatRescue.messages].some((item) =>
+    /你重新添加了大G/.test(item.body)
+  );
+  const legacyPrankReaddPending = shouldMigrateLegacyPrankReadd(
+    parsedCatRescue.stage, monsterFriendAccepted, hasPrankPath, hasReaddedEvent
+  );
   // Do not infer the WeChat-ID handoff from a stale friend-accepted flag:
-  // stage 8 is reached only by the explicit "try WeChat" choice.
-  const catRescue = parsedCatRescue;
+  // stage 8 is reached only by the explicit "try WeChat" choice. The one
+  // legacy prank save that already re-added the friend at stage 14 is migrated
+  // to stage 16 so the missing "？？？" and cat-explanation choice can resume.
+  const catRescue = legacyPrankReaddPending
+    ? { ...parsedCatRescue, stage: 16, branch: "monster-prank" }
+    : parsedCatRescue;
   const allItems = [...p.items, ...catRescue.messages];
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
@@ -565,7 +588,7 @@ export function WeChatSkin(p: SkinProps) {
     !/我是你爸爸|妳真的很會鬧|妳是？|蛤？小黑貓|？？？|對不起.*發錯|对不起.*发错/.test(item.body)
   );
   const keepPrankHistoryClean = (item: Item) =>
-    shouldShowPrankHistoryLine(item, catRescue.branch);
+    shouldShowPrankHistoryLine(item, catRescue.branch, hasPrankPath);
   const threadItems = isMonsterThread
     ? [
         ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
@@ -575,6 +598,16 @@ export function WeChatSkin(p: SkinProps) {
       ? [...broccoliBaseItems, ...friendStoryMessages]
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
+  useEffect(() => {
+    if (!legacyPrankReaddPending) return;
+    setCatRescueRaw(JSON.stringify({ ...parsedCatRescue, version: 2, stage: 16, branch: "monster-prank" }));
+    const alreadyHasQuestion = [...p.items, ...parsedCatRescue.messages].some((item) => item.body.trim() === "？？？");
+    if (!alreadyHasQuestion) {
+      setPendingCatLines((current) => current.some((line) => line.body === "？？？")
+        ? current
+        : [...current, { sender: "大G", body: "？？？", thread: "大G" }]);
+    }
+  }, [legacyPrankReaddPending]);
   useEffect(() => {
     if (!pendingCatLines.length) return;
     const line = pendingCatLines[0];
