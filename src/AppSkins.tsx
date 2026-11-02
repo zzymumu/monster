@@ -444,6 +444,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "其實我撿到一隻小黑貓，牠脖子上掛著牌子，上面留了你的微信號，所以才想聯絡你。" },
       { sender: "大G", body: "蛤？小黑貓？妳在哪裡看到牠的？牠現在還好嗎？有沒有受傷？" },
     ]},
+    { id: "monster-apology-explain", label: "真的对不起！我刚捡到一只小黑猫，看到牌子才联系你", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "真的對不起！我剛剛只是想開個玩笑，沒想到你真的把我刪掉了。" },
+      { sender: "我", body: "我是在路邊撿到一隻小黑貓，牠脖子上的牌子有你的微信號，所以才急著聯絡你。" },
+      { sender: "大G", body: "蛤？原來是這樣……小黑貓現在在哪裡？牠有沒有受傷？妳先跟我說一下。" },
+    ]},
   ],
   20: [
     { id: "cat-temperament", label: "它很乖，一直窝在我怀里，也没有乱跑", nextStage: 21, lines: [
@@ -673,13 +678,14 @@ export function WeChatSkin(p: SkinProps) {
     const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
     const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
     const readding = catRescue.stage === 13;
-    const prankReadd = readding && catRescue.branch === "monster-prank";
+    const prankReadd = readding && hasPrankPath;
     const created = [
       makeItem({ id: "monster-added-system-" + Date.now(), title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend", storyThread: "大G" } }),
       ...(!readding ? [makeItem({ id: "monster-first-message-" + Date.now(), title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", wechatId: "mo00oster111" } })] : []),
     ];
-    const nextStage = getCatRescueStageAfterFriendAdd(catRescue.stage, catRescue.branch);
-    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, messages: [...catRescue.messages, ...created] }));
+    const nextStage = prankReadd ? 16 : getCatRescueStageAfterFriendAdd(catRescue.stage, catRescue.branch);
+    const nextBranch = prankReadd ? "monster-prank" : catRescue.branch;
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: nextStage, branch: nextBranch, messages: [...catRescue.messages, ...created] }));
     if (prankReadd) setPendingCatLines((current) => [...current, { sender: "大G", body: "？？？", thread: "大G" }]);
     setMonsterRemoved(false);
     setMonsterSendFailed(false);
