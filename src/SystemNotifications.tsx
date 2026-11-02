@@ -2,13 +2,15 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { X } from "lucide-react";
 import { AppArtwork } from "./AppArtwork";
+import { GLOOMY_AVATAR } from "./AppSkins";
 import type { Item, Work } from "./schema";
 export function notificationContent(text: string, apps: Work["apps"], items: Item[] = []) {
   const wechat = text.match(/^微信[：:]\s*([^：:]+)[：:]\s*(.*)$/);
   if (wechat) {
     const contact = wechat[1].trim();
     const message = items.find((item) => item.title === contact || item.sender === contact);
-    return { title: contact, body: wechat[2], appId: "wechat", avatar: message?.avatar || "", contact };
+    const contactAvatar = contact === "西蓝花" || contact === "西兰花" ? GLOOMY_AVATAR : message?.avatar || "";
+    return { title: contact, body: wechat[2], appId: "wechat", avatar: contactAvatar, contact };
   }
   const separator = text.search(/[:：]/);
   const sender = separator > 0 ? text.slice(0, separator) : "信息";
