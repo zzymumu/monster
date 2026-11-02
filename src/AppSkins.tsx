@@ -747,21 +747,18 @@ export function WeChatSkin(p: SkinProps) {
     : isBroccoliThread
       ? [
           ...broccoliBaseItems,
-          ...friendStoryMessages,
-          // The first Broccoli "？？？" may live in the seeded WeChat
-          // conversation (p.items), not the cat-rescue story store. Restore
-          // that exact contact message after the legacy-history filter.
+          // Opening surprise is context for the user's next reply, so place
+          // it before the story replies rather than appending it at the end.
           ...p.items.filter((item) =>
             (item.title === "西蓝花" || item.title === "西兰花") &&
             item.sender === "西蓝花" &&
             item.body.trim() === "？？？"
           ),
-          // Later Broccoli surprise lines saved in the story store also stay
-          // visible as context when the user replies.
           ...catRescue.messages.filter((item) =>
             item.body.trim() === "？？？" &&
             (item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花" || item.title === "西蓝花" || item.title === "西兰花")
           ),
+          ...friendStoryMessages,
         ].filter((item, index, items) => items.findIndex((entry) => entry.id === item.id) === index)
       : allItems.filter((item) => item.title === p.thread);
   const catChoices = CAT_RESCUE_CHOICES[catRescue.stage] || [];
