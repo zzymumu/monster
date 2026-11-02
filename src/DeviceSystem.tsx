@@ -40,7 +40,7 @@ import {
   X,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { type Work } from "./schema";
+import { type Item, type Work } from "./schema";
 export const KeyboardContext = createContext<(open: boolean) => void>(() => {});
 export function NativeComposer({
   creator,
