@@ -3,7 +3,7 @@ import {
   ConnectivityModule,
   SliderModule,
 } from "./vendor/ios-web/ControlModules";
-import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import {
   LockKeyhole,
   Flashlight,
@@ -38,7 +38,7 @@ import {
   Lock,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { safeMedia, type Work } from "./schema";
+import { type Work } from "./schema";
 export const KeyboardContext = createContext<(open: boolean) => void>(() => {});
 export function NativeComposer({
   creator,
