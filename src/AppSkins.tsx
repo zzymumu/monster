@@ -829,7 +829,49 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "好，慢慢看清楚！確認沒錯再加好友。", thread: "西蓝花" },
     ]},
   ],
-  36: [],
+  36: [
+    { id: "ask-for-care-guide", label: "好呀！你整理一份发给我吧，我怕漏掉什么", nextStage: 54, lines: [
+      { sender: "我", body: "好呀！你整理一份發給我吧，我怕自己漏掉什麼注意事項。", thread: "大G" },
+      { sender: "大G", body: "好，我把玩玩平常吃的東西、份量和習慣整理一下，等一下傳給妳。", thread: "大G" },
+      { sender: "大G", body: "【玩玩照顧小指南】\n1. 吃飯：平常吃固定的乾糧，早晚各一餐；先照平常份量，不要突然換新食物。\n2. 喝水：每天換乾淨的水，水碗放在牠容易找到的地方。\n3. 零食：先不要餵人吃的東西，也別一次給太多零食。\n4. 貓砂：牠習慣在安靜的位置上廁所，記得每天清一下。\n5. 休息：牠剛換環境可能會躲起來，讓牠自己慢慢熟悉，不用一直抱牠。\n6. 個性：玩玩很愛玩，也很黏人，熟了會自己跑來蹭妳。\n如果食慾、精神或排泄有明顯異常，先跟我說，也麻煩請醫生看看。", thread: "大G" },
+    ]},
+    { id: "ask-habits-first", label: "你先把平常吃什么、几点吃告诉我就好", nextStage: 54, lines: [
+      { sender: "我", body: "你先把牠平常吃什麼、幾點吃告訴我就好，我照著做。", thread: "大G" },
+      { sender: "大G", body: "好，我整理成一份簡單的照顧清單傳給妳，這樣比較不容易漏掉。", thread: "大G" },
+      { sender: "大G", body: "【玩玩照顧小指南】\n早晚各吃一餐平常的乾糧，先維持原本份量；水每天換新。零食先少量，不要餵人吃的食物。貓砂放在安靜、固定的位置，每天清理。牠剛到新環境可能會躲一下，讓牠自己探索，不要勉強抱牠。玩玩很愛玩，熟悉之後會主動來找妳。若有食慾、精神或排泄異常，先聯絡我並請醫生確認。", thread: "大G" },
+    ]},
+  ],
+  54: [
+    { id: "wow-detailed-guide", label: "哇！好详细！你连这些都记得这么清楚啊", nextStage: 55, lines: [
+      { sender: "我", body: "哇！好詳細！你連這些小細節都記得這麼清楚啊。", thread: "大G" },
+      { sender: "大G", body: "哈哈，照顧牠久了就記得了。牠有些小習慣，換個地方可能會不太適應。", thread: "大G" },
+    ]},
+    { id: "thank-guide", label: "收到！有这份指南我就放心多了，谢谢你", nextStage: 55, lines: [
+      { sender: "我", body: "收到！有這份指南我就放心多了，謝謝你整理得這麼仔細。", thread: "大G" },
+      { sender: "大G", body: "不客氣啦，麻煩妳了。牠平常其實很好照顧，就是有點黏人。", thread: "大G" },
+    ]},
+  ],
+  55: [
+    { id: "ask-favorite-toy", label: "那它平常最喜欢玩什么？我找东西陪它玩", nextStage: 56, lines: [
+      { sender: "我", body: "那牠平常最喜歡玩什麼？我找個東西陪牠玩。", thread: "大G" },
+      { sender: "大G", body: "逗貓棒跟小球都可以，牠看到會追半天。不過剛到妳那邊，先讓牠休息，等牠主動想玩再陪牠。", thread: "大G" },
+    ]},
+    { id: "ask-if-cat-is-clingy", label: "难怪你说它很黏人，它会不会一直跟着人呀？", nextStage: 56, lines: [
+      { sender: "我", body: "難怪你說牠很黏人，牠會不會一直跟著人呀？", thread: "大G" },
+      { sender: "大G", body: "會喔，熟了之後妳走到哪牠可能就跟到哪，還會在旁邊喵喵叫。", thread: "大G" },
+    ]},
+  ],
+  56: [
+    { id: "promise-care-well", label: "哈哈哈，那我先努力跟它培养感情", nextStage: 57, lines: [
+      { sender: "我", body: "哈哈哈，那我先努力跟牠培養感情，等牠願意親近我再說。", thread: "大G" },
+      { sender: "大G", body: "慢慢來就好，不用急。牠很聰明，知道誰對牠好。這幾天真的要麻煩妳了。", thread: "大G" },
+    ]},
+    { id: "send-updates", label: "等它适应一点，我再拍照片给你看", nextStage: 57, lines: [
+      { sender: "我", body: "等牠適應一點，我再拍照片給你看，讓你知道牠過得很好。", thread: "大G" },
+      { sender: "大G", body: "好啊，我很期待。謝謝妳願意照顧牠，有妳幫忙我安心很多。", thread: "大G" },
+    ]},
+  ],
+  57: [],
 };
 export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
