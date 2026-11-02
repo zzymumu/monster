@@ -82,6 +82,7 @@ export function DeviceLock({
   onLight: () => void;
 }) {
   const [code, setCode] = useState("");
+  const [emergencyOpen, setEmergencyOpen] = useState(false);
   useEffect(() => {
     if (error) setCode("");
   }, [error]);
@@ -229,14 +230,17 @@ export function DeviceLock({
             <button onClick={() => onUnlock(code)}>解锁</button>
           )}
           <div className="pin-footer">
-            <button onClick={() => setPinOpen(false)}>取消</button>
-            <button
-              aria-label="删除一位密码"
-              onClick={() => (code ? digit("⌫") : setPinOpen(false))}
-            >
-              {code ? "删除" : "取消"}
-            </button>
+            <button onClick={() => setEmergencyOpen(true)}>紧急情况</button>
+            <button onClick={() => { setEmergencyOpen(false); setPinOpen(false); }}>取消</button>
           </div>
+          {emergencyOpen && (
+            <div className="pin-emergency">
+              <h3>紧急呼叫</h3>
+              <p>此处为手机模拟器，不会拨打真实电话。</p>
+              <div>{["110", "120", "119"].map((number) => <span key={number}>{number}</span>)}</div>
+              <button onClick={() => setEmergencyOpen(false)}>返回</button>
+            </div>
+          )}
         </div>
       )}
     </motion.div>
