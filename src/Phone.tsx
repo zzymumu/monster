@@ -142,6 +142,22 @@ function PhoneRuntime({
     try { return localStorage.getItem("foundphone-lock-wallpaper") || "default"; } catch { return "default"; }
   });
   const [wallpaperPickerOpen, setWallpaperPickerOpen] = useState(false);
+  const [defaultWallpaperUrl, setDefaultWallpaperUrl] = useState("");
+  useEffect(() => {
+    let active = true;
+    Promise.all([
+      "./wallpapers/monster-default-1.txt",
+      "./wallpapers/monster-default-2.txt",
+      "./wallpapers/monster-default-3.txt",
+    ].map(async (path) => {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error("默认壁纸加载失败");
+      return response.text();
+    })).then((parts) => {
+      if (active) setDefaultWallpaperUrl("data:image/webp;base64," + parts.join(""));
+    }).catch(() => {});
+    return () => { active = false; };
+  }, []);
   const [pinOpen, setPinOpen] = useState(false);
   const [quickCamera, setQuickCamera] = useState(false);
   const [keyboard, setKeyboard] = useState(false);
@@ -307,9 +323,11 @@ function PhoneRuntime({
   };
   const wallpaperStyle: CSSProperties = wallpaperChoice.startsWith("data:image/")
     ? { backgroundImage: `url(${wallpaperChoice})`, backgroundSize: "cover", backgroundPosition: "center" }
-    : wallpaperChoice !== "default" && wallpaperBackgrounds[wallpaperChoice]
-      ? { backgroundImage: wallpaperBackgrounds[wallpaperChoice] }
-      : {};
+    : wallpaperChoice === "default"
+      ? { backgroundImage: defaultWallpaperUrl ? `url(${defaultWallpaperUrl})` : "linear-gradient(145deg,#607c9e,#d9c9ad 48%,#243d36)", backgroundSize: "cover", backgroundPosition: "center" }
+      : wallpaperBackgrounds[wallpaperChoice]
+        ? { backgroundImage: wallpaperBackgrounds[wallpaperChoice], backgroundSize: "cover", backgroundPosition: "center" }
+        : {};
   useEffect(() => {
     const count = s.notifications.length;
     if (!locked && work.phone.notifications && count > noticesSeen.current) {
@@ -407,6 +425,7 @@ function PhoneRuntime({
             {wallpaperPickerOpen && (
               <WallpaperPicker
                 current={wallpaperChoice}
+                imageUrl={defaultWallpaperUrl}
                 onSelect={(value) => {
                   setWallpaperChoice(value);
                   try { localStorage.setItem("foundphone-lock-wallpaper", value); } catch { setLoadError("壁纸保存失败，图片可能过大。"); }

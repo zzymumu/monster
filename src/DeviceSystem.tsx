@@ -246,21 +246,23 @@ export function DeviceLock({
 
 export function WallpaperPicker({
   current,
+  imageUrl,
   onSelect,
   onClose,
 }: {
   current: string;
+  imageUrl: string;
   onSelect: (value: string) => void;
   onClose: () => void;
 }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [selected, setSelected] = useState(current);
   const presets = [
-    { id: "default", name: "当前壁纸", background: "linear-gradient(145deg,#607c9e,#d9c9ad 48%,#243d36)" },
-    { id: "sunset", name: "日落", background: "linear-gradient(155deg,#35134d 0%,#f34c58 42%,#ffb347 68%,#3a8cbd 100%)" },
-    { id: "ocean", name: "海岸", background: "linear-gradient(160deg,#a9d8e8 0%,#3f91b8 48%,#123f68 100%)" },
-    { id: "midnight", name: "深空", background: "radial-gradient(circle at 65% 28%,#536c9c,#171b35 55%,#05060b)" },
-    { id: "pink", name: "柔粉", background: "linear-gradient(150deg,#f4b8c9,#b5a6e5 55%,#6a8bc5)" },
+    { id: "default", name: "默认壁纸", image: imageUrl, background: "linear-gradient(145deg,#607c9e,#d9c9ad 48%,#243d36)" },
+    { id: "sunset", name: "日落", image: "", background: "linear-gradient(155deg,#35134d 0%,#f34c58 42%,#ffb347 68%,#3a8cbd 100%)" },
+    { id: "ocean", name: "海岸", image: "", background: "linear-gradient(160deg,#a9d8e8 0%,#3f91b8 48%,#123f68 100%)" },
+    { id: "midnight", name: "深空", image: "", background: "radial-gradient(circle at 65% 28%,#536c9c,#171b35 55%,#05060b)" },
+    { id: "pink", name: "柔粉", image: "", background: "linear-gradient(150deg,#f4b8c9,#b5a6e5 55%,#6a8bc5)" },
   ];
   const chooseFile = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
@@ -282,9 +284,13 @@ export function WallpaperPicker({
       <div className="wallpaper-picker-carousel">
         {presets.map((preset) => (
           <button key={preset.id} className={"wallpaper-preview " + (selected === preset.id ? "selected" : "")} onClick={() => setSelected(preset.id)}>
-            <span className="wallpaper-preview-art" style={{ background: preset.background }}>
-              <small>周一 · 9:41</small><b>09:41</b><i>天气 日历</i>
-            </span>
+            {preset.image ? (
+              <img className="wallpaper-preview-art" src={preset.image} alt="默认锁屏壁纸" />
+            ) : (
+              <span className="wallpaper-preview-art" style={{ background: preset.background }}>
+                <small>周一 · 9:41</small><b>09:41</b><i>天气 日历</i>
+              </span>
+            )}
             <span className="wallpaper-preview-name">{preset.name}</span>
             {selected === preset.id && <Check className="wallpaper-preview-check" size={18} />}
           </button>
