@@ -1029,6 +1029,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "dinner-still-surprised", label: "我現在還覺得很不真實，像做夢一樣", nextStage: 78, lines: [
       { sender: "我", body: "我現在還覺得很不真實欸，剛剛真的只是隨口一提，沒想到他會答應。", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳這個運氣也太好了吧！！！不過先冷靜，等他真的約時間再來尖叫也不遲！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對了！他有沒有說你們要吃什麼？妳當時有沒有問？", thread: "西蓝花" },
     ]},
   ],
   78: [
@@ -1103,13 +1104,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   71: [
-    { id: "kitten-still-there", label: "它居然还在原地！等等，温尚翊？？？", nextStage: 80, lines: [
-      { sender: "我", body: "我回來了……牠居然還在原地！看到我還小小聲叫了一下。溫尚翊？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "溫尚翊？？？妳怎麼了？？？怎麼突然這麼驚訝？", thread: "西蓝花" },
+    { id: "kitten-still-there", label: "！！！（小猫居然还在原地！）", nextStage: 80, lines: [
+      { sender: "我", body: "！！！牠居然還在原地！我剛剛還怕牠已經不見了……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？怎麼了怎麼了？妳找到牠了嗎？發生什麼事？", thread: "西蓝花" },
     ]},
-    { id: "notice-nameplate", label: "小猫还在！等等，温尚翊？？？", nextStage: 80, lines: [
-      { sender: "我", body: "牠還在！等等……溫尚翊？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "溫尚翊？？？發生什麼事了？妳先說清楚！", thread: "西蓝花" },
+    { id: "notice-nameplate", label: "！！！我看到它脖子上的铭牌了！", nextStage: 80, lines: [
+      { sender: "我", body: "！！！我看到牠脖子上掛著一個銘牌！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳先等等！銘牌上寫什麼？快看看！", thread: "西蓝花" },
     ]},
   ],
   81: [
