@@ -122,9 +122,13 @@ export function DeviceLock({
             <p>
               {(() => {
                 const date = new Date((work.phone.date || "2026-09-01") + "T12:00:00Z");
-                return new Intl.DateTimeFormat("zh-CN", {
-                  weekday: "long", month: "long", day: "numeric", timeZone: "UTC",
+                const monthDay = new Intl.DateTimeFormat("zh-CN", {
+                  month: "long", day: "numeric", timeZone: "UTC",
                 }).format(date);
+                const weekday = new Intl.DateTimeFormat("zh-CN", {
+                  weekday: "long", timeZone: "UTC",
+                }).format(date);
+                return monthDay + weekday;
               })()}
             </p>
             <h1>{time}</h1>
