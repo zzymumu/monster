@@ -48,7 +48,6 @@ import {
   Plus,
   Search,
   LockKeyhole,
-  ScanFace,
   Heart,
   MessageCircle,
   MoreHorizontal,
@@ -397,16 +396,9 @@ function PhoneRuntime({
               className="status-time"
               aria-label="通知中心"
             >
-              中国移动
+              {displayTime}
             </button>
-            <div className="dynamic-island" aria-label={locked ? "已锁定" : "灵动岛"}>
-              {locked && (
-                <span className="island-lock-state">
-                  <LockKeyhole size={19} fill="currentColor" />
-                  {pinOpen && <ScanFace className="island-face-id" size={22} />}
-                </span>
-              )}
-            </div>
+            <div className="dynamic-island" aria-label="灵动岛" />
             <button
               className="signals"
               onClick={() => setPanel(panel === "control" ? "" : "control")}
