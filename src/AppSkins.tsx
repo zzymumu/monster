@@ -29,7 +29,6 @@ import {
   Music,
   Image as ImageIcon,
   Layers,
-  ShoppingBag,
   Monitor,
   ChevronRight,
   Tag,
@@ -231,11 +230,6 @@ export function WeChatSkin(p: SkinProps) {
       p.onRead(related.title);
     } else setUtility(name);
   };
-  const initials = (name: string) => {
-    const first = name.trim().charAt(0);
-    return /^[a-z]/i.test(first) ? first.toUpperCase() : "☆";
-  };
-
   return (
     <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility}>
       <div className="app-nav wx-nav">
