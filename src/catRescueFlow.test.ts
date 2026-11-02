@@ -14,7 +14,7 @@ import { makeItem } from "./schema";
 
 describe("WeChat cat-rescue story configuration", () => {
   it("routes every hospital stage to Broccoli and owner stages to DaG", () => {
-    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 30, 31, 32, 33, 34, 37, 38, 39]) {
+    for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39]) {
       expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
     }
     for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 41, 42, 43]) {
@@ -55,6 +55,8 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("shows two reply choices immediately after Broccoli asks whether the user arrived", () => {
+    expect(CAT_RESCUE_CHOICES[12]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[12].every((choice) => choice.nextStage === 30)).toBe(true);
     expect(CAT_RESCUE_CHOICES[30]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[30].every((choice) => choice.nextStage === 31)).toBe(true);
     expect(CAT_RESCUE_CHOICES[31]).toHaveLength(2);
