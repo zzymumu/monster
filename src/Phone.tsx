@@ -919,7 +919,7 @@ function AppContent({
   work: Work;
 }) {
   const [detail, setDetail] = useState<Item | null>(null);
-  const [thread, setThread] = useState("");
+  const [thread, setThread] = useState(() => String(state.ui?.[app.id]?.openThread ?? ""));
   const [tab, setTab] = useState(app.tabs[0]);
   const [q, setQ] = useState("");
   const [pw, setPw] = useState("");
@@ -1036,7 +1036,10 @@ function AppContent({
               onAdd={onAdd}
               onBack={onBack}
               thread={thread}
-              onThread={setThread}
+              onThread={(next) => {
+                setThread(next);
+                if (app.id === "wechat") onUi?.("openThread", next);
+              }}
             />
           </Suspense>
         </div>
