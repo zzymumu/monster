@@ -333,7 +333,7 @@ function PhoneRuntime({
         body: first.body,
         time: (latest.date || work.phone.date) + " " + (latest.time || work.phone.time),
         outgoing: first.sender === "我",
-        meta: { storyId: "cat-rescue", storyThread: thread },
+        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(Date.now()) },
       });
       let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
       try {
