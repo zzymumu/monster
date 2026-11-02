@@ -871,7 +871,14 @@ export function WeChatSkin(p: SkinProps) {
   // Never expose the next interaction branch while any scripted line is
   // still waiting to arrive. The stage advances when the player chooses, but
   // the next choice belongs after the complete incoming exchange, not before it.
-  const catChoices = pendingCatLines.length === 0
+  const choiceThread = getCatRescueThreadForStage(catRescue.stage);
+  // Choices belong only to the contact whose conversation is active for this
+  // story stage. In particular, once the owner-add flow hands off to 大G,
+  // never render 大G's opening choices inside 西蓝花's chat.
+  const isCurrentChoiceThread =
+    (isBroccoliThread && choiceThread === "西蓝花") ||
+    (isMonsterThread && choiceThread === "大G");
+  const catChoices = pendingCatLines.length === 0 && isCurrentChoiceThread
     ? (CAT_RESCUE_CHOICES[catRescue.stage] || [])
     : [];
   useEffect(() => {
