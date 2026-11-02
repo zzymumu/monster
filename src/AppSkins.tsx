@@ -362,7 +362,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "好！不要趕，安全最重要。到了先讓醫生幫牠檢查，再跟我說結果喔。" },
     ]},
     { id: "arrived-waiting", label: "到了！我刚到医院，正在等医生", nextStage: 31, lines: [
-      { sender: "我", body: "到了！我剛到醫院，正在等醫生，玩玩先在外出籠裡休息。" },
+      { sender: "我", body: "到了！我剛到醫院，正在等醫生，牠先在外出籠裡休息。" },
       { sender: "西蓝花", body: "好！醫生有開始幫牠檢查了嗎？有沒有先掃描晶片或確認主人資料？" },
     ]},
   ],
