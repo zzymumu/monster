@@ -19,6 +19,15 @@ describe("WeChat cat-rescue story configuration", () => {
     }
   });
 
+  it("keeps the leave-first return-to-kitten choices in the Broccoli thread", () => {
+    expect(getCatRescueThreadForStage(10)).toBe("西蓝花");
+    expect(getCatRescueThreadForStage(11)).toBe("西蓝花");
+    expect(CAT_RESCUE_CHOICES[10]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[11]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[10].every((choice) => choice.nextStage !== 8)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[11].every((choice) => choice.nextStage !== 8)).toBe(true);
+  });
+
   it("has a defined next state for every visible story choice", () => {
     const systemStates = new Set([8, 13, 17]);
     for (const [stage, choices] of Object.entries(CAT_RESCUE_CHOICES)) {
