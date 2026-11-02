@@ -167,6 +167,8 @@ export function WeChatSkin(p: SkinProps) {
   const [menu, setMenu] = useState(false);
   const [utility, setUtility] = useState("");
   const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
+  const [addedFriends, setAddedFriends] = useSkinState<string[]>(p, "wxAddedFriends", []);
+  const [addQuery, setAddQuery] = useState("");
 
   const conversations = Array.from(
     new Set(p.items.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title)),
@@ -175,9 +177,16 @@ export function WeChatSkin(p: SkinProps) {
     const bLast = p.items.filter((i) => i.title === b).at(-1)?.time ?? "";
     return bLast.localeCompare(aLast);
   });
-  const contacts = Array.from(new Set(
-    p.items.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
-  )).sort((a, b) => a.localeCompare(b, "zh-CN"));
+  const contacts = Array.from(new Set([
+    ...p.items.map((i) => i.sender).filter((s) => s && s !== "我" && s !== "机主"),
+    ...addedFriends,
+  ])).sort((a, b) => a.localeCompare(b, "zh-CN"));
+  const friendDirectory = Array.from(new Set(p.items.flatMap((i) => [i.title, i.sender]).filter((s) => s && s !== "我" && s !== "机主")));
+  const friendMatches = addQuery.trim() ? friendDirectory.filter((name) => {
+    const related = p.items.filter((i) => i.title === name || i.sender === name);
+    const keys = [name, ...related.flatMap((i) => [i.meta.wechatId, i.meta.account, i.meta.phone, i.meta.handle])].filter(Boolean).join(" ").toLowerCase();
+    return keys.includes(addQuery.trim().toLowerCase());
+  }) : [];
   const posts = p.items.filter((i) => i.folder === "朋友圈" || i.kind === "post");
   const ownerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
   const filteredConversations = conversations.filter((name) =>
@@ -256,7 +265,48 @@ export function WeChatSkin(p: SkinProps) {
         </div>
       )}
 
-      {utility ? (
+      {utility === "添加朋友" ? (
+        <div className="wx-add-friend-page">
+          <label className="wx-add-search">
+            <Search size={19} />
+            <input aria-label="搜索微信号或手机号" placeholder="账号/手机号" value={addQuery} onChange={(e) => setAddQuery(e.target.value)} />
+            {addQuery && <button aria-label="清空搜索" onClick={() => setAddQuery("")}>×</button>}
+          </label>
+          {addQuery.trim() ? (
+            <div className="wx-add-results">
+              {friendMatches.length ? friendMatches.map((name) => {
+                const related = p.items.find((i) => i.title === name || i.sender === name);
+                const alreadyAdded = addedFriends.includes(name);
+                return (
+                  <div className="wx-add-result" key={name}>
+                    <Avatar name={name} src={related?.avatar} />
+                    <span><strong>{name}</strong><small>微信号：{related?.meta.wechatId || related?.meta.account || name}</small></span>
+                    <button disabled={alreadyAdded} onClick={() => setAddedFriends((v) => v.includes(name) ? v : [...v, name])}>{alreadyAdded ? "已添加" : "添加"}</button>
+                  </div>
+                );
+              }) : <div className="wx-add-no-results"><Search size={27} /><strong>没有找到相关用户</strong><span>请检查微信号或手机号是否正确</span></div>}
+            </div>
+          ) : (
+            <div className="wx-add-methods">
+              {[
+                {label:"扫一扫",desc:"扫描二维码名片",icon:ScanLine,color:"#269bd7"},
+                {label:"手机联系人",desc:"添加通讯录中的朋友",icon:Phone,color:"#20b879"},
+                {label:"雷达",desc:"添加身边的朋友",icon:Compass,color:"#7770ce"},
+                {label:"企业微信联系人",desc:"通过手机号搜索企业微信用户",icon:Users,color:"#2996c8"},
+                {label:"面对面建群",desc:"与身边的朋友进入同一个群聊",icon:Users,color:"#20b879"},
+                {label:"公众号",desc:"获取更多资讯",icon:BookOpen,color:"#268bd0"},
+                {label:"服务号",desc:"获取更多购物信息和服务",icon:Layers,color:"#e47768"},
+              ].map(({label,desc,icon:Icon,color}) => (
+                <button className="wx-add-method" key={label} onClick={() => setUtility(label)}>
+                  <Icon size={25} style={{color}} />
+                  <span><strong>{label}</strong><small>{desc}</small></span>
+                  <ChevronRight size={21} />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : utility ? (
         <div className="skin-scroll wx-utility">
           {utility === "聊天信息" && (
             <div className="wx-members">
