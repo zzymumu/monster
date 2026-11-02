@@ -46,11 +46,13 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(prank?.nextStage).toBe(17);
     expect(prank?.lines.map((line) => line.body)).toEqual([
       "我是你爸爸。",
-      "妳是？",
       "……蛤？",
       "妳哪位？我不認識妳喔。",
-      "好喔，那我先把妳刪掉了。掰。",
     ]);
+    expect(prank?.lines.some((line) => line.body === "妳是？")).toBe(false);
+    expect(CAT_RESCUE_CHOICES[17]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[17].some((choice) => /發錯人/.test(choice.lines[0].body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[17].every((choice) => choice.nextStage === 13)).toBe(true);
     expect(apology?.nextStage).toBe(20);
     expect(apology?.lines.some((line) => /發錯人/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[20]).toHaveLength(2);
