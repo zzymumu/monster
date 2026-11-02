@@ -3781,6 +3781,9 @@ label {
   padding-bottom: 23px;
   background: #fff;
 }
+.phone-screen:has(.wechat-ui) .app-screen:has(.independent-skin) {
+  padding-bottom: 0;
+}
 .phone-screen:has(.instagram-ui) .status-bar,
 .phone-screen:has(.whatsapp-ui) .status-bar {
   background: #fff;
