@@ -167,7 +167,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[22]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[23]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[24]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[25]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[25]).toHaveLength(1);
     const dinnerPromise = CAT_RESCUE_CHOICES[25].find((choice) => choice.id === "tease-owner");
     expect(dinnerPromise?.nextStage).toBe(58);
     expect(CAT_RESCUE_CHOICES[25]).toHaveLength(1);
