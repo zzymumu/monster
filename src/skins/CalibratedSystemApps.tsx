@@ -24,7 +24,7 @@ import {
 import { useSkinState } from "../skinState";
 import type { Item } from "../schema";
 import { meta, type Props } from "./shared";
-import { openStreetMapEmbed, useDeviceLocation } from "../deviceLocation";
+import { openStreetMapEmbed } from "../deviceLocation";
 import "../ios/native-apps.css";
 const healthTypes = [
   { id: "cycle", title: "经期追踪", icon: Activity, color: "#7361ff" },
@@ -410,38 +410,37 @@ export function WeatherSkin(p: Props) {
     [mode, setMode] = useState("temperature"),
     [sheet, setSheet] = useState(""),
     [query, setQuery] = useState("");
-  const { position, error: locationError, loading: locating, request } = useDeviceLocation();
+  const taipei = { latitude: 25.0330, longitude: 121.5654 };
   const [liveWeather, setLiveWeather] = useState<LiveWeather | null>(null);
   const [weatherError, setWeatherError] = useState("");
   const item = p.items[index] || p.items[0],
     hourly = listMeta(item, "hourly"),
     daily = listMeta(item, "daily");
   useEffect(() => {
-    if (!position) return;
     let cancelled = false;
     const load = async () => {
       setWeatherError("");
       try {
         const params = new URLSearchParams({
-          latitude: String(position.latitude),
-          longitude: String(position.longitude),
+          latitude: String(taipei.latitude),
+          longitude: String(taipei.longitude),
           current: "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m",
           hourly: "temperature_2m,precipitation_probability,wind_speed_10m",
           daily: "weather_code,temperature_2m_max,temperature_2m_min,sunrise",
-          timezone: "auto",
+          timezone: "Asia/Taipei",
           forecast_days: "5",
           forecast_hours: "18",
         });
         const [forecastResponse, placeResponse] = await Promise.all([
           fetch("https://api.open-meteo.com/v1/forecast?" + params.toString()),
-          fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.latitude}&longitude=${position.longitude}&localityLanguage=zh`),
+          Promise.resolve({ city: "台北市" }),
         ]);
         if (!forecastResponse.ok) throw new Error("天气服务暂时不可用");
         const data = await forecastResponse.json();
         const place = placeResponse.ok ? await placeResponse.json() : {};
-        const now = Date.now();
         const times: string[] = data.hourly?.time || [];
-        let start = times.findIndex((time) => new Date(time).getTime() >= now);
+        const currentLocalTime = String(data.current?.time || "");
+        let start = times.findIndex((time) => time >= currentLocalTime);
         if (start < 0) start = 0;
         const hourlyLive = times.slice(start, start + 6).map((time, offset) => ({
           time: offset === 0 ? "现在" : weatherClock(time),
@@ -473,8 +472,8 @@ export function WeatherSkin(p: Props) {
     };
     void load();
     return () => { cancelled = true; };
-  }, [position?.latitude, position?.longitude]);
-  const currentCity = liveWeather?.city || (item ? meta(item, "locationLabel", "城市") : "正在定位…");
+  }, []);
+  const currentCity = "台北市";
   const currentTemperature = liveWeather?.temperature ?? meta(item, "temperature", "—");
   const currentHigh = liveWeather?.high ?? meta(item, "high", "—");
   const currentLow = liveWeather?.low ?? meta(item, "low", "—");
@@ -514,7 +513,7 @@ export function WeatherSkin(p: Props) {
         >
           <strong>实时体感与空气</strong>
           <div className="weather-aqi-scale"><i style={{ left: "50%" }} /></div>
-          <p>{liveWeather ? `湿度 ${liveWeather.humidity}% · 风速 ${liveWeather.wind} km/h` : locationError || weatherError || "正在获取当前位置天气…"}</p>
+          <p>{liveWeather ? `湿度 ${liveWeather.humidity}% · 风速 ${liveWeather.wind} km/h` : weatherError || "正在获取台北天气…"}</p>
         </button>
         <section className="weather-native-card weather-hourly">
           <header>
@@ -676,18 +675,8 @@ export function WeatherSkin(p: Props) {
             </>
           ) : sheet === "天气地图" ? (
             <div className="weather-live-map">
-              {position ? (
-                <>
-                  <iframe title="当前位置天气地图" src={openStreetMapEmbed(position.latitude, position.longitude, 0.04)} loading="lazy" />
-                  <p>{currentCity} · {position.latitude.toFixed(4)}, {position.longitude.toFixed(4)}</p>
-                </>
-              ) : (
-                <div className="weather-map-empty">
-                  <Map size={48} />
-                  <p>{locationError || "需要允许定位权限才能显示当前位置地图"}</p>
-                  <button onClick={request} disabled={locating}>{locating ? "正在定位…" : "允许定位 / 重新定位"}</button>
-                </div>
-              )}
+              <iframe title="台北市天气地图" src={openStreetMapEmbed(25.0330, 121.5654, 0.04)} loading="lazy" />
+              <p>台北市 · 25.0330, 121.5654</p>
             </div>
           ) : (
             <div className="weather-section-detail">
