@@ -466,6 +466,52 @@ function PhoneRuntime({
     }, 10000);
     return () => window.clearTimeout(timer);
   }, [app, locked, ready, creator, work.id, work.updatedAt]);
+  // After the completed pickup/goodbye scene, staying in Xiaohongshu
+  // continuously for ten seconds triggers DaG's one-time "home yet?" message.
+  // Keep this separate from the existing YouTube timer and its original gate.
+  useEffect(() => {
+    if (creator || !ready || locked || app !== "redbook") return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      const wx = current.ui?.wechat ?? {};
+      if (Number(wx.wxReturnDinnerStage) !== -2 || wx.wxRedbookAfterPickupTriggered === true) return;
+      let catState: { messages?: Array<{ sender?: string; body?: string }> } = {};
+      try {
+        const raw = wx.catRescueState;
+        if (typeof raw === "string") catState = JSON.parse(raw);
+      } catch { catState = {}; }
+      const goodbyeExists = (catState.messages ?? []).some((item) =>
+        item.sender === "我" && item.body?.trim() === "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！"
+      );
+      if (!goodbyeExists) return;
+      let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+      try {
+        const raw = wx.wxCatPendingLines;
+        const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
+        if (Array.isArray(parsed)) queued = parsed;
+      } catch { queued = []; }
+      if (queued.some((line) => line.id === "redbook-after-pickup-home-check")) return;
+      queued.push({
+        id: "redbook-after-pickup-home-check",
+        sender: "大G",
+        body: "到家了嗎？",
+        thread: "大G",
+      });
+      update({
+        ...current,
+        ui: {
+          ...current.ui,
+          wechat: {
+            ...wx,
+            wxRedbookAfterPickupTriggered: true,
+            wxReturnDinnerStage: 111,
+            wxCatPendingLines: JSON.stringify(queued),
+          },
+        },
+      });
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [app, locked, ready, creator, work.id, work.updatedAt]);
   const installedApps = work.apps.filter((a) => a.installed);
   const apps = installedApps.filter((a) => a.visible);
   const unlock = (pin = "") => {
