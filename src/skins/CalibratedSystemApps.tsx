@@ -431,13 +431,9 @@ export function WeatherSkin(p: Props) {
           forecast_days: "5",
           forecast_hours: "18",
         });
-        const [forecastResponse, placeResponse] = await Promise.all([
-          fetch("https://api.open-meteo.com/v1/forecast?" + params.toString()),
-          Promise.resolve({ city: "台北市" }),
-        ]);
+        const forecastResponse = await fetch("https://api.open-meteo.com/v1/forecast?" + params.toString());
         if (!forecastResponse.ok) throw new Error("天气服务暂时不可用");
         const data = await forecastResponse.json();
-        const place = placeResponse.ok ? await placeResponse.json() : {};
         const times: string[] = data.hourly?.time || [];
         const currentLocalTime = String(data.current?.time || "");
         let start = times.findIndex((time) => time >= currentLocalTime);
@@ -453,7 +449,7 @@ export function WeatherSkin(p: Props) {
           low: Math.round(data.daily.temperature_2m_min[n]),
           high: Math.round(data.daily.temperature_2m_max[n]),
         }));
-        const city = place.city || place.locality || place.principalSubdivision || "当前位置";
+        const city = "台北市";
         if (!cancelled) setLiveWeather({
           city,
           temperature: Math.round(data.current.temperature_2m),
