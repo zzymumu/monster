@@ -697,6 +697,38 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "先等等！！！妳先不要一激動就全招了啦！他現在還不知道妳認出他了吧？", thread: "西蓝花" },
     ]},
   ],
+  94: [
+    { id: "broccoli-signature-first-round", label: "啊啊啊我先想办法！但我还没见到本人呢！", nextStage: 95, lines: [
+      { sender: "我", body: "啊啊啊妳先冷靜啦！我現在連人都還沒見到，哪有那麼快拿到簽名啦哈哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我不管啦！！！先幫我問問看嘛！如果真的可以，拜託一定要幫我簽名！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "最好寫我的名字！我想拿去跟大家炫耀，這可是怪獸本人欸！！！", thread: "西蓝花" },
+    ]},
+    { id: "broccoli-signature-tease", label: "你怎么比我还激动啦哈哈哈哈！", nextStage: 95, lines: [
+      { sender: "我", body: "妳怎麼比我還激動啦哈哈哈哈！我自己都還在狀況外欸！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "這能不激動嗎！！！妳這根本是偶像劇等級的奇遇欸！簽名一定要幫我問！！！", thread: "西蓝花" },
+    ]},
+  ],
+  95: [
+    { id: "broccoli-signature-promise", label: "好啦好啦，有机会我一定帮你问！", nextStage: 96, lines: [
+      { sender: "我", body: "好啦好啦，如果真的有機會我一定幫妳問！但妳先不要給我壓力啦哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "成交！！！我已經開始想像拿到簽名的樣子了，嗚嗚嗚我姐妹發達了！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且妳們見面吃飯的時候要記得自然一點，千萬不要緊張到講不出話喔！", thread: "西蓝花" },
+    ]},
+    { id: "broccoli-signature-laugh", label: "等我真的见到他再说啦！", nextStage: 96, lines: [
+      { sender: "我", body: "等我真的見到他再說啦！妳現在幻想得也太遠了吧哈哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我這叫未雨綢繆！！！簽名、見面、吃飯，妳一樣都不准漏掉細節！", thread: "西蓝花" },
+    ]},
+  ],
+  96: [
+    { id: "broccoli-return-date-question", label: "好啦我记住了！到时候回来跟你报告！", nextStage: 90, lines: [
+      { sender: "我", body: "好啦我記住了！到時候有什麼進展一定第一時間跟妳報告啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "說好了喔！！！欸對了，差點忘記問，怪獸到底什麼時候回來啊？", thread: "西蓝花" },
+    ]},
+    { id: "broccoli-return-date-tease", label: "你比我还期待吧哈哈哈哈！", nextStage: 90, lines: [
+      { sender: "我", body: "妳真的比我還期待欸哈哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那當然！！！但認真問啦，他什麼時候回來？妳有問到歸期嗎？", thread: "西蓝花" },
+    ]},
+  ],
   92: [
     { id: "explain-still-just-the-cat-finder", label: "对啊，他应该还以为我只是捡到猫、照着名牌联系他的路人而已……", nextStage: 39, lines: [
       { sender: "我", body: "對啊，他應該還以為我只是撿到貓、照著名牌聯絡他的路人而已……", thread: "西蓝花" },
@@ -991,13 +1023,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   89: [
-    { id: "pick-something-cute", label: "当然要穿得漂漂亮亮的！", nextStage: 90, lines: [
+    { id: "pick-something-cute", label: "当然要穿得漂漂亮亮的！", nextStage: 94, lines: [
       { sender: "我", body: "那當然要穿得漂漂亮亮的！這可是大事欸！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好啦好啦，先記著這件大事！對了，他有沒有說什麼時候回來？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "欸對了！幫我找簽名啦嗚嗚嗚，我姐妹發達了！！！", thread: "西蓝花" },
     ]},
-    { id: "outfit-nerves", label: "到时候再挑啦，我现在光想就紧张", nextStage: 90, lines: [
+    { id: "outfit-nerves", label: "到时候再挑啦，我现在光想就紧张", nextStage: 94, lines: [
       { sender: "我", body: "到時候再挑啦，我現在光想就緊張到不行。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈妳先深呼吸！說真的，他有沒有講什麼時候回來？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等等等等！妳真的要跟怪獸吃飯了欸！幫我問問能不能簽名啦，我姐妹要出息了！！！", thread: "西蓝花" },
     ]},
   ],
   90: [
@@ -1014,12 +1046,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "too-excited-to-remember", label: "哎呀！还不是因为太激动了嘛！", nextStage: 65, lines: [
       { sender: "我", body: "哎呀！還不是因為太激動了嘛！當下腦袋一片空白，哪還記得問啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳真的沒救了啦哈哈哈！我查了一下，好像在北京吧？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "不過他們行程常常很緊湊，妳先別急，等他回來再慢慢問清楚！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "沒事啦，應該最晚就下週的事情？妳先不用太著急！", thread: "西蓝花" },
     ]},
     { id: "laugh-it-off", label: "我那时候满脑子都是他答应请我吃饭了！", nextStage: 65, lines: [
       { sender: "我", body: "我那時候滿腦子都是他答應請我吃飯了，真的顧不上其他事啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈妳也太容易滿足！我看了一下，好像在北京吧？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好啦，等他回來再說！現在先把玩玩照顧好，別光顧著幻想約會喔！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "沒事啦，應該最晚就下週的事情？先把玩玩照顧好，等他回來再說！", thread: "西蓝花" },
     ]},
   ],
   65: [
