@@ -131,14 +131,15 @@ export function DeviceLock({
     "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九",
     "廿", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十",
   ];
+  const fallbackLunarDate = new Intl.DateTimeFormat("zh-CN-u-ca-chinese", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(lockDate).replace(/^\\d{4}/, "");
   const lunarDateLabel =
-    lunarYear && lunarMonth && lunarDayNames[lunarDayNumber]
-      ? `${lunarYear}年${lunarMonth}${lunarDayNames[lunarDayNumber]}`
-      : new Intl.DateTimeFormat("zh-CN-u-ca-chinese", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }).format(lockDate);
+    lunarMonth && lunarDayNames[lunarDayNumber]
+      ? `${lunarYear ? `${lunarYear}年` : ""}${lunarMonth}${lunarDayNames[lunarDayNumber]}`
+      : fallbackLunarDate;
   const lockDateLabel = `${solarDateLabel} · ${lunarDateLabel}`;
   return (
     <motion.div
