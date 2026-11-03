@@ -443,23 +443,29 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(ordered.at(-1)?.body).toBe("我已经到医院了。");
   });
 
-  it("keeps the original friend-added notice first and removes duplicate saved prank reactions", () => {
+  it("removes the duplicated DaG prank exchange while preserving the first chat sequence", () => {
     const addedNotice = makeItem({
-      id: "readd-notice",
+      id: "added-notice",
       title: "大G",
       sender: "我",
       body: "你已添加了大G，现在可以开始聊天了。",
-      time: "2026-11-02 21:05",
+      time: "2026-11-02 21:00",
       outgoing: true,
       kind: "event",
     });
-    const firstReaction = makeItem({ id: "reaction-1", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:01" });
-    const duplicateReaction = makeItem({ id: "reaction-2", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:04" });
-    const ordered = orderCatRescueThreadItems([firstReaction, addedNotice, duplicateReaction]);
-    expect(ordered[0].id).toBe("readd-notice");
+    const firstGreeting = makeItem({ id: "greeting-1", title: "大G", sender: "大G", body: "妳是？", time: "2026-11-02 21:01" });
+    const prank = makeItem({ id: "prank-1", title: "大G", sender: "我", body: "我是你爸爸。", time: "2026-11-02 21:02", outgoing: true });
+    const firstReaction = makeItem({ id: "reaction-1", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:03" });
+    const repeatedGreeting = makeItem({ id: "greeting-2", title: "大G", sender: "大G", body: "妳是？", time: "2026-11-02 21:04" });
+    const duplicateReaction = makeItem({ id: "reaction-2", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:05" });
+    const ordered = orderCatRescueThreadItems([addedNotice, firstGreeting, prank, firstReaction, repeatedGreeting, duplicateReaction]);
     const clean = filterPrankHistoryLines(ordered, true);
-    expect(clean.filter((item) => item.body === "……蛤？")).toHaveLength(1);
-    expect(clean.filter((item) => /添加了大G/.test(item.body))).toHaveLength(1);
+    expect(clean.map((item) => item.body)).toEqual([
+      "你已添加了大G，现在可以开始聊天了。",
+      "妳是？",
+      "我是你爸爸。",
+      "……蛤？",
+    ]);
   });
 
   it("keeps the prank and apology branches in the owner's conversation", () => {
