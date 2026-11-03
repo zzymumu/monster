@@ -241,7 +241,8 @@ export function NeteaseSkin(p: Props) {
   );
 }
 export function YouTubeSkin(p: Props) {
-  const channelUrl = "https://www.youtube.com/channel/UC5ieWR5T4WulmNLXQ8-wiDw";
+  const channelUrl = "https://www.youtube.com/@monsterbalaja531";
+  const playlistUrl = "https://www.youtube.com/playlist?list=UU5ieWR5T4WulmNLXQ8-wiDw";
   const uploadsPlaylist = "UU5ieWR5T4WulmNLXQ8-wiDw";
   const [tab, setTab] = useSkinState<string>(p, "monster-youtube-tab", "首页");
   return (
@@ -271,7 +272,7 @@ export function YouTubeSkin(p: Props) {
             <div style={{ borderRadius: 12, overflow: "hidden", background: "#000", aspectRatio: "16 / 9" }}>
               <iframe
                 title="Mayday Monster YouTube uploads"
-                src={`https://www.youtube-nocookie.com/embed/videoseries?list=${uploadsPlaylist}&rel=0`}
+                src={`https://www.youtube.com/embed?listType=playlist&list=${uploadsPlaylist}&rel=0`}
                 style={{ width: "100%", height: "100%", border: 0 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
@@ -281,8 +282,9 @@ export function YouTubeSkin(p: Props) {
             </div>
             <div style={{ padding: "12px 2px" }}>
               <strong>Mayday Monster · 视频列表</strong>
-              <p style={{ fontSize: 12, opacity: .65, margin: "5px 0 10px" }}>点击播放器即可播放频道公开上传的视频；视频由 YouTube 官方托管。</p>
-              <a href={channelUrl + "/videos"} target="_blank" rel="noreferrer">在 YouTube 查看全部视频 ↗</a>
+              <p style={{ fontSize: 12, opacity: .65, margin: "5px 0 10px" }}>这里接入的是怪兽个人频道的上传播放列表。打开完整列表可以逐个浏览和播放所有公开收录的视频；内容由 YouTube 官方托管。</p>
+              <a href={playlistUrl} target="_blank" rel="noreferrer">打开完整上传播放列表（全部视频）↗</a>
+              <div style={{ marginTop: 8 }}><a href={channelUrl + "/videos"} target="_blank" rel="noreferrer">打开怪兽个人频道 ↗</a></div>
             </div>
           </div>
         )}
