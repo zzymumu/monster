@@ -5320,3 +5320,93 @@
 .bilibili-ui .bili-featured-meta span { color: #999; font-size: 10px; }
 .bilibili-ui .bili-featured-meta button { align-self: flex-start; padding: 0; color: #d86f9b; font-size: 10px; }
 .bilibili-ui .bili-splash-image { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+
+/* Bilibili polish: reliable full-screen splash and a contained in-app player sheet. */
+.bilibili-ui { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.bilibili-ui .bili-splash {
+  position: absolute;
+  z-index: 140;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+  pointer-events: none;
+  animation: biliSplashOut 2.5s ease forwards;
+}
+.bilibili-ui .bili-splash-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.bilibili-ui .bili-topbar { flex: 0 0 auto; }
+.bilibili-ui .bili-channel-tabs { flex: 0 0 auto; }
+.bilibili-ui .catalog-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.bilibili-ui .bili-featured-poster img,
+.bilibili-ui .bili-video-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bilibili-ui .bili-player-overlay {
+  position: absolute;
+  z-index: 150;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  background: rgba(0,0,0,.48);
+}
+.bilibili-ui .bili-player-sheet {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #fff;
+}
+.bilibili-ui .bili-player-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: #000;
+}
+.bilibili-ui .bili-player-frame iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.bilibili-ui .bili-player-related button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 0;
+  text-align: left;
+}
+.bilibili-ui .bili-player-related button img {
+  display: block;
+  width: 104px;
+  height: 59px;
+  flex: 0 0 104px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+.bilibili-ui .bili-player-related button span {
+  min-width: 0;
+  color: #333;
+  font-size: 11px;
+  line-height: 1.45;
+}
