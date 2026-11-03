@@ -1122,6 +1122,9 @@ export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
   const [query, setQuery] = useState("");
   const [moments, setMoments] = useState(false);
+  const [contactRemarks, setContactRemarks] = useSkinState<Record<string, string>>(p, "wxContactRemarks", {});
+  const [remarkEditorContact, setRemarkEditorContact] = useState("");
+  const [remarkDraft, setRemarkDraft] = useState("");
 
   const [catRescueRaw, setCatRescueRaw] = useSkinState<string>(p, "catRescueState", "");
   // This flag is written only when the user explicitly finishes the friend-add
@@ -1209,7 +1212,24 @@ export function WeChatSkin(p: SkinProps) {
     }
   }, [catRescueRaw, pendingCatLinesRaw]);
 
-  const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
+  const canonicalContactName = (name: string) => name === "温尚翊" ? "大G" : name;
+  const displayName = (name: string) => {
+    const canonical = canonicalContactName(name);
+    return contactRemarks[canonical]?.trim() || canonical;
+  };
+  const openRemarkEditor = (name: string) => {
+    const canonical = canonicalContactName(name);
+    setRemarkEditorContact(canonical);
+    setRemarkDraft(contactRemarks[canonical] || canonical);
+  };
+  const saveContactRemark = () => {
+    const next = remarkDraft.trim();
+    if (!next || !remarkEditorContact) return;
+    setContactRemarks((current) => ({ ...current, [remarkEditorContact]: next }));
+    setRemarkEditorContact("");
+  };
+  const resolveContactName = (visible: string) =>
+    Object.entries(contactRemarks).find(([key, value]) => value === visible)?.[0] || visible;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
   // The canonical story transcript stores an explicit destination on every
   // line. Render it directly in that contact's conversation; do not infer
@@ -1870,6 +1890,19 @@ export function WeChatSkin(p: SkinProps) {
   };
   return (
     <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility} data-status-editor={statusEditorOpen}>
+      {remarkEditorContact && (
+        <div className="wx-friend-flow-backdrop" onClick={() => setRemarkEditorContact("")}>
+          <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="修改联系人备注" onClick={(event) => event.stopPropagation()} style={{ gap: 14 }}>
+            <strong style={{ fontSize: 18 }}>设置备注</strong>
+            <p style={{ margin: 0, color: "#888", fontSize: 13 }}>为「{canonicalContactName(remarkEditorContact)}」设置一个新备注</p>
+            <input autoFocus value={remarkDraft} maxLength={30} onChange={(event) => setRemarkDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") saveContactRemark(); if (event.key === "Escape") setRemarkEditorContact(""); }} placeholder="请输入联系人备注" style={{ width: "100%", boxSizing: "border-box", border: "1px solid #ddd", borderRadius: 9, padding: "12px", fontSize: 16, outline: "none" }} />
+            <div style={{ display: "flex", width: "100%", gap: 10 }}>
+              <button type="button" onClick={() => setRemarkEditorContact("")} style={{ flex: 1, border: 0, borderRadius: 9, padding: 11, background: "#f1f1f1", color: "#333" }}>取消</button>
+              <button type="button" disabled={!remarkDraft.trim()} onClick={saveContactRemark} style={{ flex: 1, border: 0, borderRadius: 9, padding: 11, background: remarkDraft.trim() ? "#07c160" : "#b8e8cc", color: "white" }}>确认</button>
+            </div>
+          </section>
+        </div>
+      )}
       {addIdModal && (
         <div className="wx-friend-flow-backdrop">
           <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="微信号">
@@ -1917,7 +1950,7 @@ export function WeChatSkin(p: SkinProps) {
         }}>
           {statusEditorOpen ? <span className="wx-status-close">×</span> : utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
         </button>
-        <strong>{statusEditorOpen ? "设个状态" : utility || (p.thread ? displayName(p.thread) : moments ? "朋友圈" : tab)}</strong>
+        <strong onClick={() => p.thread && !statusEditorOpen ? openRemarkEditor(p.thread) : undefined} style={p.thread ? { cursor: "pointer" } : undefined} title={p.thread ? "点击修改备注" : undefined}>{statusEditorOpen ? "设个状态" : utility || (p.thread ? displayName(p.thread) : moments ? "朋友圈" : tab)}</strong>
         <button aria-label={statusEditorOpen ? " " : p.thread ? "聊天详情" : "微信菜单"} onClick={() => statusEditorOpen ? undefined : p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>
           {statusEditorOpen ? null : p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}
         </button>
@@ -2199,7 +2232,7 @@ export function WeChatSkin(p: SkinProps) {
                 {contacts.filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => {
                   const avatarItem = allItems.find((i) => displayName(i.sender) === name || displayName(i.title) === name);
                   return <button className="wx-contact-row" key={name} onClick={() => openContact(name)}>
-                    <Avatar name={name} src={avatarItem?.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} /><span>{name}</span>
+                    <Avatar name={name} src={avatarItem?.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} /><span onClick={(event) => { event.stopPropagation(); openRemarkEditor(resolveContactName(name)); }} title="点击修改备注" style={{ cursor: "text" }}>{name}</span>
                   </button>;
                 })}
                 {!contacts.length && <p className="skin-empty">联系人会在聊天后显示在这里</p>}
