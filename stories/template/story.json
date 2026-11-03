@@ -1082,9 +1082,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-read-19"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1104,9 +1102,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-reply-choice-21"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1198,9 +1194,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-read-23"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1220,9 +1214,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-reply-choice-25"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1278,9 +1270,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-read-26"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1300,9 +1290,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-reply-choice-28"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1394,9 +1382,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-read-30"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1416,9 +1402,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-reply-choice-32"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1474,9 +1458,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-reply-choice-34"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1532,9 +1514,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-reply-choice-36"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1590,9 +1570,7 @@
           "value": true
         }
       ],
-      "next": [
-        "broccoli-reply-choice-38"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -2204,6 +2182,10 @@
           "target": "wx-broccoli-19"
         },
         {
+          "event": "read",
+          "target": "wx-broccoli-20"
+        },
+        {
           "choose": "broccoli-reply-21"
         },
         {
@@ -2222,6 +2204,10 @@
           "target": "wx-broccoli-23"
         },
         {
+          "event": "read",
+          "target": "wx-broccoli-24"
+        },
+        {
           "choose": "broccoli-reply-25"
         },
         {
@@ -2231,6 +2217,10 @@
         {
           "event": "read",
           "target": "wx-broccoli-26"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-27"
         },
         {
           "choose": "broccoli-reply-28"
@@ -2262,6 +2252,10 @@
           "target": "wx-broccoli-32"
         },
         {
+          "event": "read",
+          "target": "wx-broccoli-33"
+        },
+        {
           "choose": "broccoli-reply-34"
         },
         {
@@ -2269,11 +2263,19 @@
           "target": "wx-broccoli-34"
         },
         {
+          "event": "read",
+          "target": "wx-broccoli-35"
+        },
+        {
           "choose": "broccoli-reply-36"
         },
         {
           "event": "read",
           "target": "wx-broccoli-36"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-37"
         },
         {
           "choose": "broccoli-reply-38"
