@@ -52,6 +52,7 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("separates the name surprise from the nameplate explanation", () => {
+    expect(CAT_RESCUE_CHOICES[63][0].lines.some((line) => /吃(?:什麼|什么)/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[63][1].lines.some((line) => /吃(?:什麼|什么)/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[78][0].lines[0].body).toContain("我哪知道啦");
   });
