@@ -332,6 +332,7 @@ export function RedbookSkin(p: Props) {
   const [showSearch, setShowSearch] = useState(false);
   const [bottomTab, setBottomTab] = useState("首页");
   const [sortBy, setSortBy] = useState("推荐");
+  const [likedIds, setLikedIds] = useState<Record<string, boolean>>({});
   const categories = ["推荐", "RED", "直播", "热点", "短剧", "足球", "音乐"];
   const demoPosts: Item[] = [
     { id:"redbook-monster-01", title:"这次，他没有犹豫 02", body:"翻到好多年前的旧剪报，还是会为那句生日祝福心动。\n#五月天 #怪兽 #青春回忆", sender:"今天珍重🥕", avatar:"", kind:"post", media:"", time:"2026-11-03 20:18", likes:6, comments:[], meta:{art:"newspaper",category:"推荐"}, richText:"", hidden:false, unlock:"", password:"", folder:"推荐", favorite:false, outgoing:false, read:false },
@@ -404,13 +405,8 @@ export function RedbookSkin(p: Props) {
                   <button className="redbook-author" onClick={() => p.onItem(item)}><Avatar name={item.sender}/><span>{item.sender}</span></button>
                   <button className="redbook-like" aria-label={`喜欢${item.title}`} onClick={(e) => {
                     e.stopPropagation();
-                    const key = likedKey;
-                    const current = document.querySelector<HTMLElement>(`[data-redbook-like="${key}"]`);
-                    const liked = current?.dataset.liked === "true";
-                    if (current) current.dataset.liked = liked ? "false" : "true";
-                    current?.classList.toggle("liked", !liked);
-                    current?.querySelector("span") && (current.querySelector("span")!.textContent = String(item.likes + (liked ? 0 : 1)));
-                  }} data-redbook-like={likedKey} data-liked="false"><Heart size={16}/><span>{item.likes || ""}</span></button>
+                    setLikedIds((current) => ({ ...current, [item.id]: !current[item.id] }));
+                  }} data-redbook-like={likedKey} aria-pressed={!!likedIds[item.id]} className={likedIds[item.id] ? "redbook-like liked" : "redbook-like"}><Heart size={16}/><span>{item.likes + (likedIds[item.id] ? 1 : 0) || ""}</span></button>
                 </div>
               </article>;
             })}
