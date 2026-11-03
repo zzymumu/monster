@@ -1225,6 +1225,7 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const handledReturnDinnerChoicesRef = useRef(new Set<string>());
   const [postPickupStoryMigrated, setPostPickupStoryMigrated] = useSkinState<boolean>(p, "wxPostPickupStoryMigratedV1", false);
   useEffect(() => {
     // Older saves ended stage 100 at -1. Resume the newly added follow-up once,
@@ -2225,6 +2226,9 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
+                      const choiceKey = returnDinnerStage + ":" + choice.id;
+                      if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
+                      handledReturnDinnerChoicesRef.current.add(choiceKey);
                       appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
                       setReturnDinnerStage(choice.nextStage);
                       // If the next stage belongs to another contact, keep the
