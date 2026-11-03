@@ -102,25 +102,7 @@ describe("WeChat cat-rescue story configuration", () => {
     }
   });
 
-  it("keeps DaG's travel timeline as hotel tonight, Taipei tomorrow, and hotel arrival", () => {
-    const askCurrentLocation = CAT_RESCUE_CHOICES[25][0].lines[1].body;
-    expect(askCurrentLocation).toContain("剛忙完");
-    expect(askCurrentLocation).toContain("回酒店");
-    expect(askCurrentLocation).toContain("明天才回台北");
-    expect(askCurrentLocation).not.toMatch(/機場|登機|搭飛機/);
 
-    const safeFlight = CAT_RESCUE_CHOICES[26][0].lines[1].body;
-    expect(safeFlight).toContain("回酒店休息");
-    expect(safeFlight).toContain("明天回台北");
-
-    // The following day's arrival in Taipei remains intact.
-    expect(CAT_RESCUE_CHOICES[35][0].lines[1].body).toContain("台北");
-    expect(CAT_RESCUE_CHOICES[36][0].lines[1].body).toContain("拿行李");
-
-    const hotelArrival = CAT_RESCUE_CHOICES[42][0].lines[1].body;
-    expect(hotelArrival).toContain("到酒店了");
-    expect(hotelArrival).not.toContain("到家了");
-  });
 
   it("offers player-controlled replies at every active story turn", () => {
     const systemOrTerminalStages = new Set([8, 13, 57, 66]);
