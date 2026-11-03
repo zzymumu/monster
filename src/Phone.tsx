@@ -195,6 +195,7 @@ function PhoneRuntime({
   const [own, setOwn] = useState(() => initialRuntime(work));
   const [ready, setReady] = useState(creator || !!external);
   const [loadError, setLoadError] = useState("");
+  const [saveInfo, setSaveInfo] = useState<{ hasSave: boolean; savedAt: number | null }>({ hasSave: false, savedAt: null });
   // One stable save slot per game/work. Deployments and release query strings
   // must never fork or reset the player's local progress.
   const saveId = work.id;
@@ -240,7 +241,9 @@ function PhoneRuntime({
         const saved = currentSave ?? await db.saves.get(`${work.id}::default`);
         if (!active) return;
         if (saved && saved.state.workId === work.id) {
-          if (!currentSave) await db.saves.put({ id: saveId, state: saved.state });
+          const savedAt = saved.savedAt ?? Date.now();
+          if (!currentSave || !saved.savedAt) await db.saves.put({ id: saveId, state: saved.state, savedAt });
+          setSaveInfo({ hasSave: true, savedAt });
           // Keep story progress, chat history, choices, notifications and UI
           // state across code/content deployments. Only migrate the revision.
           const fresh = dispatch(work, initialRuntime(work), "start");
@@ -254,12 +257,14 @@ function PhoneRuntime({
           });
         } else {
           setOwn(dispatch(work, initialRuntime(work), "start"));
+          setSaveInfo({ hasSave: false, savedAt: null });
           if (saved) setLoadError("存档与当前作品不匹配，已创建新进度。");
         }
         setReady(true);
       })
       .catch(() => {
         setOwn(dispatch(work, initialRuntime(work), "start"));
+        setSaveInfo({ hasSave: false, savedAt: null });
         setLoadError("无法读取本地存档。本次仍可游玩。");
         setReady(true);
       });
@@ -272,7 +277,10 @@ function PhoneRuntime({
     let active = true;
     const persist = () => {
       const snapshot = runtimeRef.current;
-      void db.saves.put({ id: saveId, state: snapshot }).catch(() => {
+      const savedAt = Date.now();
+      void db.saves.put({ id: saveId, state: snapshot, savedAt }).then(() => {
+        if (active) setSaveInfo({ hasSave: true, savedAt });
+      }).catch(() => {
         if (active) setLoadError("自动存档失败，请检查浏览器存储权限或导出备份。");
       });
     };
@@ -421,6 +429,27 @@ function PhoneRuntime({
     appSnapshots.current.set(app, snapshot);
     for (const id of appSnapshots.current.keys())
       if (!recent.includes(id) && id !== app) appSnapshots.current.delete(id);
+  };
+  const saveNow = async () => {
+    if (creator || external || !ready) return;
+    const savedAt = Date.now();
+    await db.saves.put({ id: saveId, state: runtimeRef.current, savedAt });
+    setSaveInfo({ hasSave: true, savedAt });
+    setLoadError("");
+  };
+  const clearSaveAndRestart = async () => {
+    if (creator || external || !ready) return;
+    const fresh = dispatch(work, initialRuntime(work), "start");
+    // Replace the stable save slot with a clean initial runtime. Future updates
+    // continue writing to the same key, so the next deployment can still migrate it.
+    runtimeRef.current = fresh;
+    setOwn(fresh);
+    onRuntime?.(fresh);
+    const savedAt = Date.now();
+    await db.saves.put({ id: saveId, state: fresh, savedAt });
+    setSaveInfo({ hasSave: true, savedAt });
+    setLoadError("");
+    setApp("");
   };
   const open = (id: string) => {
     if (!work.apps.some((a) => a.id === id && a.installed)) return;
@@ -782,6 +811,10 @@ function PhoneRuntime({
                     );
                   }}
                   work={work}
+                  saveInfo={saveInfo}
+                  saveReady={ready && !creator && !external}
+                  onSaveNow={saveNow}
+                  onClearSave={clearSaveAndRestart}
                 />
               </AppWindow>
             ) : (
@@ -1188,6 +1221,10 @@ function AppContent({
   onSettings,
   onUi,
   work,
+  saveInfo,
+  saveReady,
+  onSaveNow,
+  onClearSave,
 }: {
   app: AppPlugin;
   name: string;
@@ -1203,6 +1240,10 @@ function AppContent({
   onSettings?: () => void;
   onUi?: (key: string, value: UiValue) => void;
   work: Work;
+  saveInfo: { hasSave: boolean; savedAt: number | null };
+  saveReady: boolean;
+  onSaveNow: () => void;
+  onClearSave: () => void;
 }) {
   const [detail, setDetail] = useState<Item | null>(null);
   const [thread, setThread] = useState(() => String(state.ui?.[app.id]?.openThread ?? ""));
@@ -1329,6 +1370,11 @@ function AppContent({
               onAdd={onAdd}
               onBack={onBack}
               thread={thread}
+              hasSave={saveInfo.hasSave}
+              savedAt={saveInfo.savedAt}
+              saveReady={saveReady}
+              onSaveNow={onSaveNow}
+              onClearSave={onClearSave}
               onThread={(next) => {
                 setThread(next);
                 if (app.id === "wechat") onUi?.("openThread", next);
