@@ -1380,7 +1380,7 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 11, chat: "大G", id: "suggest-dinner-before-pickup", label: "要不然我們先吃飯，吃完再去我家接玩玩？", nextStage: 12, lines: [
       { sender: "我", body: "要不然我們先吃飯，吃完再去我家接玩玩？", thread: "大G" },
-      { sender: "大G", body: "嗯……我想想喔。這樣好像也可以，不過妳家附近有沒有方便吃飯的地方？", thread: "大G" },
+      { sender: "大G", body: "嗯……我想想喔。這樣好像也可以欸，先吃飯再去接玩玩，時間上應該也還好。", thread: "大G" },
     ]},
     { stage: 12, chat: "大G", id: "suggest-nearby-restaurant", label: "到時候吃飯可以找我家附近的地方啊，吃完再過去接牠。", nextStage: 13, lines: [
       { sender: "我", body: "到時候吃飯可以找我家附近的地方啊，吃完再過去接牠。", thread: "大G" },
@@ -1434,21 +1434,13 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "對啊！牠現在每天都黏著我，常常一副不想理我的樣子，結果又一直跟前跟後。", thread: "大G" },
       { sender: "大G", body: "哈哈哈哈，這很像牠欸！明明就很愛跟，還要裝作一副跩跩的樣子。聽起來牠真的被妳照顧得很好，我也放心多了。", thread: "大G" },
     ]},
-    { stage: 25, chat: "大G", id: "confirm-time", label: "那我们就约明天晚上吧？你先把玩玩安顿好，再跟我说时间就好。", nextStage: 26, lines: [
-      { sender: "我", body: "那我們就約明天晚上吧？你先把玩玩安頓好，再跟我說時間就好，我明天都可以配合。", thread: "大G" },
-      { sender: "大G", body: "好啊，那就先約明天晚上！我明天出發前再跟妳聯絡，接到玩玩、安頓好之後再跟妳確認時間。", thread: "大G" },
+    { stage: 25, chat: "大G", id: "ask-current-location", label: "对了，你现在还在外面吗？", nextStage: 26, lines: [
+      { sender: "我", body: "對了，你現在還在外面嗎？", thread: "大G" },
+      { sender: "大G", body: "對啊，我現在在機場，準備要登機了。今天先搭飛機回去，明天就可以去找玩玩了。", thread: "大G" },
     ]},
-    { stage: 26, chat: "大G", id: "confirm-before-flight", label: "好，那你明天安顿好玩玩再跟我说，我等你消息。", nextStage: 27, lines: [
-      { sender: "我", body: "好，那你明天安頓好玩玩再跟我說，我等你消息。", thread: "大G" },
-      { sender: "大G", body: "沒問題啦，明天我出發前會再跟妳聯絡，餐廳也可以到時候再確認。今天我先趕回去，晚點還要準備一下。", thread: "大G" },
-    ]},
-    { stage: 27, chat: "大G", id: "ask-flight", label: "对了，你现在还在外地吗？是不是差不多要登机了？", nextStage: 28, lines: [
-      { sender: "我", body: "對了，你現在還在外地嗎？是不是差不多要登機了？", thread: "大G" },
-      { sender: "大G", body: "對啊，我現在準備要去登機了。今天先搭飛機回去，明天就可以去找玩玩了。", thread: "大G" },
-    ]},
-    { stage: 28, chat: "大G", id: "safe-flight", label: "好啦，那你快去登机，路上小心，到了再跟我说！", nextStage: 29, lines: [
-      { sender: "我", body: "好啦，那你快去登機，路上小心，到了再跟我說！", thread: "大G" },
-      { sender: "大G", body: "好啦好啦，我先進去了。謝謝妳喔，明天見！我到了再跟妳說，掰掰。", thread: "大G" },
+    { stage: 26, chat: "大G", id: "safe-flight", label: "好啦，那你一路平安，路上小心！", nextStage: 27, lines: [
+      { sender: "我", body: "好啦，那你一路平安，路上小心！", thread: "大G" },
+      { sender: "大G", body: "好，謝謝妳啦！我先去登機了，明天見，晚點有空再跟妳說。掰掰！", thread: "大G" },
     ]},
   ];
   useEffect(() => {
