@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Heart,
   Users,
@@ -24,6 +24,7 @@ import {
 import { useSkinState } from "../skinState";
 import type { Item } from "../schema";
 import { meta, type Props } from "./shared";
+import { openStreetMapEmbed, useDeviceLocation } from "../deviceLocation";
 import "../ios/native-apps.css";
 const healthTypes = [
   { id: "cycle", title: "经期追踪", icon: Activity, color: "#7361ff" },
@@ -373,14 +374,111 @@ function listMeta(
     return [];
   }
 }
+type LiveWeather = {
+  city: string;
+  temperature: number;
+  high: number;
+  low: number;
+  condition: string;
+  humidity: number;
+  wind: number;
+  sunrise: string;
+  hourly: { time: string; temperature: number; rain: number; wind: number }[];
+  daily: { label: string; low: number; high: number }[];
+};
+function weatherDescription(code: number) {
+  if (code === 0) return "晴朗";
+  if ([1, 2].includes(code)) return "大致晴朗";
+  if (code === 3) return "阴天";
+  if ([45, 48].includes(code)) return "有雾";
+  if ([51, 53, 55, 56, 57].includes(code)) return "毛毛雨";
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "下雨";
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return "下雪";
+  if ([95, 96, 99].includes(code)) return "雷暴";
+  return "天气状况";
+}
+function weatherClock(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleTimeString(undefined, { hour: "numeric", hour12: true });
+}
 export function WeatherSkin(p: Props) {
   const [index, setIndex] = useSkinState<number>(p, "city", 0),
     [mode, setMode] = useState("temperature"),
     [sheet, setSheet] = useState(""),
     [query, setQuery] = useState("");
+  const { position, error: locationError, loading: locating, request } = useDeviceLocation();
+  const [liveWeather, setLiveWeather] = useState<LiveWeather | null>(null);
+  const [weatherError, setWeatherError] = useState("");
   const item = p.items[index] || p.items[0],
     hourly = listMeta(item, "hourly"),
     daily = listMeta(item, "daily");
+  useEffect(() => {
+    if (!position) return;
+    let cancelled = false;
+    const load = async () => {
+      setWeatherError("");
+      try {
+        const params = new URLSearchParams({
+          latitude: String(position.latitude),
+          longitude: String(position.longitude),
+          current: "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m",
+          hourly: "temperature_2m,precipitation_probability,wind_speed_10m",
+          daily: "weather_code,temperature_2m_max,temperature_2m_min,sunrise",
+          timezone: "auto",
+          forecast_days: "5",
+          forecast_hours: "18",
+        });
+        const [forecastResponse, placeResponse] = await Promise.all([
+          fetch("https://api.open-meteo.com/v1/forecast?" + params.toString()),
+          fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.latitude}&longitude=${position.longitude}&localityLanguage=zh`),
+        ]);
+        if (!forecastResponse.ok) throw new Error("天气服务暂时不可用");
+        const data = await forecastResponse.json();
+        const place = placeResponse.ok ? await placeResponse.json() : {};
+        const now = Date.now();
+        const times: string[] = data.hourly?.time || [];
+        let start = times.findIndex((time) => new Date(time).getTime() >= now);
+        if (start < 0) start = 0;
+        const hourlyLive = times.slice(start, start + 6).map((time, offset) => ({
+          time: offset === 0 ? "现在" : weatherClock(time),
+          temperature: Math.round(data.hourly.temperature_2m[start + offset]),
+          rain: Math.round(data.hourly.precipitation_probability?.[start + offset] ?? 0),
+          wind: Math.round(data.hourly.wind_speed_10m?.[start + offset] ?? 0),
+        }));
+        const dailyLive = (data.daily?.time || []).slice(0, 5).map((date: string, n: number) => ({
+          label: n === 0 ? "今天" : new Date(date + "T12:00:00").toLocaleDateString(undefined, { weekday: "short" }),
+          low: Math.round(data.daily.temperature_2m_min[n]),
+          high: Math.round(data.daily.temperature_2m_max[n]),
+        }));
+        const city = place.city || place.locality || place.principalSubdivision || "当前位置";
+        if (!cancelled) setLiveWeather({
+          city,
+          temperature: Math.round(data.current.temperature_2m),
+          high: Math.round(data.daily.temperature_2m_max[0]),
+          low: Math.round(data.daily.temperature_2m_min[0]),
+          condition: weatherDescription(data.current.weather_code),
+          humidity: Math.round(data.current.relative_humidity_2m),
+          wind: Math.round(data.current.wind_speed_10m),
+          sunrise: data.daily.sunrise?.[0] ? weatherClock(data.daily.sunrise[0]) : "—",
+          hourly: hourlyLive,
+          daily: dailyLive,
+        });
+      } catch (reason) {
+        if (!cancelled) setWeatherError(reason instanceof Error ? reason.message : "天气数据读取失败");
+      }
+    };
+    void load();
+    return () => { cancelled = true; };
+  }, [position?.latitude, position?.longitude]);
+  const currentCity = liveWeather?.city || (item ? meta(item, "locationLabel", "城市") : "正在定位…");
+  const currentTemperature = liveWeather?.temperature ?? meta(item, "temperature", "—");
+  const currentHigh = liveWeather?.high ?? meta(item, "high", "—");
+  const currentLow = liveWeather?.low ?? meta(item, "low", "—");
+  const currentCondition = liveWeather?.condition ?? meta(item, "condition", "正在获取天气");
+  const currentHourly = liveWeather?.hourly || hourly;
+  const currentDaily = liveWeather?.daily || daily;
   const read = () => {
     if (item) {
       if (p.creator || item.password) p.onItem(item);
@@ -395,14 +493,14 @@ export function WeatherSkin(p: Props) {
       <div className="weather-stars" aria-hidden="true" />
       <div className="weather-native-scroll">
         <section className="weather-native-current">
-          <small>{item ? meta(item, "locationLabel", "城市") : "天气"}</small>
-          <h1>{item?.title || "未添加城市"}</h1>
-          <output>{meta(item, "temperature", "—")}°</output>
+          <small>{currentCity}</small>
+          <h1>{currentTemperature}°</h1>
+          <output>{currentTemperature}°</output>
           <div className="weather-high-low">
-            <span>最高 {meta(item, "high", "—")}°</span>
-            <span>最低 {meta(item, "low", "—")}°</span>
+            <span>最高 {currentHigh}°</span>
+            <span>最低 {currentLow}°</span>
           </div>
-          <p>{meta(item, "condition", "暂无天气数据")}</p>
+          <p>{currentCondition}</p>
           <MoonStar className="weather-moon-art" size={55} />
         </section>
         <button
@@ -412,24 +510,9 @@ export function WeatherSkin(p: Props) {
             setSheet("空气质量");
           }}
         >
-          <strong>
-            {meta(item, "aqi", "—")} · {meta(item, "aqiLabel", "空气质量")}
-          </strong>
-          <div className="weather-aqi-scale">
-            <i
-              style={{
-                left: Number.isFinite(Number(meta(item, "aqi")))
-                  ? Math.max(0, Math.min(95, Number(meta(item, "aqi")) / 5)) +
-                    "%"
-                  : "0%",
-              }}
-            />
-          </div>
-          <p>
-            {item?.meta.aqi
-              ? `当前 AQI (CN) 为 ${item.meta.aqi}。`
-              : "暂无空气质量数据"}
-          </p>
+          <strong>实时体感与空气</strong>
+          <div className="weather-aqi-scale"><i style={{ left: "50%" }} /></div>
+          <p>{liveWeather ? `湿度 ${liveWeather.humidity}% · 风速 ${liveWeather.wind} km/h` : locationError || weatherError || "正在获取当前位置天气…"}</p>
         </button>
         <section className="weather-native-card weather-hourly">
           <header>
@@ -473,8 +556,8 @@ export function WeatherSkin(p: Props) {
                 }}
               >
                 <strong>
-                  {hourly[n]?.time ||
-                    ["现在", "—时", "—时", "—时", "—时", "日出"][n]}
+                  {currentHourly[n]?.time ||
+                    ["现在", "—时", "—时", "—时", "—时", "—时"][n]}
                 </strong>
                 {n === 5 ? (
                   <Sunrise size={28} color="#ffd60a" />
@@ -485,23 +568,23 @@ export function WeatherSkin(p: Props) {
                   {n === 5
                     ? meta(item, "sunrise", "—")
                     : mode === "temperature"
-                      ? (hourly[n]?.temperature ?? "—") + "°"
+                      ? (currentHourly[n]?.temperature ?? "—") + "°"
                       : mode === "rain"
-                        ? meta(item, "rain", "—")
-                        : meta(item, "wind", "—")}
+                        ? (currentHourly[n]?.rain ?? meta(item, "rain", "—")) + "%"
+                        : (currentHourly[n]?.wind ?? meta(item, "wind", "—")) + " km/h"}
                 </span>
               </button>
             ))}
           </div>
         </section>
         <section className="weather-native-card weather-days">
-          {(daily.length
-            ? daily
+          {(currentDaily.length
+            ? currentDaily
             : [
                 {
                   label: "今天",
-                  low: meta(item, "low", "—"),
-                  high: meta(item, "high", "—"),
+                  low: currentLow,
+                  high: currentHigh,
                 },
               ]
           ).map((d, n) => (
@@ -590,9 +673,19 @@ export function WeatherSkin(p: Props) {
               )}
             </>
           ) : sheet === "天气地图" ? (
-            <div className="weather-map-empty">
-              <Map size={60} />
-              <p>暂无地图数据</p>
+            <div className="weather-live-map">
+              {position ? (
+                <>
+                  <iframe title="当前位置天气地图" src={openStreetMapEmbed(position.latitude, position.longitude, 0.04)} loading="lazy" />
+                  <p>{currentCity} · {position.latitude.toFixed(4)}, {position.longitude.toFixed(4)}</p>
+                </>
+              ) : (
+                <div className="weather-map-empty">
+                  <Map size={48} />
+                  <p>{locationError || "需要允许定位权限才能显示当前位置地图"}</p>
+                  <button onClick={request} disabled={locating}>{locating ? "正在定位…" : "允许定位 / 重新定位"}</button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="weather-section-detail">
