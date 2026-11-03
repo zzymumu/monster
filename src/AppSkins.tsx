@@ -266,7 +266,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 105, 106, 107, 108, 109, 110]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -1225,6 +1225,15 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [postPickupStoryMigrated, setPostPickupStoryMigrated] = useSkinState<boolean>(p, "wxPostPickupStoryMigratedV1", false);
+  useEffect(() => {
+    // Older saves ended stage 100 at -1. Resume the newly added follow-up once,
+    // without replaying or rewriting any existing messages.
+    if (!postPickupStoryMigrated && returnDinnerStage === -1 && catRescue.branch === "monster-cat") {
+      setReturnDinnerStage(101);
+      setPostPickupStoryMigrated(true);
+    }
+  }, [postPickupStoryMigrated, returnDinnerStage, catRescue.branch]);
   const [meetupDayMigrated, setMeetupDayMigrated] = useSkinState<boolean>(p, "wxMeetupDayMigrationV1", false);
   useEffect(() => {
     if (meetupDayMigrated || catRescue.branch !== "monster-cat") return;
@@ -1561,9 +1570,50 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "妳亂說什麼啦！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈哈好啦，我開玩笑的啦！妳快去準備啦，不要讓人家等妳！", thread: "西蓝花" },
     ]},
-    { stage: 100, chat: "西蓝花", id: "go-get-ready-now", label: "好啦好啦！我现在就去准备！", nextStage: -1, lines: [
+    { stage: 100, chat: "西蓝花", id: "go-get-ready-now", label: "好啦好啦！我现在就去准备！", nextStage: 101, lines: [
       { sender: "我", body: "好啦好啦！我現在就去準備！", thread: "西蓝花" },
       { sender: "西蓝花", body: "快去快去！等妳忙完再跟我說，祝妳一切順利！", thread: "西蓝花" },
+    ]},
+    { stage: 101, chat: "西蓝花", id: "scream-monster-handsome", label: "救命啊啊啊怪兽好帅！！真人比照片好看无数倍，怎么可以这么帅？？？", nextStage: 102, lines: [
+      { sender: "我", body: "救命啊啊啊怪獸好帥……我的天真人比照片好看無數倍，怎麼可以這麼帥？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "冷靜。幫我要簽名了嗎？", thread: "西蓝花" },
+    ]},
+    { stage: 102, chat: "西蓝花", id: "did-not-reveal-fan", label: "我都没敢暴露我是粉丝！要什么签名啊！！", nextStage: 103, lines: [
+      { sender: "我", body: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "啊啊啊啊啊妳怎麼這麼沒用！！！這種近距離接觸的機會欸！！！", thread: "西蓝花" },
+      { sender: "大G", body: "剛剛帶玩玩到家了，牠一路上都很乖。看得出來妳真的把牠照顧得很好，謝謝妳這段時間這麼用心照顧牠。", thread: "大G" },
+    ]},
+    { stage: 103, chat: "大G", id: "reply-thanks-for-wanwan", label: "没事啦，应该的！看到玩玩平安到家我就放心了。", nextStage: 104, lines: [
+      { sender: "我", body: "沒事啦，應該的！看到玩玩平安到家我就放心了。", thread: "大G" },
+      { sender: "大G", body: "我先帶玩玩在家裡玩一會，晚上六點我去找妳吃飯可以嗎？我開車過去接妳。", thread: "大G" },
+    ]},
+    { stage: 104, chat: "大G", id: "accept-six-pm-pickup", label: "可以的～那你快陪玩玩吧！", nextStage: 105, lines: [
+      { sender: "我", body: "可以的～那你快陪玩玩吧！", thread: "大G" },
+      { sender: "大G", body: "好，那我先陪牠玩一會，晚點見。", thread: "大G" },
+    ]},
+    { stage: 105, chat: "西蓝花", id: "scream-he-is-driving-to-get-me", label: "啊啊啊啊他说要来开车接我！！怪兽！亲自！开车！！", nextStage: 106, lines: [
+      { sender: "我", body: "啊啊啊啊啊啊他說要來開車接我！！怪獸！親自！開車！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我真的怕妳下一秒開心到暈過去欸！！！", thread: "西蓝花" },
+    ]},
+    { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
+      { sender: "我", body: "我真的快暈了……妳不要再說了！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下，先回答我！他鼻子挺不挺？皮膚白不白？本人是不是比照片還好看？", thread: "西蓝花" },
+    ]},
+    { stage: 107, chat: "西蓝花", id: "insist-i-was-composed", label: "你乱说什么啊！！我很矜持的好不好！！", nextStage: 108, lines: [
+      { sender: "我", body: "妳亂說什麼啊！！我很矜持的好不好！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好好好，矜持。那我再問一個——你們有沒有肢體接觸？有沒有碰到手？快從實招來！", thread: "西蓝花" },
+    ]},
+    { stage: 108, chat: "西蓝花", id: "deny-contact-teasing", label: "没有啦！！就是正常把玩玩交给他而已！！", nextStage: 109, lines: [
+      { sender: "我", body: "沒有啦！！就是正常把玩玩交給他而已！！妳不要腦補了啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈好啦好啦，不逗妳了。不過妳現在是不是已經開始想晚上要穿什麼了？", thread: "西蓝花" },
+    ]},
+    { stage: 109, chat: "西蓝花", id: "shower-mask-and-date-prep", label: "不说了嘿嘿，我要去洗澡敷面膜，美美地去吃晚饭～哦吼吼！", nextStage: 110, lines: [
+      { sender: "我", body: "不說了嘿嘿，我要去洗澡敷面膜，美美地去吃晚飯～哦吼吼！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "嘖嘖，見色忘友欸！剛剛還在這裡跟我尖叫，現在就急著去洗澡敷面膜了喔？", thread: "西蓝花" },
+    ]},
+    { stage: 110, chat: "西蓝花", id: "bestie-begging-goodbye", label: "哎呀～不要这样嘛！我洗完澡再跟你说啦！", nextStage: -1, lines: [
+      { sender: "我", body: "哎呀～不要這樣嘛！我洗完澡再跟妳說啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，快去準備！晚上吃完飯記得回來跟我報告，細節一個都不准漏掉！", thread: "西蓝花" },
     ]},
     { stage: 46, chat: "西蓝花", id: "private-room-and-queue", label: "好像也是……那到时候我提前去排队好了！不过我又开始烦恼明天穿什么了。", nextStage: 47, lines: [
       { sender: "我", body: "好像也是欸……那就找個包廂好了！人多的話我到時候提前去排隊，先把位置弄好。可是……我現在又開始煩惱明天到底要穿什麼了。", thread: "西蓝花" },
