@@ -266,7 +266,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -1524,6 +1524,22 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "可是人會不會很多啊？他畢竟是大明星欸，跟他一起去熱炒店會不會不太方便？", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳們找個包廂不就好了！而且他自己都說要去吃熱炒了，妳怕什麼啦？", thread: "西蓝花" },
     ]},
+    { stage: 97, chat: "西蓝花", id: "tell-broccoli-he-is-nearby", label: "啊啊啊！他说还有半小时就到我家附近了！！", nextStage: 98, lines: [
+      { sender: "我", body: "啊啊啊啊啊！他剛剛跟我說還有半小時就到我家附近了！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下！！！妳化妝了嗎？昨天有好好睡覺嗎？？？", thread: "西蓝花" },
+    ]},
+    { stage: 98, chat: "西蓝花", id: "admit-not-ready", label: "没有……昨天太兴奋了，根本没睡好，也还没来得及化妆。", nextStage: 99, lines: [
+      { sender: "我", body: "沒有……我昨天太興奮了，根本沒睡好，而且也還沒來得及化妝。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我就知道……算了啦，他搞不好就喜歡清純的啊。", thread: "西蓝花" },
+    ]},
+    { stage: 99, chat: "西蓝花", id: "protest-pure-look", label: "你乱说什么啦！！", nextStage: 100, lines: [
+      { sender: "我", body: "妳亂說什麼啦！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈哈好啦，我開玩笑的啦！妳快去準備啦，不要讓人家等妳！", thread: "西蓝花" },
+    ]},
+    { stage: 100, chat: "西蓝花", id: "go-get-ready-now", label: "好啦好啦！我现在就去准备！", nextStage: -1, lines: [
+      { sender: "我", body: "好啦好啦！我現在就去準備！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "快去快去！等妳忙完再跟我說，祝妳一切順利！", thread: "西蓝花" },
+    ]},
     { stage: 46, chat: "西蓝花", id: "private-room-and-queue", label: "好像也是……那到时候我提前去排队好了！不过我又开始烦恼明天穿什么了。", nextStage: 47, lines: [
       { sender: "我", body: "好像也是欸……那就找個包廂好了！人多的話我到時候提前去排隊，先把位置弄好。可是……我現在又開始煩惱明天到底要穿什麼了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈妳也太忙了吧，餐廳都還沒吃到，現在先煩惱穿搭喔？", thread: "西蓝花" },
@@ -1578,11 +1594,11 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 38, chat: "大G", id: "praise-restaurant", label: "对啊！我看评价很好，而且真的超好吃的！", nextStage: 39, lines: [
       { sender: "我", body: "對啊！我看評價很好，而且真的超好吃的！", thread: "大G" },
-      { sender: "大G", body: "哈哈，那我明天有口福了。唉，我最近工作真的有點忙，平常常常隨便吃個便當就算了，明天要好好吃一頓才行。", thread: "大G" },
+      { sender: "大G", body: "哈哈，那我今天有口福了。唉，我最近工作真的有點忙，平常常常隨便吃個便當就算了，今天要好好吃一頓才行。", thread: "大G" },
     ]},
     { stage: 39, chat: "大G", id: "remind-eat-well", label: "工作再忙也要好好吃饭啊！不能老是吃便当，身体会受不了的。", nextStage: 40, lines: [
       { sender: "我", body: "工作再忙也要好好吃飯啊！不能老是吃便當，身體會受不了的。", thread: "大G" },
-      { sender: "大G", body: "知道啦，妳講話怎麼跟我媽一樣，哈哈哈。好啦，我明天一定好好吃，不會再隨便打發了。", thread: "大G" },
+      { sender: "大G", body: "知道啦，妳講話怎麼跟我媽一樣，哈哈哈。好啦，我今天一定好好吃，不會再隨便打發了。", thread: "大G" },
     ]},
     { stage: 40, chat: "大G", id: "send-vava-dinner-photo", label: "（发送玩玩的照片）玩玩刚吃完饭～", nextStage: 41, lines: [
       { sender: "我", body: "玩玩剛吃完飯～", thread: "大G", kind: "image", media: "https://images.unsplash.com/photo-1570018143221-e3a924ff17dc?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=85&w=1400", meta: { photoCaption: "true" } },
@@ -1590,26 +1606,24 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 41, chat: "大G", id: "talk-vava-after-photo", label: "对啊，刚吃饱就开始到处晃，精神很好。", nextStage: 42, lines: [
       { sender: "我", body: "對啊，剛吃飽就開始到處晃，精神很好，完全不像剛剛還在打瞌睡。", thread: "大G" },
-      { sender: "大G", body: "哈哈，牠真的很有精神欸。看來在妳那邊過得很舒服，明天我去接牠應該會很捨不得吧。", thread: "大G" },
+      { sender: "大G", body: "哈哈，牠真的很有精神欸。看來在妳那邊過得很舒服，今天我去接牠應該會很捨不得吧。", thread: "大G" },
     ]},
     { stage: 42, chat: "大G", id: "vava-sweet-talk", label: "它现在已经很习惯我了，不过你来了应该还是会认得你的。", nextStage: 43, lines: [
       { sender: "我", body: "牠現在已經很習慣我了，不過你來了應該還是會認得你的。", thread: "大G" },
-      { sender: "大G", body: "希望啦！我也很想牠。欸，我到酒店了，終於可以坐下來了，今天真的有點累。", thread: "大G" },
+      { sender: "大G", body: "希望啦！我也很想牠。欸，我還有半小時就到妳家附近了，妳可以先收拾一下，準備帶玩玩下樓啦。", thread: "大G" },
     ]},
-    { stage: 43, chat: "大G", id: "goodnight-before-meet", label: "啊那你快去收拾收拾，早点休息吧，明天见～", nextStage: 44, lines: [
-      { sender: "我", body: "啊那你快去收拾收拾，早點休息吧，明天見～", thread: "大G" },
-      { sender: "大G", body: "好啦，妳也早點休息！明天見，晚安。", thread: "大G" },
-    ]},
-    { stage: 44, chat: "大G", id: "reply-goodnight-final", label: "晚安～你也早点休息，明天见！", nextStage: 45, lines: [
-      { sender: "我", body: "晚安～你也早點休息，明天見！", thread: "大G" },
-      { sender: "大G", body: "嗯嗯，晚安。明天見。", thread: "大G" },
+    { stage: 43, chat: "大G", id: "get-ready-for-pickup", label: "好！那我先去收拾一下，准备带玩玩下楼～", nextStage: 44, lines: [
+      { sender: "我", body: "好！那我先去收拾一下，準備帶玩玩下樓～", thread: "大G" },
+      { sender: "大G", body: "好，不急，妳慢慢來。我到了附近再跟妳說。", thread: "大G" },
     ]},
   ];
   // Contact handoffs are manual. When the player opens the destination
   // contact, activate that contact's waiting stage without navigating for them.
   useEffect(() => {
-    if (returnDinnerStage === 2 && (p.thread === "西蓝花" || p.thread === "西兰花")) {
+    if ((p.thread === "西蓝花" || p.thread === "西兰花") && returnDinnerStage === 2) {
       setReturnDinnerStage(3);
+    } else if ((p.thread === "西蓝花" || p.thread === "西兰花") && returnDinnerStage === 44) {
+      setReturnDinnerStage(97);
     }
   }, [returnDinnerStage, p.thread]);
   useEffect(() => {
