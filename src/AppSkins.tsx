@@ -1395,10 +1395,13 @@ export function WeChatSkin(p: SkinProps) {
   };
 
 
-  const initialOwnerName = p.owner && p.owner !== "机主" ? p.owner : "快乐小狗";
+  const initialOwnerName = "\u5feb\u4e50\u5c0f\u72d7";
   const [profileName, setProfileName] = useSkinState<string>(p, "wxProfileName", initialOwnerName);
   const [profileAvatar, setProfileAvatar] = useSkinState<string>(p, "wxProfileAvatar", "");
   const ownerAvatar = profileAvatar || "./assets/wechat-owner-avatar.jpg";
+  useEffect(() => {
+    if (profileName === "\u6211\u7684\u5fae\u4fe1" || profileName === "\u673a\u4e3b") setProfileName("\u5feb\u4e50\u5c0f\u72d7");
+  }, [profileName]);
   const [profileStatus, setProfileStatus] = useSkinState<string>(p, "wxProfileStatus", "");
   const [statusEditorOpen, setStatusEditorOpen] = useState(false);
   const [customStatusOpen, setCustomStatusOpen] = useState(false);
