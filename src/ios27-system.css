@@ -2104,7 +2104,7 @@
   }
 }
 
-/* Liquid-glass lock clock: oversized pearlescent bubble numerals. */
+/* Liquid-glass lock clock: rounded, inflated bubble numerals. */
 .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block {
   top: 76px !important;
   left: 0 !important;
@@ -2112,8 +2112,8 @@
   text-align: center !important;
 }
 .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block .lock-unlock-hint {
-  margin: 0 0 2px !important;
-  color: rgba(255,255,255,.97) !important;
+  margin: 0 0 1px !important;
+  color: rgba(255,255,255,.98) !important;
   font-size: 17px !important;
   line-height: 24px !important;
   font-weight: 650 !important;
@@ -2123,43 +2123,49 @@
 .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
   display: block !important;
   width: 100% !important;
-  margin: -1px 0 0 !important;
-  padding: 0 3px 9px 0 !important;
+  margin: 0 !important;
+  padding: 0 5px 12px 0 !important;
   box-sizing: border-box !important;
-  color: transparent !important;
-  background: linear-gradient(155deg,
+  color: rgba(246,250,255,.94) !important;
+  background: linear-gradient(180deg,
     #ffffff 0%,
-    #f4f8ff 17%,
-    #cbdcf8 34%,
-    #ffffff 48%,
-    #fff4d8 62%,
-    #d9e7ff 78%,
+    #ffffff 12%,
+    #edf5ff 25%,
+    #c7d9f5 43%,
+    #ffffff 55%,
+    #f9f2e6 70%,
+    #d7e5fb 86%,
     #ffffff 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 1.15px rgba(255,255,255,.72) !important;
-  font-family: ui-rounded, "SF Pro Rounded", system-ui, sans-serif !important;
-  font-size: clamp(112px, 30vw, 138px) !important;
-  line-height: .96 !important;
-  font-weight: 260 !important;
+  -webkit-text-stroke: 1.65px rgba(255,255,255,.88) !important;
+  paint-order: stroke fill;
+  font-family: "Arial Rounded MT Bold", ui-rounded, "SF Pro Rounded", system-ui, sans-serif !important;
+  font-size: clamp(116px, 31vw, 142px) !important;
+  line-height: .98 !important;
+  font-weight: 600 !important;
   font-variant-numeric: tabular-nums !important;
-  letter-spacing: -8px !important;
+  letter-spacing: -9px !important;
   filter:
-    drop-shadow(0 1px 0 rgba(255,255,255,.8))
-    drop-shadow(0 4px 2px rgba(78,102,153,.20))
-    drop-shadow(0 10px 13px rgba(20,31,61,.22)) !important;
+    drop-shadow(0 -1px 1px rgba(255,255,255,.95))
+    drop-shadow(0 2px 1px rgba(255,255,255,.55))
+    drop-shadow(0 5px 3px rgba(75,99,143,.25))
+    drop-shadow(0 11px 12px rgba(17,28,57,.28)) !important;
   text-shadow:
-    0 -1px 1px rgba(255,255,255,.55),
-    0 2px 0 rgba(255,255,255,.22),
-    0 0 18px rgba(226,238,255,.22) !important;
-  transform: scaleY(1.035);
+    0 -3px 2px rgba(255,255,255,.95),
+    1px -1px 1px rgba(255,255,255,.85),
+    -1px 1px 0 rgba(255,255,255,.50),
+    0 2px 0 rgba(161,183,218,.38),
+    0 4px 2px rgba(82,105,151,.24),
+    0 0 16px rgba(232,242,255,.30) !important;
+  transform: scaleX(1.015) scaleY(1.015);
   transform-origin: center top;
 }
 @media (max-width: 380px) {
   .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
-    font-size: clamp(104px, 29vw, 120px) !important;
-    letter-spacing: -7px !important;
+    font-size: clamp(106px, 29.5vw, 124px) !important;
+    letter-spacing: -8px !important;
   }
 }
 
