@@ -247,6 +247,7 @@ function PhoneRuntime({
         let slots = all.filter((record) => record.id.startsWith(work.id + "::slot::") && record.state.workId === work.id);
         if (legacy && !slots.some((record) => record.id === defaultSaveId)) {
           await db.saves.put({ id: defaultSaveId, name: "自动存档", state: legacy.state, savedAt: legacy.savedAt ?? Date.now() });
+          await db.saves.delete(work.id);
           slots = [...slots, { ...legacy, id: defaultSaveId, name: "自动存档" }];
         }
         if (!slots.length) {
