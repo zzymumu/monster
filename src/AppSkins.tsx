@@ -1174,6 +1174,8 @@ export function WeChatSkin(p: SkinProps) {
   // existing DaG story messages so it survives app switches and reloads.
   const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
+  const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
+  const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const vavaOpenerEnqueuedRef = useRef(false);
   const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
   const vavaPlayActive = vavaPlayStage >= 0 || vavaPlayMessagesExist;
@@ -1338,7 +1340,67 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "好啦，我會繼續看著牠們的，你放心忙你的。", thread: "大G" },
       { sender: "大G", body: "好，那就拜託妳了。等我回去再請妳吃飯，好好謝謝妳。", thread: "大G" },
     ]},
-  ];  useEffect(() => {
+  ];
+  type ReturnDinnerChoice = CatChoice & { stage: number; chat: "大G" | "西蓝花" };
+  const returnDinnerChoices: ReturnDinnerChoice[] = [
+    { stage: 1, chat: "大G", id: "return-time-confirm", label: "方便方便！明天可以呀，你接玩玩之前跟我说一声就好", nextStage: 2, lines: [
+      { sender: "我", body: "方便方便！明天可以呀，你接玩玩之前跟我說一聲就好。", thread: "大G" },
+      { sender: "大G", body: "好，那我明天出發前再跟妳聯絡，時間確定了我就告訴妳。這幾天真的辛苦妳了。", thread: "大G" },
+    ]},
+    { stage: 3, chat: "西蓝花", id: "tell-broccoli-tomorrow", label: "啊啊啊！他说明天就回来了！要来接玩玩！", nextStage: 4, lines: [
+      { sender: "我", body: "啊啊啊啊啊！他說他明天就回來了欸！明天要來接玩玩！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下！！！他有沒有說請妳吃飯的事情？！", thread: "西蓝花" },
+    ]},
+    { stage: 4, chat: "西蓝花", id: "no-dinner-mentioned", label: "没有啊！他只说要来接玩玩而已", nextStage: 5, lines: [
+      { sender: "我", body: "沒有啊！他就只說明天要來接玩玩而已，完全沒提吃飯的事。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "蛤？？？他該不會忘記了吧！！！", thread: "西蓝花" },
+    ]},
+    { stage: 5, chat: "西蓝花", id: "should-i-mention-dinner", label: "你说……我要不要主动提一下吃饭的事？", nextStage: 6, lines: [
+      { sender: "我", body: "妳說……那我要不要主動提一下吃飯的事情啊？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "先不要啦！！！妳現在主動提，不就顯得妳一直惦記著這頓飯、很上趕著嗎？意圖也太明顯了吧！", thread: "西蓝花" },
+    ]},
+    { stage: 6, chat: "西蓝花", id: "agree-not-mention-dinner", label: "好吧……那我还是先不提了", nextStage: 7, lines: [
+      { sender: "我", body: "好吧……那我還是先不提了，順其自然好了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對嘛！就自然一點，先把玩玩交接好，其他的等他自己開口。", thread: "西蓝花" },
+    ]},
+    { stage: 7, chat: "西蓝花", id: "worry-fan-identity", label: "可是如果他发现我是他的粉丝怎么办？会不会觉得我图谋不轨啊？", nextStage: 8, lines: [
+      { sender: "我", body: "可是我突然想到……如果他發現我是他的粉絲怎麼辦？他會不會覺得我一開始就圖謀不軌啊？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳不要亂想啦！妳撿到玩玩的時候，又不知道牠是怪獸家的貓。妳就是剛好遇到牠、好心幫忙而已，哪有什麼圖謀不軌！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且妳也沒有刻意接近他啊，從頭到尾都是因為玩玩才聯絡上的。放輕鬆一點啦！", thread: "西蓝花" },
+      { sender: "大G", body: "對了，如果妳明天方便的話，我接完玩玩之後想請妳一起吃個飯，謝謝妳這段時間這麼照顧牠。", thread: "大G" },
+    ]},
+    { stage: 8, chat: "西蓝花", id: "react-second-dinner-invite", label: "啊啊啊啊！他又给我发消息了！他说要请我吃饭！！！", nextStage: 9, lines: [
+      { sender: "我", body: "啊啊啊啊啊！！！他又給我發消息了！！！他說如果方便的話，接完玩玩要請我一起吃飯！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的假的！！！這次真的自己提了欸！！！妳快先去跟他聊啦，剛好我主管在喊我了，我得先忙一下！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "快去快去！好好聊，等一下再回來跟我報告，細節一個都不准漏掉！", thread: "西蓝花" },
+    ]},
+    { stage: 10, chat: "大G", id: "accept-dinner-invite", label: "方便方便！可以一起吃饭呀，吃完饭再接玩玩也行！不过餐厅可能不太方便带宠物", nextStage: 11, lines: [
+      { sender: "我", body: "方便方便！可以一起吃飯呀。吃完飯再接玩玩也行！不過餐廳可能不太方便帶寵物，牠要不要先留在原本的地方？", thread: "大G" },
+      { sender: "大G", body: "哈哈，對，餐廳應該不太方便帶牠。我可以先把玩玩安頓好，再過去吃飯。妳有沒有想吃什麼？", thread: "大G" },
+    ]},
+    { stage: 11, chat: "大G", id: "suggest-hot-stir-fry", label: "要不然去吃热炒？可以点很多菜，感觉比较轻松", nextStage: 12, lines: [
+      { sender: "我", body: "要不然我們去吃熱炒？可以點很多菜，感覺也比較輕鬆自在。", thread: "大G" },
+      { sender: "大G", body: "熱炒可以啊，我也好一陣子沒吃了。那就找間評價不錯的，明天到了再跟妳確認是哪一家。", thread: "大G" },
+    ]},
+    { stage: 12, chat: "大G", id: "confirm-time", label: "那就明天晚上吧？你接完玩玩、安顿好之后再跟我说", nextStage: 13, lines: [
+      { sender: "我", body: "那就明天晚上吧？你接完玩玩、安頓好之後再跟我說，我時間都可以配合。", thread: "大G" },
+      { sender: "大G", body: "好，那先暫定明天晚上。等我接到玩玩、把牠安頓好，再傳訊息跟妳約確切時間。", thread: "大G" },
+    ]},
+    { stage: 13, chat: "大G", id: "ask-flight", label: "你现在还在外地吗？明天回来会不会很赶？", nextStage: 14, lines: [
+      { sender: "我", body: "你現在還在外地嗎？明天回來會不會很趕啊？", thread: "大G" },
+      { sender: "大G", body: "還在外地，今天要先搭飛機回去。明天應該還好，時間我會安排好，妳不用擔心。", thread: "大G" },
+    ]},
+    { stage: 14, chat: "大G", id: "safe-flight", label: "那你路上小心，到了再跟我说", nextStage: 15, lines: [
+      { sender: "我", body: "好，那你路上小心，到了再跟我說。", thread: "大G" },
+      { sender: "大G", body: "好，謝謝妳。差不多要登機了，我先上飛機，明天再聯絡。", thread: "大G" },
+    ]},
+  ];
+  useEffect(() => {
+    if (returnDinnerStage !== 2 || pendingCatLines.length > 0 || !isMonsterThread) return;
+    setReturnDinnerStage(3);
+    p.onThread("西蓝花");
+  }, [returnDinnerStage, pendingCatLines.length, isMonsterThread, p.onThread]);
+  useEffect(() => {
     // Rewrite the already-saved pickup exchange from the previous ordering so
     // existing testers see the corrected away-from-home explanation too.
     if (!pickupMessagesWereMigrated) return;
@@ -1840,6 +1902,18 @@ export function WeChatSkin(p: SkinProps) {
                     <button key={choice.id} onClick={() => {
                       appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
                       setVavaPlayStage(choice.nextStage);
+                      if (choice.nextStage === -1) setVavaPlayCompleted(true);
+                    }}>{choice.label}</button>
+                  ))}
+                  <div className="cat-rescue-option-hint">选择一条回复发送</div>
+                </div>
+              )}
+              {pendingCatLines.length === 0 && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+                <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
+                  {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
+                    <button key={choice.id} onClick={() => {
+                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
+                      setReturnDinnerStage(choice.nextStage);
                     }}>{choice.label}</button>
                   ))}
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
