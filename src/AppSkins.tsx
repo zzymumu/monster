@@ -1191,7 +1191,7 @@ export function WeChatSkin(p: SkinProps) {
   // delivered replies appear in notifications but disappear when opened.
   const catRescueActive =
     isBroccoliThread ||
-    (isMonsterThread && (monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53));
+    (isMonsterThread && (monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53 || vavaPlayActive));
   const _catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
@@ -1247,7 +1247,7 @@ export function WeChatSkin(p: SkinProps) {
   const isCurrentChoiceThread =
     (isBroccoliThread && choiceThread === "西蓝花") ||
     (isMonsterThread && choiceThread === "大G");
-  const catChoices =
+  const catChoices = !vavaPlayActive
     // Stage 53 is the explicit DaG follow-up after "妳？？？怎麼啦？".
     // Keep its two replies visible in DaG's own chat even if an unrelated
     // stale queue entry remains from the previous contact.
@@ -1255,6 +1255,40 @@ export function WeChatSkin(p: SkinProps) {
       (pendingCatLines.length === 0 && isCurrentChoiceThread))
       ? (CAT_RESCUE_CHOICES[catRescue.stage] || [])
       : [];
+  const vavaPlayChoices: CatChoice[] = [
+    { id: "vava-play-intro", label: "嗯嗯，忘记跟你说了哈哈", nextStage: 1, lines: [
+      { sender: "我", body: "嗯嗯，忘记跟你说了哈哈。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，原來你家還有原住民喔！那玩玩算是後來加入的？", thread: "大G" },
+    ]},
+    { id: "vava-play-who-started", label: "对呀，牠们有时候会闹起来", nextStage: 2, lines: [
+      { sender: "我", body: "对呀，牠们有时候会闹起来，今天又打成一团了。", thread: "大G" },
+      { sender: "大G", body: "我剛剛看照片，沒想到玩玩看起來小小一隻，打起架來這麼厲害欸！", thread: "大G" },
+    ]},
+    { id: "vava-play-small", label: "玩玩平时看着很乖，打起来完全不一样", nextStage: 2, lines: [
+      { sender: "我", body: "玩玩平时看着很乖，打起来完全不一样。", thread: "大G" },
+      { sender: "大G", body: "真的看不出來欸，牠是不是平常都在忍，今天終於忍不住了哈哈。", thread: "大G" },
+    ]},
+    { id: "vava-play-apology", label: "没事啦，它们闹一闹而已", nextStage: 3, lines: [
+      { sender: "我", body: "没事啦，它们闹一闹而已，我会看着它们的。", thread: "大G" },
+      { sender: "大G", body: "那就好啦，還是有點不好意思，給你添麻煩了。牠們打起來你還要在旁邊顧。", thread: "大G" },
+    ]},
+    { id: "vava-play-reassure", label: "真的没关系，不用跟我客气", nextStage: 4, lines: [
+      { sender: "我", body: "真的没关系，不用跟我客气啦，我也很喜欢它们。", thread: "大G" },
+      { sender: "大G", body: "妳人也太好了吧。其實玩玩是我撿來的，那時候看到牠一個人在外面，就想說先把牠帶回家。", thread: "大G" },
+    ]},
+    { id: "vava-play-rescue", label: "原来玩玩是你捡来的？你也太有爱心了吧", nextStage: 5, lines: [
+      { sender: "我", body: "原来玩玩是你捡来的？你也太有爱心了吧！", thread: "大G" },
+      { sender: "大G", body: "哪有啦，剛好遇到而已。那時候牠小小一隻，看起來很可憐，總不能放著不管吧。", thread: "大G" },
+    ]},
+    { id: "vava-play-kind", label: "愿意把它带回家照顾就已经很温柔了", nextStage: 6, lines: [
+      { sender: "我", body: "愿意把它带回家照顾就已经很温柔了，它现在一定过得很幸福。", thread: "大G" },
+      { sender: "大G", body: "希望是啦。牠現在有吃有住，還有妳家的原住民可以陪牠鬧，應該比以前好多了。", thread: "大G" },
+    ]},
+    { id: "vava-play-wrap", label: "哈哈哈现在它们两个都有人疼", nextStage: -1, lines: [
+      { sender: "我", body: "哈哈哈，现在它们两个都有人疼啦。", thread: "大G" },
+      { sender: "大G", body: "這樣就好啦。下次牠們又打架記得拍給我看，我想看看玩玩到底有多勇猛。", thread: "大G" },
+    ]},
+  ];
   useEffect(() => {
     // Rewrite the already-saved pickup exchange from the previous ordering so
     // existing testers see the corrected away-from-home explanation too.
@@ -1450,6 +1484,12 @@ export function WeChatSkin(p: SkinProps) {
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
+  // One-time Vava/玩玩 Moments event. Its transcript is stored with the
+  // existing DaG story messages so it survives app switches and reloads.
+  const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
+  const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
+  const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
+  const vavaPlayActive = vavaPlayStage >= 0 || vavaPlayMessagesExist;
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; body: string; time: string };
@@ -1469,6 +1509,32 @@ export function WeChatSkin(p: SkinProps) {
     setMomentDraft("");
     setMomentComposer(false);
   };
+  useEffect(() => {
+    if (!moments || vavaMomentSeeded) return;
+    const postId = "moment-vava-wanwan-play-fight";
+    setMomentPostData((current) => current.some((raw) => {
+      try { return JSON.parse(raw).id === postId; } catch { return false; }
+    }) ? current : [...current, JSON.stringify({
+      id: postId,
+      body: "Vava和玩玩今天又打起来了😂 明明看着都小小一只，碰到一起却谁也不让谁……",
+      time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      likes: ["西蓝花", "大G"],
+    })]);
+    if (!vavaPlayMessagesExist) {
+      const opener = makeItem({
+        id: "vava-play-dag-opener",
+        title: "大G",
+        sender: "大G",
+        body: "欸，你家有原住民喔？",
+        time: "2026-11-03 " + (p.virtualTime || "14:24"),
+        outgoing: false,
+        meta: { storyId: "vava-play-story", storyThread: "大G", storyOrderAt: String(Date.now()) },
+      });
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, opener] }));
+    }
+    setVavaPlayStage(0);
+    setVavaMomentSeeded(true);
+  }, [moments, vavaMomentSeeded]);
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
     if (file.size > 4 * 1024 * 1024) {
@@ -1706,6 +1772,17 @@ export function WeChatSkin(p: SkinProps) {
             <div className="cat-rescue-thread">
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
               {isBroccoliThread && catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
+              {vavaPlayActive && isMonsterThread && vavaPlayStage >= 0 && pendingCatLines.length === 0 && (
+                <div className="cat-rescue-choices" aria-label="大G关于Vava和玩玩的回复选项">
+                  {vavaPlayChoices.filter((choice) => choice.nextStage === vavaPlayStage + 1 || (vavaPlayStage === 0 && choice.nextStage === 2)).slice(0, vavaPlayStage === 0 ? 2 : 1).map((choice) => (
+                    <button key={choice.id} onClick={() => {
+                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
+                      setVavaPlayStage(choice.nextStage);
+                    }}>{choice.label}</button>
+                  ))}
+                  <div className="cat-rescue-option-hint">选择一条回复发送</div>
+                </div>
+              )}
               {catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
@@ -1791,7 +1868,7 @@ export function WeChatSkin(p: SkinProps) {
           {myMomentPosts.map((post) => (
             <div key={post.id} className="wx-moment-post wx-moment-user-post">
               <Avatar name={ownerName} src={ownerAvatar} />
-              <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small></div>
+              <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small>{post.id === "moment-vava-wanwan-play-fight" && <div className="wx-moment-social-likes">♡ 西蓝花、大G 赞了这条朋友圈</div>}</div>
             </div>
           ))}
           {posts.map((i) => (
