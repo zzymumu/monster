@@ -4732,3 +4732,336 @@
   .redbook-card:nth-child(4n + 3) .redbook-card-cover { height: 238px; }
   .redbook-card-title { font-size: 12px; }
 }
+
+
+/* Xiaohongshu personal homepage, based on the supplied profile reference. */
+.redbook-profile-topbar {
+  height: 52px;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  color: #fff;
+  background: #19191f;
+  z-index: 2;
+}
+.redbook-profile-topbar > button,
+.redbook-profile-actions > button {
+  color: #f5f5f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.redbook-profile-actions { display:flex; align-items:center; gap:18px; }
+.redbook-profile-actions .redbook-edit-home {
+  gap: 5px;
+  border: 1px solid #ffffff55;
+  border-radius: 18px;
+  padding: 6px 11px;
+  color: #f4f4f6;
+  font-size: 12px;
+  background: #ffffff16;
+}
+.redbook-profile-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: #19191f;
+  scrollbar-width: none;
+  padding-bottom: 12px;
+}
+.redbook-profile-scroll::-webkit-scrollbar { display:none; }
+.redbook-profile-hero {
+  position: relative;
+  padding: 0 16px 13px;
+  overflow: hidden;
+  background: #19191f;
+}
+.redbook-profile-cover {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 310px;
+  background:
+    linear-gradient(180deg, #0a101c1c 0%, #10101875 42%, #19191f 100%),
+    radial-gradient(ellipse at 55% 28%, #123c91 0%, #071d53 24%, transparent 56%),
+    linear-gradient(90deg,#292b31 0%,#3c4148 32%,#171d2b 70%,#38383a 100%);
+}
+.redbook-profile-cover:before {
+  content:"";
+  position:absolute;
+  width: 32%;
+  height: 73%;
+  left: 42%;
+  top: 16%;
+  background: linear-gradient(90deg,#101116,#292b32 48%,#111319);
+  clip-path: polygon(35% 0,65% 0,74% 18%,100% 42%,91% 100%,8% 100%,0 44%,28% 18%);
+  filter: blur(1px);
+  opacity:.9;
+}
+.redbook-profile-cover:after {
+  content:"";
+  position:absolute;
+  left: 0; right: 0; top:0; height:100%;
+  background: linear-gradient(90deg,#0003,transparent 45%,#0002);
+}
+.redbook-profile-identity {
+  position: relative;
+  z-index: 1;
+  display:flex;
+  align-items:flex-end;
+  gap: 14px;
+  padding-top: 76px;
+  min-height: 160px;
+}
+.redbook-profile-avatar {
+  flex: 0 0 88px;
+  width:88px;
+  height:88px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  border:1px solid #ffffff50;
+  background: radial-gradient(circle at 35% 25%,#f8d8df,#b7a3b3 48%,#27252e 100%);
+  box-shadow:0 3px 16px #0007;
+}
+.redbook-profile-avatar span { font-size:48px; filter:drop-shadow(0 3px 3px #0006); }
+.redbook-profile-name { min-width:0; padding-bottom:3px; color:#fff; text-shadow:0 1px 4px #0009; }
+.redbook-profile-name > strong { display:block; font-size:21px; line-height:1.35; font-weight:700; }
+.redbook-profile-name > strong span { font-size:17px; }
+.redbook-profile-id,.redbook-profile-ip { margin-top:4px; color:#e0e0e5; font-size:12px; }
+.redbook-profile-id button { color:#eee; padding-left:4px; }
+.redbook-profile-stats {
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:baseline;
+  gap:18px;
+  margin-top:24px;
+  color:#fff;
+}
+.redbook-profile-stats button { display:flex; align-items:baseline; gap:4px; color:#f4f4f5; white-space:nowrap; }
+.redbook-profile-stats strong { font-size:19px; font-weight:750; }
+.redbook-profile-stats span { font-size:13px; }
+.redbook-profile-bio {
+  position:relative;
+  z-index:1;
+  margin-top:23px;
+  color:#eeeeef;
+  font-size:13px;
+  line-height:1.85;
+  overflow-wrap:anywhere;
+  text-shadow:0 1px 3px #0007;
+}
+.redbook-profile-gender {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:22px;
+  margin-top:13px;
+  border-radius:14px;
+  color:#ff8ab1;
+  background:#ffffff23;
+  font-size:15px;
+}
+.redbook-profile-shortcuts {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:22px;
+}
+.redbook-profile-shortcuts button {
+  min-width:0;
+  min-height:67px;
+  display:flex;
+  align-items:flex-start;
+  gap:7px;
+  padding:12px 9px;
+  border-radius:10px;
+  color:#f4f4f5;
+  background:#393940;
+  text-align:left;
+}
+.redbook-profile-shortcuts button > span { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.redbook-profile-shortcuts strong { font-size:13px; font-weight:600; white-space:nowrap; }
+.redbook-profile-shortcuts small { color:#a8a8b0; font-size:10px; white-space:nowrap; }
+.redbook-profile-tabs {
+  position:sticky;
+  top:0;
+  z-index:2;
+  height:52px;
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding:0 18px;
+  background:#19191f;
+  border-radius:13px 13px 0 0;
+  border-bottom:1px solid #303038;
+}
+.redbook-profile-tabs > button {
+  height:100%;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  position:relative;
+  color:#85858e;
+  font-size:14px;
+  white-space:nowrap;
+}
+.redbook-profile-tabs > button.selected { color:#f6f6f7; font-weight:650; }
+.redbook-profile-tabs > button.selected:after {
+  content:"";
+  position:absolute;
+  bottom:5px;
+  left:0;
+  width:26px;
+  height:3px;
+  border-radius:3px;
+  background:#ff2442;
+}
+.redbook-profile-tabs .redbook-profile-search { margin-left:auto; }
+.redbook-profile-tabs .redbook-profile-search:after { display:none; }
+.redbook-profile-tools {
+  display:flex;
+  align-items:stretch;
+  gap:8px;
+  padding:12px 10px 9px;
+  overflow:hidden;
+}
+.redbook-profile-tools > button {
+  min-width:0;
+  height:44px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 10px;
+  border-radius:8px;
+  color:#e8e8eb;
+  background:#25252d;
+  white-space:nowrap;
+}
+.redbook-profile-tools .redbook-drafts { flex:0 0 51%; }
+.redbook-draft-icon {
+  width:27px;height:27px;display:grid;place-items:center;
+  border-radius:6px;background:#777b80;color:#fff;
+}
+.redbook-profile-tools .redbook-drafts strong { font-size:13px; font-weight:550; }
+.redbook-profile-tools .redbook-drafts > span:last-child { margin-left:auto; color:#9a9aa2; }
+.redbook-profile-tools .redbook-folder { flex:1; overflow:hidden; }
+.redbook-profile-tools .redbook-folder strong { overflow:hidden;text-overflow:ellipsis;font-size:12px;font-weight:550; }
+.redbook-publish-prompt {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:0 10px 10px;
+  padding:12px;
+  min-height:65px;
+  border-radius:9px;
+  background:#27272f;
+  color:#eee;
+}
+.redbook-prompt-cat {
+  flex:0 0 48px;height:48px;display:grid;place-items:center;
+  border-radius:7px;background:linear-gradient(135deg,#d9c7b0,#89796a);font-size:25px;
+}
+.redbook-publish-prompt > div:nth-child(2) { flex:1; min-width:0; }
+.redbook-publish-prompt strong { display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.redbook-publish-prompt small { display:block;margin-top:4px;color:#9999a2;font-size:11px; }
+.redbook-publish-prompt > button {
+  padding:7px 11px;border-radius:18px;background:#ff2442;color:#fff;font-size:12px;
+}
+.redbook-profile-notes {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:5px;
+  padding:0 5px 10px;
+}
+.redbook-note-card {
+  position:relative;
+  min-width:0;
+  height:210px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:11px;
+  border-radius:6px;
+  text-align:left;
+  color:#292a30;
+}
+.redbook-note-draft {
+  height:210px;
+  align-items:center;
+  justify-content:center;
+  background:#c9efff;
+}
+.redbook-note-draft span {
+  position:absolute;top:10px;left:10px;padding:6px 8px;
+  border-radius:8px;background:#ffffffd9;color:#292a30;font-size:12px;
+}
+.redbook-note-draft strong { font-size:58px;font-weight:450; }
+.redbook-note-pinned {
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(145deg,#fffafd,#f5e9ee);
+  color:#b64b70;
+  text-align:center;
+}
+.redbook-note-pinned span {
+  position:absolute;top:10px;left:10px;padding:4px 7px;
+  border-radius:12px;background:#ff2442;color:#fff;font-size:10px;
+}
+.redbook-note-pinned strong { font-family:serif;font-size:22px;line-height:1.8; }
+.redbook-note-art {
+  height:205px;
+  background-color:#554d53;
+  color:#fff;
+  justify-content:flex-end;
+}
+.redbook-note-art > span {
+  position:relative;z-index:1;
+  padding:5px 7px;border-radius:5px;background:#1118;font-size:12px;
+}
+.redbook-note-art:before {
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(145deg,#d6b1a0,#574f70 52%,#161a2a);
+}
+.redbook-note-art.redbook-art-newspaper:before { background:repeating-linear-gradient(0deg,#d7c5a3 0 4px,#eee1c5 4px 8px); }
+.redbook-note-art.redbook-art-dog:before { background:radial-gradient(ellipse at 50% 42%,#e2c49e,#98724f 56%,#3b2d25); }
+.redbook-note-art.redbook-art-concert:before { background:radial-gradient(ellipse at 50% 20%,#2161b7,#11142b 65%); }
+.redbook-note-art.redbook-art-cat:before { background:radial-gradient(ellipse at 50% 42%,#f3dfd1,#b5a092 60%,#544c4b); }
+.redbook-note-art.redbook-art-guitar:before { background:radial-gradient(ellipse at 50% 40%,#6d4b85,#11172e 68%); }
+.redbook-note-art.redbook-art-sunset:before { background:linear-gradient(180deg,#536a88,#e7a58c 55%,#293d43); }
+.redbook-note-art i { position:absolute;top:12px;right:12px;font-style:normal;color:white; }
+.redbook-profile-empty {
+  min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;color:#a0a0a8;font-size:13px;
+}
+.redbook-profile-empty strong { color:#e7e7e9;font-size:14px; }
+.redbook-profile-overlay {
+  position:absolute;inset:0;z-index:8;display:flex;align-items:flex-end;
+  background:#0008;
+}
+.redbook-profile-sheet {
+  position:relative;width:100%;padding:28px 22px 26px;border-radius:18px 18px 0 0;
+  background:#2a2a32;color:#f4f4f6;text-align:center;
+}
+.redbook-profile-sheet > strong { font-size:17px; }
+.redbook-profile-sheet p { margin:16px 0 22px;color:#bcbcc4;font-size:13px;line-height:1.7; }
+.redbook-sheet-close { position:absolute;right:16px;top:12px;color:#aaa;font-size:25px; }
+.redbook-sheet-confirm { width:100%;padding:11px;border-radius:22px;background:#ff2442;color:#fff; }
+@media (max-width:420px) {
+  .redbook-profile-identity { gap:11px; }
+  .redbook-profile-avatar { width:80px;height:80px;flex-basis:80px; }
+  .redbook-profile-name > strong { font-size:19px; }
+  .redbook-profile-stats { gap:13px; }
+  .redbook-profile-stats strong { font-size:17px; }
+  .redbook-profile-bio { font-size:12px; }
+  .redbook-profile-tabs { gap:20px; }
+  .redbook-profile-shortcuts button { padding:10px 7px;gap:5px; }
+  .redbook-profile-shortcuts strong { font-size:12px; }
+}
