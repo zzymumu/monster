@@ -642,6 +642,7 @@
 
 
 /* Photos app: immersive native-style photo viewer and library chrome. */
+.ios27-photos { position: relative; }
 .ios27-photos .photos-title-row {
   padding: 8px 20px 12px;
   min-height: 82px;
