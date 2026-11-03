@@ -686,23 +686,31 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   91: [
-    { id: "tell-broccoli-shaking", label: "我现在整个人都在抖，我真的不敢相信欸！我只是出门捡到一只猫，怎么会直接捡到怪兽家的猫啦！！", nextStage: 38, lines: [
+    { id: "tell-broccoli-shaking", label: "我现在整个人都在抖，我真的不敢相信欸！我只是出门捡到一只猫，怎么会直接捡到怪兽家的猫啦！！", nextStage: 92, lines: [
       { sender: "我", body: "我現在整個人都在抖，我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會直接撿到怪獸家的貓啦！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "先等等！！！妳先不要一激動就全招了啦！他現在還不知道妳認出他了吧？", thread: "西蓝花" },
     ]},
-    { id: "tell-broccoli-still-shocked", label: "我真的不敢相信，怎么会这么巧啦！", nextStage: 38, lines: [
+    { id: "tell-broccoli-still-shocked", label: "我真的不敢相信，怎么会这么巧啦！", nextStage: 92, lines: [
       { sender: "我", body: "我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會遇到怪獸家的玩玩啦！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "先等等！！！妳先不要一激動就全招了啦！他現在還不知道妳認出他了吧？", thread: "西蓝花" },
     ]},
   ],
+  92: [
+    { id: "explain-still-just-the-cat-finder", label: "对啊，他应该还以为我只是捡到猫、照着名牌联系他的路人而已……", nextStage: 39, lines: [
+      { sender: "我", body: "對啊，他應該還以為我只是撿到貓、照著名牌聯絡他的路人而已……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那就先自然一點啊！先把玩玩照顧好，等他回來接貓再看情況。這種事慢慢來比較有趣！", thread: "西蓝花" },
+    ]},
+    { id: "promise-not-to-reveal", label: "放心啦！我不会说破的，就先正常跟他聊玩玩的事", nextStage: 39, lines: [
+      { sender: "我", body: "放心啦！我不會說破的，就先正常跟他聊玩玩的事情。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對嘛！先自然一點，把玩玩照顧好，等他回來接貓再慢慢看情況就好！", thread: "西蓝花" },
+    ]},
+  ],
   38: [
-    { id: "notice-traditional-typing", label: "等等！我突然想起来，那个人打字一直是繁体字！", nextStage: 39, lines: [
+    { id: "notice-traditional-typing", label: "等等！我突然想起来，那个人打字一直是繁体字！", nextStage: 91, lines: [
       { sender: "我", body: "等等等等！我突然想起来一件事！那个人刚刚回我的消息一直都是繁体字欸！", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳現在才想到喔？？？他就是五月天的怪獸本人啊！台灣人打繁體字很正常吧！名字、貓咪名字都對上了，妳還要硬說是重名是不是啦！", thread: "西蓝花" },
-      { sender: "我", body: "我刚刚真的脑袋一片空白嘛……现在想起来更不对劲了！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "拜託，這已經不是巧合了啦！妳先冷靜，等一下再去跟他確認玩玩的事情。", thread: "西蓝花" },
     ]},
     { id: "keep-natural", label: "好，我先不说破，正常跟他聊玩玩的事", nextStage: 39, lines: [
       { sender: "我", body: "對啊，他應該還以為我只是撿到貓、照著名牌聯絡他的路人而已……", thread: "西蓝花" },
@@ -1216,19 +1224,6 @@ export function WeChatSkin(p: SkinProps) {
     if (!pickupMessagesWereMigrated) return;
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2 }));
   }, [pickupMessagesWereMigrated, catRescue.stage, catRescue.messages]);
-  useEffect(() => {
-    // Existing testers may already have a saved stage 38 from the build that
-    // skipped the missing Broccoli reassurance exchange. Resume that segment
-    // once for those saves; fresh runs reach stage 38 only after stage 91 has
-    // delivered the same exchange, so they are left untouched.
-    if (catRescue.stage !== 38) return;
-    const hasReassuranceExchange = catRescue.messages.some((item) =>
-      item.body.includes("先讓我尖叫三秒") ||
-      item.body.includes("我現在整個人都在抖")
-    );
-    if (hasReassuranceExchange) return;
-    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: 91 }));
-  }, [catRescue]);
   useEffect(() => {
     // Repair saves made by the broken build where the player had already sent
     // "我是你爸爸" but the three incoming reactions and reply choices vanished.
