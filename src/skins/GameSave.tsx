@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { Save, ShieldCheck, Clock3, Trash2, RotateCcw, AlertTriangle } from "lucide-react";
 import type { SkinProps } from "../AppSkins";
 
@@ -10,7 +10,7 @@ type Props = SkinProps & {
   onClearSave?: () => void;
 };
 
-const buttonStyle: React.CSSProperties = {
+const buttonStyle: CSSProperties = {
   width: "100%",
   border: 0,
   borderRadius: 14,
