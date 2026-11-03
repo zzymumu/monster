@@ -1511,9 +1511,8 @@ export function WeChatSkin(p: SkinProps) {
     setMomentComposer(false);
   };
   useEffect(() => {
-    // This Moments event belongs after the original found-cat conversation
-    // with DaG has reached its handoff/follow-up stage. Merely opening
-    // Moments for the first time must never trigger it.
+    // Phase 1: after the original found-cat conversation is complete,
+    // create the Vava/玩玩 post with both likes. Do not message DaG yet.
     const foundCatConversationFinished =
       catRescue.branch === "monster-cat" && catRescue.stage >= 53;
     if (!moments || !foundCatConversationFinished || vavaMomentSeeded) return;
@@ -1526,21 +1525,34 @@ export function WeChatSkin(p: SkinProps) {
       time: new Date().toLocaleString("zh-CN", { hour12: false }),
       likes: ["西蓝花", "大G"],
     })]);
-    if (!vavaPlayMessagesExist) {
-      const opener = makeItem({
-        id: "vava-play-dag-opener",
-        title: "大G",
-        sender: "大G",
-        body: "欸，你家有原住民喔？",
-        time: "2026-11-03 " + (p.virtualTime || "14:24"),
-        outgoing: false,
-        meta: { storyId: "vava-play-story", storyThread: "大G", storyOrderAt: String(Date.now()) },
-      });
-      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, opener] }));
-    }
-    setVavaPlayStage(0);
     setVavaMomentSeeded(true);
   }, [moments, vavaMomentSeeded, catRescue.branch, catRescue.stage]);
+
+  useEffect(() => {
+    // Phase 2: only after the user has opened Moments and the post with
+    // both likes has been rendered in that view, DaG may start the chat.
+    // No Moments visit means no message, notification, or chat transcript.
+    if (!moments || !vavaMomentSeeded || vavaPlayMessagesExist) return;
+    const postId = "moment-vava-wanwan-play-fight";
+    const likesAreVisible = momentPostData.some((raw) => {
+      try {
+        const post = JSON.parse(raw);
+        return post.id === postId && Array.isArray(post.likes) && post.likes.includes("大G") && post.likes.includes("西蓝花");
+      } catch { return false; }
+    });
+    if (!likesAreVisible) return;
+    const opener = makeItem({
+      id: "vava-play-dag-opener",
+      title: "大G",
+      sender: "大G",
+      body: "欸，你家有原住民喔？",
+      time: "2026-11-03 " + (p.virtualTime || "14:24"),
+      outgoing: false,
+      meta: { storyId: "vava-play-story", storyThread: "大G", storyOrderAt: String(Date.now()) },
+    });
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, opener] }));
+    setVavaPlayStage(0);
+  }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist]);
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
     if (file.size > 4 * 1024 * 1024) {
