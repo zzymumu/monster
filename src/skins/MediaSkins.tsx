@@ -243,26 +243,38 @@ export function NeteaseSkin(p: Props) {
 export function YouTubeSkin(p: Props) {
   const channelUrl = "https://www.youtube.com/@monsterbalaja531";
   const videosUrl = channelUrl + "/videos";
-  const playlistUrl = "https://www.youtube.com/playlist?list=UU5ieWR5T4WulmNLXQ8-wiDw";
+  const uploadsPlaylist = "UU5ieWR5T4WulmNLXQ8-wiDw";
   const [tab, setTab] = useSkinState<string>(p, "monster-youtube-tab", "首页");
   const [query, setQuery] = useSkinState<string>(p, "monster-youtube-search", "");
   const [playingId, setPlayingId] = useSkinState<string>(p, "monster-youtube-playing", "");
+  const [showUploads, setShowUploads] = useSkinState<boolean>(p, "monster-youtube-uploads", false);
   const videos = [
     { id: "Yaak5SjAcgc", title: "五月天-後青春期的詩 Guitar Version", views: "9.2万次观看", age: "6年前", duration: "2:27" },
+    { id: "bST9i4if280", title: "五月天-花 Electric Guitar Version", views: "10万次观看", age: "6年前", duration: "2:29" },
     { id: "mFUk8iq-WE0", title: "五月天-盛夏光年 Mayday live in the sky Monster solo", views: "5.6万次观看", age: "6年前", duration: "1:26" },
+    { id: "", title: "超犀利趴11彩排側拍", views: "3万次观看", age: "6年前", duration: "0:33" },
+    { id: "Qc5RMGQLEFU", title: "五月天-孫悟空 Mayday live in the sky Monster solo", views: "7.1万次观看", age: "6年前", duration: "1:19" },
+    { id: "", title: "五月天 Do you ever shine monster EG", views: "18万次观看", age: "10年前", duration: "4:35" },
+    { id: "1fdO3ZqqKRM", title: "五月天-最重要的小事 monster EG", views: "26万次观看", age: "11年前", duration: "3:02" },
     { id: "fNucpS5Seg8", title: "五月天-傷心的人別聽慢歌 monster EG", views: "32万次观看", age: "12年前", duration: "3:52" },
     { id: "1G8h2gruylE", title: "五月天-入陣曲 monster EG ver.", views: "36万次观看", age: "12年前", duration: "2:45" },
+    { id: "0weW-oPZFkQ", title: "五月天-三個傻瓜 by monster", views: "37万次观看", age: "14年前", duration: "4:18" },
+    { id: "", title: "五月天-歪腰 by monster", views: "20万次观看", age: "14年前", duration: "3:11" },
+    { id: "Kqy19iaDG08", title: "突然好想你 2010", views: "4.2万次观看", age: "15年前", duration: "4:37" },
+    { id: "", title: "離開地球表面", views: "36万次观看", age: "16年前", duration: "4:37" },
+    { id: "", title: "抓狂吉他", views: "16万次观看", age: "16年前", duration: "4:01" },
+    { id: "", title: "知足吉他", views: "19万次观看", age: "16年前", duration: "5:20" },
+    { id: "", title: "rain", views: "3.3万次观看", age: "16年前", duration: "2:31" },
+    { id: "", title: "cola留下來.mp4", views: "5.1万次观看", age: "16年前", duration: "2:57" },
   ];
   const filtered = videos.filter(v => v.title.toLowerCase().includes(query.toLowerCase()));
   return (
     <div className="catalog-skin youtube-ui" style={{ background: "#fff", color: "#0f0f0f" }}>
       <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #eee" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800, fontSize: 20, letterSpacing: "-1px" }}><span style={{ background: "#f00", color: "#fff", borderRadius: 7, padding: "2px 6px", fontSize: 14 }}>▶</span>YouTube</div>
-        <a href={videosUrl} target="_blank" rel="noreferrer" style={{ color: "#0f0f0f", textDecoration: "none", fontSize: 13 }}>打开频道全部视频 ↗</a>
+        <a href={videosUrl} target="_blank" rel="noreferrer" style={{ color: "#0f0f0f", textDecoration: "none", fontSize: 13 }}>Mayday Monster</a>
       </div>
-      <div style={{ padding: "8px 14px" }}>
-        <SearchBox value={query} set={setQuery} />
-      </div>
+      <div style={{ padding: "8px 14px" }}><SearchBox value={query} set={setQuery} /></div>
       <div className="catalog-scroll">
         <div style={{ padding: "4px 14px 12px", display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#222", color: "#fff", display: "grid", placeItems: "center", fontWeight: 800 }}>M</div>
@@ -274,32 +286,27 @@ export function YouTubeSkin(p: Props) {
         </div>
         <div style={{ padding: "0 12px 14px" }}>
           <div style={{ fontWeight: 700, padding: "4px 2px 12px" }}>来自 “Mayday Monster” 上传的视频</div>
-          {playingId && (
-            <div style={{ marginBottom: 16, borderRadius: 12, overflow: "hidden", background: "#000" }}>
-              <div style={{ aspectRatio: "16 / 9" }}>
-                <iframe title="YouTube 视频播放" src={"https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0"} style={{ width: "100%", height: "100%", border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
-              </div>
-              <button onClick={() => setPlayingId("")} style={{ border: 0, background: "#181818", color: "#fff", padding: "9px 12px", width: "100%", textAlign: "left" }}>关闭播放器 ×</button>
+          {playingId && <div style={{ marginBottom: 16, borderRadius: 12, overflow: "hidden", background: "#000" }}>
+            <div style={{ aspectRatio: "16 / 9" }}><iframe title="YouTube 视频播放" src={"https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0"} style={{ width: "100%", height: "100%", border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div>
+            <button onClick={() => setPlayingId("")} style={{ border: 0, background: "#181818", color: "#fff", padding: "9px 12px", width: "100%", textAlign: "left" }}>关闭播放器 ×</button>
+          </div>}
+          {showUploads && <div style={{ marginBottom: 16, borderRadius: 12, overflow: "hidden", background: "#000" }}>
+            <div style={{ aspectRatio: "16 / 9" }}><iframe title="Mayday Monster 全部上传视频" src={"https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist} style={{ width: "100%", height: "100%", border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div>
+            <button onClick={() => setShowUploads(false)} style={{ border: 0, background: "#181818", color: "#fff", padding: "9px 12px", width: "100%", textAlign: "left" }}>关闭全部视频 ×</button>
+          </div>}
+          {filtered.map((v, i) => <button key={v.title} onClick={() => v.id ? (setPlayingId(v.id), setShowUploads(false)) : (setShowUploads(true), setPlayingId(""))} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
+            <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#e8e8e8" }}>
+              {v.id ? <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }}/> : <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", color: "#777", fontSize: 12 }}>Mayday Monster</div>}
+              <span style={{ position: "absolute", right: 5, bottom: 5, background: "rgba(0,0,0,.8)", color: "#fff", borderRadius: 4, padding: "2px 4px", fontSize: 11 }}>{v.duration}</span>
             </div>
-          )}
-          {filtered.map(v => (
-            <button key={v.id} onClick={() => setPlayingId(v.id)} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
-              <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#eee" }}>
-                <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
-                <span style={{ position: "absolute", right: 5, bottom: 5, background: "rgba(0,0,0,.8)", color: "#fff", borderRadius: 4, padding: "2px 4px", fontSize: 11 }}>{v.duration}</span>
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.35 }}>{v.title}</div>
-                <div style={{ color: "#606060", fontSize: 12, marginTop: 6 }}>Mayday Monster</div>
-                <div style={{ color: "#606060", fontSize: 12, marginTop: 5 }}>{v.views} · {v.age}</div>
-              </div>
-              <span style={{ fontSize: 20, lineHeight: 1 }}>⋮</span>
-            </button>
-          ))}
-          <div style={{ borderTop: "1px solid #eee", padding: "12px 2px", color: "#606060", fontSize: 12, lineHeight: 1.5 }}>
-            上方先展示已核实到真实视频链接的作品。其余历史视频通过 YouTube 官方上传列表完整浏览，避免出现标题或播放链接对不上的情况。
-          </div>
-          <a href={playlistUrl} target="_blank" rel="noreferrer" style={{ display: "block", background: "#f2f2f2", color: "#111", textAlign: "center", borderRadius: 22, padding: 11, textDecoration: "none", fontSize: 13 }}>浏览全部上传视频 ↗</a>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.35 }}>{v.title}</div>
+              <div style={{ color: "#606060", fontSize: 12, marginTop: 6 }}>Mayday Monster</div>
+              <div style={{ color: "#606060", fontSize: 12, marginTop: 5 }}>{v.views} · {v.age}</div>
+            </div>
+            <span style={{ fontSize: 20, lineHeight: 1 }}>⋮</span>
+          </button>)}
+          <button onClick={() => { setShowUploads(true); setPlayingId(""); }} style={{ display: "block", background: "#f2f2f2", color: "#111", textAlign: "center", border: 0, borderRadius: 22, padding: 11, width: "100%", fontSize: 13 }}>在 App 内播放全部上传视频</button>
         </div>
       </div>
       <Tabs tabs={["首页", "Shorts", "我"]} value={tab === "全部视频" ? "首页" : tab} set={v => setTab(v === "首页" ? "全部视频" : v)} icons={[<Home />, <Video />, <User />]} />
