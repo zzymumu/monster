@@ -281,8 +281,11 @@ function PhoneRuntime({
     const persist = () => {
       const snapshot = runtimeRef.current;
       const id = activeSaveIdRef.current;
+      const name = saveInfo.slots.find((slot) => slot.id === id)?.name || (id === defaultSaveId ? "自动存档" : "未命名存档");
       const savedAt = Date.now();
-      void db.saves.get(id).then((previous) => db.saves.put({ id, name: previous?.name || (id === defaultSaveId ? "自动存档" : "未命名存档"), state: snapshot, savedAt })).then(() => {
+      // Write directly in one IndexedDB put. Avoid a read-then-write chain on
+      // pagehide: the tab may close before the preliminary read resolves.
+      void db.saves.put({ id, name, state: snapshot, savedAt }).then(() => {
         if (active) void refreshSaveSlots(id);
       }).catch(() => { if (active) setLoadError("自动存档失败，请检查浏览器存储权限或导出备份。"); });
     };
@@ -292,7 +295,7 @@ function PhoneRuntime({
     window.addEventListener("pagehide", checkpoint);
     document.addEventListener("visibilitychange", onVisibility);
     return () => { active = false; window.removeEventListener("pagehide", checkpoint); document.removeEventListener("visibilitychange", onVisibility); };
-  }, [own, creator, work.id, external, ready]);
+  }, [own, creator, work.id, external, ready, saveInfo.slots]);
   useEffect(() => {
     if (creator || !ready) return;
     const interval = setInterval(() => {
