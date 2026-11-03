@@ -685,7 +685,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "好啦，深呼吸。先把玩玩照顧好，之後再跟大G確認清楚。", thread: "西蓝花" },
     ]},
   ],
-  91: [
+  93: [
     { id: "tell-broccoli-shaking", label: "我现在整个人都在抖，我真的不敢相信欸！我只是出门捡到一只猫，怎么会直接捡到怪兽家的猫啦！！", nextStage: 92, lines: [
       { sender: "我", body: "我現在整個人都在抖，我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會直接撿到怪獸家的貓啦！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
@@ -708,7 +708,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   38: [
-    { id: "notice-traditional-typing", label: "等等！我突然想起来，那个人打字一直是繁体字！", nextStage: 91, lines: [
+    { id: "notice-traditional-typing", label: "等等！我突然想起来，那个人打字一直是繁体字！", nextStage: 93, lines: [
       { sender: "我", body: "等等等等！我突然想起来一件事！那个人刚刚回我的消息一直都是繁体字欸！", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳現在才想到喔？？？他就是五月天的怪獸本人啊！台灣人打繁體字很正常吧！名字、貓咪名字都對上了，妳還要硬說是重名是不是啦！", thread: "西蓝花" },
     ]},
