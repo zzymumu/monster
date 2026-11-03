@@ -306,8 +306,16 @@ export function filterPrankHistoryLines(items: Item[], prankPath: boolean): Item
     item.sender === "我" && /我是你爸爸/.test(item.body.trim())
   );
   const seenReplies = new Set<string>();
+  let keptGreeting = false;
   return items.filter((item, index) => {
     const body = item.body.trim();
+    // The original "妳是？" is the one intended opener. A legacy duplicate
+    // may have been stored again when the player selected the prank option.
+    if (body === "妳是？" && item.sender !== "我") {
+      if (keptGreeting) return false;
+      keptGreeting = true;
+      return true;
+    }
     if (!prankReplyBodies.has(body)) return true;
     // Never show a stale copy that appears before the player actually chose
     // the prank response.
