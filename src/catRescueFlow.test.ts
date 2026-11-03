@@ -443,6 +443,25 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(ordered.at(-1)?.body).toBe("我已经到医院了。");
   });
 
+  it("keeps the original friend-added notice first and removes duplicate saved prank reactions", () => {
+    const addedNotice = makeItem({
+      id: "readd-notice",
+      title: "大G",
+      sender: "我",
+      body: "你已添加了大G，现在可以开始聊天了。",
+      time: "2026-11-02 21:05",
+      outgoing: true,
+      kind: "event",
+    });
+    const firstReaction = makeItem({ id: "reaction-1", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:01" });
+    const duplicateReaction = makeItem({ id: "reaction-2", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:04" });
+    const ordered = orderCatRescueThreadItems([firstReaction, addedNotice, duplicateReaction]);
+    expect(ordered[0].id).toBe("readd-notice");
+    const clean = filterPrankHistoryLines(ordered, true);
+    expect(clean.filter((item) => item.body === "……蛤？")).toHaveLength(1);
+    expect(clean.filter((item) => /添加了大G/.test(item.body))).toHaveLength(1);
+  });
+
   it("keeps the prank and apology branches in the owner's conversation", () => {
     for (const stage of [9, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 35]) {
       expect(getCatRescueThreadForStage(stage)).toBe("大G");
