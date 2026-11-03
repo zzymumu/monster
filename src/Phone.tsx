@@ -1264,6 +1264,12 @@ function AppContent({
   saveReady,
   onSaveNow,
   onClearSave,
+  saveSlots,
+  activeSaveId,
+  onCreateSave,
+  onLoadSave,
+  onRenameSave,
+  onDeleteSave,
 }: {
   app: AppPlugin;
   name: string;
@@ -1279,10 +1285,16 @@ function AppContent({
   onSettings?: () => void;
   onUi?: (key: string, value: UiValue) => void;
   work: Work;
-  saveInfo: { hasSave: boolean; savedAt: number | null };
+  saveInfo: { hasSave: boolean; savedAt: number | null; slots: Array<{ id: string; name: string; savedAt: number }>; activeSaveId: string };
   saveReady: boolean;
   onSaveNow: () => void;
   onClearSave: () => void;
+  saveSlots: Array<{ id: string; name: string; savedAt: number }>;
+  activeSaveId: string;
+  onCreateSave: (name: string) => void;
+  onLoadSave: (id: string) => void;
+  onRenameSave: (id: string, name: string) => void;
+  onDeleteSave: (id: string) => void;
 }) {
   const [detail, setDetail] = useState<Item | null>(null);
   const [thread, setThread] = useState(() => String(state.ui?.[app.id]?.openThread ?? ""));
@@ -1414,12 +1426,12 @@ function AppContent({
               saveReady={saveReady}
               onSaveNow={onSaveNow}
               onClearSave={onClearSave}
-              saveSlots={saveInfo.slots}
-              activeSaveId={saveInfo.activeSaveId}
-              onCreateSave={createSave}
-              onLoadSave={loadSave}
-              onRenameSave={renameSave}
-              onDeleteSave={deleteSave}
+              saveSlots={saveSlots}
+              activeSaveId={activeSaveId}
+              onCreateSave={onCreateSave}
+              onLoadSave={onLoadSave}
+              onRenameSave={onRenameSave}
+              onDeleteSave={onDeleteSave}
               onThread={(next) => {
                 setThread(next);
                 if (app.id === "wechat") onUi?.("openThread", next);
