@@ -1345,32 +1345,10 @@
     },
     {
       "id": "broccoli-read-28",
-      "label": "之后看到玩玩项圈上的主人信息",
-      "type": "action",
-      "event": "read",
-      "target": "wx-broccoli-28",
-      "conditions": [],
-      "logic": "and",
-      "actions": [
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-29",
-          "value": true
-        }
-      ],
-      "next": [
-        "broccoli-reply-choice-29"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "broccoli-reply-choice-29",
-      "label": "把项圈上的主人姓名告诉西蓝花",
+      "label": "告诉西蓝花项圈上的主人姓名",
       "type": "choice",
       "event": "read",
-      "target": "wx-broccoli-29",
+      "target": "wx-broccoli-28",
       "conditions": [],
       "logic": "and",
       "actions": [],
@@ -2215,7 +2193,7 @@
   ],
   "tests": [
     {
-      "name": "截图中西蓝花完整聊天逐条可达",
+      "name": "截图中的西蓝花聊天与后续剧情逐条可达",
       "steps": [
         {
           "event": "read",
@@ -2260,9 +2238,110 @@
         {
           "event": "read",
           "target": "wx-broccoli-28"
+        },
+        {
+          "choose": "broccoli-reply-29"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-29"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-30"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-31"
+        },
+        {
+          "choose": "broccoli-reply-32"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-32"
+        },
+        {
+          "choose": "broccoli-reply-34"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-34"
+        },
+        {
+          "choose": "broccoli-reply-36"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-36"
+        },
+        {
+          "choose": "broccoli-reply-38"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-38"
+        },
+        {
+          "choose": "big-g-open"
+        },
+        {
+          "choose": "jump-broccoli"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-44"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-45"
+        },
+        {
+          "choose": "dinner-explain"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-46"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-48"
+        },
+        {
+          "choose": "outfit-start"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-60"
+        },
+        {
+          "choose": "outfit-soft"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-49"
+        },
+        {
+          "choose": "dinner-food-answer"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-51"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-53"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-55"
+        },
+        {
+          "event": "callEnded",
+          "target": "story-validation-only"
         }
       ],
-      "ending": "",
+      "ending": "本段剧情暂时停在添加微信的悬念处。",
       "expectUnlocked": [
         "wx-broccoli-19",
         "wx-broccoli-20",
@@ -2274,7 +2353,10 @@
         "wx-broccoli-26",
         "wx-broccoli-27",
         "wx-broccoli-28",
-        "wx-broccoli-29"
+        "wx-broccoli-29",
+        "wx-broccoli-38",
+        "wx-big-g-23",
+        "wx-broccoli-57"
       ]
     },
     {
