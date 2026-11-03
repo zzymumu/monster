@@ -6,8 +6,21 @@ export type DeviceCoordinates = {
   accuracy: number;
 };
 
+const LOCATION_CACHE_KEY = "foundphone.device-location.v1";
+function readCachedPosition(): DeviceCoordinates | null {
+  try {
+    const raw = localStorage.getItem(LOCATION_CACHE_KEY);
+    if (!raw) return null;
+    const value = JSON.parse(raw) as DeviceCoordinates & { savedAt?: number };
+    if (!Number.isFinite(value.latitude) || !Number.isFinite(value.longitude)) return null;
+    if (value.savedAt && Date.now() - value.savedAt > 24 * 60 * 60 * 1000) return null;
+    return value;
+  } catch {
+    return null;
+  }
+}
 export function useDeviceLocation() {
-  const [position, setPosition] = useState<DeviceCoordinates | null>(null);
+  const [position, setPosition] = useState<DeviceCoordinates | null>(() => readCachedPosition());
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -20,11 +33,17 @@ export function useDeviceLocation() {
     setError("");
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
-        setPosition({
+        const next = {
           latitude: coords.latitude,
           longitude: coords.longitude,
           accuracy: coords.accuracy,
-        });
+        };
+        setPosition(next);
+        try {
+          localStorage.setItem(LOCATION_CACHE_KEY, JSON.stringify({ ...next, savedAt: Date.now() }));
+        } catch {
+          // Keep the live position in memory if browser storage is unavailable.
+        }
         setLoading(false);
       },
       (reason) => {
@@ -42,8 +61,8 @@ export function useDeviceLocation() {
   }, []);
 
   useEffect(() => {
-    request();
-  }, [request]);
+    if (!position) request();
+  }, []);
 
   return { position, error, loading, request };
 }
