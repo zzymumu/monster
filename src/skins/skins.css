@@ -3252,6 +3252,47 @@
   border-color: #cf7393;
   color: #cf7393;
 }
+.bili-featured-video {
+  margin: 10px 10px 4px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #f0e5e9;
+}
+.bili-featured-player {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #111;
+}
+.bili-featured-player iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.bili-featured-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 9px 10px 10px;
+}
+.bili-featured-meta strong {
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 650;
+  color: #222;
+}
+.bili-featured-meta > span {
+  font-size: 10px;
+  color: #999;
+}
+.bili-featured-meta > a {
+  align-self: flex-start;
+  color: #cf7393;
+  font-size: 10px;
+  text-decoration: none;
+  margin-top: 2px;
+}
 .bili-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
