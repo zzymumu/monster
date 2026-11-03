@@ -1177,7 +1177,7 @@ export function WeChatSkin(p: SkinProps) {
   // existing DaG story messages so it survives app switches and reloads.
   const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
-  const [, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
+  const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const vavaOpenerEnqueuedRef = useRef(false);
   const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
@@ -1755,7 +1755,10 @@ export function WeChatSkin(p: SkinProps) {
     // Phase 2: only after the user has opened Moments and the post with
     // both likes has been rendered in that view, DaG may start the chat.
     // No Moments visit means no message, notification, or chat transcript.
-    if (!moments || !vavaMomentSeeded || vavaPlayMessagesExist || vavaPlayStage >= 0 || vavaOpenerEnqueuedRef.current) return;
+    // This Moments-to-DaG conversation is a one-time event. Once its final
+    // reply is sent, the persisted completion flag permanently blocks replay,
+    // even if the user later posts, deletes, or revisits Moments.
+    if (vavaPlayCompleted || !moments || !vavaMomentSeeded || vavaPlayMessagesExist || vavaPlayStage >= 0 || vavaOpenerEnqueuedRef.current) return;
     // Latch synchronously: React StrictMode and state persistence can replay effects.
     vavaOpenerEnqueuedRef.current = true;
     const postId = "moment-vava-wanwan-play-fight";
@@ -1777,7 +1780,7 @@ export function WeChatSkin(p: SkinProps) {
       thread: "大G",
     }]);
     setVavaPlayStage(0);
-  }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist, vavaPlayStage]);
+  }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist, vavaPlayStage, vavaPlayCompleted]);
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
     if (file.size > 4 * 1024 * 1024) {
