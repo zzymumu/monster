@@ -135,7 +135,7 @@ export function DeviceLock({
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(lockDate).replace(/^\\d{4}/, "");
+  }).format(lockDate).replace(/^[0-9]{4}/, "");
   const lunarDateLabel =
     lunarMonth && lunarDayNames[lunarDayNumber]
       ? `${lunarYear ? `${lunarYear}年` : ""}${lunarMonth}${lunarDayNames[lunarDayNumber]}`
