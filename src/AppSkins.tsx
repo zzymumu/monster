@@ -1612,8 +1612,8 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "妳以為戀愛ing啊！不說了，我要去洗澡敷面膜了！", thread: "西蓝花" },
       { sender: "西蓝花", body: "嘖嘖，見色忘友欸！剛剛還在這裡跟我尖叫，現在就急著去洗澡敷面膜了喔？", thread: "西蓝花" },
     ]},
-    { stage: 110, chat: "西蓝花", id: "bestie-begging-goodbye", label: "嗯嗯！報告媽媽，我去準備了！", nextStage: -1, lines: [
-      { sender: "我", body: "嗯嗯！報告媽媽，我去準備了！", thread: "西蓝花" },
+    { stage: 110, chat: "西蓝花", id: "bestie-begging-goodbye", label: "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！", nextStage: -1, lines: [
+      { sender: "我", body: "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！", thread: "西蓝花" },
     ]},
     { stage: 46, chat: "西蓝花", id: "private-room-and-queue", label: "好像也是……那到时候我提前去排队好了！不过我又开始烦恼明天穿什么了。", nextStage: 47, lines: [
       { sender: "我", body: "好像也是欸……那就找個包廂好了！人多的話我到時候提前去排隊，先把位置弄好。可是……我現在又開始煩惱明天到底要穿什麼了。", thread: "西蓝花" },
