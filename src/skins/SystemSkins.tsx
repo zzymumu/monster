@@ -214,6 +214,7 @@ export function PhotosSkin(p: Props) {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
   const [viewerInfoOpen, setViewerInfoOpen] = useState(false);
   const [photoFavorites, setPhotoFavorites] = useSkinState<string[]>(p, "photoFavorites", seededGalleryPhotos.filter((photo) => photo.favorite).map((photo) => photo.id));
+  const [sharedRaw, setSharedRaw] = useSkinState<string[]>(p, "sharedAlbums", []);
   const [newAlbumName, setNewAlbumName] = useState("");
   const [activeShared, setActiveShared] = useState("");
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
@@ -395,7 +396,7 @@ export function PhotosSkin(p: Props) {
           <>
             <SearchBox value={q} set={setQ} />
             <div className="photo-mosaic">
-              {list.map((i) => (
+              {list.map((i, index) => (
                 <button aria-label={`查看${i.title}`} key={i.id} onClick={() => { setViewerIndex(index); setViewerInfoOpen(false); }}>
                   <Media item={i} />
                   {(i.favorite || photoFavorites.includes(i.id)) && <Heart size={12} fill="white" />}
@@ -411,7 +412,7 @@ export function PhotosSkin(p: Props) {
         <div className="photos-viewer" role="dialog" aria-modal="true" aria-label={viewerPhoto.title}>
           <div className="photos-viewer-top">
             <button aria-label="返回图库" onClick={() => setViewerIndex(null)}><ChevronLeft size={25} /></button>
-            <div><strong>{viewerPhoto.time.slice(0, 10).replaceAll("-", "年").replace(/年(\\d{2})$/, "月$1日")}</strong><small>{viewerPhoto.time.slice(11, 16)}</small></div>
+            <div><strong>{viewerPhoto.time.slice(0, 10).replaceAll("-", "年").replace(/年(\d{2})$/, "月$1日")}</strong><small>{viewerPhoto.time.slice(11, 16)}</small></div>
             <button aria-label="照片信息" onClick={() => setViewerInfoOpen((value) => !value)}>ⓘ</button>
           </div>
           <div className="photos-viewer-image"><Media item={viewerPhoto} /></div>
