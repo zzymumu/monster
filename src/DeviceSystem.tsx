@@ -122,7 +122,7 @@ export function DeviceLock({
     month: "long",
     day: "numeric",
   }).formatToParts(lockDate);
-  const lunarYear = lunarParts.find((part) => String(part.type) === "yearName")?.value;
+  const lunarYear = lunarParts.find((part) => String(part.type) === "yearName")?.value?.replace(/^\\d{4}/, "");
   const lunarMonth = lunarParts.find((part) => part.type === "month")?.value;
   const lunarDayNumber = Number(lunarParts.find((part) => part.type === "day")?.value);
   const lunarDayNames = [
