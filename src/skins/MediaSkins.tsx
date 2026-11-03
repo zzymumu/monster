@@ -246,6 +246,7 @@ export function YouTubeSkin(p: Props) {
   const [query, setQuery] = useSkinState<string>(p, "monster-youtube-search", "");
   const [playingId, setPlayingId] = useSkinState<string>(p, "monster-youtube-playing", "");
   const [showUploads, setShowUploads] = useSkinState<boolean>(p, "monster-youtube-uploads", false);
+  const [playerOpen, setPlayerOpen] = useSkinState<boolean>(p, "monster-youtube-player-open", false);
   const videos = [
     { id: "Yaak5SjAcgc", title: "五月天-後青春期的詩 Guitar Version", views: "9.2万次观看", age: "6年前", duration: "2:27" },
     { id: "bST9i4if280", title: "五月天-花 Electric Guitar Version", views: "10万次观看", age: "6年前", duration: "2:29" },
@@ -292,13 +293,11 @@ export function YouTubeSkin(p: Props) {
         </div>
         <div style={{ padding: "2px 14px 12px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
           <strong style={{ fontSize: 16 }}>怪獸的所有公开视频</strong>
-          <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); }} style={{ border: 0, background: "transparent", color: "#333", fontSize: 12, whiteSpace: "nowrap" }}>完整播放列表 ↗</button>
+          <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); setPlayerOpen(true); }} style={{ border: 0, background: "transparent", color: "#333", fontSize: 12, whiteSpace: "nowrap" }}>完整播放列表 ↗</button>
         </div>
-        <div className="youtube-player-frame">
-          <iframe title={showUploads ? "Mayday Monster 全部上传视频" : "Mayday Monster 视频播放"} src={showUploads ? "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist : "https://www.youtube-nocookie.com/embed/" + (playingId || videos[0].id) + "?autoplay=" + (playingId ? "1" : "0") + "&rel=0"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
-        </div>
+        <div aria-hidden="true" style={{ height: 0, overflow: "hidden" }} />
         <div style={{ padding: "0 12px 14px" }}>
-          {filtered.map(v => <button key={v.title} onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (v.id) { setPlayingId(v.id); setShowUploads(false); setTab("首页"); } else { setShowUploads(true); setPlayingId(""); setTab("全部视频"); } }} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
+          {filtered.map(v => <button key={v.title} onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (v.id) { setPlayingId(v.id); setShowUploads(false); setTab("首页"); setPlayerOpen(true); } else { setShowUploads(true); setPlayingId(""); setTab("全部视频"); setPlayerOpen(true); } }} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
             <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#e8e8e8" }}>
               {v.id ? <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt={v.title + " 封面"} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} style={{ width: "100%", height: "100%", objectFit: "cover" }}/> : <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", alignContent: "center", gap: 6, color: "#fff", background: "linear-gradient(135deg,#171923,#424b5b)", fontSize: 12 }}><span style={{ fontSize: 24 }}>▶</span><strong>Mayday Monster</strong><span>播放官方上传列表</span></div>}
               <span style={{ position: "absolute", right: 5, bottom: 5, background: "rgba(0,0,0,.8)", color: "#fff", borderRadius: 4, padding: "2px 4px", fontSize: 11 }}>{v.duration}</span>
@@ -313,6 +312,19 @@ export function YouTubeSkin(p: Props) {
           <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); }} style={{ display: "block", background: "#f2f2f2", color: "#111", textAlign: "center", border: 0, borderRadius: 22, padding: 11, width: "100%", fontSize: 13 }}>查看 Mayday Monster 全部上传视频</button>
         </div>
       </div>
+      {playerOpen && <div className="youtube-player-overlay" role="dialog" aria-modal="true" aria-label="视频播放器">
+        <button className="youtube-player-backdrop" aria-label="关闭播放器" onClick={() => setPlayerOpen(false)} />
+        <div className="youtube-player-modal">
+          <div className="youtube-player-modal-top">
+            <strong>{showUploads ? "Mayday Monster · 全部上传视频" : (videos.find(v => v.id === playingId)?.title || "Mayday Monster")}</strong>
+            <button aria-label="关闭播放器" onClick={() => setPlayerOpen(false)}>×</button>
+          </div>
+          <div className="youtube-player-frame">
+            <iframe title={showUploads ? "Mayday Monster 全部上传视频" : "Mayday Monster 视频播放"} src={showUploads ? "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist : "https://www.youtube-nocookie.com/embed/" + (playingId || videos[0].id) + "?autoplay=1&rel=0"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+          </div>
+          <div className="youtube-player-modal-bottom">正在 App 内播放</div>
+        </div>
+      </div>}
       <Tabs tabs={["首页", "Shorts", "我"]} value={tab === "全部视频" ? "首页" : tab} set={v => setTab(v === "首页" ? "全部视频" : v)} icons={[<Home />, <Video />, <User />]} />
     </div>
   );}
