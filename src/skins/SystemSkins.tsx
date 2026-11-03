@@ -46,6 +46,19 @@ import {
   useContent,
   type Props,
 } from "./shared";
+const seededGalleryPhotos: Item[] = [
+  { id: "life-photo-rainbow", title: "雨後的彩虹", body: "下過雨之後剛好看到彩虹，忍不住停下來拍了。", richText: "", meta: { credit: "Paul-shy · Wikimedia Commons · CC BY 4.0" }, time: "2026-11-02 17:42", sender: "我", avatar: "", kind: "image", media: "https://upload.wikimedia.org/wikipedia/commons/0/08/A_rainbow_appears_in_the_sky_after_the_rain_shower.jpg", hidden: false, unlock: "", password: "", folder: "生活日常", favorite: true, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-coffee", title: "今天的咖啡", body: "今天需要一杯冰拿鐵續命。", richText: "", meta: {}, time: "2026-11-02 14:16", sender: "我", avatar: "", kind: "image", media: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1400&q=88", hidden: false, unlock: "", password: "", folder: "咖啡與甜點", favorite: false, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-bubble-tea", title: "珍珠奶茶", body: "路過常喝的那家，還是點了全糖少冰。", richText: "", meta: {}, time: "2026-11-01 16:38", sender: "我", avatar: "", kind: "image", media: "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=1400&q=88", hidden: false, unlock: "", password: "", folder: "咖啡與甜點", favorite: false, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-coffee-shop", title: "窗邊的下午", body: "找了間有陽光的咖啡店坐一會兒。", richText: "", meta: {}, time: "2026-10-31 15:05", sender: "我", avatar: "", kind: "image", media: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1400&q=88", hidden: false, unlock: "", password: "", folder: "咖啡與甜點", favorite: false, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-seaside", title: "海邊散步", body: "旅行最喜歡的行程就是沿著海邊慢慢走。", richText: "", meta: {}, time: "2026-10-29 10:24", sender: "我", avatar: "", kind: "image", media: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=88", hidden: false, unlock: "", password: "", folder: "旅行", favorite: true, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-mountain", title: "旅行路上", body: "這種風景真的會讓人想把時間按暫停。", richText: "", meta: {}, time: "2026-10-28 09:12", sender: "我", avatar: "", kind: "image", media: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1400&q=88", hidden: false, unlock: "", password: "", folder: "旅行", favorite: false, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-flowers", title: "路邊的小花", body: "今天路上遇到的顏色，心情也跟著變好了。", richText: "", meta: {}, time: "2026-10-26 11:47", sender: "我", avatar: "", kind: "image", media: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1400&q=88", hidden: false, unlock: "", password: "", folder: "生活日常", favorite: false, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-city", title: "城市的夜晚", body: "晚上的街道比白天更有氣氛。", richText: "", meta: {}, time: "2026-10-24 20:31", sender: "我", avatar: "", kind: "image", media: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1400&q=88", hidden: false, unlock: "", password: "", folder: "旅行", favorite: false, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-monster", title: "怪獸現場", body: "每次看到他拿起吉他，還是會忍不住心動。", richText: "", meta: { credit: "大紀元／相信音樂提供" }, time: "2026-10-20 21:16", sender: "我", avatar: "", kind: "image", media: "https://i.epochtimes.com/assets/uploads/2016/08/1608291220162382.jpg", hidden: false, unlock: "", password: "", folder: "五月天", favorite: true, outgoing: false, read: true, likes: 0, comments: [] },
+  { id: "life-photo-mayday", title: "五月天演唱會", body: "有些歌真的要在現場聽才完整。", richText: "", meta: { credit: "Vogue Taiwan" }, time: "2026-10-18 22:08", sender: "我", avatar: "", kind: "image", media: "https://media.vogue.com.tw/photos/5db8092b837daa000826705f/3%3A2/w_1600%2Cc_limit/2019010682465745.jpg", hidden: false, unlock: "", password: "", folder: "五月天", favorite: false, outgoing: false, read: true, likes: 0, comments: [] },
+];
+
 export function PhoneSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "最近通话");
   const [digits, setDigits] = useState(""),
@@ -103,7 +116,7 @@ export function PhoneSkin(p: Props) {
         ) : (
           <>
             <SearchBox value={q} set={setQ} />
-            {list.map((i) => (
+            {list.map((i, index) => (
               <button
                 className={`call-row ${meta(i, "status") === "未接" ? "missed" : ""}`}
                 key={i.id}
@@ -196,8 +209,11 @@ type SharedPhotoAlbum = {
 };
 export function PhotosSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "图库");
+  const galleryItems = [...seededGalleryPhotos, ...items.filter((item) => !seededGalleryPhotos.some((seed) => seed.id === item.id))];
   const [album, setAlbum] = useState("");
-  const [sharedRaw, setSharedRaw] = useSkinState<string[]>(p, "sharedAlbums", []);
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+  const [viewerInfoOpen, setViewerInfoOpen] = useState(false);
+  const [photoFavorites, setPhotoFavorites] = useSkinState<string[]>(p, "photoFavorites", seededGalleryPhotos.filter((photo) => photo.favorite).map((photo) => photo.id));
   const [newAlbumName, setNewAlbumName] = useState("");
   const [activeShared, setActiveShared] = useState("");
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
@@ -214,10 +230,14 @@ export function PhotosSkin(p: Props) {
   const activeAlbum = sharedAlbums.find((a) => a.id === activeShared);
   const list =
     tab === "收藏"
-      ? items.filter((i) => i.favorite)
+      ? galleryItems.filter((i) => i.favorite || photoFavorites.includes(i.id))
       : album
-        ? items.filter((i) => (i.folder || "未分类") === album)
-        : items.filter((i) => (i.title + i.body).toLowerCase().includes(q.toLowerCase()));
+        ? galleryItems.filter((i) => (i.folder || "未分类") === album)
+        : galleryItems.filter((i) => (i.title + i.body).toLowerCase().includes(q.toLowerCase()));
+  const viewerPhoto = viewerIndex === null ? null : list[viewerIndex] || null;
+  const togglePhotoFavorite = (photo: Item) => setPhotoFavorites((current) =>
+    current.includes(photo.id) ? current.filter((id) => id !== photo.id) : [...current, photo.id],
+  );
   const saveAlbums = (next: SharedPhotoAlbum[]) => setSharedRaw(next.map((a) => JSON.stringify(a)));
   const createSharedAlbum = () => {
     const name = newAlbumName.trim();
@@ -274,8 +294,8 @@ export function PhotosSkin(p: Props) {
           <div className="shared-album-detail">
             <div className="shared-album-hero">
               <div className="shared-album-hero-art">
-                {activeAlbum.photoIds[0] && items.find((i) => i.id === activeAlbum.photoIds[0]) ? (
-                  <Media item={items.find((i) => i.id === activeAlbum.photoIds[0])!} />
+                {activeAlbum.photoIds[0] && galleryItems.find((i) => i.id === activeAlbum.photoIds[0]) ? (
+                  <Media item={galleryItems.find((i) => i.id === activeAlbum.photoIds[0])!} />
                 ) : <Image size={36} />}
               </div>
               <div>
@@ -301,14 +321,14 @@ export function PhotosSkin(p: Props) {
               <div className="shared-section-heading"><strong>照片</strong><span>{activeAlbum.photoIds.length} 张</span></div>
               <div className="photo-mosaic">
                 {activeAlbum.photoIds.map((id) => {
-                  const item = items.find((i) => i.id === id);
+                  const item = galleryItems.find((i) => i.id === id);
                   return item ? <button key={id} onClick={() => p.onItem(item)}><Media item={item} /></button> : null;
                 })}
               </div>
               {!activeAlbum.photoIds.length && <p className="shared-empty">这个共享相簿还没有照片</p>}
               <div className="shared-add-heading"><strong>从图库添加照片</strong><small>点选照片后添加到共享相簿</small></div>
               <div className="photo-mosaic shared-picker">
-                {items.map((item) => (
+                {galleryItems.map((item) => (
                   <button key={item.id} className={selectedPhotos.includes(item.id) ? "picked" : ""} onClick={() => setSelectedPhotos((v) => v.includes(item.id) ? v.filter((id) => id !== item.id) : [...v, item.id])}>
                     <Media item={item} />
                     {selectedPhotos.includes(item.id) && <span className="shared-picked-check">✓</span>}
@@ -357,11 +377,11 @@ export function PhotosSkin(p: Props) {
             <div className="photos-collection-section">
               <h3>我的相簿</h3>
               <div className="album-grid">
-                {groupItems(items, "未分类").map((g) => (
+                {groupItems(galleryItems, "未分类").map((g) => (
                   <button key={g} onClick={() => setAlbum(g)}>
-                    <Media item={items.find((i) => (i.folder || "未分类") === g)!} />
+                    <Media item={galleryItems.find((i) => (i.folder || "未分类") === g)!} />
                     <strong>{g}</strong>
-                    <small>{items.filter((i) => (i.folder || "未分类") === g).length} 项</small>
+                    <small>{galleryItems.filter((i) => (i.folder || "未分类") === g).length} 项</small>
                   </button>
                 ))}
                 <button className="photos-shared-shortcut" onClick={() => setTab("共享")}>
@@ -376,9 +396,9 @@ export function PhotosSkin(p: Props) {
             <SearchBox value={q} set={setQ} />
             <div className="photo-mosaic">
               {list.map((i) => (
-                <button aria-label={`查看${i.title}`} key={i.id} onClick={() => p.onItem(i)}>
+                <button aria-label={`查看${i.title}`} key={i.id} onClick={() => { setViewerIndex(index); setViewerInfoOpen(false); }}>
                   <Media item={i} />
-                  {i.favorite && <Heart size={12} fill="white" />}
+                  {(i.favorite || photoFavorites.includes(i.id)) && <Heart size={12} fill="white" />}
                 </button>
               ))}
             </div>
@@ -387,10 +407,27 @@ export function PhotosSkin(p: Props) {
         )}
         {!activeAlbum && tab !== "共享" && <Empty items={list} />}
       </div>
+      {viewerPhoto && (
+        <div className="photos-viewer" role="dialog" aria-modal="true" aria-label={viewerPhoto.title}>
+          <div className="photos-viewer-top">
+            <button aria-label="返回图库" onClick={() => setViewerIndex(null)}><ChevronLeft size={25} /></button>
+            <div><strong>{viewerPhoto.time.slice(0, 10).replaceAll("-", "年").replace(/年(\\d{2})$/, "月$1日")}</strong><small>{viewerPhoto.time.slice(11, 16)}</small></div>
+            <button aria-label="照片信息" onClick={() => setViewerInfoOpen((value) => !value)}>ⓘ</button>
+          </div>
+          <div className="photos-viewer-image"><Media item={viewerPhoto} /></div>
+          {viewerInfoOpen && <div className="photos-viewer-info"><strong>{viewerPhoto.title}</strong><p>{viewerPhoto.body}</p>{viewerPhoto.meta.credit && <small>圖片來源：{viewerPhoto.meta.credit}</small>}</div>}
+          <div className="photos-viewer-bottom">
+            <button aria-label="上一張" disabled={viewerIndex === 0} onClick={() => { setViewerIndex((value) => value === null ? null : Math.max(0, value - 1)); setViewerInfoOpen(false); }}><ChevronLeft /></button>
+            <span>{viewerIndex + 1} / {list.length}</span>
+            <button aria-label="收藏照片" onClick={() => togglePhotoFavorite(viewerPhoto)}><Heart fill={(viewerPhoto.favorite || photoFavorites.includes(viewerPhoto.id)) ? "currentColor" : "none"} /></button>
+            <button aria-label="下一張" disabled={viewerIndex === list.length - 1} onClick={() => { setViewerIndex((value) => value === null ? null : Math.min(list.length - 1, value + 1)); setViewerInfoOpen(false); }}><ChevronRight /></button>
+          </div>
+        </div>
+      )}
       <Tabs
         tabs={["图库", "相簿", "共享", "收藏"]}
         value={tab}
-        set={(t) => { setTab(t); setAlbum(""); setActiveShared(""); setSelectedPhotos([]); }}
+        set={(t) => { setTab(t); setAlbum(""); setActiveShared(""); setSelectedPhotos([]); setViewerIndex(null); }}
         icons={[<Image />, <Folder />, <Users />, <Heart />]}
       />
     </div>
