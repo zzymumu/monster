@@ -1228,7 +1228,7 @@ export function WeChatSkin(p: SkinProps) {
     );
     if (hasReassuranceExchange) return;
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: 91 }));
-  }, [catRescue.stage, catRescue.messages.length]);
+  }, [catRescue]);
   useEffect(() => {
     // Repair saves made by the broken build where the player had already sent
     // "我是你爸爸" but the three incoming reactions and reply choices vanished.
