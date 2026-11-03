@@ -942,25 +942,63 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   63: [
     { id: "tell-broccoli-he-promised-dinner", label: "你敢信！！他要请我吃饭！！！！", nextStage: 64, lines: [
       { sender: "我", body: "你敢信！！他要請我吃飯！！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "真的假的！！！他真的要請妳吃飯？妳運氣也太好了吧！你們吃什麼？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的假的！！！五月天怪獸真的要請妳吃飯？妳不是在做夢吧！！！", thread: "西蓝花" },
     ]},
     { id: "tell-broccoli-dinner-casual", label: "欸嘿，他刚刚答应回来请我吃饭了！", nextStage: 64, lines: [
-      { sender: "我", body: "欸嘿，他刚刚答应回来请我吃饭了！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "真的假的！！！他真的要請妳吃飯？妳運氣也太好了吧！你們吃什麼？", thread: "西蓝花" },
+      { sender: "我", body: "欸嘿，他剛剛答應回來請我吃飯了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的假的！！！五月天怪獸真的要請妳吃飯？妳不是在做夢吧！！！", thread: "西蓝花" },
     ]},
   ],
   64: [
-    { id: "forgot-to-ask-return-date", label: "嘶……我还真忘了问！", nextStage: 65, lines: [
-      { sender: "我", body: "嘶……我還真忘了問！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳真的是……這麼重要的事情也能忘！", thread: "西蓝花" },
-      { sender: "我", body: "小問題啦！我去查查五月天最近在哪開演唱會不就行了？反正他們每次都是特種兵行程，回來肯定特別快。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好像在北京吧？", thread: "西蓝花" },
+    { id: "scream-about-dinner", label: "啊啊啊啊！五月天怪兽要请我吃饭欸！！", nextStage: 88, lines: [
+      { sender: "我", body: "啊啊啊啊啊！我現在想起來還是覺得好不真實！五月天怪獸欸！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳先冷靜！！！我也要尖叫了！！！這根本像做夢一樣吧！", thread: "西蓝花" },
     ]},
-    { id: "forgot-but-can-check-tour", label: "嘶……我还真忘问了，不过我可以自己查！", nextStage: 65, lines: [
+    { id: "is-this-a-dream", label: "我真的不是在做梦吧？", nextStage: 88, lines: [
+      { sender: "我", body: "我真的不是在做夢吧？他居然說要請我吃飯！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不是夢！！！是真的！！！妳快把這件事刻在腦子裡啦！", thread: "西蓝花" },
+    ]},
+  ],
+  88: [
+    { id: "fantasize-outfit", label: "我已经开始想那天要穿什么了！", nextStage: 89, lines: [
+      { sender: "我", body: "我現在甚至開始幻想吃飯那天要穿什麼了，救命哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈哈妳也太快進入狀況！要不要現在就開始挑衣服？", thread: "西蓝花" },
+    ]},
+    { id: "try-not-to-overthink", label: "先冷静！但我真的好期待！", nextStage: 89, lines: [
+      { sender: "我", body: "我努力冷靜！可是光想像就覺得好緊張喔。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "緊張什麼啦！到時候穿得漂漂亮亮去吃飯就對了！", thread: "西蓝花" },
+    ]},
+  ],
+  89: [
+    { id: "pick-something-cute", label: "当然要穿得漂漂亮亮的！", nextStage: 90, lines: [
+      { sender: "我", body: "那當然要穿得漂漂亮亮的！這可是大事欸！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，先記著這件大事！對了，他有沒有說什麼時候回來？", thread: "西蓝花" },
+    ]},
+    { id: "outfit-nerves", label: "到时候再挑啦，我现在光想就紧张", nextStage: 90, lines: [
+      { sender: "我", body: "到時候再挑啦，我現在光想就緊張到不行。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈妳先深呼吸！說真的，他有沒有講什麼時候回來？", thread: "西蓝花" },
+    ]},
+  ],
+  90: [
+    { id: "forgot-return-date", label: "嘶……我还真忘了问！", nextStage: 91, lines: [
       { sender: "我", body: "嘶……我還真忘了問！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳真的是……這麼重要的事情也能忘！", thread: "西蓝花" },
-      { sender: "我", body: "小問題啦！我去查查五月天最近在哪開演唱會不就行了？反正他們每次都是特種兵行程，回來肯定特別快。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好像在北京吧？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的很誇張欸！這麼重要的事情也能忘！", thread: "西蓝花" },
+    ]},
+    { id: "also-forgot-to-ask", label: "完了，我刚刚真的没问他什么时候回来", nextStage: 91, lines: [
+      { sender: "我", body: "完了，我剛剛真的沒問他什麼時候回來。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "拜託！約吃飯這麼重要，回來時間當然也要問啊！妳怎麼會漏掉啦！", thread: "西蓝花" },
+    ]},
+  ],
+  91: [
+    { id: "too-excited-to-remember", label: "哎呀！还不是因为太激动了嘛！", nextStage: 65, lines: [
+      { sender: "我", body: "哎呀！還不是因為太激動了嘛！當下腦袋一片空白，哪還記得問啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的沒救了啦哈哈哈！我查了一下，好像在北京吧？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不過他們行程常常很緊湊，妳先別急，等他回來再慢慢問清楚！", thread: "西蓝花" },
+    ]},
+    { id: "laugh-it-off", label: "我那时候满脑子都是他答应请我吃饭了！", nextStage: 65, lines: [
+      { sender: "我", body: "我那時候滿腦子都是他答應請我吃飯了，真的顧不上其他事啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈妳也太容易滿足！我看了一下，好像在北京吧？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦，等他回來再說！現在先把玩玩照顧好，別光顧著幻想約會喔！", thread: "西蓝花" },
     ]},
   ],
   65: [
