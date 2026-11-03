@@ -1219,6 +1219,7 @@ export function WeChatSkin(p: SkinProps) {
     ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
     : { ...parsedCatRescue, messages: correctedPickupMessages };
   const allItems = [...p.items, ...catRescue.messages];
+  const postPickupGoodbyeSent = allItems.some((item) => item.sender === "我" && item.body.trim() === "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！");
   // One-time Vava/玩玩 Moments event. Its transcript is stored with the
   // existing DaG story messages so it survives app switches and reloads.
   const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
@@ -1227,14 +1228,15 @@ export function WeChatSkin(p: SkinProps) {
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
   const [postPickupStoryMigrated, setPostPickupStoryMigrated] = useSkinState<boolean>(p, "wxPostPickupStoryMigratedV1", false);
+  useEffect(() => { if (postPickupGoodbyeSent && returnDinnerStage !== -2) setReturnDinnerStage(-2); }, [postPickupGoodbyeSent, returnDinnerStage]);
   useEffect(() => {
     // Older saves ended stage 100 at -1. Resume the newly added follow-up once,
     // without replaying or rewriting any existing messages.
-    if (!postPickupStoryMigrated && returnDinnerStage === -1 && catRescue.branch === "monster-cat") {
+    if (!postPickupGoodbyeSent && !postPickupStoryMigrated && returnDinnerStage === -1 && catRescue.branch === "monster-cat") {
       setReturnDinnerStage(101);
       setPostPickupStoryMigrated(true);
     }
-  }, [postPickupStoryMigrated, returnDinnerStage, catRescue.branch]);
+  }, [postPickupGoodbyeSent, postPickupStoryMigrated, returnDinnerStage, catRescue.branch]);
   const [meetupDayMigrated, setMeetupDayMigrated] = useSkinState<boolean>(p, "wxMeetupDayMigrationV1", false);
   useEffect(() => {
     if (meetupDayMigrated || catRescue.branch !== "monster-cat") return;
@@ -2221,7 +2223,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {pendingCatLines.length === 0 && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {!postPickupGoodbyeSent && pendingCatLines.length === 0 && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
@@ -2237,7 +2239,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {catChoices.length > 0 && (
+              {!postPickupGoodbyeSent && catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
