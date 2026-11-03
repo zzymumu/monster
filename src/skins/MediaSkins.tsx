@@ -243,7 +243,7 @@ export function NeteaseSkin(p: Props) {
 export function YouTubeSkin(p: Props) {
   const channelUrl = "https://www.youtube.com/channel/UC5ieWR5T4WulmNLXQ8-wiDw";
   const uploadsPlaylist = "UU5ieWR5T4WulmNLXQ8-wiDw";
-  const [tab, setTab] = useSkinState(p, "monster-youtube-tab", "首页");
+  const [tab, setTab] = useSkinState<string>(p, "monster-youtube-tab", "首页");
   return (
     <div className="catalog-skin youtube-ui">
       <Header p={p} />
