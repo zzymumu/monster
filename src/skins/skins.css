@@ -3083,30 +3083,17 @@
   background: #000;
   box-sizing: border-box;
 }
-.youtube-player-modal .youtube-player-frame {
-  display: block !important;
-  position: relative !important;
-  flex: 0 0 auto !important;
-  width: 100% !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  aspect-ratio: 16 / 9 !important;
-  overflow: hidden !important;
-  background: #000 !important;
-  box-sizing: border-box !important;
-}
 .youtube-player-modal .youtube-player-frame iframe,
 .youtube-player-frame iframe {
   display: block !important;
   position: absolute !important;
-  inset: 0 !important;
-  /* Use opposing insets with auto width: this makes the replaced iframe
-     fill the frame instead of retaining its intrinsic 560px player width. */
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: none !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
   height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
