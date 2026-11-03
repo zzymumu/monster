@@ -282,13 +282,13 @@ export function YouTubeSkin(p: Props) {
         <div className="youtube-chips" style={{ padding: "0 14px 12px" }}>
           {["首页", "全部视频"].map(name => <button key={name} className={tab === name ? "selected" : ""} onClick={() => { setTab(name); if (name === "全部视频") { setShowUploads(true); setPlayingId(""); } else { setShowUploads(false); } }}>{name}</button>)}
         </div>
+        <div style={{ padding: "0 12px 14px", fontWeight: 700 }}>来自 “Mayday Monster” 上传的视频</div>
+        {(playingId || showUploads) && <div style={{ width: "100%", maxWidth: "none", margin: "0 0 16px", padding: 0, overflow: "hidden", background: "#000", lineHeight: 0, boxSizing: "border-box" }}>
+          <div style={{ position: "relative", width: "100%", maxWidth: "none", aspectRatio: "16 / 9", background: "#000", overflow: "hidden" }}>
+            <iframe title={playingId ? "YouTube 视频播放" : "Mayday Monster 全部上传视频"} src={playingId ? "https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0" : "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist} style={{ display: "block", position: "absolute", top: 0, left: 0, width: "100%", maxWidth: "none", height: "100%", border: 0, margin: 0, padding: 0, boxSizing: "border-box" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+          </div>
+        </div>}
         <div style={{ padding: "0 12px 14px" }}>
-          <div style={{ fontWeight: 700, padding: "4px 2px 12px" }}>来自 “Mayday Monster” 上传的视频</div>
-          {(playingId || showUploads) && <div style={{ margin: "0 -12px 16px", width: "calc(100% + 24px)", overflow: "hidden", background: "#000", lineHeight: 0 }}>
-            <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", background: "#000" }}>
-              <iframe title={playingId ? "YouTube 视频播放" : "Mayday Monster 全部上传视频"} src={playingId ? "https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0" : "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist} style={{ display: "block", position: "absolute", inset: 0, width: "100%", height: "100%", minWidth: 0, border: 0, margin: 0, padding: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
-            </div>
-          </div>}
           {filtered.map(v => <button key={v.title} onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (v.id) { setPlayingId(v.id); setShowUploads(false); setTab("首页"); } else { setShowUploads(true); setPlayingId(""); setTab("全部视频"); } }} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
             <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#e8e8e8" }}>
               {v.id ? <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt={v.title + " 封面"} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} style={{ width: "100%", height: "100%", objectFit: "cover" }}/> : <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", alignContent: "center", gap: 6, color: "#fff", background: "linear-gradient(135deg,#171923,#424b5b)", fontSize: 12 }}><span style={{ fontSize: 24 }}>▶</span><strong>Mayday Monster</strong><span>播放官方上传列表</span></div>}
