@@ -1457,13 +1457,17 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "熱炒吧！不過具體去哪一家我還沒想好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "熱炒不錯欸！附近不是有幾家嗎？我記得阿嬤熱炒好像評價滿好的，菜色也很多。", thread: "西蓝花" },
     ]},
-    { stage: 33, chat: "西蓝花", id: "pick-amah-stir-fry", label: "那就阿嬷热炒吧！听起来不错。", nextStage: 34, lines: [
-      { sender: "我", body: "那就阿嬤熱炒吧！聽起來不錯，而且可以多點幾道菜一起吃。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好，那就決定阿嬤熱炒！妳明天記得把店名跟定位傳給大G喔。欸不跟妳聊了，我要去洗澡了，明天吃飯完再跟我報告！", thread: "西蓝花" },
+    { stage: 33, chat: "西蓝花", id: "hesitate-famous-person", label: "可是人会不会很多啊？他毕竟是大明星欸，会不会不太方便？", nextStage: 46, lines: [
+      { sender: "我", body: "可是人會不會很多啊？他畢竟是大明星欸，跟他一起去熱炒店會不會不太方便？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳們找個包廂不就好了！而且他自己都說要去吃熱炒了，妳怕什麼啦？", thread: "西蓝花" },
     ]},
-    { stage: 34, chat: "西蓝花", id: "broccoli-goodnight", label: "好啦！明天吃完一定跟你报告，快去洗澡吧～", nextStage: 35, lines: [
-      { sender: "我", body: "好啦！明天吃完一定跟妳報告，快去洗澡吧～", thread: "西蓝花" },
-      { sender: "西蓝花", body: "這還差不多！快去休息啦，明天加油，掰掰！", thread: "西蓝花" },
+    { stage: 46, chat: "西蓝花", id: "private-room-and-queue", label: "好像也是……那到时候我提前去排队好了！不过我又开始烦恼明天穿什么了。", nextStage: 47, lines: [
+      { sender: "我", body: "好像也是欸……那就找個包廂好了！人多的話我到時候提前去排隊，先把位置弄好。可是……我現在又開始煩惱明天到底要穿什麼了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈妳也太忙了吧，餐廳都還沒吃到，現在先煩惱穿搭喔？", thread: "西蓝花" },
+    ]},
+    { stage: 47, chat: "西蓝花", id: "outfit-worry-and-shower", label: "我真的想不出来啦！怎么想都觉得不对劲。", nextStage: 35, lines: [
+      { sender: "我", body: "我真的想不出來啦！衣櫃裡的衣服怎麼想都覺得不對勁，明天到底要穿什麼啊……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不要穿白衣服就好了啦！妳怎樣都好看啦，真的不用想那麼多。好啦不跟妳聊了，我要去洗澡了！", thread: "西蓝花" },
     ]},
     { stage: 35, chat: "大G", id: "ask-arrived-home", label: "你到了吗？", nextStage: 36, lines: [
       { sender: "我", body: "你到了嗎？", thread: "大G" },
@@ -1501,17 +1505,18 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "啊那你快去收拾收拾，早點休息吧，明天見～", thread: "大G" },
       { sender: "大G", body: "好啦，妳也早點休息！明天見，晚安。", thread: "大G" },
     ]},
+    { stage: 44, chat: "大G", id: "reply-goodnight-final", label: "晚安～你也早点休息，明天见！", nextStage: 45, lines: [
+      { sender: "我", body: "晚安～你也早點休息，明天見！", thread: "大G" },
+      { sender: "大G", body: "嗯嗯，晚安。明天見。", thread: "大G" },
+    ]},
   ];
   useEffect(() => {
     if (returnDinnerStage !== 2 || pendingCatLines.length > 0 || !isMonsterThread) return;
     setReturnDinnerStage(3);
     p.onThread("西蓝花");
   }, [returnDinnerStage, pendingCatLines.length, isMonsterThread, p.onThread]);
-  useEffect(() => {
-    if (returnDinnerStage !== 35 || pendingCatLines.length > 0 || !isBroccoliThread) return;
-    setTab("微信");
-    p.onThread("大G");
-  }, [returnDinnerStage, pendingCatLines.length, isBroccoliThread, p.onThread]);
+  // Do not auto-switch from Broccoli to DaG: the player must leave this chat
+  // and explicitly open DaG's conversation to continue the story.
   useEffect(() => {
     // Rewrite the already-saved pickup exchange from the previous ordering so
     // existing testers see the corrected away-from-home explanation too.
