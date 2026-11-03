@@ -32,6 +32,7 @@ const systemApps = new Set([
   "find",
   "calculator",
   "settings",
+  "gamesave",
 ]);
 export function category(id: string) {
   if (systemApps.has(id)) return "系统";
