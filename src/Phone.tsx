@@ -294,33 +294,6 @@ function PhoneRuntime({
     return () => { active = false; window.removeEventListener("pagehide", checkpoint); document.removeEventListener("visibilitychange", onVisibility); };
   }, [own, creator, work.id, external, ready]);
   useEffect(() => {
-    if (creator || external || !ready) return;
-    let active = true;
-    const persist = () => {
-      const snapshot = runtimeRef.current;
-      const savedAt = Date.now();
-      void db.saves.put({ id: saveId, state: snapshot, savedAt }).then(() => {
-        if (active) setSaveInfo({ hasSave: true, savedAt });
-      }).catch(() => {
-        if (active) setLoadError("自动存档失败，请检查浏览器存储权限或导出备份。");
-      });
-    };
-    // Every meaningful runtime/UI/story update is persisted immediately.
-    persist();
-    // Also checkpoint when the page is backgrounded or about to close.
-    const checkpoint = () => persist();
-    const onVisibility = () => {
-      if (document.visibilityState === "hidden") checkpoint();
-    };
-    window.addEventListener("pagehide", checkpoint);
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      active = false;
-      window.removeEventListener("pagehide", checkpoint);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [own, creator, work.id, saveId, external, ready]);
-  useEffect(() => {
     if (creator || !ready) return;
     const interval = setInterval(() => {
       const previous = runtimeRef.current;
@@ -1441,6 +1414,12 @@ function AppContent({
               saveReady={saveReady}
               onSaveNow={onSaveNow}
               onClearSave={onClearSave}
+              saveSlots={saveInfo.slots}
+              activeSaveId={saveInfo.activeSaveId}
+              onCreateSave={createSave}
+              onLoadSave={loadSave}
+              onRenameSave={renameSave}
+              onDeleteSave={deleteSave}
               onThread={(next) => {
                 setThread(next);
                 if (app.id === "wechat") onUi?.("openThread", next);
