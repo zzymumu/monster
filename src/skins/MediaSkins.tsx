@@ -241,62 +241,53 @@ export function NeteaseSkin(p: Props) {
   );
 }
 export function YouTubeSkin(p: Props) {
-  const { tab, setTab, q, setQ, items } = useContent(p, "首页");
-  const [category, setCategory] = useState("全部");
-  const list = items.filter((i) =>
-    tab === "Shorts"
-      ? i.folder === "Shorts"
-      : tab === "订阅"
-        ? i.folder === "订阅"
-        : tab === "播放列表"
-          ? i.favorite || i.folder === "播放列表"
-          : category === "全部" || i.folder === category,
-  );
+  const channelUrl = "https://www.youtube.com/channel/UC5ieWR5T4WulmNLXQ8-wiDw";
+  const uploadsPlaylist = "UU5ieWR5T4WulmNLXQ8-wiDw";
+  const [tab, setTab] = useSkinState(p, "monster-youtube-tab", "首页");
   return (
     <div className="catalog-skin youtube-ui">
       <Header p={p} />
-      <SearchBox value={q} set={setQ} />
-      <div className="youtube-chips">
-        {["全部", ...groupItems(items).filter((g) => g !== "未分类")].map(
-          (g) => (
-            <button
-              className={category === g ? "selected" : ""}
-              key={g}
-              onClick={() => setCategory(g)}
-            >
-              {g}
-            </button>
-          ),
-        )}
-      </div>
       <div className="catalog-scroll">
-        <div className={tab === "Shorts" ? "youtube-shorts" : "youtube-videos"}>
-          {list.map((i) => (
-            <article key={i.id}>
-              <button className="youtube-thumb" onClick={() => p.onItem(i)}>
-                <Media item={i} />
-                {meta(i, "duration") && <time>{meta(i, "duration")}</time>}
-              </button>
-              <button className="youtube-byline" onClick={() => p.onItem(i)}>
-                <Avatar name={i.sender} />
-                <div>
-                  <strong>{i.title}</strong>
-                  <small>
-                    {i.sender} · {meta(i, "views", "—")} 次播放
-                  </small>
-                </div>
-              </button>
-            </article>
+        <section style={{ padding: "14px", display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ width: 54, height: 54, borderRadius: "50%", flexShrink: 0, background: "#e62117", color: "white", display: "grid", placeItems: "center", fontWeight: 800, fontSize: 24 }}>M</div>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <strong style={{ fontSize: 18 }}>Mayday Monster</strong>
+            <div style={{ fontSize: 12, opacity: .65, marginTop: 4 }}>五月天怪獸 · YouTube 頻道</div>
+            <div style={{ fontSize: 11, opacity: .55, marginTop: 3 }}>频道公开上传视频</div>
+          </div>
+        </section>
+        <div className="youtube-chips">
+          {["首页", "视频", "频道"].map((name) => (
+            <button className={tab === name ? "selected" : ""} key={name} onClick={() => setTab(name)}>{name}</button>
           ))}
         </div>
-        <Empty items={list} />
+        {tab === "频道" ? (
+          <div style={{ padding: 18, textAlign: "center" }}>
+            <p>打开 Mayday Monster 的真实 YouTube 频道。</p>
+            <a href={channelUrl} target="_blank" rel="noreferrer">打开频道 ↗</a>
+          </div>
+        ) : (
+          <div style={{ padding: "0 12px 18px" }}>
+            <div style={{ borderRadius: 12, overflow: "hidden", background: "#000", aspectRatio: "16 / 9" }}>
+              <iframe
+                title="Mayday Monster YouTube uploads"
+                src={`https://www.youtube-nocookie.com/embed/videoseries?list=${uploadsPlaylist}&rel=0`}
+                style={{ width: "100%", height: "100%", border: 0 }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+            <div style={{ padding: "12px 2px" }}>
+              <strong>Mayday Monster · 视频列表</strong>
+              <p style={{ fontSize: 12, opacity: .65, margin: "5px 0 10px" }}>点击播放器即可播放频道公开上传的视频；视频由 YouTube 官方托管。</p>
+              <a href={channelUrl + "/videos"} target="_blank" rel="noreferrer">在 YouTube 查看全部视频 ↗</a>
+            </div>
+          </div>
+        )}
       </div>
-      <Tabs
-        tabs={["首页", "Shorts", "订阅", "播放列表"]}
-        value={tab}
-        set={setTab}
-        icons={[<Home />, <Video />, <Users />, <User />]}
-      />
+      <Tabs tabs={["首页", "视频", "频道"]} value={tab} set={setTab} icons={[<Home />, <Video />, <User />]} />
     </div>
   );
 }
