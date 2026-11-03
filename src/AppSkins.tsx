@@ -1170,6 +1170,13 @@ export function WeChatSkin(p: SkinProps) {
     ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
     : { ...parsedCatRescue, messages: correctedPickupMessages };
   const allItems = [...p.items, ...catRescue.messages];
+  // One-time Vava/玩玩 Moments event. Its transcript is stored with the
+  // existing DaG story messages so it survives app switches and reloads.
+  const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
+  const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
+  const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
+  const vavaPlayActive = vavaPlayStage >= 0 || vavaPlayMessagesExist;
+
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
   // The canonical story transcript stores an explicit destination on every
@@ -1484,12 +1491,6 @@ export function WeChatSkin(p: SkinProps) {
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
-  // One-time Vava/玩玩 Moments event. Its transcript is stored with the
-  // existing DaG story messages so it survives app switches and reloads.
-  const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
-  const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
-  const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
-  const vavaPlayActive = vavaPlayStage >= 0 || vavaPlayMessagesExist;
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; body: string; time: string };
@@ -1774,7 +1775,7 @@ export function WeChatSkin(p: SkinProps) {
               {isBroccoliThread && catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
               {vavaPlayActive && isMonsterThread && vavaPlayStage >= 0 && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G关于Vava和玩玩的回复选项">
-                  {vavaPlayChoices.filter((choice) => choice.nextStage === vavaPlayStage + 1 || (vavaPlayStage === 0 && choice.nextStage === 2)).slice(0, vavaPlayStage === 0 ? 2 : 1).map((choice) => (
+                  {vavaPlayChoices.filter((choice) => choice.nextStage === vavaPlayStage + 1 || (vavaPlayStage === 0 && choice.nextStage === 2) || (vavaPlayStage === 6 && choice.nextStage === -1)).slice(0, vavaPlayStage === 0 ? 2 : 1).map((choice) => (
                     <button key={choice.id} onClick={() => {
                       appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
                       setVavaPlayStage(choice.nextStage);
