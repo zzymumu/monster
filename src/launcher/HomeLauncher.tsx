@@ -14,6 +14,7 @@ import {
 import { motion } from "motion/react";
 import { AppDock } from "../vendor/ios-web/Launcher";
 import { category } from "../apps";
+import { useDeviceLocation } from "../deviceLocation";
 import type { Work } from "../schema";
 import {
   homeEntries,
@@ -57,10 +58,12 @@ function WidgetFace({
   widget,
   work,
   time,
+  liveWeather,
 }: {
   widget: Widget;
   work: Work;
   time: string;
+  liveWeather?: { city: string; temperature: number; condition: string } | null;
 }) {
   const date = new Date((work.phone.date || "2026-10-25") + "T12:00:00Z");
   const weather = work.data.weather?.[0];
@@ -85,10 +88,10 @@ function WidgetFace({
         </>
       ) : widget.type === "weather" ? (
         <>
-          <small>{weather?.title || "未添加城市"}</small>
-          <b>{weather?.meta.temperature || "—"}°</b>
+          <small>{liveWeather?.city || weather?.title || "正在定位…"}</small>
+          <b>{liveWeather ? liveWeather.temperature : weather?.meta.temperature || "—"}°</b>
           <CloudSun size={27} />
-          <small>{weather?.meta.condition || "暂无天气数据"}</small>
+          <small>{liveWeather?.condition || weather?.meta.condition || "正在获取天气…"}</small>
         </>
       ) : widget.type === "notes" ? (
         <>
@@ -114,6 +117,31 @@ function WidgetFace({
   );
 }
 export function HomeLauncher(p: Props) {
+  const { position } = useDeviceLocation();
+  const [liveWeather, setLiveWeather] = useState<{ city: string; temperature: number; condition: string } | null>(null);
+  useEffect(() => {
+    if (!position) return;
+    let cancelled = false;
+    const params = new URLSearchParams({
+      latitude: String(position.latitude),
+      longitude: String(position.longitude),
+      current: "temperature_2m,weather_code",
+      timezone: "auto",
+    });
+    const describe = (code: number) => code === 0 ? "晴朗" : [1, 2].includes(code) ? "大致晴朗" : code === 3 ? "阴天" : [45, 48].includes(code) ? "有雾" : [51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code) ? "下雨" : [71, 73, 75, 77, 85, 86].includes(code) ? "下雪" : [95, 96, 99].includes(code) ? "雷暴" : "天气状况";
+    void Promise.all([
+      fetch("https://api.open-meteo.com/v1/forecast?" + params.toString()).then(r => { if (!r.ok) throw new Error("weather"); return r.json(); }),
+      fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" + position.latitude + "&longitude=" + position.longitude + "&localityLanguage=zh").then(r => r.ok ? r.json() : {}),
+    ]).then(([weather, place]) => {
+      if (cancelled) return;
+      setLiveWeather({
+        city: place.city || place.locality || place.principalSubdivision || "当前位置",
+        temperature: Math.round(weather.current.temperature_2m),
+        condition: describe(weather.current.weather_code),
+      });
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [position?.latitude, position?.longitude]);
   const [editing, setEditing] = useState(false),
     [sheet, setSheet] = useState(p.storeOpen ? "library" : ""),
     [query, setQuery] = useState(""),
@@ -461,7 +489,7 @@ export function HomeLauncher(p: Props) {
       {entry.app ? (
         p.icon({ ...entry.app, ...(dock ? { name: "" } : {}) })
       ) : entry.widget ? (
-        <WidgetFace widget={entry.widget} work={p.work} time={p.time} />
+        <WidgetFace widget={entry.widget} work={p.work} time={p.time} liveWeather={liveWeather} />
       ) : (
         <span className="app-icon-wrap">
           <span className="folder-icon">
@@ -771,6 +799,7 @@ export function HomeLauncher(p: Props) {
                     widget={{ id: "preview", type: widgetType, size }}
                     work={p.work}
                     time={p.time}
+                    liveWeather={liveWeather}
                   />
                 </div>
                 <div className="widget-types">
