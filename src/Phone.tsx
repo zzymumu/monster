@@ -258,6 +258,7 @@ function PhoneRuntime({
         }
         if (!active) return;
         const selected = slots.find((record) => record.id === activeSaveIdRef.current) ?? slots.find((record) => record.id === defaultSaveId) ?? slots.sort((x, y) => (y.savedAt ?? 0) - (x.savedAt ?? 0))[0];
+        if (!selected) throw new Error("No valid save slot");
         activeSaveIdRef.current = selected.id;
         const fresh = dispatch(work, initialRuntime(work), "start");
         setOwn({ ...fresh, ...selected.state, workId: work.id, revision: work.updatedAt, ui: { ...fresh.ui, ...selected.state.ui }, messages: { ...fresh.messages, ...selected.state.messages } });
