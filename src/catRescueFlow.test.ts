@@ -19,7 +19,7 @@ describe("WeChat cat-rescue story configuration", () => {
     for (const stage of [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 77, 78, 79, 90, 91, 92, 93, 94, 95, 96]) {
       expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
     }
-    for (const stage of [9, 13, 14, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 53, 85, 86, 87]) {
+    for (const stage of [9, 13, 14, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 35, 40, 53, 85, 86, 87]) {
       expect(getCatRescueThreadForStage(stage)).toBe("大G");
     }
   });
@@ -163,17 +163,18 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[16]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[16].every((choice) => choice.nextStage === 20)).toBe(true);
     const shortApology = CAT_RESCUE_CHOICES[16].find((choice) => choice.id === "monster-apology-after-prank");
-    expect(shortApology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "我", "大G"]);
+    expect(shortApology?.nextStage).toBe(18);
+    expect(shortApology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "大G"]);
     expect(shortApology?.lines[1].body).toBe("我說呢，怎麼有人一上來就說奇奇怪怪的話，原來是這樣喔……");
-    expect(apology?.nextStage).toBe(20);
-    expect(apology?.lines.some((line) => /小黑貓/.test(line.body))).toBe(true);
-    expect(apology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "我", "大G"]);
-    expect(apology?.lines.map((line) => line.body)).toEqual([
-      "真的對不起！我剛剛只是想開個玩笑，沒想到你真的把我刪掉了。",
-      "我說呢，怎麼有人一上來就說奇奇怪怪的話，原來是這樣喔……",
-      "我是在路邊撿到一隻小黑貓，牠脖子上的牌子有你的微信號，所以才急著聯絡你。",
-      "蛤？原來是這樣……小黑貓現在在哪裡？牠有沒有受傷？妳先跟我說一下。",
-    ]);
+    expect(shortApology?.lines[2].body).toBe("所以妳找我有事嗎？");
+    expect(apology?.nextStage).toBe(18);
+    expect(apology?.lines.map((line) => line.sender)).toEqual(["我", "大G", "大G"]);
+    expect(apology?.lines.some((line) => /小黑貓|撿到你的貓/.test(line.body))).toBe(false);
+    expect(CAT_RESCUE_CHOICES[18]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[18].every((choice) => choice.nextStage === 20)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[18].every((choice) => choice.lines[0].sender === "我" && choice.lines[1].sender === "大G")).toBe(true);
+    expect(CAT_RESCUE_CHOICES[18][0].lines[0].body).toContain("撿到你的貓");
+    expect(CAT_RESCUE_CHOICES[18][0].lines[1].body).toContain("夭壽");
     expect(CAT_RESCUE_CHOICES[20]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[21]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[22]).toHaveLength(2);
@@ -443,7 +444,7 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("keeps the prank and apology branches in the owner's conversation", () => {
-    for (const stage of [9, 16, 17, 20, 21, 22, 23, 24, 25, 26, 27, 35]) {
+    for (const stage of [9, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 35]) {
       expect(getCatRescueThreadForStage(stage)).toBe("大G");
       for (const choice of CAT_RESCUE_CHOICES[stage] ?? []) {
         expect(choice.lines.every((line) => line.thread === "西蓝花" || line.sender === "我" || line.sender === "大G")).toBe(true);
