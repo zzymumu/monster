@@ -324,10 +324,18 @@ function PhoneRuntime({
   // Keep the queue only as a handoff between the chat UI and phone runtime;
   // do not add artificial waiting periods between dialogue lines.
   const pendingStoryQueueRaw = s.ui?.wechat?.wxCatPendingLines;
+  const lastProcessedStoryQueueRef = useRef("");
   const currentAppRef = useRef(app);
   currentAppRef.current = app;
   useEffect(() => {
     if (creator || !ready || typeof pendingStoryQueueRaw !== "string") return;
+    if (!pendingStoryQueueRaw || pendingStoryQueueRaw === "[]") {
+      lastProcessedStoryQueueRef.current = "";
+      return;
+    }
+    // React Strict Mode may replay an effect before the state update commits.
+    // Claim this exact queue payload synchronously so it cannot be delivered twice.
+    if (lastProcessedStoryQueueRef.current === pendingStoryQueueRaw) return;
     let queue: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
     try {
       const parsed = JSON.parse(pendingStoryQueueRaw);
@@ -336,6 +344,7 @@ function PhoneRuntime({
       );
     } catch { queue = []; }
     if (!queue.length) return;
+    lastProcessedStoryQueueRef.current = pendingStoryQueueRaw;
 
     const latest = runtimeRef.current;
     let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
@@ -355,7 +364,8 @@ function PhoneRuntime({
     queue.forEach((line, index) => {
       const thread = line.thread || fallbackThread;
       const created = makeItem({
-        id: line.id || "cat-rescue-" + baseOrder + "-" + index,
+        // Stable fallback IDs make retries/replayed effects idempotent too.
+        id: line.id || "cat-rescue-stage-" + (Number(catState.stage) || 0) + "-" + index + "-" + thread + "-" + line.sender,
         title: thread,
         sender: line.sender,
         body: line.body,
@@ -363,12 +373,15 @@ function PhoneRuntime({
         outgoing: false,
         meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(baseOrder + index) },
       });
-      const appendOnce = (items: Item[]) =>
-        items.some((item) => item.id === created.id) ? items : [...items, created];
-      storyMessages = appendOnce(storyMessages);
-      wechatMessages = appendOnce(wechatMessages);
-      if (currentAppRef.current !== "wechat" || openThread !== thread) {
-        nextNotifications.push("微信：" + thread + "：" + line.body);
+      const alreadyDelivered = storyMessages.some((item) => item.id === created.id) ||
+        wechatMessages.some((item) => item.id === created.id);
+      if (!alreadyDelivered) {
+        storyMessages = [...storyMessages, created];
+        wechatMessages = [...wechatMessages, created];
+        if (currentAppRef.current !== "wechat" || openThread !== thread) {
+          const notification = "微信：" + thread + "：" + line.body;
+          if (!nextNotifications.includes(notification)) nextNotifications.push(notification);
+        }
       }
     });
 
