@@ -1236,7 +1236,7 @@ export function WeChatSkin(p: SkinProps) {
     setRemarkEditorContact("");
   };
   const resolveContactName = (visible: string) =>
-    Object.entries(contactRemarks).find(([key, value]) => value === visible)?.[0] || visible;
+    Object.entries(contactRemarks).find(([_key, value]) => value === visible)?.[0] || visible;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
   // The canonical story transcript stores an explicit destination on every
   // line. Render it directly in that contact's conversation; do not infer
