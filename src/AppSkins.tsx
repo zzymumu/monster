@@ -1369,7 +1369,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "而且妳也沒有刻意接近他啊，從頭到尾都是因為玩玩才聯絡上的。放輕鬆一點啦！", thread: "西蓝花" },
       { sender: "大G", body: "對了，如果妳明天方便的話，我接完玩玩之後想請妳一起吃個飯，謝謝妳這段時間這麼照顧牠。", thread: "大G" },
     ]},
-    { stage: 8, chat: "西蓝花", id: "react-second-dinner-invite", label: "啊啊啊啊！他又给我发消息了！他说要请我吃饭！！！", nextStage: 9, lines: [
+    { stage: 8, chat: "西蓝花", id: "react-second-dinner-invite", label: "啊啊啊啊！他又给我发消息了！他说要请我吃饭！！！", nextStage: 10, lines: [
       { sender: "我", body: "啊啊啊啊啊！！！他又給我發消息了！！！他說如果方便的話，接完玩玩要請我一起吃飯！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "真的假的！！！這次真的自己提了欸！！！妳快先去跟他聊啦，剛好我主管在喊我了，我得先忙一下！", thread: "西蓝花" },
       { sender: "西蓝花", body: "快去快去！好好聊，等一下再回來跟我報告，細節一個都不准漏掉！", thread: "西蓝花" },
