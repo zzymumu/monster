@@ -5204,3 +5204,16 @@
 .bili-splash { z-index:100; }
 .bili-splash-image { width:100%;height:100%;object-fit:contain;display:block; }
 .bili-splash-wordmark { display:none; }
+
+/* Bilibili concert list: compact one-column feed matching the requested reference */
+.bilibili-ui .catalog-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+.bilibili-ui .bili-concert-shelf { margin: 10px 10px 16px; }
+.bilibili-ui .bili-concert-list { display: flex; flex-direction: column; gap: 9px; }
+.bilibili-ui .bili-video-card { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 76px; padding: 8px; border: 1px solid #eee; border-radius: 10px; background: #fff; text-align: left; }
+.bilibili-ui .bili-video-cover { display: block; position: relative; flex: 0 0 29%; width: 29%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; background: #e9e9eb; }
+.bilibili-ui .bili-video-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.bilibili-ui .bili-cover-play { font-size: 19px; }
+.bilibili-ui .bili-video-copy { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 6px; }
+.bilibili-ui .bili-video-copy strong { display: -webkit-box; overflow: hidden; color: #222; font-size: 11px; font-weight: 650; line-height: 1.45; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.bilibili-ui .bili-video-copy small { color: #999; font-size: 9px; }
+.bilibili-ui .bili-featured-video { margin: 10px 10px 7px; }

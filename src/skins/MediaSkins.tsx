@@ -350,18 +350,28 @@ export function BilibiliSkin(p: Props) {
   }, []);
   useEffect(() => {
     let alive = true;
-    Promise.all(concerts.map(async (video) => {
-      try {
-        const response = await fetch("https://api.bilibili.com/x/web-interface/view?bvid=" + video.bvid);
-        const json = await response.json();
-        return [video.bvid, typeof json?.data?.pic === "string" ? json.data.pic : ""] as [string, string];
-      } catch {
-        return [video.bvid, ""] as [string, string];
-      }
-    })).then((entries) => {
-      if (alive) setCovers(Object.fromEntries(entries));
+    const callbacks: string[] = [];
+    concerts.forEach((video, index) => {
+      const callbackName = "__monsterBiliCover" + index;
+      callbacks.push(callbackName);
+      (window as any)[callbackName] = (payload: any) => {
+        const pic = payload?.data?.pic;
+        if (alive && typeof pic === "string") {
+          setCovers((current) => ({ ...current, [video.bvid]: pic.startsWith("//") ? "https:" + pic : pic }));
+        }
+        delete (window as any)[callbackName];
+      };
+      const script = document.createElement("script");
+      script.src = "https://api.bilibili.com/x/web-interface/view?bvid=" + video.bvid + "&jsonp=jsonp&callback=" + callbackName;
+      script.async = true;
+      script.dataset.biliCover = video.bvid;
+      document.head.appendChild(script);
     });
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+      document.querySelectorAll("script[data-bili-cover]").forEach((node) => node.remove());
+      callbacks.forEach((name) => { delete (window as any)[name]; });
+    };
   }, []);
   const activeConcert = concerts.find((video) => video.bvid === featuredBvid) || concerts[0];
   const list = tab === "历史" ? items.filter((item) => item.folder === "历史") : tab === "动态" ? items.filter((item) => item.folder === "动态") : items;
@@ -393,10 +403,10 @@ export function BilibiliSkin(p: Props) {
           </section>}
           <section className="bili-concert-shelf">
             <h3>相信音乐 · 五月天演唱会</h3>
-            <div className="bili-concert-grid">
+            <div className="bili-concert-list">
               {concerts.map((video) => <button key={video.bvid} className="bili-video-card" onClick={() => { setFeaturedBvid(video.bvid); setPlayerOpen(true); }}>
                 <span className="bili-video-cover">
-                  <img src={covers[video.bvid] || `https://api.bilibili.com/x/web-interface/view?bvid=${video.bvid}`} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                  {covers[video.bvid] && <img src={covers[video.bvid]} alt={video.title + " 视频缩略图"} loading="lazy" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = "none"; }} />}
                   <span className="bili-cover-play">▶</span><small>{video.duration}</small>
                 </span>
                 <span className="bili-video-copy"><strong>{video.title}</strong><small>相信音乐 · {video.year}</small></span>
