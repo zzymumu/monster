@@ -493,8 +493,8 @@ export function WeatherSkin(p: Props) {
       <div className="weather-stars" aria-hidden="true" />
       <div className="weather-native-scroll">
         <section className="weather-native-current">
-          <small>{currentCity}</small>
-          <h1>{currentTemperature}°</h1>
+          <small>我的位置</small>
+          <h1>{currentCity}</h1>
           <output>{currentTemperature}°</output>
           <div className="weather-high-low">
             <span>最高 {currentHigh}°</span>
@@ -566,7 +566,7 @@ export function WeatherSkin(p: Props) {
                 )}
                 <span>
                   {n === 5
-                    ? meta(item, "sunrise", "—")
+                    ? (liveWeather?.sunrise || meta(item, "sunrise", "—"))
                     : mode === "temperature"
                       ? (currentHourly[n]?.temperature ?? "—") + "°"
                       : mode === "rain"
