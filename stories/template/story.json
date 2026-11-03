@@ -1269,9 +1269,7 @@
           "value": true
         }
       ],
-      "next": [
-        "cat-tag-choice"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1361,9 +1359,7 @@
           "value": true
         }
       ],
-      "next": [
-        "cat-tag-choice"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -2054,7 +2050,141 @@
       "x": 0,
       "y": 0
     },
-    null
+    null,
+    {
+      "id": "return-find-tag",
+      "label": "折返后发现玩玩仍在并查看铭牌",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-33",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-34",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-35",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-36",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-37",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-38",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-39",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-40",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-41",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-42",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-43",
+          "value": true
+        }
+      ],
+      "next": [
+        "cat-tag-choice"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "home-find-tag",
+      "label": "医院检查后发现项圈铭牌信息",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-67",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-34",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-35",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-36",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-37",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-38",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-39",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-40",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-41",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-42",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-43",
+          "value": true
+        }
+      ],
+      "next": [
+        "cat-tag-choice"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    }
   ],
   "tests": [
     {
