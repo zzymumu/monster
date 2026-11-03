@@ -1502,11 +1502,11 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 25, chat: "大G", id: "ask-current-location", label: "对了，你现在还在外面吗？", nextStage: 26, lines: [
       { sender: "我", body: "對了，你現在還在外面嗎？", thread: "大G" },
-      { sender: "大G", body: "對啊，我現在在機場，準備要登機了。今天先搭飛機回去，明天就可以去找玩玩了。", thread: "大G" },
+      { sender: "大G", body: "對啊，我剛忙完，現在正在回酒店的路上。今天先回酒店休息，明天才回台北，到了再去找玩玩。", thread: "大G" },
     ]},
     { stage: 26, chat: "大G", id: "safe-flight", label: "好啦，那你一路平安，路上小心！", nextStage: 30, lines: [
       { sender: "我", body: "好啦，那你一路平安，路上小心！", thread: "大G" },
-      { sender: "大G", body: "好，謝謝妳啦！我先去登機了，明天見，掰掰。", thread: "大G" },
+      { sender: "大G", body: "好，謝謝妳啦！我先回酒店休息，明天回台北再去找玩玩，明天見，掰掰。", thread: "大G" },
     ]},
     { stage: 30, chat: "西蓝花", id: "brag-friends", label: "哼哼哼，怪兽说我跟他是朋友～", nextStage: 31, lines: [
       { sender: "我", body: "哼哼哼，怪獸說我跟他是朋友～", thread: "西蓝花" },
@@ -1562,7 +1562,7 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 42, chat: "大G", id: "vava-sweet-talk", label: "它现在已经很习惯我了，不过你来了应该还是会认得你的。", nextStage: 43, lines: [
       { sender: "我", body: "牠現在已經很習慣我了，不過你來了應該還是會認得你的。", thread: "大G" },
-      { sender: "大G", body: "希望啦！我也很想牠。欸，我到家了，終於可以坐下來了，今天真的有點累。", thread: "大G" },
+      { sender: "大G", body: "希望啦！我也很想牠。欸，我到酒店了，終於可以坐下來了，今天真的有點累。", thread: "大G" },
     ]},
     { stage: 43, chat: "大G", id: "goodnight-before-meet", label: "啊那你快去收拾收拾，早点休息吧，明天见～", nextStage: 44, lines: [
       { sender: "我", body: "啊那你快去收拾收拾，早點休息吧，明天見～", thread: "大G" },
