@@ -23,7 +23,6 @@ import {
   Wallet,
   Lock,
   Layers,
-  MoreHorizontal,
   Users,
   Share2,
   ThumbsUp,
