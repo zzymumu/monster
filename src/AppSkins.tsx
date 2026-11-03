@@ -70,7 +70,7 @@ function Avatar({
 }) {
   const safeSrc = safeMedia(src);
   const isBroccoli = name === "西蓝花" || name === "西兰花";
-  const imageSrc = isBroccoli ? GLOOMY_AVATAR : safeSrc.startsWith("data:image/") ? safeSrc : "";
+  const imageSrc = isBroccoli ? GLOOMY_AVATAR : (safeSrc.startsWith("data:image/") || safeSrc.startsWith("/assets/") || safeSrc.startsWith("./assets/")) ? safeSrc : "";
   return (
     <span className={`skin-avatar ${round ? "round" : ""} ${name === "大G" || name === "温尚翊" ? "guitar-avatar" : ""}`}>
       {imageSrc ? <img src={imageSrc} alt="" /> : name === "大G" || name === "温尚翊" ? "🎸" : name.slice(0, 1)}
@@ -100,6 +100,8 @@ function MessageList({
   onRead,
   whatsapp = false,
   wechat = false,
+  wallpaper = "",
+  selfAvatar = "",
 }: {
   items: Item[];
   creator: boolean;
@@ -107,6 +109,8 @@ function MessageList({
   onRead: (id: string) => void;
   whatsapp?: boolean;
   wechat?: boolean;
+  wallpaper?: string;
+  selfAvatar?: string;
 }) {
   const messagesRef = useRef<HTMLDivElement>(null);
   // Include the final message identity and body: a transcript can be updated
@@ -127,7 +131,7 @@ function MessageList({
   }, [items.length, messageContentKey]);
 
   return (
-    <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""}`}>
+    <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""} ${wechat && wallpaper ? "wx-photo-wallpaper" : ""}`} style={wechat && wallpaper ? { backgroundImage: `linear-gradient(rgba(255,255,255,.22), rgba(255,255,255,.22)), url("${wallpaper}")`, backgroundSize: "cover", backgroundPosition: "center center" } : undefined}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
       {items.map((i) => {
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
@@ -138,7 +142,7 @@ function MessageList({
           className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
         >
           {!whatsapp && !i.outgoing && (
-            <Avatar name={i.sender} src={i.avatar} />
+            <Avatar name={i.sender} src={i.outgoing ? selfAvatar : i.avatar} />
           )}
           <button
             className="skin-bubble"
@@ -1391,9 +1395,10 @@ export function WeChatSkin(p: SkinProps) {
   };
 
 
-  const initialOwnerName = p.owner && p.owner !== "机主" ? p.owner : "我的微信";
+  const initialOwnerName = p.owner && p.owner !== "机主" ? p.owner : "快乐小狗";
   const [profileName, setProfileName] = useSkinState<string>(p, "wxProfileName", initialOwnerName);
   const [profileAvatar, setProfileAvatar] = useSkinState<string>(p, "wxProfileAvatar", "");
+  const ownerAvatar = profileAvatar || "./assets/wechat-owner-avatar.jpg";
   const [profileStatus, setProfileStatus] = useSkinState<string>(p, "wxProfileStatus", "");
   const [statusEditorOpen, setStatusEditorOpen] = useState(false);
   const [customStatusOpen, setCustomStatusOpen] = useState(false);
@@ -1696,7 +1701,7 @@ export function WeChatSkin(p: SkinProps) {
         <>
           {catRescueActive ? (
             <div className="cat-rescue-thread">
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="./assets/wechat-chat-background.jpg" selfAvatar={ownerAvatar} />
               {isBroccoliThread && catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
               {catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
@@ -1729,7 +1734,7 @@ export function WeChatSkin(p: SkinProps) {
             </div>
           ) : (
             <>
-              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat />
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="./assets/wechat-chat-background.jpg" selfAvatar={ownerAvatar} />
               {isMonsterThread && monsterRemoved && catRescue.stage === 13 && monsterSendFailed && (
                 <div className="wx-send-failed" role="status" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", color: "#d93025", fontSize: 12 }}>
                   <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 16, height: 16, borderRadius: "50%", background: "#d93025", color: "#fff", fontWeight: 700 }}>!</span>
@@ -1777,18 +1782,18 @@ export function WeChatSkin(p: SkinProps) {
             </label>
           </div>
           <div className="wx-moment-compose-row">
-            <Avatar name={ownerName} src={profileAvatar} />
+            <Avatar name={ownerName} src={ownerAvatar} />
             <button className="wx-moment-publish" onClick={() => setMomentComposer(true)}><Plus size={16} /> 发布朋友圈</button>
           </div>
           {myMomentPosts.map((post) => (
             <div key={post.id} className="wx-moment-post wx-moment-user-post">
-              <Avatar name={ownerName} src={profileAvatar} />
+              <Avatar name={ownerName} src={ownerAvatar} />
               <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small></div>
             </div>
           ))}
           {posts.map((i) => (
             <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
-              <Avatar name={i.sender} src={i.sender === ownerName || i.sender === "我" || i.sender === "机主" ? profileAvatar : i.avatar} />
+              <Avatar name={i.sender} src={i.sender === ownerName || i.sender === "我" || i.sender === "机主" ? ownerAvatar : i.avatar} />
               <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
             </button>
           ))}
@@ -1883,7 +1888,7 @@ export function WeChatSkin(p: SkinProps) {
             <div className="wx-me-page">
               <div className="wx-me-profile">
                 <label className="wx-me-avatar-edit" title="更换头像">
-                  <Avatar name={ownerName} src={profileAvatar} />
+                  <Avatar name={ownerName} src={ownerAvatar} />
                   <input aria-label="更换头像" type="file" accept="image/*" onChange={(e) => updateProfileAvatar(e.target.files?.[0])} />
                 </label>
                 <div className="wx-me-identity">
