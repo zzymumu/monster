@@ -246,6 +246,7 @@ export function YouTubeSkin(p: Props) {
   const playlistUrl = "https://www.youtube.com/playlist?list=UU5ieWR5T4WulmNLXQ8-wiDw";
   const [tab, setTab] = useSkinState<string>(p, "monster-youtube-tab", "首页");
   const [query, setQuery] = useSkinState<string>(p, "monster-youtube-search", "");
+  const [playingId, setPlayingId] = useSkinState<string>(p, "monster-youtube-playing", "");
   const videos = [
     { id: "Yaak5SjAcgc", title: "五月天-後青春期的詩 Guitar Version", views: "9.2万次观看", age: "6年前", duration: "2:27" },
     { id: "mFUk8iq-WE0", title: "五月天-盛夏光年 Mayday live in the sky Monster solo", views: "5.6万次观看", age: "6年前", duration: "1:26" },
@@ -273,10 +274,18 @@ export function YouTubeSkin(p: Props) {
         </div>
         <div style={{ padding: "0 12px 14px" }}>
           <div style={{ fontWeight: 700, padding: "4px 2px 12px" }}>来自 “Mayday Monster” 上传的视频</div>
+          {playingId && (
+            <div style={{ marginBottom: 16, borderRadius: 12, overflow: "hidden", background: "#000" }}>
+              <div style={{ aspectRatio: "16 / 9" }}>
+                <iframe title="YouTube 视频播放" src={"https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0"} style={{ width: "100%", height: "100%", border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+              </div>
+              <button onClick={() => setPlayingId("")} style={{ border: 0, background: "#181818", color: "#fff", padding: "9px 12px", width: "100%", textAlign: "left" }}>关闭播放器 ×</button>
+            </div>
+          )}
           {filtered.map(v => (
-            <a key={v.id} href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer" style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", textDecoration: "none", alignItems: "flex-start" }}>
+            <button key={v.id} onClick={() => setPlayingId(v.id)} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
               <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#eee" }}>
-                <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
+                <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
                 <span style={{ position: "absolute", right: 5, bottom: 5, background: "rgba(0,0,0,.8)", color: "#fff", borderRadius: 4, padding: "2px 4px", fontSize: 11 }}>{v.duration}</span>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -285,7 +294,7 @@ export function YouTubeSkin(p: Props) {
                 <div style={{ color: "#606060", fontSize: 12, marginTop: 5 }}>{v.views} · {v.age}</div>
               </div>
               <span style={{ fontSize: 20, lineHeight: 1 }}>⋮</span>
-            </a>
+            </button>
           ))}
           <div style={{ borderTop: "1px solid #eee", padding: "12px 2px", color: "#606060", fontSize: 12, lineHeight: 1.5 }}>
             上方先展示已核实到真实视频链接的作品。其余历史视频通过 YouTube 官方上传列表完整浏览，避免出现标题或播放链接对不上的情况。
