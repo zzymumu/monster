@@ -2199,7 +2199,7 @@
       "expectUnlocked": []
     },
     {
-      "name": "西蓝花玩玩与请吃饭分支逐步可达",
+      "name": "听劝回家后悔折返支线完整可达",
       "steps": [
         {
           "event": "read",
@@ -2207,6 +2207,10 @@
         },
         {
           "choose": "branch-listen-home"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-33"
         },
         {
           "choose": "call-owner"
@@ -2273,8 +2277,98 @@
       "ending": "本段剧情暂时停在添加微信的悬念处。",
       "expectUnlocked": [
         "wx-broccoli-19",
+        "wx-broccoli-34",
         "wx-broccoli-55",
         "wx-broccoli-57",
+        "wx-big-g-23"
+      ]
+    },
+    {
+      "name": "带玩玩回家并承诺先送医院支线完整可达",
+      "steps": [
+        {
+          "event": "read",
+          "target": "wx-broccoli-18"
+        },
+        {
+          "choose": "branch-take-home"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-24"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-67"
+        },
+        {
+          "choose": "call-owner"
+        },
+        {
+          "choose": "big-g-open"
+        },
+        {
+          "choose": "jump-broccoli"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-44"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-45"
+        },
+        {
+          "choose": "dinner-explain"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-46"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-48"
+        },
+        {
+          "choose": "outfit-later"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-60"
+        },
+        {
+          "choose": "outfit-cool"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-49"
+        },
+        {
+          "choose": "dinner-food-answer"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-51"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-53"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-55"
+        },
+        {
+          "event": "callEnded",
+          "target": "story-validation-only"
+        }
+      ],
+      "ending": "本段剧情暂时停在添加微信的悬念处。",
+      "expectUnlocked": [
+        "wx-broccoli-19",
+        "wx-broccoli-65",
+        "wx-broccoli-34",
+        "wx-broccoli-55",
         "wx-big-g-23"
       ]
     }
