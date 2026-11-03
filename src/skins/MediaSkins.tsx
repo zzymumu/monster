@@ -259,9 +259,9 @@ export function YouTubeSkin(p: Props) {
     { id: "0weW-oPZFkQ", title: "五月天-三個傻瓜 by monster", views: "37万次观看", age: "14年前", duration: "4:18" },
     { id: "", title: "五月天-歪腰 by monster", views: "20万次观看", age: "14年前", duration: "3:11" },
     { id: "Kqy19iaDG08", title: "突然好想你 2010", views: "4.2万次观看", age: "15年前", duration: "4:37" },
-    { id: "", title: "離開地球表面", views: "36万次观看", age: "16年前", duration: "4:37" },
+    { id: "VpBpYlgCqtg", title: "離開地球表面", views: "36万次观看", age: "16年前", duration: "4:37" },
     { id: "", title: "抓狂吉他", views: "16万次观看", age: "16年前", duration: "4:01" },
-    { id: "", title: "知足吉他", views: "19万次观看", age: "16年前", duration: "5:20" },
+    { id: "tgGWuMdVuTQ", title: "知足吉他", views: "19万次观看", age: "16年前", duration: "5:20" },
     { id: "", title: "rain", views: "3.3万次观看", age: "16年前", duration: "2:31" },
     { id: "", title: "cola留下來.mp4", views: "5.1万次观看", age: "16年前", duration: "2:57" },
   ];
@@ -294,7 +294,7 @@ export function YouTubeSkin(p: Props) {
           </div>}
           {filtered.map(v => <button key={v.title} onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (v.id) { setPlayingId(v.id); setShowUploads(false); } else { setShowUploads(true); setPlayingId(""); } }} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
             <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#e8e8e8" }}>
-              {v.id ? <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }}/> : <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", color: "#777", fontSize: 12 }}>Mayday Monster</div>}
+              {v.id ? <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt={v.title + " 封面"} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} style={{ width: "100%", height: "100%", objectFit: "cover" }}/> : <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", alignContent: "center", gap: 6, color: "#fff", background: "linear-gradient(135deg,#171923,#424b5b)", fontSize: 12 }}><span style={{ fontSize: 24 }}>▶</span><strong>Mayday Monster</strong><span>播放官方上传列表</span></div>}
               <span style={{ position: "absolute", right: 5, bottom: 5, background: "rgba(0,0,0,.8)", color: "#fff", borderRadius: 4, padding: "2px 4px", fontSize: 11 }}>{v.duration}</span>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
