@@ -4338,3 +4338,397 @@
   color: white;
   background: #287bd4;
 }
+
+
+/* Xiaohongshu discovery screen — dark, edge-to-edge two-column feed. */
+.redbook-ui.redbook-dark {
+  --app-accent: #ff2442;
+  background: #19191f;
+  color: #f4f4f6;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.redbook-dark .redbook-main-header {
+  min-height: 49px;
+  flex: 0 0 49px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: #19191f;
+  border-bottom: 1px solid #292930;
+  box-sizing: border-box;
+}
+.redbook-main-header > button {
+  width: 28px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  color: #f6f6f8;
+  padding: 0;
+}
+.redbook-primary-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 27px;
+  height: 100%;
+}
+.redbook-primary-tabs button {
+  position: relative;
+  height: 100%;
+  padding: 0 1px;
+  color: #a5a5ad;
+  font-size: 15px;
+  white-space: nowrap;
+}
+.redbook-primary-tabs button.selected {
+  color: #f7f7f8;
+  font-weight: 650;
+}
+.redbook-primary-tabs button.selected:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 23px;
+  height: 3px;
+  border-radius: 3px;
+  background: #ff2442;
+  transform: translateX(-50%);
+}
+.redbook-search {
+  min-height: 38px;
+  margin: 7px 12px;
+  padding: 0 10px;
+  border-radius: 7px;
+  background: #303038;
+  color: #aaaab2;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.redbook-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+}
+.redbook-search button { color: #ddd; font-size: 11px; }
+.redbook-category-row {
+  min-height: 42px;
+  flex: 0 0 42px;
+  display: flex;
+  align-items: stretch;
+  background: #19191f;
+  border-bottom: 1px solid #292930;
+  overflow: hidden;
+}
+.redbook-category-scroll {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+  flex: 1;
+  padding: 0 15px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.redbook-category-scroll::-webkit-scrollbar { display: none; }
+.redbook-category-scroll button {
+  flex: 0 0 auto;
+  color: #777780;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.redbook-category-scroll button.selected {
+  color: #f4f4f6;
+  font-weight: 650;
+}
+.redbook-category-more {
+  flex: 0 0 37px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(90deg, #19191f00, #19191f 28%);
+  color: #85858e;
+}
+.redbook-feed-scroll {
+  background: #19191f;
+  padding: 8px 5px 12px;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.redbook-feed-scroll::-webkit-scrollbar { display: none; }
+.redbook-waterfall {
+  columns: 2;
+  column-gap: 5px;
+}
+.redbook-card {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  margin: 0 0 6px;
+  overflow: hidden;
+  break-inside: avoid;
+  background: #202027;
+  border-radius: 5px;
+}
+.redbook-card-cover {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 238px;
+  overflow: hidden;
+  padding: 11px;
+  text-align: left;
+  background: #62564a;
+}
+.redbook-card:nth-child(4n + 2) .redbook-card-cover,
+.redbook-card:nth-child(4n + 3) .redbook-card-cover { height: 250px; }
+.redbook-card-cover:before,
+.redbook-card-cover:after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.redbook-art-label {
+  position: relative;
+  z-index: 1;
+  padding: 5px 7px;
+  color: #fff;
+  background: #15151a80;
+  border-radius: 4px;
+  font-size: 10px;
+  text-shadow: 0 1px 4px #0008;
+}
+.redbook-art-stamp {
+  position: absolute;
+  z-index: 1;
+  right: 10px;
+  top: 18px;
+  color: #d94b3d;
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.1;
+  transform: rotate(-13deg);
+  text-shadow: 0 1px 2px #fff;
+}
+.redbook-art-face {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  font-size: 78px;
+  filter: drop-shadow(0 7px 10px #0005);
+}
+.redbook-art-newspaper {
+  background:
+    linear-gradient(130deg, #f0d89c 0 18%, transparent 18% 100%),
+    repeating-linear-gradient(0deg, #d6c5a5 0 3px, #eee1c5 3px 6px);
+}
+.redbook-art-newspaper:before {
+  inset: 13px 12px 25px;
+  border: 8px solid #e4d4b4;
+  background:
+    linear-gradient(90deg, #7d2925 0 23%, transparent 23%),
+    repeating-linear-gradient(0deg, #3d332c 0 1px, transparent 1px 7px),
+    #e9ddc7;
+  box-shadow: 0 4px 12px #39291c66;
+  transform: rotate(-4deg);
+}
+.redbook-art-newspaper:after {
+  content: "五月天  ·  怪獸\A HAPPY BIRTHDAY";
+  white-space: pre;
+  left: 25%;
+  top: 36%;
+  color: #8e312c;
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.6;
+  transform: rotate(-4deg);
+}
+.redbook-art-dog {
+  background: radial-gradient(ellipse at 50% 45%, #d7b58b 0 22%, #b38b60 50%, #564333 100%);
+}
+.redbook-art-dog:before {
+  width: 80%;
+  height: 75%;
+  left: 10%;
+  top: 12%;
+  border-radius: 48% 48% 42% 42%;
+  background: radial-gradient(ellipse at 32% 48%, #3b281b 0 6%, #b77c3e 7% 12%, transparent 13%), radial-gradient(ellipse at 68% 48%, #3b281b 0 6%, #b77c3e 7% 12%, transparent 13%), radial-gradient(ellipse at 50% 72%, #4a3020 0 10%, #d9b88f 11% 19%, transparent 20%), linear-gradient(140deg,#f2d7ad,#9c6f49);
+  box-shadow: inset 0 -18px 24px #513b2c55, 0 8px 18px #0005;
+}
+.redbook-art-dog .redbook-art-face { display: none; }
+.redbook-art-concert {
+  background: radial-gradient(ellipse at 40% 15%, #a27b45 0, #293b55 25%, #080b16 73%);
+}
+.redbook-art-concert:before {
+  inset: 0;
+  background: repeating-linear-gradient(110deg, transparent 0 22px, #fff2 23px 24px, transparent 25px 42px), linear-gradient(0deg,#080a12 0 24%,transparent 55%);
+}
+.redbook-art-cat {
+  background: radial-gradient(ellipse at 50% 45%, #f6e6d4 0, #d4b9a5 46%, #786b63 100%);
+}
+.redbook-art-cat:before {
+  width: 84%;
+  height: 76%;
+  left: 8%;
+  top: 13%;
+  border-radius: 48% 48% 45% 45%;
+  background: radial-gradient(ellipse at 32% 48%, #68727a 0 6%, transparent 7%), radial-gradient(ellipse at 68% 48%, #68727a 0 6%, transparent 7%), radial-gradient(ellipse at 50% 70%, #d68b87 0 7%, transparent 8%), linear-gradient(135deg,#f6eee4,#c6b4a4);
+  box-shadow: inset 0 -18px 25px #5d514533, 0 8px 18px #0004;
+}
+.redbook-art-guitar {
+  background: radial-gradient(ellipse at 50% 35%, #5d4771 0, #171d35 52%, #080a13 100%);
+}
+.redbook-art-guitar:before {
+  width: 52%;
+  height: 72%;
+  left: 25%;
+  top: 15%;
+  border-radius: 45% 45% 50% 50%;
+  background: linear-gradient(90deg,#8a4923,#e6a34d 45%,#8b4820);
+  clip-path: polygon(42% 0,58% 0,60% 33%,83% 39%,100% 54%,94% 72%,70% 68%,63% 100%,37% 100%,30% 68%,6% 72%,0 54%,17% 39%,40% 33%);
+  transform: rotate(23deg);
+  box-shadow: 0 5px 20px #0009;
+}
+.redbook-art-sunset {
+  background: linear-gradient(180deg,#4b5b7e 0%,#c68d83 45%,#e6b48b 64%,#293c43 100%);
+}
+.redbook-art-sunset:before {
+  width: 100%;
+  height: 45%;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(160deg,transparent 0 24%,#202e32 25% 39%,transparent 40%), linear-gradient(15deg,#202e32 0 22%,transparent 23%);
+}
+.redbook-play {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #0007;
+  color: #fff;
+  font-size: 10px;
+}
+.redbook-card-title {
+  display: block;
+  width: 100%;
+  padding: 8px 9px 6px;
+  color: #f2f2f4;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.5;
+}
+.redbook-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px 8px 10px;
+  color: #8e8e97;
+}
+.redbook-author {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+  color: #9999a2;
+  text-align: left;
+}
+.redbook-author > span:last-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 10px;
+}
+.redbook-author .catalog-avatar {
+  width: 19px;
+  height: 19px;
+  font-size: 9px;
+  background: #586d70;
+}
+.redbook-like {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  color: #92929a;
+  font-size: 10px;
+}
+.redbook-like.liked { color: #ff5369; }
+.redbook-like svg { width: 15px; height: 15px; }
+.redbook-bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: 0 0 68px;
+  min-height: 68px;
+  padding: 4px 5px 7px;
+  background: #19191f;
+  border-top: 1px solid #2b2b32;
+  box-sizing: border-box;
+}
+.redbook-bottom-nav > button {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #777780;
+  font-size: 11px;
+}
+.redbook-bottom-nav > button.selected { color: #f5f5f7; }
+.redbook-bottom-nav .redbook-publish {
+  width: 42px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1px;
+  border-radius: 8px;
+  color: white;
+  background: #ff2442;
+}
+.redbook-profile,
+.redbook-empty-state {
+  min-height: 55%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #ddd;
+}
+.redbook-profile .catalog-avatar { width: 62px; height: 62px; }
+.redbook-profile small,
+.redbook-empty-state span { color: #888; }
+.redbook-profile button { padding: 8px 18px; border-radius: 18px; background: #303038; color: #eee; }
+.phone-shell .phone-screen:has(.redbook-dark) .status-bar {
+  background: #19191f;
+  color: #f6f6f8;
+}
+.phone-shell .phone-screen:has(.redbook-dark) .home-indicator {
+  background: #f4f4f6;
+}
+.dark-phone .redbook-dark .catalog-scroll { background: #19191f; }
+@media (max-width: 420px) {
+  .redbook-primary-tabs { gap: 22px; }
+  .redbook-card-cover { height: 225px; }
+  .redbook-card:nth-child(4n + 2) .redbook-card-cover,
+  .redbook-card:nth-child(4n + 3) .redbook-card-cover { height: 238px; }
+  .redbook-card-title { font-size: 12px; }
+}
