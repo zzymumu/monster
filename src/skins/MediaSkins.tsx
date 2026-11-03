@@ -309,7 +309,7 @@ export function YouTubeSkin(p: Props) {
             </div>
             <span style={{ fontSize: 20, lineHeight: 1 }}>⋮</span>
           </button>)}
-          <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); }} style={{ display: "block", background: "#f2f2f2", color: "#111", textAlign: "center", border: 0, borderRadius: 22, padding: 11, width: "100%", fontSize: 13 }}>查看 Mayday Monster 全部上传视频</button>
+          <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); setPlayerOpen(true); }} style={{ display: "block", background: "#f2f2f2", color: "#111", textAlign: "center", border: 0, borderRadius: 22, padding: 11, width: "100%", fontSize: 13 }}>查看 Mayday Monster 全部上传视频</button>
         </div>
       </div>
       {playerOpen && <div className="youtube-player-overlay" role="dialog" aria-modal="true" aria-label="视频播放器">
