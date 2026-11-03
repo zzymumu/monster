@@ -1677,7 +1677,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "知道啦，妳講話怎麼跟我媽一樣，哈哈哈。好啦，我今天一定好好吃，不會再隨便打發了。", thread: "大G" },
     ]},
     { stage: 40, chat: "大G", id: "send-vava-dinner-photo", label: "（发送玩玩的照片）玩玩刚吃完饭～", nextStage: 41, lines: [
-      { sender: "我", body: "玩玩剛吃完飯～", thread: "大G", kind: "image", media: "https://images.unsplash.com/photo-1570018143221-e3a924ff17dc?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=85&w=1400", meta: { photoCaption: "true" } },
+      { sender: "我", body: "玩玩剛吃完飯～", thread: "大G", kind: "image", media: "./assets/wanwan-selfie.webp", meta: { photoCaption: "true" } },
       { sender: "大G", body: "哈哈哈哈，牠看起來好乖喔！吃飽了是不是？這張拍得很可愛欸，謝謝妳傳給我看。", thread: "大G" },
     ]},
     { stage: 41, chat: "大G", id: "talk-vava-after-photo", label: "对啊，刚吃饱就开始到处晃，精神很好。", nextStage: 42, lines: [
