@@ -7,6 +7,7 @@ export type DeviceCoordinates = {
 };
 
 const LOCATION_CACHE_KEY = "foundphone.device-location.v1";
+const LOCATION_ATTEMPTED_KEY = "foundphone.location-requested.v1";
 function readCachedPosition(): DeviceCoordinates | null {
   try {
     const raw = localStorage.getItem(LOCATION_CACHE_KEY);
@@ -25,6 +26,7 @@ export function useDeviceLocation() {
   const [loading, setLoading] = useState(false);
 
   const request = useCallback(() => {
+    try { localStorage.removeItem(LOCATION_ATTEMPTED_KEY); } catch {}
     if (typeof navigator === "undefined" || !navigator.geolocation) {
       setError("此浏览器不支持定位，请允许浏览器使用位置信息。");
       return;
@@ -41,6 +43,7 @@ export function useDeviceLocation() {
         setPosition(next);
         try {
           localStorage.setItem(LOCATION_CACHE_KEY, JSON.stringify({ ...next, savedAt: Date.now() }));
+          localStorage.setItem(LOCATION_ATTEMPTED_KEY, "granted");
         } catch {
           // Keep the live position in memory if browser storage is unavailable.
         }
@@ -48,6 +51,7 @@ export function useDeviceLocation() {
       },
       (reason) => {
         setLoading(false);
+        try { localStorage.setItem(LOCATION_ATTEMPTED_KEY, "denied"); } catch {}
         setError(
           reason.code === reason.PERMISSION_DENIED
             ? "定位权限未开启。请在浏览器地址栏的网站权限中允许位置访问，再点重新定位。"
@@ -61,8 +65,12 @@ export function useDeviceLocation() {
   }, []);
 
   useEffect(() => {
-    if (!position) request();
-  }, []);
+    if (!position) {
+      let alreadyAsked = false;
+      try { alreadyAsked = localStorage.getItem(LOCATION_ATTEMPTED_KEY) === "denied"; } catch {}
+      if (!alreadyAsked) request();
+    }
+  }, [position, request]);
 
   return { position, error, loading, request };
 }
