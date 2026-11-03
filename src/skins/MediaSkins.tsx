@@ -69,7 +69,7 @@ export function SpotifySkin(p: Props) {
   return (
     <div className="catalog-skin spotify-ui">
       <Header p={p} />
-      <div className="catalog-scroll">
+      <div className="bili-home-scroll">
         <div className="spotify-heading">
           <Avatar name={p.owner ?? "我"} />
           <button
@@ -85,7 +85,7 @@ export function SpotifySkin(p: Props) {
             音乐库
           </button>
         </div>
-        {tab === "搜索" && <SearchBox value={q} set={setQ} />}
+        {tab === "搜索" && <div className="bili-searchbox"><SearchBox value={q} set={setQ} /></div>}
         <h1>{playlist || (tab === "音乐库" ? "音乐库" : "为你收藏")}</h1>
         {!playlist && (
           <div className="spotify-playlists">
@@ -366,14 +366,14 @@ export function BilibiliSkin(p: Props) {
   const list = tab === "历史" ? items.filter((item) => item.folder === "历史") : tab === "动态" ? items.filter((item) => item.folder === "动态") : items;
   return (
     <div className="catalog-skin bilibili-ui">
-      {showSplash && <div className="bili-splash"><div className="bili-splash-art">♡</div><strong>bilibili</strong></div>}
-      <div className="bili-search">
+      {showSplash && <div className="bili-splash"><img className="bili-splash-image" src="/assets/bilibili-splash.jpg" alt="哔哩哔哩开屏" /><span className="bili-splash-wordmark">bilibili</span></div>}
+      <div className="bili-topbar">
         <Avatar name={p.owner || "我"} />
         <SearchBox value={q} set={setQ} />
         <button aria-label="游戏中心"><Compass size={22} /></button>
         <button aria-label="消息"><MessageCircle size={22} /></button>
       </div>
-      <div className="bili-categories">
+      <div className="bili-channel-tabs">
         {["直播", "推荐", "热门", "追番", "影视", "音乐"].map((name) => (
           <button key={name} className={category === name ? "selected" : ""} onClick={() => setCategory(name)}>{name}</button>
         ))}
@@ -392,13 +392,13 @@ export function BilibiliSkin(p: Props) {
           </section>
           <section className="bili-concert-shelf">
             <h3>相信音乐 · 五月天演唱会</h3>
-            <div className="bili-concert-list">
-              {concerts.map((video) => <button key={video.bvid} className={featuredBvid === video.bvid ? "selected" : ""} onClick={() => setFeaturedBvid(video.bvid)}>
-                <span className="bili-concert-thumb">
-                  {covers[video.bvid] ? <img src={covers[video.bvid]} alt="" loading="lazy" /> : <span className="bili-thumb-placeholder">MAYDAY<br />{video.year}</span>}
-                  <b>▶</b><small>{video.duration}</small>
+            <div className="bili-concert-grid">
+              {concerts.map((video) => <button key={video.bvid} className="bili-video-card" onClick={() => setFeaturedBvid(video.bvid)}>
+                <span className="bili-video-cover">
+                  <img src={covers[video.bvid] || `https://api.bilibili.com/x/web-interface/view?bvid=${video.bvid}`} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                  <span className="bili-cover-play">▶</span><small>{video.duration}</small>
                 </span>
-                <span className="bili-concert-copy"><strong>{video.title}</strong><small>相信音乐 · {video.year}</small></span>
+                <span className="bili-video-copy"><strong>{video.title}</strong><small>相信音乐 · {video.year}</small></span>
               </button>)}
             </div>
           </section>
