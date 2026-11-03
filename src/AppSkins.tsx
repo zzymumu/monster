@@ -58,6 +58,11 @@ export type SkinProps = {
   onBack: () => void;
   thread: string;
   onThread: (s: string) => void;
+  hasSave?: boolean;
+  savedAt?: number | null;
+  saveReady?: boolean;
+  onSaveNow?: () => void;
+  onClearSave?: () => void;
 };
 function Avatar({
   name,
