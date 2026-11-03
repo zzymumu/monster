@@ -272,14 +272,14 @@ export function YouTubeSkin(p: Props) {
     <div className="catalog-skin youtube-ui" style={{ background: "#fff", color: "#0f0f0f" }}>
       <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #eee" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800, fontSize: 20, letterSpacing: "-1px" }}><span style={{ background: "#f00", color: "#fff", borderRadius: 7, padding: "2px 6px", fontSize: 14 }}>▶</span>YouTube</div>
-        <a href={videosUrl} target="_blank" rel="noreferrer" style={{ color: "#0f0f0f", textDecoration: "none", fontSize: 13 }}>Mayday Monster</a>
+        <span style={{ color: "#606060", fontSize: 13 }}>Mayday Monster</span>
       </div>
       <div style={{ padding: "8px 14px" }}><SearchBox value={query} set={setQuery} /></div>
       <div className="catalog-scroll">
         <div style={{ padding: "4px 14px 12px", display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#222", color: "#fff", display: "grid", placeItems: "center", fontWeight: 800 }}>M</div>
           <div style={{ flex: 1 }}><strong>Mayday Monster</strong><div style={{ color: "#606060", fontSize: 12 }}>@monsterbalaja531 · 五月天怪獸</div></div>
-          <a href={channelUrl} target="_blank" rel="noreferrer" style={{ background: "#f2f2f2", color: "#111", padding: "8px 12px", borderRadius: 20, textDecoration: "none", fontSize: 12 }}>频道</a>
+          <span style={{ background: "#f2f2f2", color: "#111", padding: "8px 12px", borderRadius: 20, fontSize: 12 }}>频道</span>
         </div>
         <div className="youtube-chips" style={{ padding: "0 14px 12px" }}>
           {["首页", "全部视频"].map(name => <button key={name} className={tab === name ? "selected" : ""} onClick={() => setTab(name)}>{name}</button>)}
@@ -294,7 +294,7 @@ export function YouTubeSkin(p: Props) {
             <div style={{ aspectRatio: "16 / 9" }}><iframe title="Mayday Monster 全部上传视频" src={"https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist} style={{ width: "100%", height: "100%", border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div>
             <button onClick={() => setShowUploads(false)} style={{ border: 0, background: "#181818", color: "#fff", padding: "9px 12px", width: "100%", textAlign: "left" }}>关闭全部视频 ×</button>
           </div>}
-          {filtered.map((v, i) => <button key={v.title} onClick={() => v.id ? (setPlayingId(v.id), setShowUploads(false)) : (setShowUploads(true), setPlayingId(""))} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
+          {filtered.map(v => <button key={v.title} onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (v.id) { setPlayingId(v.id); setShowUploads(false); } else { setShowUploads(true); setPlayingId(""); } }} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
             <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#e8e8e8" }}>
               {v.id ? <img src={"https://i.ytimg.com/vi/" + v.id + "/hqdefault.jpg"} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }}/> : <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", color: "#777", fontSize: 12 }}>Mayday Monster</div>}
               <span style={{ position: "absolute", right: 5, bottom: 5, background: "rgba(0,0,0,.8)", color: "#fff", borderRadius: 4, padding: "2px 4px", fontSize: 11 }}>{v.duration}</span>
