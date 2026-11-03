@@ -131,7 +131,7 @@ function MessageList({
   }, [items.length, messageContentKey]);
 
   return (
-    <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""} ${wechat && wallpaper ? "wx-photo-wallpaper" : ""}`} style={wechat && wallpaper ? { backgroundImage: `linear-gradient(rgba(255,255,255,.22), rgba(255,255,255,.22)), url("${wallpaper}")`, backgroundSize: "cover", backgroundPosition: "center center" } : undefined}>
+    <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""} ${wechat && wallpaper ? "wx-photo-wallpaper" : ""}`} style={wechat && wallpaper ? { backgroundImage: `url("${wallpaper}")`, backgroundSize: "cover", backgroundPosition: "center center" } : undefined}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
       {items.map((i) => {
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
