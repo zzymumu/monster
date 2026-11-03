@@ -65,7 +65,7 @@ function WidgetFace({
   time: string;
   liveWeather?: { city: string; temperature: number; condition: string } | null;
 }) {
-  const date = new Date((work.phone.date || "2026-10-25") + "T12:00:00Z");
+  const date = new Date();
   const weather = work.data.weather?.[0];
   return (
     <div className={"widget-face widget-" + widget.type}>
@@ -74,10 +74,9 @@ function WidgetFace({
           <span className="widget-red">
             {new Intl.DateTimeFormat("zh-CN", {
               weekday: "long",
-              timeZone: "UTC",
-            }).format(date)}
+             }).format(date)}
           </span>
-          <b className="widget-day">{date.getUTCDate()}</b>
+          <b className="widget-day">{date.getDate()}</b>
           <small>{work.data.calendar?.[0]?.title || "今天没有日程"}</small>
         </>
       ) : widget.type === "clock" ? (
