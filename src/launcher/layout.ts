@@ -70,7 +70,7 @@ export function defaultLayout(input: Work): DeviceLayout {
     apps: structuredClone(w.apps)
       .sort((a, b) => (a.id === "appstore" ? -1 : b.id === "appstore" ? 1 : a.id === "gamesave" ? -1 : b.id === "gamesave" ? 1 : 0))
       .map((a) =>
-        a.id === "appstore"
+        a.id === "appstore" || a.id === "gamesave"
           ? { ...a, installed: true, visible: true, folder: "", dock: false }
           : a,
       ),
