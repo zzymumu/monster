@@ -1605,11 +1605,12 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "嗯嗯，晚安。明天見。", thread: "大G" },
     ]},
   ];
+  // Contact handoffs are always manual: advance the story stage, but let the
+  // player leave this chat and open the next contact themselves.
   useEffect(() => {
-    if (returnDinnerStage !== 2 || pendingCatLines.length > 0 || !isMonsterThread) return;
-    setReturnDinnerStage(3);
-    p.onThread("西蓝花");
-  }, [returnDinnerStage, pendingCatLines.length, isMonsterThread, p.onThread]);
+    if (returnDinnerStage !== 2 || pendingCatLines.length > 0) return;
+    // Stage 3 belongs to 西蓝花 and becomes available when that chat is opened.
+  }, [returnDinnerStage, pendingCatLines.length]);
   // Do not auto-switch from Broccoli to DaG: the player must leave this chat
   // and explicitly open DaG's conversation to continue the story.
   useEffect(() => {
@@ -1632,19 +1633,8 @@ export function WeChatSkin(p: SkinProps) {
       !pendingCatLines.some((pending) => pending.body === line.body));
     if (missing.length) setPendingCatLines((current) => [...current, ...missing]);
   }, [catRescue.stage, catRescue.branch, catRescue.messages.length, hasPrankPath, pendingCatLines, p.items]);
-  useEffect(() => {
-    // After the owner reacts to the name reveal, move the visible chat to
-    // Broccoli only once every queued DaG message has appeared. Later, return
-    // to DaG after the Broccoli follow-up is fully delivered.
-    if (pendingCatLines.length > 0) return;
-    if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
-      setTab("微信");
-      p.onThread("西蓝花");
-    } else if ([35, 40].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
-      setTab("微信");
-      p.onThread("大G");
-    }
-  }, [catRescue.stage, pendingCatLines.length, p.thread, p.onThread]);
+  // Story progression never changes the active contact automatically.
+  // Players switch between 大G and 西蓝花 from the conversation list.
   useEffect(() => {
     if (!legacyPrankReaddPending) return;
     const alreadyHasQuestion = [...p.items, ...parsedCatRescue.messages].some((item) => item.body.trim() === "？？？");
@@ -2144,8 +2134,8 @@ export function WeChatSkin(p: SkinProps) {
                     <button key={choice.id} onClick={() => {
                       appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
                       setReturnDinnerStage(choice.nextStage);
-                      const nextChat = returnDinnerChoices.find((nextChoice) => nextChoice.stage === choice.nextStage)?.chat;
-                      if (nextChat && nextChat !== p.thread) p.onThread(nextChat);
+                      // If the next stage belongs to another contact, keep the
+                      // current chat open. The player switches contacts manually.
                     }}>{choice.label}</button>
                   ))}
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
