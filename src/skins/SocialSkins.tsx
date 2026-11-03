@@ -17,6 +17,13 @@ import {
   Search,
   Plus,
   User,
+  Menu,
+  Pencil,
+  ScanLine,
+  Wallet,
+  Lock,
+  Layers,
+  MoreHorizontal,
   Users,
   Share2,
   ThumbsUp,
@@ -337,6 +344,8 @@ export function RedbookSkin(p: Props) {
   const [bottomTab, setBottomTab] = useState("首页");
   const [sortBy, setSortBy] = useState("推荐");
   const [likedIds, setLikedIds] = useState<Record<string, boolean>>({});
+  const [profileSection, setProfileSection] = useState("笔记");
+  const [profilePanel, setProfilePanel] = useState("");
   const categories = ["推荐", "RED", "直播", "热点", "短剧", "足球", "音乐"];
   const demoPosts: Item[] = [
     { id:"redbook-monster-01", title:"这次，他没有犹豫 02", body:"翻到好多年前的旧剪报，还是会为那句生日祝福心动。\n#五月天 #怪兽 #青春回忆", sender:"今天珍重🥕", avatar:"", kind:"post", media:"", time:"2026-11-03 20:18", likes:6, comments:[], meta:{art:"newspaper",category:"推荐"}, richText:"", hidden:false, unlock:"", password:"", folder:"推荐", favorite:false, outgoing:false, read:false },
@@ -365,59 +374,133 @@ export function RedbookSkin(p: Props) {
     : visible;
   return (
     <div className="catalog-skin redbook-ui redbook-dark">
-      <header className="redbook-main-header">
-        <button aria-label="消息" onClick={() => setBottomTab("消息")}><MessageCircle size={23} strokeWidth={1.8} /></button>
-        <nav className="redbook-primary-tabs">
-          {["关注", "发现", location].map((t) => (
-            <button key={t} className={(tab === t || (t === location && tab === "北京")) ? "selected" : ""} onClick={() => {
-              if (t === location) setTab("北京");
-              else setTab(t);
-            }}>{t}</button>
-          ))}
-        </nav>
-        <button aria-label="搜索" onClick={() => setShowSearch((v) => !v)}><Search size={24} strokeWidth={1.8} /></button>
-      </header>
-      {showSearch && <label className="redbook-search"><Search size={15}/><input autoFocus placeholder="搜索你感兴趣的内容" value={q} onChange={(e) => setQ(e.target.value)}/><button onClick={() => {setQ("");setShowSearch(false);}}>取消</button></label>}
-      <div className="redbook-category-row">
-        <div className="redbook-category-scroll">
-          {categories.map((t) => <button key={t} className={category === t ? "selected" : ""} onClick={() => {setCategory(t);setSortBy(t === "热点" ? "热点" : "推荐");}}>{t}</button>)}
-        </div>
-        <button className="redbook-category-more" aria-label="更多分类" onClick={() => setCategory(category === "推荐" ? "音乐" : "推荐")}><ChevronDown size={18}/></button>
-      </div>
-      <div className="catalog-scroll redbook-feed-scroll">
-        {bottomTab === "我" ? (
-          <div className="redbook-profile"><Avatar name={p.owner || "我"}/><strong>{p.owner || "我"}</strong><small>分享生活 · 记录喜欢</small><button onClick={() => setBottomTab("首页")}>返回首页</button></div>
-        ) : bottomTab === "消息" ? (
-          <div className="redbook-empty-state"><MessageCircle size={32}/><strong>消息</strong><span>暂时没有新消息</span></div>
-        ) : (
-          <div className="redbook-waterfall">
-            {ordered.map((item, index) => {
-              const likedKey = `redbook-liked-${item.id}`;
-              return <article className="redbook-card" key={item.id}>
-                <button className={`redbook-card-cover redbook-art-${meta(item,"art",["newspaper","dog","concert","cat","guitar","sunset"][index % 6])}`} onClick={() => p.onItem(item)} aria-label={item.title}>
-                  <span className="redbook-art-label">{meta(item,"coverLabel",["旧剪报收藏","日常修图记录","演出后台碎片","猫咪近距离","五月天现场","城市散步"][index % 6])}</span>
-                  {meta(item,"art") === "newspaper" && <span className="redbook-art-stamp">HAPPY<br/>BIRTHDAY</span>}
-                  {meta(item,"art") === "dog" && <span className="redbook-art-face">🐶</span>}
-                  {meta(item,"art") === "concert" && <span className="redbook-art-face">🎤</span>}
-                  {meta(item,"art") === "cat" && <span className="redbook-art-face">🐱</span>}
-                  {meta(item,"art") === "guitar" && <span className="redbook-art-face">🎸</span>}
-                  {meta(item,"art") === "sunset" && <span className="redbook-art-face">🌇</span>}
-                  {item.kind === "video" && <span className="redbook-play">▶</span>}
-                </button>
-                <button className="redbook-card-title" onClick={() => p.onItem(item)}>{item.title}</button>
-                <div className="redbook-card-meta">
-                  <button className="redbook-author" onClick={() => p.onItem(item)}><Avatar name={item.sender}/><span>{item.sender}</span></button>
-                  <button aria-label={`喜欢${item.title}`} onClick={(e) => {
-                    e.stopPropagation();
-                    setLikedIds((current) => ({ ...current, [item.id]: !current[item.id] }));
-                  }} data-redbook-like={likedKey} aria-pressed={!!likedIds[item.id]} className={likedIds[item.id] ? "redbook-like liked" : "redbook-like"}><Heart size={16}/><span>{item.likes + (likedIds[item.id] ? 1 : 0) || ""}</span></button>
-                </div>
-              </article>;
-            })}
+      {bottomTab === "我" ? (
+        <>
+          <div className="redbook-profile-topbar">
+            <button aria-label="打开菜单" onClick={() => setProfilePanel(profilePanel === "menu" ? "" : "menu")}><Menu size={25}/></button>
+            <div className="redbook-profile-actions">
+              <button className="redbook-edit-home" onClick={() => setProfilePanel("edit")}><Pencil size={13}/> 编辑主页</button>
+              <button aria-label="扫一扫" onClick={() => setProfilePanel("scan")}><ScanLine size={23}/></button>
+              <button aria-label="分享主页" onClick={() => setProfilePanel("share")}><Share2 size={23}/></button>
+            </div>
           </div>
-        )}
-        {bottomTab === "首页" && <Empty items={ordered} label="暂时没有相关笔记，换个分类看看吧"/>}
-      </div>
+          <div className="catalog-scroll redbook-profile-scroll">
+            <section className="redbook-profile-hero">
+              <div className="redbook-profile-cover"/>
+              <div className="redbook-profile-identity">
+                <div className="redbook-profile-avatar"><span>🐻‍❄️</span></div>
+                <div className="redbook-profile-name">
+                  <strong>快樂小狗 <span>👾🎸</span></strong>
+                  <div className="redbook-profile-id">小红书号：1117529120 <button aria-label="复制小红书号" onClick={() => setProfilePanel("copied")}>▧</button></div>
+                  <div className="redbook-profile-ip">IP：北京</div>
+                </div>
+              </div>
+              <div className="redbook-profile-stats">
+                <button onClick={() => setProfilePanel("关注")}><strong>56</strong><span>关注</span></button>
+                <button onClick={() => setProfilePanel("粉丝")}><strong>1332</strong><span>粉丝</span></button>
+                <button onClick={() => setProfilePanel("获赞与收藏")}><strong>4.6万</strong><span>获赞与收藏</span></button>
+              </div>
+              <div className="redbook-profile-bio">
+                想见的人就去见<br/>
+                想写的故事就去写<br/>
+                星期八/你不知道的事/而我知道/珍珠扣/九号球/女儿红/白月光修炼手册 ing<br/>
+                不更文期间会像喷泉一样更新 wsy 视频<br/>
+                感谢大家的陪伴啦 有你们最好了
+              </div>
+              <span className="redbook-profile-gender">♀</span>
+              <div className="redbook-profile-shortcuts">
+                <button onClick={() => setProfilePanel("群聊")}><Users size={19}/><span><strong>群聊</strong><small>查看详情</small></span></button>
+                <button onClick={() => setProfilePanel("个人售卖")}><Layers size={19}/><span><strong>个人售卖</strong><small>出闲置搞副业</small></span></button>
+                <button onClick={() => setProfilePanel("钱包")}><Wallet size={19}/><span><strong>钱包</strong><small>查看详情</small></span></button>
+              </div>
+            </section>
+            <div className="redbook-profile-tabs">
+              {["笔记","评论","收藏","赞过"].map((tabName,i) => <button key={tabName} className={profileSection === tabName ? "selected" : ""} onClick={() => setProfileSection(tabName)}>{i===1 || i===3 ? <Lock size={13}/> : null}{tabName}</button>)}
+              <button className="redbook-profile-search" aria-label="搜索笔记" onClick={() => {setShowSearch(true);setBottomTab("首页");}}><Search size={21}/></button>
+            </div>
+            <div className="redbook-profile-tools">
+              <button className="redbook-drafts" onClick={() => setProfilePanel("草稿箱")}><span className="redbook-draft-icon"><Lock size={17}/></span><strong>私密笔记</strong><span>1 ›</span></button>
+              <button className="redbook-folder" onClick={() => setProfilePanel("合集")}><Layers size={19}/><strong>女儿红（已完结 IF线ing）</strong></button>
+            </div>
+            <div className="redbook-publish-prompt">
+              <div className="redbook-prompt-cat">🐈</div>
+              <div><strong>这个世界上不能没有猫猫</strong><small>官方喊你参与话题</small></div>
+              <button onClick={() => p.onAdd()}>去发布</button>
+            </div>
+            {profileSection === "笔记" ? (
+              <div className="redbook-profile-notes">
+                <button className="redbook-note-card redbook-note-draft" onClick={() => setProfilePanel("草稿箱")}><span>草稿箱 · 2</span><strong>11</strong></button>
+                <button className="redbook-note-card redbook-note-pinned" onClick={() => p.onItem(feedItems[0])}><span>置顶</span><strong>快樂小狗食用<br/>指南 🐶</strong></button>
+                {ordered.map((item,index) => <button className={`redbook-note-card redbook-note-art redbook-art-${meta(item,"art",["newspaper","dog","concert","cat","guitar","sunset"][index % 6])}`} key={item.id} onClick={() => p.onItem(item)}><span>{item.title}</span>{item.kind === "video" && <i>▶</i>}</button>)}
+              </div>
+            ) : (
+              <div className="redbook-profile-empty"><Lock size={22}/><strong>{profileSection}仅自己可见</strong><span>这里还没有公开内容</span></div>
+            )}
+          </div>
+          {profilePanel && <div className="redbook-profile-overlay" onClick={() => setProfilePanel("")}>
+            <div className="redbook-profile-sheet" onClick={(e) => e.stopPropagation()}>
+              <button className="redbook-sheet-close" onClick={() => setProfilePanel("")}>×</button>
+              <strong>{profilePanel === "copied" ? "小红书号已复制" : profilePanel === "edit" ? "编辑主页" : profilePanel === "menu" ? "更多功能" : profilePanel === "scan" ? "扫一扫" : profilePanel === "share" ? "分享主页" : profilePanel}</strong>
+              <p>{profilePanel === "edit" ? "头像、背景图、昵称和简介可在这里管理。" : profilePanel === "menu" ? "创作中心　订单　帮助与客服　设置" : profilePanel === "scan" ? "将二维码放在取景框内即可识别" : profilePanel === "share" ? "快来看看我的小红书主页吧！" : profilePanel === "copied" ? "1117529120" : "暂时没有内容"}</p>
+              <button className="redbook-sheet-confirm" onClick={() => setProfilePanel("")}>知道了</button>
+            </div>
+          </div>}
+        </>
+      ) : (
+        <>
+          <header className="redbook-main-header">
+            <button aria-label="消息" onClick={() => setBottomTab("消息")}><MessageCircle size={23} strokeWidth={1.8} /></button>
+            <nav className="redbook-primary-tabs">
+              {["关注", "发现", location].map((t) => (
+                <button key={t} className={(tab === t || (t === location && tab === "北京")) ? "selected" : ""} onClick={() => {
+                  if (t === location) setTab("北京");
+                  else setTab(t);
+                }}>{t}</button>
+              ))}
+            </nav>
+            <button aria-label="搜索" onClick={() => setShowSearch((v) => !v)}><Search size={24} strokeWidth={1.8} /></button>
+          </header>
+          {showSearch && <label className="redbook-search"><Search size={15}/><input autoFocus placeholder="搜索你感兴趣的内容" value={q} onChange={(e) => setQ(e.target.value)}/><button onClick={() => {setQ("");setShowSearch(false);}}>取消</button></label>}
+          <div className="redbook-category-row">
+            <div className="redbook-category-scroll">
+              {categories.map((t) => <button key={t} className={category === t ? "selected" : ""} onClick={() => {setCategory(t);setSortBy(t === "热点" ? "热点" : "推荐");}}>{t}</button>)}
+            </div>
+            <button className="redbook-category-more" aria-label="更多分类" onClick={() => setCategory(category === "推荐" ? "音乐" : "推荐")}><ChevronDown size={18}/></button>
+          </div>
+          <div className="catalog-scroll redbook-feed-scroll">
+            {bottomTab === "消息" ? (
+              <div className="redbook-empty-state"><MessageCircle size={32}/><strong>消息</strong><span>暂时没有新消息</span></div>
+            ) : (
+              <div className="redbook-waterfall">
+                {ordered.map((item, index) => {
+                  const likedKey = `redbook-liked-${item.id}`;
+                  return <article className="redbook-card" key={item.id}>
+                    <button className={`redbook-card-cover redbook-art-${meta(item,"art",["newspaper","dog","concert","cat","guitar","sunset"][index % 6])}`} onClick={() => p.onItem(item)} aria-label={item.title}>
+                      <span className="redbook-art-label">{meta(item,"coverLabel",["旧剪报收藏","日常修图记录","演出后台碎片","猫咪近距离","五月天现场","城市散步"][index % 6])}</span>
+                      {meta(item,"art") === "newspaper" && <span className="redbook-art-stamp">HAPPY<br/>BIRTHDAY</span>}
+                      {meta(item,"art") === "dog" && <span className="redbook-art-face">🐶</span>}
+                      {meta(item,"art") === "concert" && <span className="redbook-art-face">🎤</span>}
+                      {meta(item,"art") === "cat" && <span className="redbook-art-face">🐱</span>}
+                      {meta(item,"art") === "guitar" && <span className="redbook-art-face">🎸</span>}
+                      {meta(item,"art") === "sunset" && <span className="redbook-art-face">🌇</span>}
+                      {item.kind === "video" && <span className="redbook-play">▶</span>}
+                    </button>
+                    <button className="redbook-card-title" onClick={() => p.onItem(item)}>{item.title}</button>
+                    <div className="redbook-card-meta">
+                      <button className="redbook-author" onClick={() => p.onItem(item)}><Avatar name={item.sender}/><span>{item.sender}</span></button>
+                      <button aria-label={`喜欢${item.title}`} onClick={(e) => {
+                        e.stopPropagation();
+                        setLikedIds((current) => ({ ...current, [item.id]: !current[item.id] }));
+                      }} data-redbook-like={likedKey} aria-pressed={!!likedIds[item.id]} className={likedIds[item.id] ? "redbook-like liked" : "redbook-like"}><Heart size={16}/><span>{item.likes + (likedIds[item.id] ? 1 : 0) || ""}</span></button>
+                    </div>
+                  </article>;
+                })}
+              </div>
+            )}
+            {bottomTab === "首页" && <Empty items={ordered} label="暂时没有相关笔记，换个分类看看吧"/>}
+          </div>
+        </>
+      )}
       <nav className="redbook-bottom-nav">
         {[
           {label:"首页",icon:<Home size={22}/>,action:"首页"},
