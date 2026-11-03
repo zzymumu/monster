@@ -672,13 +672,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   37: [
-    { id: "double-down-coincidence", label: "我觉得也不是不可能嘛……真的有这么巧吧！", nextStage: 91, lines: [
+    { id: "double-down-coincidence", label: "我觉得也不是不可能嘛……真的有这么巧吧！", nextStage: 38, lines: [
       { sender: "我", body: "我覺得也不是不可能嘛……真的有這麼巧吧！", thread: "西蓝花" },
       { sender: "西蓝花", body: "……我真的不知道該怎麼吐槽妳。好啦，先不跟妳爭，妳現在是在醫院對不對？", thread: "西蓝花" },
       { sender: "我", body: "對啊，我還在等醫生確認玩玩的狀況。", thread: "西蓝花" },
       { sender: "西蓝花", body: "那先顧好玩玩啦！不管主人是不是怪獸，牠現在需要妳。等一下妳再想想要怎麼跟那個失主聊。", thread: "西蓝花" },
     ]},
-    { id: "admit-too-coincidental", label: "好啦……我也觉得巧得有点离谱", nextStage: 91, lines: [
+    { id: "admit-too-coincidental", label: "好啦……我也觉得巧得有点离谱", nextStage: 38, lines: [
       { sender: "我", body: "好啦……我也覺得巧得有點離譜，我現在腦袋整個亂掉。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這才正常！妳剛剛還硬要說重名，真的快被妳笑死。", thread: "西蓝花" },
       { sender: "我", body: "我只是還不敢相信嘛……先讓我冷靜一下。", thread: "西蓝花" },
