@@ -294,11 +294,11 @@ export function YouTubeSkin(p: Props) {
           <strong style={{ fontSize: 16 }}>怪獸的所有公开视频</strong>
           <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); }} style={{ border: 0, background: "transparent", color: "#333", fontSize: 12, whiteSpace: "nowrap" }}>完整播放列表 ↗</button>
         </div>
-        {(playingId || showUploads) && <div style={{ width: "100%", maxWidth: "none", margin: "0 0 16px", padding: 0, overflow: "hidden", background: "#000", lineHeight: 0, boxSizing: "border-box" }}>
-          <div style={{ position: "relative", width: "100%", maxWidth: "none", aspectRatio: "16 / 9", background: "#000", overflow: "hidden" }}>
-            <iframe title={playingId ? "YouTube 视频播放" : "Mayday Monster 全部上传视频"} src={playingId ? "https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0" : "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist} style={{ display: "block", position: "absolute", top: 0, left: 0, width: "100%", maxWidth: "none", height: "100%", border: 0, margin: 0, padding: 0, boxSizing: "border-box" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+        <div style={{ width: "100%", maxWidth: "100%", margin: "0 0 16px", padding: 0, overflow: "hidden", background: "#000", lineHeight: 0, boxSizing: "border-box", alignSelf: "stretch" }}>
+          <div style={{ position: "relative", display: "block", width: "100%", maxWidth: "100%", aspectRatio: "16 / 9", background: "#000", overflow: "hidden", margin: 0, padding: 0 }}>
+            <iframe title={showUploads ? "Mayday Monster 全部上传视频" : "Mayday Monster 视频播放"} src={showUploads ? "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist : "https://www.youtube-nocookie.com/embed/" + (playingId || videos[0].id) + "?autoplay=" + (playingId ? "1" : "0") + "&rel=0"} style={{ display: "block", position: "absolute", inset: 0, width: "100%", minWidth: "100%", maxWidth: "100%", height: "100%", border: 0, margin: 0, padding: 0, boxSizing: "border-box" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
           </div>
-        </div>}
+        </div>
         <div style={{ padding: "0 12px 14px" }}>
           {filtered.map(v => <button key={v.title} onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (v.id) { setPlayingId(v.id); setShowUploads(false); setTab("首页"); } else { setShowUploads(true); setPlayingId(""); setTab("全部视频"); } }} style={{ display: "flex", gap: 11, marginBottom: 14, color: "inherit", background: "transparent", border: 0, padding: 0, width: "100%", textAlign: "left", alignItems: "flex-start" }}>
             <div style={{ position: "relative", width: "43%", flexShrink: 0, aspectRatio: "16 / 9", borderRadius: 9, overflow: "hidden", background: "#e8e8e8" }}>
