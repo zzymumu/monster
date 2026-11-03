@@ -1500,13 +1500,13 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "對啊！牠現在每天都黏著我，常常一副不想理我的樣子，結果又一直跟前跟後。", thread: "大G" },
       { sender: "大G", body: "哈哈哈哈，這很像牠欸！明明就很愛跟，還要裝作一副跩跩的樣子。聽起來牠真的被妳照顧得很好，我也放心多了。", thread: "大G" },
     ]},
-    { stage: 25, chat: "大G", id: "ask-current-location", label: "对了，你现在还在外面吗？", nextStage: 26, lines: [
-      { sender: "我", body: "對了，你現在還在外面嗎？", thread: "大G" },
-      { sender: "大G", body: "對啊，我剛忙完，現在正在回酒店的路上。今天先回酒店休息，明天才回台北，到了再去找玩玩。", thread: "大G" },
+    { stage: 25, chat: "大G", id: "ask-work-finished", label: "你今天工作忙完了吗？", nextStage: 26, lines: [
+      { sender: "我", body: "你今天工作忙完了嗎？", thread: "大G" },
+      { sender: "大G", body: "剛忙完啦，現在正要去慶功宴，大家都已經到了，我也差不多要過去了。", thread: "大G" },
     ]},
-    { stage: 26, chat: "大G", id: "safe-flight", label: "好啦，那你一路平安，路上小心！", nextStage: 30, lines: [
-      { sender: "我", body: "好啦，那你一路平安，路上小心！", thread: "大G" },
-      { sender: "大G", body: "好，謝謝妳啦！我先回酒店休息，明天回台北再去找玩玩，明天見，掰掰。", thread: "大G" },
+    { stage: 26, chat: "大G", id: "go-to-celebration", label: "那你先去吧！結束了再聊，記得少喝一點。", nextStage: 30, lines: [
+      { sender: "我", body: "那你先去吧！結束了再聊，記得少喝一點。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈好啦，我盡量。那我先過去了，晚點再跟妳說。", thread: "大G" },
     ]},
     { stage: 30, chat: "西蓝花", id: "brag-friends", label: "哼哼哼，怪兽说我跟他是朋友～", nextStage: 31, lines: [
       { sender: "我", body: "哼哼哼，怪獸說我跟他是朋友～", thread: "西蓝花" },
@@ -1528,13 +1528,45 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "好像也是欸……那就找個包廂好了！人多的話我到時候提前去排隊，先把位置弄好。可是……我現在又開始煩惱明天到底要穿什麼了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈妳也太忙了吧，餐廳都還沒吃到，現在先煩惱穿搭喔？", thread: "西蓝花" },
     ]},
-    { stage: 47, chat: "西蓝花", id: "outfit-worry-and-shower", label: "我真的想不出来啦！怎么想都觉得不对劲。", nextStage: 35, lines: [
+    { stage: 47, chat: "西蓝花", id: "outfit-worry-and-shower", label: "我真的想不出来啦！怎么想都觉得不对劲。", nextStage: 48, lines: [
       { sender: "我", body: "我真的想不出來啦！衣櫃裡的衣服怎麼想都覺得不對勁，明天到底要穿什麼啊……", thread: "西蓝花" },
       { sender: "西蓝花", body: "不要穿白衣服就好了啦！妳怎樣都好看啦，真的不用想那麼多。好啦不跟妳聊了，我要去洗澡了！", thread: "西蓝花" },
     ]},
-    { stage: 35, chat: "大G", id: "ask-arrived-home", label: "你到了吗？", nextStage: 36, lines: [
-      { sender: "我", body: "你到了嗎？", thread: "大G" },
-      { sender: "大G", body: "剛到！台北好熱喔！一下飛機就覺得整個人快融化了，外面也好悶。", thread: "大G" },
+    { stage: 48, chat: "大G", id: "ask-celebration-ended", label: "庆功宴结束了吗？你现在是在回酒店的路上吗？", nextStage: 49, lines: [
+      { sender: "我", body: "慶功宴結束了嗎？你現在是在回酒店的路上嗎？", thread: "大G" },
+      { sender: "大G", body: "結束啦，現在正要回酒店。今天真的又喝了好多酒，從頭到尾一直有人來敬，推都推不掉，現在整個人都有點暈。", thread: "大G" },
+    ]},
+    { stage: 49, chat: "大G", id: "check-drinking", label: "怎么又喝这么多？你还好吗，有没有不舒服？", nextStage: 50, lines: [
+      { sender: "我", body: "怎麼又喝這麼多啦？你還好嗎？有沒有哪裡不舒服？", thread: "大G" },
+      { sender: "大G", body: "還好啦，沒有到不舒服，就是有點暈而已。今天大家難得聚在一起，又一直被拉去聊天、敬酒，真的躲不掉。", thread: "大G" },
+    ]},
+    { stage: 50, chat: "大G", id: "remind-water-and-rest", label: "那你回去先喝点水，洗个澡早点休息，别再熬夜了。", nextStage: 51, lines: [
+      { sender: "我", body: "那你回去先喝點水，洗個澡早點休息啦，不要再熬夜了。喝那麼多明天一定會不舒服。", thread: "大G" },
+      { sender: "大G", body: "知道啦，妳怎麼突然變得這麼像保健室阿姨，哈哈哈。我有帶水，回去先灌一大杯。", thread: "大G" },
+    ]},
+    { stage: 51, chat: "大G", id: "tease-party", label: "我这是关心你欸！庆功宴很开心吗？", nextStage: 52, lines: [
+      { sender: "我", body: "我這是在關心你欸！所以慶功宴還開心嗎？大家是不是聊到很晚？", thread: "大G" },
+      { sender: "大G", body: "還不錯啦，好久沒跟大家這樣聚了，聊了很多以前的事。只是每次聚會都變成喝酒大賽，真的有夠累。", thread: "大G" },
+    ]},
+    { stage: 52, chat: "大G", id: "ask-about-work", label: "你们工作结束后终于能聚在一起，应该也挺难得的。", nextStage: 53, lines: [
+      { sender: "我", body: "你們忙完一個階段，終於能聚在一起放鬆一下，應該也滿難得的吧。", thread: "大G" },
+      { sender: "大G", body: "對啊，大家平常時間都兜不起來，趁這次好好碰個面。欸，不過我明天還要搭車回台北，現在只想趕快躺平。", thread: "大G" },
+    ]},
+    { stage: 53, chat: "大G", id: "tell-him-get-rest", label: "那你别聊太晚了，到了酒店就赶快休息。", nextStage: 54, lines: [
+      { sender: "我", body: "那你就不要再聊太晚了啦，到了酒店趕快休息。明天還要回台北，別把自己累壞了。", thread: "大G" },
+      { sender: "大G", body: "好啦好啦，我已經快到酒店了。今天真的有點累，等一下洗完澡就直接睡。", thread: "大G" },
+    ]},
+    { stage: 54, chat: "大G", id: "hotel-goodnight", label: "好，那你快去休息吧！晚安，明天再聊。", nextStage: 55, lines: [
+      { sender: "我", body: "好，那你快去休息吧！晚安，明天再聊。", thread: "大G" },
+      { sender: "大G", body: "嗯嗯，晚安啦。妳也早點睡，明天再聊。", thread: "大G" },
+    ]},
+    { stage: 55, chat: "大G", id: "next-day-taipei-checkin", label: "（隔天）你到台北了吗？", nextStage: 35, lines: [
+      { sender: "我", body: "早啊！你到台北了嗎？", thread: "大G" },
+      { sender: "大G", body: "剛到台北！一下車就覺得好熱喔，外面真的又悶又熱。", thread: "大G" },
+    ]},
+    { stage: 35, chat: "大G", id: "ask-arrived-home", label: "你到台北了吗？", nextStage: 36, lines: [
+      { sender: "我", body: "你到台北了嗎？", thread: "大G" },
+      { sender: "大G", body: "剛到台北！一下車就覺得好熱喔，外面真的又悶又熱。", thread: "大G" },
     ]},
     { stage: 36, chat: "大G", id: "welcome-back-taipei", label: "哈哈哈欢迎回来！台北最近真的很闷热，先喝点水啦。", nextStage: 37, lines: [
       { sender: "我", body: "哈哈哈歡迎回來！台北最近真的很悶熱欸，你先喝點水啦，搭飛機也辛苦了。", thread: "大G" },
@@ -1608,7 +1640,7 @@ export function WeChatSkin(p: SkinProps) {
     if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
       setTab("微信");
       p.onThread("西蓝花");
-    } else if ([35, 40].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
+    } else if ([35, 40, 48].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
       setTab("微信");
       p.onThread("大G");
     }
