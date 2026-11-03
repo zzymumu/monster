@@ -74,6 +74,9 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("keeps the remaining rescue choices in the Broccoli thread without a return-home branch", () => {
+    for (const stage of [88, 89, 90, 91, 92, 93, 94, 95, 96]) {
+      expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
+    }
     expect(getCatRescueThreadForStage(10)).toBe("西蓝花");
     expect(getCatRescueThreadForStage(11)).toBe("西蓝花");
     expect(CAT_RESCUE_CHOICES[10]).toHaveLength(2);
