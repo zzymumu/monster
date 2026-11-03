@@ -140,6 +140,23 @@ function PhoneRuntime({
   onRuntime?: (s: Runtime) => void;
 }) {
   const [app, setApp] = useState("");
+  const [systemNow, setSystemNow] = useState(() => new Date());
+  useEffect(() => {
+    const updateSystemClock = () => setSystemNow(new Date());
+    updateSystemClock();
+    const timer = window.setInterval(updateSystemClock, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const displayTime = systemNow.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+  const systemDate = [
+    systemNow.getFullYear(),
+    String(systemNow.getMonth() + 1).padStart(2, "0"),
+    String(systemNow.getDate()).padStart(2, "0"),
+  ].join("-");
   const [homeRequest, setHomeRequest] = useState(0);
   const [locked, setLocked] = useState(!creator);
   const [wallpaperChoice, setWallpaperChoice] = useState(() => {
@@ -393,7 +410,6 @@ function PhoneRuntime({
   useEffect(() => {
     if (app && !work.apps.some((a) => a.id === app && a.installed)) setApp("");
   }, [app, work.apps]);
-  const displayTime = creator ? work.phone.time : s.time || work.phone.time;
   const plugin = getApp(app);
   const wallpaperBackgrounds: Record<string, string> = {
     liquid: "radial-gradient(ellipse at 18% 18%,#f7d8ed 0%,transparent 36%),radial-gradient(ellipse at 78% 24%,#9fc8ff 0%,transparent 42%),radial-gradient(ellipse at 55% 78%,#f5b9a6 0%,transparent 38%),linear-gradient(145deg,#222b5b 0%,#6b6ba7 48%,#b8c9db 100%)",
@@ -582,11 +598,7 @@ function PhoneRuntime({
           <AnimatePresence mode="wait">
             {locked && !(quickCamera && app === "camera") ? (
               <DeviceLock
-                work={
-                  s.date
-                    ? { ...work, phone: { ...work.phone, date: s.date } }
-                    : work
-                }
+                work={{ ...work, phone: { ...work.phone, date: systemDate } }}
                 time={displayTime}
                 notices={s.notifications}
                 notificationItems={notificationItems}
@@ -672,8 +684,8 @@ function PhoneRuntime({
                     name={small ? undefined : a.name}
                     small={small}
                     custom={a.icon}
-                    date={s.date || work.phone.date}
-                    time={s.time}
+                    date={systemDate}
+                    time={displayTime}
                     badge={a.id === "wechat" ? s.notifications.filter((notice) => notice.startsWith("微信：")).length : 0}
                   />
                 )}
@@ -1178,7 +1190,7 @@ function AppContent({
             <Skin
               appId={app.id}
               owner={work.phone.owner}
-              virtualTime={state.time}
+              virtualTime={displayTime}
               ui={state.ui?.[app.id]}
               onUi={creator ? undefined : onUi}
               name={name}
