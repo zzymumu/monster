@@ -230,12 +230,6 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
       };
     })
     .sort((a, b) => {
-      // The original WeChat friend-added system notice is the conversation
-      // opener. Keep it at the very top even when a legacy re-add event was
-      // saved later with a newer timestamp.
-      const aIsAddNotice = a.item.kind === "event" && /添加了大G/.test(a.item.body);
-      const bIsAddNotice = b.item.kind === "event" && /添加了大G/.test(b.item.body);
-      if (aIsAddNotice !== bIsAddNotice) return aIsAddNotice ? -1 : 1;
       // Story messages carry millisecond delivery timestamps. Use those
       // before the display clock (which only has minute precision), so a
       // later player reply can never be moved above an earlier incoming line.
@@ -297,28 +291,29 @@ export function shouldShowPrankHistoryLine(_item: Item, _branch: string, _prankP
 }
 export function filterPrankHistoryLines(items: Item[], prankPath: boolean): Item[] {
   if (!prankPath) return items;
-  let prankWasSent = false;
-  const seenPrankLines = new Set<string>();
-  const duplicateProneLine = (body: string) =>
-    body === "？？？" ||
-    body === "……蛤？" ||
-    body === "妳哪位？我不認識妳喔。" ||
-    body === "好喔，那我先把妳刪掉了。掰。" ||
-    body === "你已添加了大G，现在可以开始聊天了。" ||
-    body === "你重新添加了大G，现在可以继续聊天了。";
+  // The first prank exchange may exist in both the legacy phone message store
+  // and the canonical story transcript. Deduplicate only its exact scripted
+  // lines, retaining the first occurrence in the chronological transcript.
+  // This includes the original "妳是？" opener, which must remain before the
+  // user's prank reply rather than being replayed after a choice.
+  const duplicateProneLines = new Set([
+    "你已添加了大G，现在可以开始聊天了。",
+    "妳是？",
+    "我是你爸爸。",
+    "我是你爸爸。",
+    "……蛤？",
+    "妳哪位？我不認識妳喔。",
+    "好喔，那我先把妳刪掉了。掰。",
+    "對不起我發錯人了啊啊啊！！！",
+    "对不起我发错人了啊啊啊！！！",
+  ]);
+  const seen = new Set<string>();
   return items.filter((item) => {
     const body = item.body.trim();
-    if (body === "我是你爸爸。" || body === "我是你爸爸") prankWasSent = true;
-    if (prankWasSent && body === "妳是？") return false;
-    // Older builds could save the same prank exchange in both the phone's
-    // legacy message store and the canonical story transcript. Keep one
-    // visible copy of each exact scripted reaction, without deduping ordinary
-    // conversation messages that the user may legitimately repeat.
-    if (duplicateProneLine(body)) {
-      const key = item.sender + "|" + body;
-      if (seenPrankLines.has(key)) return false;
-      seenPrankLines.add(key);
-    }
+    if (!duplicateProneLines.has(body)) return true;
+    const key = item.sender + "|" + body;
+    if (seen.has(key)) return false;
+    seen.add(key);
     return true;
   });
 }
@@ -1700,14 +1695,8 @@ export function WeChatSkin(p: SkinProps) {
     // story-order timestamp so the friend-added event is appended after the
     // previous chat, and the owner's opener follows that event.
     const addFriendOrderAt = Date.now();
-    const existingAddNotice = [...p.items, ...catRescue.messages].some((item) =>
-      item.title === "大G" && item.kind === "event" && /添加了大G/.test(item.body)
-    );
     const created = [
-      // Re-adding a deleted friend must not insert a second "you added"
-      // system notice into the old transcript. The original notice remains
-      // the first line of this conversation.
-      ...(!existingAddNotice ? [makeItem({ id: "monster-added-system-" + addFriendOrderAt, title: "大G", sender: "我", body: "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", storyOrderAt: String(addFriendOrderAt) } })] : []),
+      makeItem({ id: "monster-added-system-" + addFriendOrderAt, title: "大G", sender: "我", body: readding ? "你重新添加了大G，现在可以继续聊天了。" : "你已添加了大G，现在可以开始聊天了。", time, outgoing: true, kind: "event", meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", storyOrderAt: String(addFriendOrderAt) } }),
       ...(!readding ? [makeItem({ id: "monster-first-message-" + addFriendOrderAt, title: "大G", sender: "大G", body: "妳是？", time, outgoing: false, meta: { storyId: "cat-rescue-add-friend", storyThread: "大G", wechatId: "mo00oster111", storyOrderAt: String(addFriendOrderAt + 1) } })] : []),
     ];
     const nextStage = prankReadd ? 16 : getCatRescueStageAfterFriendAdd(catRescue.stage, catRescue.branch);
