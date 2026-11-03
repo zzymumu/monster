@@ -351,10 +351,12 @@ function listMeta(
   key: string,
 ): {
   time?: string;
-  temperature?: string;
-  low?: string;
-  high?: string;
+  temperature?: string | number;
+  low?: string | number;
+  high?: string | number;
   label?: string;
+  rain?: string | number;
+  wind?: string | number;
 }[] {
   try {
     const v = JSON.parse(meta(item, key, "[]"));
@@ -595,7 +597,7 @@ export function WeatherSkin(p: Props) {
                 setSheet("每日天气");
               }}
             >
-              <strong>{d.label || d.time || "—"}</strong>
+              <strong>{d.label || "—"}</strong>
               <CloudSun size={23} />
               <span>{d.low || "—"}°</span>
               <i />
