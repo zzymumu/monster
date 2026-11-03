@@ -319,8 +319,8 @@ export function YouTubeSkin(p: Props) {
             <strong>{showUploads ? "Mayday Monster · 全部上传视频" : (videos.find(v => v.id === playingId)?.title || "Mayday Monster")}</strong>
             <button aria-label="关闭播放器" onClick={() => setPlayerOpen(false)}>×</button>
           </div>
-          <div className="youtube-player-frame">
-            <iframe title={showUploads ? "Mayday Monster 全部上传视频" : "Mayday Monster 视频播放"} src={showUploads ? "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist : "https://www.youtube-nocookie.com/embed/" + (playingId || videos[0].id) + "?autoplay=1&rel=0"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+          <div className="youtube-player-frame" style={{ display: "block", position: "relative", width: "100%", minWidth: 0, maxWidth: "100%", aspectRatio: "16 / 9", margin: 0, padding: 0, overflow: "hidden", background: "#000", boxSizing: "border-box", flex: "none" }}>
+            <iframe title={showUploads ? "Mayday Monster 全部上传视频" : "Mayday Monster 视频播放"} src={showUploads ? "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist : "https://www.youtube-nocookie.com/embed/" + (playingId || videos[0].id) + "?autoplay=1&rel=0"} style={{ display: "block", position: "absolute", top: 0, left: 0, width: "100%", height: "100%", minWidth: "100%", maxWidth: "100%", margin: 0, padding: 0, border: 0, background: "#000", boxSizing: "border-box" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
           </div>
           <div className="youtube-player-modal-bottom">正在 App 内播放</div>
         </div>
