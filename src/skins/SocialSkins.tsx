@@ -11,7 +11,7 @@ import {
   Heart,
   Home,
   MessageCircle,
-  Repeat2,
+  Repeat2,\n  ChevronDown,\n  ShoppingBag,
   User,
   Users,
   Share2,
@@ -327,50 +327,109 @@ export function FacebookSkin(p: Props) {
 }
 export function RedbookSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "发现");
-  const list =
-    tab === "收藏"
-      ? items.filter((i) => i.favorite)
-      : tab === "关注"
-        ? items.filter((i) => i.folder === "关注")
-        : items;
+  const [category, setCategory] = useState("推荐");
+  const [location, setLocation] = useState("北京");
+  const [showSearch, setShowSearch] = useState(false);
+  const [bottomTab, setBottomTab] = useState("首页");
+  const [sortBy, setSortBy] = useState("推荐");
+  const categories = ["推荐", "RED", "直播", "热点", "短剧", "足球", "音乐"];
+  const demoPosts: Item[] = [
+    { id:"redbook-monster-01", title:"这次，他没有犹豫 02", body:"翻到好多年前的旧剪报，还是会为那句生日祝福心动。\n#五月天 #怪兽 #青春回忆", sender:"今天珍重🥕", avatar:"", kind:"post", media:"", time:"2026-11-03 20:18", likes:6, comments:[], meta:{art:"newspaper",category:"推荐"}, richText:"", hidden:false, unlock:"", password:"", folder:"推荐", favorite:false, outgoing:false, read:false },
+    { id:"redbook-monster-02", title:"这会不会太纳尼了", body:"试着把狗狗的眼睛修得自然一点，结果越看越好笑。", sender:"穿拖鞋走红毯", avatar:"", kind:"post", media:"", time:"2026-11-03 20:12", likes:2950, comments:[], meta:{art:"dog",category:"热点"}, richText:"", hidden:false, unlock:"", password:"", folder:"热点", favorite:false, outgoing:false, read:false },
+    { id:"redbook-monster-03", title:"喝个酒五光十色的", body:"演出结束后的后台碎片，五月天的快乐真的会传染。\n#五月天 #演唱会", sender:"你还有面包吗🥕", avatar:"", kind:"post", media:"", time:"2026-11-03 19:56", likes:3, comments:[], meta:{art:"concert",category:"音乐"}, richText:"", hidden:false, unlock:"", password:"", folder:"音乐", favorite:false, outgoing:false, read:false },
+    { id:"redbook-monster-04", title:"好嫩啊", body:"今天偶遇一只超可爱的猫咪，镜头差点贴到鼻子上。", sender:"干煎家的喵喵", avatar:"", kind:"post", media:"", time:"2026-11-03 19:44", likes:112, comments:[], meta:{art:"cat",category:"推荐"}, richText:"", hidden:false, unlock:"", password:"", folder:"推荐", favorite:false, outgoing:false, read:false },
+    { id:"redbook-monster-05", title:"怪兽的吉他永远有魔法", body:"现场直拍里最喜欢的一个瞬间，灯光亮起来的时候太震撼了。\n#温尚翊 #五月天", sender:"阿沐今天听歌了吗", avatar:"", kind:"post", media:"", time:"2026-11-03 19:31", likes:823, comments:[], meta:{art:"guitar",category:"音乐"}, richText:"", hidden:false, unlock:"", password:"", folder:"音乐", favorite:false, outgoing:false, read:false },
+    { id:"redbook-monster-06", title:"北京散步路线分享", body:"傍晚的风刚刚好，随手拍下路边的晚霞。", sender:"小岛日记", avatar:"", kind:"post", media:"", time:"2026-11-03 19:22", likes:58, comments:[], meta:{art:"sunset",category:"推荐"}, richText:"", hidden:false, unlock:"", password:"", folder:"推荐", favorite:false, outgoing:false, read:false },
+  ];
+  const sourceIsPlaceholder = !items.length || items.every((i) =>
+    ["测试内容", "等一场雨停", "九月的某一天"].includes(i.title)
+  );
+  const feedItems = sourceIsPlaceholder ? demoPosts : items;
+  const visible = feedItems.filter((item) => {
+    const matchesCategory = category === "推荐" || category === "RED" ||
+      item.folder === category || meta(item, "category") === category;
+    const matchesTop = tab === "发现" || tab === "关注"
+      ? tab === "发现" || item.folder === "关注" || meta(item, "following") === "true"
+      : true;
+    const matchesSearch = !q || (item.title + item.body + item.sender).toLowerCase().includes(q.toLowerCase());
+    const matchesBottom = bottomTab !== "收藏" || item.favorite;
+    return matchesCategory && matchesTop && matchesSearch && matchesBottom;
+  });
+  const ordered = sortBy === "热点"
+    ? [...visible].sort((a,b) => b.likes - a.likes)
+    : visible;
   return (
-    <div className="catalog-skin redbook-ui">
-      <Header p={p} />
-      <div className="redbook-top">
-        {["关注", "发现", "收藏"].map((t) => (
-          <button
-            key={t}
-            className={tab === t ? "selected" : ""}
-            onClick={() => setTab(t)}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-      <div className="catalog-scroll">
-        <SearchBox value={q} set={setQ} />
-        <div className="redbook-masonry">
-          {list.map((i) => (
-            <button key={i.id} onClick={() => p.onItem(i)}>
-              <Media item={i} />
-              <strong>{i.title}</strong>
-              <div>
-                <Avatar name={i.sender} />
-                <small>{i.sender}</small>
-                <Heart size={12} />
-                <small>{i.likes}</small>
-              </div>
-            </button>
+    <div className="catalog-skin redbook-ui redbook-dark">
+      <header className="redbook-main-header">
+        <button aria-label="消息" onClick={() => setBottomTab("消息")}><MessageCircle size={23} strokeWidth={1.8} /></button>
+        <nav className="redbook-primary-tabs">
+          {["关注", "发现", location].map((t) => (
+            <button key={t} className={(tab === t || (t === location && tab === "北京")) ? "selected" : ""} onClick={() => {
+              if (t === location) setTab("北京");
+              else setTab(t);
+            }}>{t}</button>
           ))}
+        </nav>
+        <button aria-label="搜索" onClick={() => setShowSearch((v) => !v)}><Search size={24} strokeWidth={1.8} /></button>
+      </header>
+      {showSearch && <label className="redbook-search"><Search size={15}/><input autoFocus placeholder="搜索你感兴趣的内容" value={q} onChange={(e) => setQ(e.target.value)}/><button onClick={() => {setQ("");setShowSearch(false);}}>取消</button></label>}
+      <div className="redbook-category-row">
+        <div className="redbook-category-scroll">
+          {categories.map((t) => <button key={t} className={category === t ? "selected" : ""} onClick={() => {setCategory(t);setSortBy(t === "热点" ? "热点" : "推荐");}}>{t}</button>)}
         </div>
-        <Empty items={list} />
+        <button className="redbook-category-more" aria-label="更多分类" onClick={() => setCategory(category === "推荐" ? "音乐" : "推荐")}><ChevronDown size={18}/></button>
       </div>
-      <Tabs
-        tabs={["发现", "收藏"]}
-        value={tab}
-        set={setTab}
-        icons={[<Home />, <Bookmark />]}
-      />
+      <div className="catalog-scroll redbook-feed-scroll">
+        {bottomTab === "我" ? (
+          <div className="redbook-profile"><Avatar name={p.owner || "我"}/><strong>{p.owner || "我"}</strong><small>分享生活 · 记录喜欢</small><button onClick={() => setBottomTab("首页")}>返回首页</button></div>
+        ) : bottomTab === "消息" ? (
+          <div className="redbook-empty-state"><MessageCircle size={32}/><strong>消息</strong><span>暂时没有新消息</span></div>
+        ) : (
+          <div className="redbook-waterfall">
+            {ordered.map((item, index) => {
+              const likedKey = `redbook-liked-${item.id}`;
+              return <article className="redbook-card" key={item.id}>
+                <button className={`redbook-card-cover redbook-art-${meta(item,"art",["newspaper","dog","concert","cat","guitar","sunset"][index % 6])}`} onClick={() => p.onItem(item)} aria-label={item.title}>
+                  <span className="redbook-art-label">{meta(item,"coverLabel",["旧剪报收藏","日常修图记录","演出后台碎片","猫咪近距离","五月天现场","城市散步"][index % 6])}</span>
+                  {meta(item,"art") === "newspaper" && <span className="redbook-art-stamp">HAPPY<br/>BIRTHDAY</span>}
+                  {meta(item,"art") === "dog" && <span className="redbook-art-face">🐶</span>}
+                  {meta(item,"art") === "concert" && <span className="redbook-art-face">🎤</span>}
+                  {meta(item,"art") === "cat" && <span className="redbook-art-face">🐱</span>}
+                  {meta(item,"art") === "guitar" && <span className="redbook-art-face">🎸</span>}
+                  {meta(item,"art") === "sunset" && <span className="redbook-art-face">🌇</span>}
+                  {item.kind === "video" && <span className="redbook-play">▶</span>}
+                </button>
+                <button className="redbook-card-title" onClick={() => p.onItem(item)}>{item.title}</button>
+                <div className="redbook-card-meta">
+                  <button className="redbook-author" onClick={() => p.onItem(item)}><Avatar name={item.sender}/><span>{item.sender}</span></button>
+                  <button className="redbook-like" aria-label={`喜欢${item.title}`} onClick={(e) => {
+                    e.stopPropagation();
+                    const key = likedKey;
+                    const current = document.querySelector<HTMLElement>(`[data-redbook-like="${key}"]`);
+                    const liked = current?.dataset.liked === "true";
+                    if (current) current.dataset.liked = liked ? "false" : "true";
+                    current?.classList.toggle("liked", !liked);
+                    current?.querySelector("span") && (current.querySelector("span")!.textContent = String(item.likes + (liked ? 0 : 1)));
+                  }} data-redbook-like={likedKey} data-liked="false"><Heart size={16}/><span>{item.likes || ""}</span></button>
+                </div>
+              </article>;
+            })}
+          </div>
+        )}
+        {bottomTab === "首页" && <Empty items={ordered} label="暂时没有相关笔记，换个分类看看吧"/>}
+      </div>
+      <nav className="redbook-bottom-nav">
+        {[
+          {label:"首页",icon:<Home size={22}/>,action:"首页"},
+          {label:"商城",icon:<ShoppingBag size={21}/>,action:"商城"},
+          {label:"发布",icon:<Plus size={25}/>,action:"发布"},
+          {label:"消息",icon:<MessageCircle size={22}/>,action:"消息"},
+          {label:"我",icon:<User size={22}/>,action:"我"},
+        ].map((entry) => <button key={entry.action} className={bottomTab === entry.action ? "selected" : ""} onClick={() => {
+          if (entry.action === "发布") { p.onAdd(); return; }
+          setBottomTab(entry.action);
+        }}>{entry.action === "发布" ? <span className="redbook-publish">{entry.icon}</span> : entry.icon}<span>{entry.label}</span></button>)}
+      </nav>
     </div>
   );
 }
