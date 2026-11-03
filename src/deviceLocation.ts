@@ -26,7 +26,7 @@ export function useDeviceLocation() {
   const [loading, setLoading] = useState(false);
 
   const request = useCallback(() => {
-    try { localStorage.removeItem(LOCATION_ATTEMPTED_KEY); } catch {}
+    try { localStorage.removeItem(LOCATION_ATTEMPTED_KEY); } catch { /* Storage may be unavailable in private browsing. */ }
     if (typeof navigator === "undefined" || !navigator.geolocation) {
       setError("此浏览器不支持定位，请允许浏览器使用位置信息。");
       return;
@@ -51,7 +51,7 @@ export function useDeviceLocation() {
       },
       (reason) => {
         setLoading(false);
-        try { localStorage.setItem(LOCATION_ATTEMPTED_KEY, "denied"); } catch {}
+        try { localStorage.setItem(LOCATION_ATTEMPTED_KEY, "denied"); } catch { /* Permission result is still handled in memory. */ }
         setError(
           reason.code === reason.PERMISSION_DENIED
             ? "定位权限未开启。请在浏览器地址栏的网站权限中允许位置访问，再点重新定位。"
@@ -67,7 +67,7 @@ export function useDeviceLocation() {
   useEffect(() => {
     if (!position) {
       let alreadyAsked = false;
-      try { alreadyAsked = localStorage.getItem(LOCATION_ATTEMPTED_KEY) === "denied"; } catch {}
+      try { alreadyAsked = localStorage.getItem(LOCATION_ATTEMPTED_KEY) === "denied"; } catch { /* Fall back to requesting once when storage is unavailable. */ }
       if (!alreadyAsked) request();
     }
   }, [position, request]);
