@@ -886,3 +886,35 @@
 .ios18 .calibrated-weather[data-empty="true"] .weather-days > button > i {
   background: #ffffff30;
 }
+
+
+/* Live, permission-based location map inside Weather */
+.ios18 .weather-live-map {
+  min-height: 360px;
+  height: calc(100% - 52px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ios18 .weather-live-map iframe {
+  width: 100%;
+  min-height: 300px;
+  flex: 1;
+  border: 0;
+  border-radius: 14px;
+  background: #e8edf0;
+}
+.ios18 .weather-live-map > p {
+  margin: 0;
+  text-align: center;
+  color: #ffffffc9;
+  font-size: 12px;
+}
+.ios18 .weather-map-empty button {
+  margin-top: 14px;
+  border: 0;
+  border-radius: 18px;
+  padding: 10px 15px;
+  color: #1c4262;
+  background: #fff;
+}
