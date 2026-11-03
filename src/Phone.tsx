@@ -235,9 +235,12 @@ function PhoneRuntime({
     if (creator || external) return;
     void db.saves
       .get(saveId)
-      .then((saved) => {
+      .then(async (currentSave) => {
+        // Migrate the old release-scoped default save key without losing progress.
+        const saved = currentSave ?? await db.saves.get(`${work.id}::default`);
         if (!active) return;
         if (saved && saved.state.workId === work.id) {
+          if (!currentSave) await db.saves.put({ id: saveId, state: saved.state });
           // Keep story progress, chat history, choices, notifications and UI
           // state across code/content deployments. Only migrate the revision.
           const fresh = dispatch(work, initialRuntime(work), "start");
