@@ -358,6 +358,25 @@ export function BilibiliSkin(p: Props) {
         ))}
       </div>
       <div className="catalog-scroll">
+        {tab === "首页" && (
+          <section className="bili-featured-video">
+            <div className="bili-featured-player">
+              <iframe
+                src="https://player.bilibili.com/player.html?bvid=BV1G9KczoEZb&autoplay=0&high_quality=1"
+                title="相信音乐：五月天人生无限公司陪你跨年 LIVE"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+            <div className="bili-featured-meta">
+              <strong>【官方4K】五月天 2018《人生无限公司》陪你跨年 LIVE 完整版</strong>
+              <span>相信音乐 · 五月天 · 演唱会</span>
+              <a href="https://www.bilibili.com/video/BV1G9KczoEZb/" target="_blank" rel="noreferrer">打开原视频 <span>↗</span></a>
+            </div>
+          </section>
+        )}
         <div className="bili-grid">
           {list.map((i) => (
             <button key={i.id} onClick={() => p.onItem(i)}>
