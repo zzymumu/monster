@@ -286,7 +286,6 @@ export function YouTubeSkin(p: Props) {
           <div style={{ fontWeight: 700, padding: "4px 2px 12px" }}>来自 “Mayday Monster” 上传的视频</div>
           {playingId && <div style={{ marginBottom: 16, borderRadius: 12, overflow: "hidden", background: "#000" }}>
             <div style={{ aspectRatio: "16 / 9" }}><iframe title="YouTube 视频播放" src={"https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0"} style={{ width: "100%", height: "100%", border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div>
-            <button onClick={() => setPlayingId("")} style={{ border: 0, background: "#181818", color: "#fff", padding: "9px 12px", width: "100%", textAlign: "left" }}>关闭播放器 ×</button>
           </div>}
           {showUploads && <div style={{ marginBottom: 16, borderRadius: 12, overflow: "hidden", background: "#000" }}>
             <div style={{ aspectRatio: "16 / 9" }}><iframe title="Mayday Monster 全部上传视频" src={"https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist} style={{ width: "100%", height: "100%", border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div>
