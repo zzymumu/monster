@@ -1025,7 +1025,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   89: [
     { id: "pick-something-cute", label: "当然要穿得漂漂亮亮的！", nextStage: 94, lines: [
       { sender: "我", body: "那當然要穿得漂漂亮亮的！這可是大事欸！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "欸對了！幫我找簽名啦嗚嗚嗚，我姐妹發達了！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "幫我找簽名嗚嗚我姐妹發達了！", thread: "西蓝花" },
     ]},
     { id: "outfit-nerves", label: "到时候再挑啦，我现在光想就紧张", nextStage: 94, lines: [
       { sender: "我", body: "到時候再挑啦，我現在光想就緊張到不行。", thread: "西蓝花" },
@@ -1046,12 +1046,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "too-excited-to-remember", label: "哎呀！还不是因为太激动了嘛！", nextStage: 65, lines: [
       { sender: "我", body: "哎呀！還不是因為太激動了嘛！當下腦袋一片空白，哪還記得問啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳真的沒救了啦哈哈哈！我查了一下，好像在北京吧？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "沒事啦，應該最晚就下週的事情？妳先不用太著急！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "沒事，應該最晚就下週的事情？", thread: "西蓝花" },
     ]},
     { id: "laugh-it-off", label: "我那时候满脑子都是他答应请我吃饭了！", nextStage: 65, lines: [
       { sender: "我", body: "我那時候滿腦子都是他答應請我吃飯了，真的顧不上其他事啦！", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈妳也太容易滿足！我看了一下，好像在北京吧？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "沒事啦，應該最晚就下週的事情？先把玩玩照顧好，等他回來再說！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "沒事，應該最晚就下週的事情？", thread: "西蓝花" },
     ]},
   ],
   65: [
