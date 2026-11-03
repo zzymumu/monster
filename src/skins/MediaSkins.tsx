@@ -335,52 +335,77 @@ export function BilibiliSkin(p: Props) {
   const [featuredBvid, setFeaturedBvid] = useState("BV1xNMvzLE3v");
   const [playerOpen, setPlayerOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-  const [covers, setCovers] = useState<Record<string, string>>({});
+  const splashSrc = import.meta.env.BASE_URL + "assets/bilibili-splash.jpg";
   const concerts = [
-    { bvid: "BV1xNMvzLE3v", title: "【官方4K】五月天 2025 线上跨年演唱会 MAYDAY FLY TO 2025", year: "2025", duration: "01:50:26" },
-    { bvid: "BV1BpMqzrEyJ", title: "【官方4K】五月天 线上跨年演唱会 诺亚方舟十周年特别版 MAYDAY FLY TO 2023", year: "2023", duration: "01:28:39" },
-    { bvid: "BV1JRNvzcEgr", title: "【官方4K】五月天 陪你跨年演唱会 MAYDAY FLY TO 2022", year: "2022", duration: "01:10:45" },
-    { bvid: "BV1d3NJz5EeF", title: "【官方4K】五月天 好好好想见到你 MAYDAY FLY TO 2021 跨年演唱会", year: "2021", duration: "48:32" },
-    { bvid: "BV1wKK8zpEKa", title: "【官方4K修复】五月天 D.N.A 创造演唱会 MAYDAY D.N.A WORLD TOUR IN LIVE", year: "D.N.A", duration: "02:37:06" },
-    { bvid: "BV1jpKRzmEWC", title: "【官方4K修复】五月天 十万人・出头天演唱会 IN THE SKY OF 100000 YOU & MAYDAY LIVE", year: "十万人・出头天", duration: "01:22:29" },
+    {
+      bvid: "BV1xNMvzLE3v",
+      title: "【官方4K】五月天 2025 线上跨年演唱会 MAYDAY FLY TO 2025",
+      year: "2025",
+      duration: "01:50:26",
+      cover: "https://papiin.com/upload/works/0bac6009d61d3fc41ee0647c1728d29d.png",
+    },
+    {
+      bvid: "BV1BpMqzrEyJ",
+      title: "【官方4K】五月天 线上跨年演唱会 诺亚方舟十周年特别版 MAYDAY FLY TO 2023",
+      year: "2023",
+      duration: "01:28:39",
+      cover: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/d9/6e/5b/d96e5b27-9d31-4ac1-1bd0-cd057ed64ace/4710616566819.jpg/1200x1200bb.jpg",
+    },
+    {
+      bvid: "BV1JRNvzcEgr",
+      title: "【官方4K】五月天 陪你跨年演唱会 MAYDAY FLY TO 2022",
+      year: "2022",
+      duration: "01:10:45",
+      cover: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/9c/e5/88/9ce5885a-6e67-46fc-f6e3-fcd6d2e63afb/1.mayday-2022-_4000x4000.jpg/1200x1200bb.jpg",
+    },
+    {
+      bvid: "BV1d3NJz5EeF",
+      title: "【官方4K】五月天 好好好想见到你 MAYDAY FLY TO 2021 跨年演唱会",
+      year: "2021",
+      duration: "48:32",
+      cover: "https://n.sinaimg.cn/ent/transform/460/w630h630/20201230/7738-kfxsuvx0385959.png",
+    },
+    {
+      bvid: "BV1wKK8zpEKa",
+      title: "【官方4K修复】五月天 D.N.A 创造演唱会 MAYDAY D.N.A WORLD TOUR IN LIVE",
+      year: "D.N.A",
+      duration: "02:37:06",
+      cover: "https://is2-ssl.mzstatic.com/image/thumb/Music49/v4/7a/a7/2a/7aa72ab3-c698-2526-7cc5-048cc427312c/BD0024-_D.N.A_LIVE.jpg/1200x1200bb.jpg",
+    },
+    {
+      bvid: "BV1jpKRzmEWC",
+      title: "【官方4K修复】五月天 十万人・出头天演唱会 IN THE SKY OF 100000 YOU & MAYDAY LIVE",
+      year: "十万人・出头天",
+      duration: "01:22:29",
+      cover: "https://www.5music.com.tw/cdpic/zn2/69202411298538.jpg",
+    },
   ];
   useEffect(() => {
-    const timer = window.setTimeout(() => setShowSplash(false), 2100);
+    const timer = window.setTimeout(() => setShowSplash(false), 2500);
     return () => window.clearTimeout(timer);
   }, []);
-  useEffect(() => {
-    let alive = true;
-    const loadCover = async (bvid: string): Promise<[string, string]> => {
-      const api = "https://api.bilibili.com/x/web-interface/view?bvid=" + bvid;
-      const proxies = [
-        "https://api.allorigins.win/raw?url=" + encodeURIComponent(api),
-        "https://corsproxy.io/?" + encodeURIComponent(api),
-      ];
-      for (const url of proxies) {
-        try {
-          const response = await fetch(url);
-          if (!response.ok) continue;
-          const json = await response.json();
-          const pic = typeof json?.data?.pic === "string" ? json.data.pic : "";
-          if (pic) return [bvid, pic.replace(/^http:\/\//, "https://")];
-        } catch { /* try the next public metadata route */ }
-      }
-      return [bvid, ""];
-    };
-    Promise.all(concerts.map((video) => loadCover(video.bvid))).then((entries) => {
-      if (alive) setCovers(Object.fromEntries(entries));
-    });
-    return () => { alive = false; };
-  }, []);
-  const activeConcert = concerts.find((video) => video.bvid === featuredBvid) || concerts[0];
+  const activeConcert =
+    concerts.find((video) => video.bvid === featuredBvid) || concerts[0];
+  const visibleConcerts = concerts.filter((video) =>
+    (video.title + video.year).toLowerCase().includes(q.toLowerCase()),
+  );
+  const openConcert = (bvid: string) => {
+    setFeaturedBvid(bvid);
+    setPlayerOpen(true);
+  };
   return (
     <div className="catalog-skin bilibili-ui">
-      {showSplash && <div className="bili-splash"><img className="bili-splash-image" src="assets/bilibili-splash.jpg" alt="哔哩哔哩开屏动画" /></div>}
-      <div className="bili-titlebar">
-        <button aria-label="返回" onClick={() => setTab("首页")}>‹</button>
-        <strong>哔哩哔哩</strong>
-        <span />
-      </div>
+      {showSplash && (
+        <div className="bili-splash">
+          <img
+            className="bili-splash-image"
+            src={splashSrc}
+            alt="哔哩哔哩开屏动画"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      )}
       <div className="bili-topbar">
         <Avatar name={p.owner || "我"} />
         <SearchBox value={q} set={setQ} />
@@ -388,50 +413,150 @@ export function BilibiliSkin(p: Props) {
         <button aria-label="消息"><MessageCircle size={22} /></button>
       </div>
       <div className="bili-channel-tabs">
-        {["推荐", "动画", "音乐", "生活"].map((name) => (
-          <button key={name} className={category === name ? "selected" : ""} onClick={() => setCategory(name)}>{name}</button>
+        {["直播", "推荐", "热门", "追番", "影视", "音乐"].map((name) => (
+          <button
+            key={name}
+            className={category === name ? "selected" : ""}
+            onClick={() => setCategory(name)}
+          >
+            {name}
+          </button>
         ))}
       </div>
       <div className="catalog-scroll">
-        {tab === "首页" && <>
-          <section className="bili-featured-video">
-            <button className="bili-featured-poster" onClick={() => setPlayerOpen(true)} aria-label="播放五月天 2025 线上跨年演唱会">
-              {covers[featuredBvid] && <img src={covers[featuredBvid]} alt={activeConcert.title + " 视频预览图"} referrerPolicy="no-referrer" />}
-              <span className="bili-featured-play">▶</span>
-              <small>{activeConcert.duration}</small>
-            </button>
-            <div className="bili-featured-meta">
-              <strong>{activeConcert.title}</strong>
-              <span>相信音乐 · 五月天演唱会 · {activeConcert.duration}</span>
-              <button onClick={() => setPlayerOpen(true)}>在哔哩哔哩打开视频 ↗</button>
-            </div>
-          </section>
-          <section className="bili-concert-shelf">
-          <h3>相信音乐 · 五月天演唱会</h3>
-          <div className="bili-concert-list">
-            {concerts.map((video) => <button key={video.bvid} className="bili-video-card" onClick={() => { setFeaturedBvid(video.bvid); setPlayerOpen(true); }}>
-              <span className="bili-video-cover">
-                {covers[video.bvid] && <img src={covers[video.bvid]} alt={video.title + " 视频预览图"} loading="lazy" referrerPolicy="no-referrer" />}
-                <span className="bili-cover-play">▶</span><small>{video.duration}</small>
-              </span>
-              <span className="bili-video-copy"><strong>{video.title}</strong><small>相信音乐 · {video.year}</small></span>
-            </button>)}
+        {tab === "首页" && (
+          <>
+            <section className="bili-featured-video">
+              <button
+                className="bili-featured-poster"
+                onClick={() => openConcert(activeConcert.bvid)}
+                aria-label={"播放" + activeConcert.title}
+              >
+                <img
+                  src={activeConcert.cover}
+                  alt={activeConcert.title + " 视频预览图"}
+                  referrerPolicy="no-referrer"
+                  loading="eager"
+                />
+                <span className="bili-featured-play">▶</span>
+                <small>{activeConcert.duration}</small>
+              </button>
+              <div className="bili-featured-meta">
+                <strong>{activeConcert.title}</strong>
+                <span>相信音乐 · 五月天演唱会 · {activeConcert.duration}</span>
+                <button onClick={() => openConcert(activeConcert.bvid)}>
+                  点击播放视频 ↗
+                </button>
+              </div>
+            </section>
+            <section className="bili-concert-shelf">
+              <h3>相信音乐 · 五月天演唱会</h3>
+              <div className="bili-concert-list">
+                {visibleConcerts.map((video) => (
+                  <button
+                    key={video.bvid}
+                    className="bili-video-card"
+                    onClick={() => openConcert(video.bvid)}
+                  >
+                    <span className="bili-video-cover">
+                      <img
+                        src={video.cover}
+                        alt={video.title + " 视频封面"}
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                      <span className="bili-cover-play">▶</span>
+                      <small>{video.duration}</small>
+                    </span>
+                    <span className="bili-video-copy">
+                      <strong>{video.title}</strong>
+                      <small>相信音乐 · {video.year}</small>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          </>
+        )}
+        {tab !== "首页" && (
+          <div className="bili-empty-state">
+            <strong>{tab}</strong>
+            <span>这里暂时还没有内容</span>
           </div>
-          </section>
-        </>}
-        {tab !== "首页" && <div className="bili-empty-state"><strong>{tab}</strong><span>这里暂时还没有内容</span></div>}
+        )}
       </div>
-      {playerOpen && <div className="bili-player-overlay" role="dialog" aria-modal="true" aria-label="五月天演唱会播放器">
-        <div className="bili-player-sheet">
-          <div className="bili-player-header"><strong>{activeConcert.title}</strong><button aria-label="关闭播放器" onClick={() => setPlayerOpen(false)}>×</button></div>
-          <div className="bili-player-frame">
-            <iframe key={activeConcert.bvid} src={"https://player.bilibili.com/player.html?bvid=" + activeConcert.bvid + "&autoplay=0&high_quality=1"} title={activeConcert.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
+      {playerOpen && (
+        <div
+          className="bili-player-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="五月天演唱会播放器"
+        >
+          <div className="bili-player-sheet">
+            <div className="bili-player-header">
+              <strong>{activeConcert.title}</strong>
+              <button
+                aria-label="关闭播放器"
+                onClick={() => setPlayerOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="bili-player-frame">
+              <iframe
+                key={activeConcert.bvid}
+                src={
+                  "https://player.bilibili.com/player.html?bvid=" +
+                  activeConcert.bvid +
+                  "&page=1&high_quality=1&danmaku=0&autoplay=1"
+                }
+                title={activeConcert.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="origin"
+              />
+            </div>
+            <div className="bili-player-meta">
+              <strong>{activeConcert.title}</strong>
+              <span>
+                相信音乐 · 五月天演唱会 · {activeConcert.duration}
+              </span>
+              <a
+                href={"https://www.bilibili.com/video/" + activeConcert.bvid + "/"}
+                target="_blank"
+                rel="noreferrer"
+              >
+                如果播放器无法加载，点此打开 B 站原视频 ↗
+              </a>
+            </div>
+            <div className="bili-player-related">
+              <strong>更多五月天演唱会</strong>
+              {concerts
+                .filter((video) => video.bvid !== activeConcert.bvid)
+                .map((video) => (
+                  <button
+                    key={video.bvid}
+                    onClick={() => setFeaturedBvid(video.bvid)}
+                  >
+                    <img
+                      src={video.cover}
+                      alt=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                    <span>{video.title}</span>
+                  </button>
+                ))}
+            </div>
           </div>
-          <div className="bili-player-meta"><strong>{activeConcert.title}</strong><span>相信音乐 · 五月天演唱会 · {activeConcert.duration}</span><a href={"https://www.bilibili.com/video/" + activeConcert.bvid + "/"} target="_blank" rel="noreferrer">在哔哩哔哩打开原视频 ↗</a></div>
-          <div className="bili-player-related"><strong>更多五月天演唱会</strong>{concerts.filter((video) => video.bvid !== activeConcert.bvid).map((video) => <button key={video.bvid} onClick={() => setFeaturedBvid(video.bvid)}>{video.title}</button>)}</div>
         </div>
-      </div>}
-      <Tabs tabs={["首页", "动态", "历史"]} value={tab} set={setTab} icons={[<Home />, <MessageCircle />, <User />]} />
+      )}
+      <Tabs
+        tabs={["首页", "动态", "历史"]}
+        value={tab}
+        set={setTab}
+        icons={[<Home />, <MessageCircle />, <User />]}
+      />
     </div>
   );
 }
