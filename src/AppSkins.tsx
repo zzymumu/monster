@@ -942,21 +942,21 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   63: [
     { id: "tell-broccoli-he-promised-dinner", label: "你敢信！！他要请我吃饭！！！！", nextStage: 64, lines: [
       { sender: "我", body: "你敢信！！他要請我吃飯！！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "真的假的！！！五月天怪獸真的要請妳吃飯？妳不是在做夢吧！！！妳們吃什麼？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下！！！他怎麼會突然說要請妳吃飯？妳到底跟他說了什麼？", thread: "西蓝花" },
     ]},
     { id: "tell-broccoli-dinner-casual", label: "欸嘿，他刚刚答应回来请我吃饭了！", nextStage: 64, lines: [
       { sender: "我", body: "欸嘿，他剛剛答應回來請我吃飯了！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "真的假的！！！五月天怪獸真的要請妳吃飯？妳不是在做夢吧！！！妳們吃什麼？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的假的？等等，他怎麼會突然說要請妳吃飯？妳先從頭講！", thread: "西蓝花" },
     ]},
   ],
   64: [
-    { id: "scream-about-dinner", label: "啊啊啊啊！五月天怪兽要请我吃饭欸！！", nextStage: 88, lines: [
-      { sender: "我", body: "啊啊啊啊啊！我現在想起來還是覺得好不真實！五月天怪獸欸！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳先冷靜！！！我也要尖叫了！！！這根本像做夢一樣吧！", thread: "西蓝花" },
+    { id: "explain-it-was-a-joke", label: "我就开玩笑的随口一说……没想到他真的答应了！", nextStage: 88, lines: [
+      { sender: "我", body: "我就開玩笑的隨口一說……我也沒想到他真的會答應啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "瘋了瘋了瘋了！！！妳隨口一說他就答應？這也太不可思議了吧！！！", thread: "西蓝花" },
     ]},
-    { id: "is-this-a-dream", label: "我真的不是在做梦吧？", nextStage: 88, lines: [
-      { sender: "我", body: "我真的不是在做夢吧？他居然說要請我吃飯！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "不是夢！！！是真的！！！妳快把這件事刻在腦子裡啦！", thread: "西蓝花" },
+    { id: "still-cannot-believe", label: "我也没想到他会答应，我现在还懵着！", nextStage: 88, lines: [
+      { sender: "我", body: "我真的完全沒想到他會答應，我現在整個人都還懵著！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "啊啊啊啊啊！！！瘋了啦！！！五月天怪獸欸！妳居然真的要跟他吃飯了！！！", thread: "西蓝花" },
     ]},
   ],
   88: [
