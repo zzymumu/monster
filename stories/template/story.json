@@ -2086,11 +2086,6 @@
           "type": "unlock",
           "key": "wx-broccoli-63",
           "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-70",
-          "value": true
         }
       ],
       "next": [],
@@ -2115,11 +2110,6 @@
         {
           "type": "unlock",
           "key": "wx-broccoli-63",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-70",
           "value": true
         }
       ],
