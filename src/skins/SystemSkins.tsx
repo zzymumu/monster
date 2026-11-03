@@ -563,21 +563,28 @@ export function NotesSkin(p: Props) {
   );
 }
 export function CalendarSkin(p: Props) {
-  const [month, setMonth] = useState(8),
-    [year, setYear] = useState(2026),
-    [day, setDay] = useState(1);
+  const today = new Date((p.virtualDate || new Date().toLocaleDateString("en-CA")) + "T12:00:00");
+  const [month, setMonth] = useState(today.getMonth()),
+    [year, setYear] = useState(today.getFullYear()),
+    [day, setDay] = useState(today.getDate());
+  useEffect(() => {
+    const current = new Date((p.virtualDate || new Date().toLocaleDateString("en-CA")) + "T12:00:00");
+    setYear(current.getFullYear());
+    setMonth(current.getMonth());
+    setDay(current.getDate());
+  }, [p.virtualDate]);
   const prefix = `${year}-${String(month + 1).padStart(2, "0")}`;
   const list = p.items.filter((i) =>
     i.time.startsWith(`${prefix}-${String(day).padStart(2, "0")}`),
   );
   const move = (d: number) => {
-    const date = new Date(Date.UTC(year, month + d, 1));
-    setYear(date.getUTCFullYear());
-    setMonth(date.getUTCMonth());
+    const date = new Date(year, month + d, 1);
+    setYear(date.getFullYear());
+    setMonth(date.getMonth());
     setDay(1);
   };
-  const first = new Date(Date.UTC(year, month, 1)).getUTCDay(),
-    days = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+  const first = new Date(year, month, 1).getDay(),
+    days = new Date(year, month + 1, 0).getDate();
   return (
     <div className="catalog-skin native-calendar">
       <Header p={p} />
