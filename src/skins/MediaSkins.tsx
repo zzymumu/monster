@@ -6,10 +6,8 @@ import {
   Compass,
   Heart,
   Home,
-  Gamepad2,
-  Mail,
-  Menu,
   MessageCircle,
+  Compass,
   Music,
   Play,
   Plus,
@@ -328,7 +326,7 @@ export function YouTubeSkin(p: Props) {
           <div className="youtube-player-modal-bottom">正在 App 内播放</div>
         </div>
       </div>}
-      <Tabs tabs={["首页", "Shorts", "我"]} value={tab === "全部视频" ? "首页" : tab} set={v => setTab(v === "首页" ? "全部视频" : v)} icons={[<Home />, <Viexport function BilibiliSkin(p: Props) {
+      <Tabs tabs={["首页", "Shorts", "我"]} value={tab === "全部视频" ? "首页" : tab} set={v => setTab(v === "首页" ? "全部视频" : v)} icons={[<Home />, <Video />, <User />]export function BilibiliSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "首页");
   const [category, setCategory] = useState("推荐");
   const [featuredBvid, setFeaturedBvid] = useState("BV1xNMvzLE3v");
@@ -343,73 +341,78 @@ export function YouTubeSkin(p: Props) {
     { bvid: "BV1jpKRzmEWC", title: "【官方4K修复】五月天 十万人・出头天演唱会 IN THE SKY OF 100000 YOU & MAYDAY LIVE", year: "十万人・出头天", duration: "01:22:29" },
   ];
   useEffect(() => {
-    const timer = window.setTimeout(() => setShowSplash(false), 1700);
+    const timer = window.setTimeout(() => setShowSplash(false), 1600);
     return () => window.clearTimeout(timer);
   }, []);
   useEffect(() => {
-    let active = true;
+    let alive = true;
     Promise.all(concerts.map(async (video) => {
       try {
         const response = await fetch("https://api.bilibili.com/x/web-interface/view?bvid=" + video.bvid);
-        const data = await response.json();
-        return [video.bvid, data?.data?.pic || ""] as const;
+        const json = await response.json();
+        return [video.bvid, typeof json?.data?.pic === "string" ? json.data.pic : ""] as [string, string];
       } catch {
-        return [video.bvid, ""] as const;
+        return [video.bvid, ""] as [string, string];
       }
     })).then((entries) => {
-      if (active) setCovers(Object.fromEntries(entries));
+      if (alive) setCovers(Object.fromEntries(entries));
     });
-    return () => { active = false; };
+    return () => { alive = false; };
   }, []);
-  const activeConcert = concerts.find((v) => v.bvid === featuredBvid) ?? concerts[0];
-  const list = tab === "历史"
-    ? items.filter((i) => i.folder === "历史")
-    : tab === "动态"
-      ? items.filter((i) => i.folder === "动态")
-      : items;
+  const activeConcert = concerts.find((video) => video.bvid === featuredBvid) || concerts[0];
+  const list = tab === "历史" ? items.filter((item) => item.folder === "历史") : tab === "动态" ? items.filter((item) => item.folder === "动态") : items;
   return (
     <div className="catalog-skin bilibili-ui">
-      {showSplash && <div className="bili-splash"><div className="bili-splash-mascot"><span>⌣</span></div><strong>bilibili</strong></div>}
-      <div className="bili-topbar">
-        <Avatar name={p.owner ?? "我"} />
-        <div className="bili-searchbox"><Search size={16} /><SearchBox value={q} set={setQ} /></div>
-        <button aria-label="游戏中心"><Gamepad2 size={22} /></button>
-        <button className="bili-inbox" aria-label="消息"><Mail size={22} /><i>2</i></button>
+      {showSplash && <div className="bili-splash"><div className="bili-splash-art">♡</div><strong>bilibili</strong></div>}
+      <div className="bili-search">
+        <Avatar name={p.owner || "我"} />
+        <SearchBox value={q} set={setQ} />
+        <button aria-label="游戏中心"><Compass size={22} /></button>
+        <button aria-label="消息"><MessageCircle size={22} /></button>
       </div>
-      <div className="bili-channel-tabs">
-        {["直播", "推荐", "热门", "追番", "影视", "S16", "新征程"].map((name) => <button key={name} className={category === name ? "selected" : ""} onClick={() => setCategory(name)}>{name}</button>)}
-        <Menu size={18} />
+      <div className="bili-categories">
+        {["直播", "推荐", "热门", "追番", "影视", "音乐"].map((name) => (
+          <button key={name} className={category === name ? "selected" : ""} onClick={() => setCategory(name)}>{name}</button>
+        ))}
       </div>
-      <div className="catalog-scroll bili-home-scroll">
+      <div className="catalog-scroll">
         {tab === "首页" && <>
           <section className="bili-featured-video">
             <div className="bili-featured-player">
               <iframe key={activeConcert.bvid} src={"https://player.bilibili.com/player.html?bvid=" + activeConcert.bvid + "&autoplay=0&high_quality=1"} title={activeConcert.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
             </div>
-            <div className="bili-featured-meta"><strong>{activeConcert.title}</strong><span>相信音乐 · 五月天演唱会 · {activeConcert.duration}</span><a href={"https://www.bilibili.com/video/" + activeConcert.bvid + "/"} target="_blank" rel="noreferrer">在哔哩哔哩打开原视频 ↗</a></div>
+            <div className="bili-featured-meta">
+              <strong>{activeConcert.title}</strong>
+              <span>相信音乐 · 五月天演唱会 · {activeConcert.duration}</span>
+              <a href={"https://www.bilibili.com/video/" + activeConcert.bvid + "/"} target="_blank" rel="noreferrer">在哔哩哔哩打开原视频 ↗</a>
+            </div>
           </section>
           <section className="bili-concert-shelf">
-            <h3>为你推荐 · 五月天演唱会</h3>
-            <div className="bili-concert-grid">
-              {concerts.filter((video) => video.bvid !== featuredBvid).map((video) => <button key={video.bvid} className="bili-video-card" onClick={() => setFeaturedBvid(video.bvid)}>
-                <div className="bili-video-cover">
-                  {covers[video.bvid] ? <img src={covers[video.bvid]} alt="" loading="lazy" /> : <div className="bili-cover-fallback"><span>MAYDAY</span><b>{video.year}</b></div>}
-                  <span className="bili-cover-play">▶</span><small>{video.duration}</small>
-                </div>
-                <strong>{video.title}</strong><span>相信音乐 · {video.year}</span>
+            <h3>相信音乐 · 五月天演唱会</h3>
+            <div className="bili-concert-list">
+              {concerts.map((video) => <button key={video.bvid} className={featuredBvid === video.bvid ? "selected" : ""} onClick={() => setFeaturedBvid(video.bvid)}>
+                <span className="bili-concert-thumb">
+                  {covers[video.bvid] ? <img src={covers[video.bvid]} alt="" loading="lazy" /> : <span className="bili-thumb-placeholder">MAYDAY<br />{video.year}</span>}
+                  <b>▶</b><small>{video.duration}</small>
+                </span>
+                <span className="bili-concert-copy"><strong>{video.title}</strong><small>相信音乐 · {video.year}</small></span>
               </button>)}
             </div>
           </section>
         </>}
-        {tab !== "首页" && <div className="bili-empty-state"><strong>{tab}</strong><span>这里会显示相关动态</span></div>}
-        {tab === "首页" && list.length > 0 && <div className="bili-extra-feed">{list.map((item) => <button key={item.id} onClick={() => p.onItem(item)}><div><Media item={item} /></div><section><strong>{item.title}</strong><small>{item.sender}</small></section></button>)}</div>}
+        {tab !== "首页" && <div className="bili-empty-state"><strong>{tab}</strong><span>这里暂时还没有内容</span></div>}
+        {tab === "首页" && <div className="bili-grid">
+          {list.map((item) => <button key={item.id} onClick={() => p.onItem(item)}>
+            <div><Media item={item} /><small><Play size={10} />{meta(item, "views", "—")}<time>{meta(item, "duration")}</time></small></div>
+            <strong>{item.title}</strong><span>UP · {item.sender}</span>
+          </button>)}
+        </div>}
+        {tab === "首页" && <Empty items={list} />}
       </div>
-      <nav className="bili-bottom-tabs">
-        {[{name:"首页",icon:<Home size={21}/>},{name:"关注",icon:<Users size={21}/>},{name:"动态",icon:<MessageCircle size={21}/>},{name:"会员购",icon:<Video size={21}/>},{name:"我的",icon:<User size={21}/>}].map((item) => <button key={item.name} className={tab === item.name ? "selected" : ""} onClick={() => setTab(item.name)}>{item.icon}<span>{item.name}</span></button>)}
-      </nav>
+      <Tabs tabs={["首页", "动态", "历史"]} value={tab} set={setTab} icons={[<Home />, <MessageCircle />, <User />]} />
     </div>
   );
-}cle />, <User />]} />
+}} />
     </div>
   );
 }
