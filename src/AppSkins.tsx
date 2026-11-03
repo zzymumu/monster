@@ -1556,16 +1556,12 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "那你就不要再聊太晚了啦，到了酒店趕快休息。明天還要回台北，別把自己累壞了。", thread: "大G" },
       { sender: "大G", body: "好啦好啦，我已經快到酒店了。今天真的有點累，等一下洗完澡就直接睡。", thread: "大G" },
     ]},
-    { stage: 54, chat: "大G", id: "hotel-goodnight", label: "好，那你快去休息吧！晚安，明天再聊。", nextStage: 55, lines: [
+    { stage: 54, chat: "大G", id: "hotel-goodnight", label: "好，那你快去休息吧！晚安，明天再聊。", nextStage: 35, lines: [
       { sender: "我", body: "好，那你快去休息吧！晚安，明天再聊。", thread: "大G" },
       { sender: "大G", body: "嗯嗯，晚安啦。妳也早點睡，明天再聊。", thread: "大G" },
     ]},
-    { stage: 55, chat: "大G", id: "next-day-taipei-checkin", label: "（隔天）你到台北了吗？", nextStage: 35, lines: [
+    { stage: 35, chat: "大G", id: "ask-arrived-home", label: "（隔天）你到台北了吗？", nextStage: 36, lines: [
       { sender: "我", body: "早啊！你到台北了嗎？", thread: "大G" },
-      { sender: "大G", body: "剛到台北！一下車就覺得好熱喔，外面真的又悶又熱。", thread: "大G" },
-    ]},
-    { stage: 35, chat: "大G", id: "ask-arrived-home", label: "你到台北了吗？", nextStage: 36, lines: [
-      { sender: "我", body: "你到台北了嗎？", thread: "大G" },
       { sender: "大G", body: "剛到台北！一下車就覺得好熱喔，外面真的又悶又熱。", thread: "大G" },
     ]},
     { stage: 36, chat: "大G", id: "welcome-back-taipei", label: "哈哈哈欢迎回来！台北最近真的很闷热，先喝点水啦。", nextStage: 37, lines: [
@@ -1640,7 +1636,7 @@ export function WeChatSkin(p: SkinProps) {
     if (shouldAutoReturnToBroccoli(catRescue.stage, pendingCatLines.length, p.thread)) {
       setTab("微信");
       p.onThread("西蓝花");
-    } else if ([35, 40, 48].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
+    } else if ([35, 40].includes(catRescue.stage) && p.thread !== "大G" && p.thread !== "温尚翊") {
       setTab("微信");
       p.onThread("大G");
     }
