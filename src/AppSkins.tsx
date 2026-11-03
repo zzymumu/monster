@@ -1511,7 +1511,12 @@ export function WeChatSkin(p: SkinProps) {
     setMomentComposer(false);
   };
   useEffect(() => {
-    if (!moments || vavaMomentSeeded) return;
+    // This Moments event belongs after the original found-cat conversation
+    // with DaG has reached its handoff/follow-up stage. Merely opening
+    // Moments for the first time must never trigger it.
+    const foundCatConversationFinished =
+      catRescue.branch === "monster-cat" && catRescue.stage >= 53;
+    if (!moments || !foundCatConversationFinished || vavaMomentSeeded) return;
     const postId = "moment-vava-wanwan-play-fight";
     setMomentPostData((current) => current.some((raw) => {
       try { return JSON.parse(raw).id === postId; } catch { return false; }
@@ -1535,7 +1540,7 @@ export function WeChatSkin(p: SkinProps) {
     }
     setVavaPlayStage(0);
     setVavaMomentSeeded(true);
-  }, [moments, vavaMomentSeeded]);
+  }, [moments, vavaMomentSeeded, catRescue.branch, catRescue.stage]);
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
     if (file.size > 4 * 1024 * 1024) {
