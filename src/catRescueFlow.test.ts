@@ -236,8 +236,8 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].body).toBe("你敢信！！他要請我吃飯！！！！");
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].sender).toBe("我");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].sender).toBe("西蓝花");
-    expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("真的假的");
-    expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("妳們吃什麼");
+    expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("怎麼會突然");
+    expect(CAT_RESCUE_CHOICES[63][0].lines[1].body).toContain("怎麼會突然");
     expect(CAT_RESCUE_CHOICES[65][0].lines.filter((line) => line.sender === "西蓝花")).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[63][0].lines.every((line) => line.thread === "西蓝花")).toBe(true);
     // Language/script style is intentionally not a release-blocking condition.
@@ -268,7 +268,8 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[56]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[64]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[64]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[64][0].lines[1].body).toContain("做夢");
+    expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("隨口一說");
+    expect(CAT_RESCUE_CHOICES[64][0].lines[1].body).toContain("瘋了瘋了瘋了");
     expect(CAT_RESCUE_CHOICES[88][0].lines[0].body).toContain("穿什麼");
     expect(CAT_RESCUE_CHOICES[89][0].lines[1].body).toContain("什麼時候回來");
     expect(CAT_RESCUE_CHOICES[90][0].lines[0].body).toContain("忘了問");
