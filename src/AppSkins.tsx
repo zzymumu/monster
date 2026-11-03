@@ -517,17 +517,25 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   16: [
-    { id: "monster-apology-after-prank", label: "对不起，刚刚发错人了……其实我是捡到你的小猫了", nextStage: 20, branch: "monster-cat", lines: [
+    { id: "monster-apology-after-prank", label: "对不起，刚刚发错人了……", nextStage: 18, branch: "monster-prank", lines: [
       { sender: "我", body: "對不起，剛剛那句發錯人了啦……我不是故意要鬧你的。" },
       { sender: "大G", body: "我說呢，怎麼有人一上來就說奇奇怪怪的話，原來是這樣喔……" },
-      { sender: "我", body: "其實我撿到一隻小黑貓，牠脖子上掛著牌子，上面留了你的微信號，所以才想聯絡你。" },
-      { sender: "大G", body: "蛤？小黑貓？妳在哪裡看到牠的？牠現在還好嗎？有沒有受傷？" },
+      { sender: "大G", body: "所以妳找我有事嗎？" },
     ]},
-    { id: "monster-apology-explain", label: "真的对不起！我刚捡到一只小黑猫，看到牌子才联系你", nextStage: 20, branch: "monster-cat", lines: [
-      { sender: "我", body: "真的對不起！我剛剛只是想開個玩笑，沒想到你真的把我刪掉了。" },
+    { id: "monster-apology-explain", label: "真的对不起！刚刚是我发错了", nextStage: 18, branch: "monster-prank", lines: [
+      { sender: "我", body: "真的對不起！剛剛只是想開個玩笑，沒想到你真的把我刪掉了。" },
       { sender: "大G", body: "我說呢，怎麼有人一上來就說奇奇怪怪的話，原來是這樣喔……" },
-      { sender: "我", body: "我是在路邊撿到一隻小黑貓，牠脖子上的牌子有你的微信號，所以才急著聯絡你。" },
-      { sender: "大G", body: "蛤？原來是這樣……小黑貓現在在哪裡？牠有沒有受傷？妳先跟我說一下。" },
+      { sender: "大G", body: "所以妳找我有事嗎？" },
+    ]},
+  ],
+  18: [
+    { id: "monster-found-cat", label: "我捡到你的猫了！", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "其實我是撿到你的貓了！牠脖子上的牌子有你的微信號，所以我才聯絡你。" },
+      { sender: "大G", body: "夭壽！牠什麼時候跑出去的？！我完全不知道……牠現在還好嗎？有沒有受傷？" },
+    ]},
+    { id: "monster-found-cat-explain", label: "我是在路边捡到一只小黑猫，看到挂牌才联系你的", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "我在路邊撿到一隻小黑貓，看到牠脖子上的牌子有你的微信號，才知道是你的貓。" },
+      { sender: "大G", body: "夭壽！牠怎麼會自己跑出去啦？我真的完全不知道……牠有沒有受傷？" },
     ]},
   ],
   20: [
