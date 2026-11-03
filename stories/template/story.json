@@ -326,8 +326,32 @@
           }
         },
         {
+          "id": "wx-broccoli-64",
+          "body": "你真的要把玩玩带回家？至少先带它去医院检查一下！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 09:30",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
           "id": "wx-broccoli-23",
           "body": "還在！我不敢走，我怕牠跑掉！我剛剛才看到牠項圈上好像有牌子！",
+          "senderId": "owner",
+          "time": "2026-11-02 09:31",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-65",
+          "body": "好啦好啦，我答应你，先带玩玩去医院检查。",
           "senderId": "owner",
           "time": "2026-11-02 09:31",
           "hidden": true,
@@ -350,9 +374,33 @@
           }
         },
         {
+          "id": "wx-broccoli-66",
+          "body": "这才对嘛！它的健康最重要，别忘记跟我说检查结果。",
+          "senderId": "broccoli",
+          "time": "2026-11-02 09:32",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
           "id": "wx-broccoli-25",
           "body": "你先听我的，别一时冲动把它带回家。先回去冷静一下，好不好？",
           "senderId": "broccoli",
+          "time": "2026-11-02 09:33",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-67",
+          "body": "我知道，我会先照顾好它，再联系主人。",
+          "senderId": "owner",
           "time": "2026-11-02 09:33",
           "hidden": true,
           "meta": {
@@ -581,7 +629,7 @@
           "id": "wx-broccoli-44",
           "body": "嘻嘻！他要请我吃饭！",
           "senderId": "owner",
-          "time": "2026-11-02 10:00",
+          "time": "2026-11-02 10:24",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -593,7 +641,7 @@
           "id": "wx-broccoli-45",
           "body": "等一下？？？怎么会请你吃饭？？？",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:01",
+          "time": "2026-11-02 10:25",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -605,7 +653,7 @@
           "id": "wx-broccoli-46",
           "body": "我就开玩笑的随口一说……我也没想到真的能答应。",
           "senderId": "owner",
-          "time": "2026-11-02 10:02",
+          "time": "2026-11-02 10:26",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -617,7 +665,7 @@
           "id": "wx-broccoli-47",
           "body": "疯了疯了疯了！！！！！！！！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:03",
+          "time": "2026-11-02 10:27",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -629,115 +677,7 @@
           "id": "wx-broccoli-48",
           "body": "啊啊啊啊啊啊啊啊啊啊啊！！！这是什么偶像剧情节！！！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:04",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-49",
-          "body": "真的假的他真的要请你吃饭？你运气也太好了吧！你们吃什么？",
-          "senderId": "broccoli",
-          "time": "2026-11-02 10:05",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-50",
-          "body": "我哪知道啊！！！我刚刚整个人都在尖叫，根本忘记问了！",
-          "senderId": "owner",
-          "time": "2026-11-02 10:06",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-51",
-          "body": "你居然连这个都忘记问！！！你也太激动了吧哈哈哈哈哈",
-          "senderId": "broccoli",
-          "time": "2026-11-02 10:07",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-52",
-          "body": "我刚刚真的完全没想到这些，只顾着高兴了啦。",
-          "senderId": "owner",
-          "time": "2026-11-02 10:08",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-53",
-          "body": "你现在才想到？？？归期也太重要了吧！！！快去问啊！！！",
-          "senderId": "broccoli",
-          "time": "2026-11-02 10:09",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-54",
-          "body": "我刚刚真的完全没想到这些，只顾着高兴了啦。",
-          "senderId": "owner",
-          "time": "2026-11-02 10:10",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-55",
-          "body": "哦哦，先不想啦！等他回来再说，现在先把玩玩照顾好。",
-          "senderId": "owner",
-          "time": "2026-11-02 10:11",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-56",
-          "body": "好啦好啦，先照顾玩玩！不过你记得有消息要第一时间跟我说哦！",
-          "senderId": "broccoli",
-          "time": "2026-11-02 10:12",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-57",
-          "body": "还有那顿饭！等他回来你一定要跟我说后续，知道没有！",
-          "senderId": "broccoli",
-          "time": "2026-11-02 10:13",
+          "time": "2026-11-02 10:28",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -749,7 +689,7 @@
           "id": "wx-broccoli-58",
           "body": "我现在已经开始想象你们吃饭那天的样子了！！！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:02",
+          "time": "2026-11-02 10:29",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -761,7 +701,7 @@
           "id": "wx-broccoli-59",
           "body": "你先别给我压力啦，我连要穿什么都还没想好！",
           "senderId": "owner",
-          "time": "2026-11-02 10:03",
+          "time": "2026-11-02 10:30",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -773,7 +713,7 @@
           "id": "wx-broccoli-60",
           "body": "那你先想风格！温柔一点还是酷一点？我们现在就来讨论！！！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:04",
+          "time": "2026-11-02 10:31",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -785,7 +725,7 @@
           "id": "wx-broccoli-61",
           "body": "温柔一点吧！我平常很少认真打扮。",
           "senderId": "owner",
-          "time": "2026-11-02 10:05",
+          "time": "2026-11-02 10:32",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -797,7 +737,7 @@
           "id": "wx-broccoli-62",
           "body": "不行，我要穿得漂漂亮亮的！这可是跟怪兽吃饭欸！！！",
           "senderId": "owner",
-          "time": "2026-11-02 10:05",
+          "time": "2026-11-02 10:32",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -809,7 +749,7 @@
           "id": "wx-broccoli-63",
           "body": "哈哈哈哈哈！！！我已经开始期待了，记得第一时间拍给我看！！！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:06",
+          "time": "2026-11-02 10:33",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -818,10 +758,10 @@
           }
         },
         {
-          "id": "wx-broccoli-64",
-          "body": "你真的要把玩玩带回家？至少先带它去医院检查一下！",
+          "id": "wx-broccoli-49",
+          "body": "真的假的他真的要请你吃饭？你运气也太好了吧！你们吃什么？",
           "senderId": "broccoli",
-          "time": "2026-11-02 09:30",
+          "time": "2026-11-02 10:34",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -830,10 +770,10 @@
           }
         },
         {
-          "id": "wx-broccoli-65",
-          "body": "好啦好啦，我答应你，先带玩玩去医院检查。",
+          "id": "wx-broccoli-50",
+          "body": "我哪知道啊！！！我刚刚整个人都在尖叫，根本忘记问了！",
           "senderId": "owner",
-          "time": "2026-11-02 09:31",
+          "time": "2026-11-02 10:35",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -842,10 +782,10 @@
           }
         },
         {
-          "id": "wx-broccoli-66",
-          "body": "这才对嘛！它的健康最重要，别忘记跟我说检查结果。",
+          "id": "wx-broccoli-51",
+          "body": "你居然连这个都忘记问！！！你也太激动了吧哈哈哈哈哈",
           "senderId": "broccoli",
-          "time": "2026-11-02 09:32",
+          "time": "2026-11-02 10:36",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -854,10 +794,70 @@
           }
         },
         {
-          "id": "wx-broccoli-67",
-          "body": "我知道，我会先照顾好它，再联系主人。",
+          "id": "wx-broccoli-52",
+          "body": "我刚刚真的完全没想到这些，只顾着高兴了啦。",
           "senderId": "owner",
-          "time": "2026-11-02 09:33",
+          "time": "2026-11-02 10:37",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-53",
+          "body": "你现在才想到？？？归期也太重要了吧！！！快去问啊！！！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:38",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-54",
+          "body": "我刚刚真的完全没想到这些，只顾着高兴了啦。",
+          "senderId": "owner",
+          "time": "2026-11-02 10:39",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-55",
+          "body": "哦哦，先不想啦！等他回来再说，现在先把玩玩照顾好。",
+          "senderId": "owner",
+          "time": "2026-11-02 10:40",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-56",
+          "body": "好啦好啦，先照顾玩玩！不过你记得有消息要第一时间跟我说哦！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:41",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-57",
+          "body": "还有那顿饭！等他回来你一定要跟我说后续，知道没有！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:42",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -1777,16 +1777,9 @@
           "type": "unlock",
           "key": "wx-broccoli-48",
           "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-58",
-          "value": true
         }
       ],
-      "next": [
-        "dinner-outfit-choice"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
@@ -1795,8 +1788,8 @@
       "id": "dinner-outfit-choice",
       "label": "选择要不要开始幻想穿搭",
       "type": "choice",
-      "event": "",
-      "target": "",
+      "event": "read",
+      "target": "wx-broccoli-48",
       "conditions": [],
       "logic": "and",
       "actions": [],
@@ -1817,6 +1810,11 @@
       "conditions": [],
       "logic": "and",
       "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-58",
+          "value": true
+        },
         {
           "type": "unlock",
           "key": "wx-broccoli-59",
@@ -1842,6 +1840,11 @@
       "conditions": [],
       "logic": "and",
       "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-58",
+          "value": true
+        },
         {
           "type": "unlock",
           "key": "wx-broccoli-59",
@@ -2098,6 +2101,10 @@
         {
           "event": "read",
           "target": "wx-broccoli-46"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-48"
         },
         {
           "choose": "outfit-start"
