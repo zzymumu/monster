@@ -280,7 +280,21 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("隨口一說");
     expect(CAT_RESCUE_CHOICES[64][0].lines[1].body).toContain("瘋了瘋了瘋了");
     expect(CAT_RESCUE_CHOICES[88][0].lines[0].body).toContain("穿什麼");
-    expect(CAT_RESCUE_CHOICES[89][0].lines[1].body).toContain("什麼時候回來");
+    // The autograph conversation now sits between the outfit discussion and
+    // the original return-date question; keep every branch in that sequence.
+    expect(CAT_RESCUE_CHOICES[89]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[89].every((choice) => choice.nextStage === 94)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[89][0].lines[1].body).toContain("找簽名");
+    expect(CAT_RESCUE_CHOICES[89][1].lines[1].body).toContain("簽名");
+    expect(CAT_RESCUE_CHOICES[94]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[94].every((choice) => choice.nextStage === 95)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[94].some((choice) => choice.lines.some((line) => line.body.includes("簽名")))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[95]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[95].every((choice) => choice.nextStage === 96)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[95].some((choice) => choice.lines.some((line) => line.body.includes("見面吃飯")))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[96]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[96].every((choice) => choice.nextStage === 90)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[96].some((choice) => choice.lines.some((line) => line.body.includes("什麼時候回來")))).toBe(true);
     expect(CAT_RESCUE_CHOICES[90][0].lines[0].body).toContain("忘了問");
     expect(CAT_RESCUE_CHOICES[90][0].lines[1].body).toContain("重要的事情");
     expect(CAT_RESCUE_CHOICES[91][0].lines[0].body).toContain("太激動");
