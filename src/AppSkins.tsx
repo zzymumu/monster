@@ -63,6 +63,12 @@ export type SkinProps = {
   saveReady?: boolean;
   onSaveNow?: () => void;
   onClearSave?: () => void;
+  saveSlots?: Array<{ id: string; name: string; savedAt: number }>;
+  activeSaveId?: string;
+  onCreateSave?: (name: string) => void;
+  onLoadSave?: (id: string) => void;
+  onRenameSave?: (id: string, name: string) => void;
+  onDeleteSave?: (id: string) => void;
 };
 function Avatar({
   name,
