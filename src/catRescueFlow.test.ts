@@ -443,7 +443,12 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(ordered.at(-1)?.body).toBe("我已经到医院了。");
   });
 
-  it("removes the duplicated DaG prank exchange while preserving the first chat sequence", () => {
+  it("removes orphaned pre-choice prank replies and keeps one canonical reaction sequence", () => {
+    const orphaned = [
+      makeItem({ id: "old-huh", title: "大G", sender: "温尚翊", body: "……蛤？", time: "2026-11-02 20:58" }),
+      makeItem({ id: "old-who", title: "大G", sender: "温尚翊", body: "妳哪位？我不認識妳喔。", time: "2026-11-02 20:59" }),
+      makeItem({ id: "old-delete", title: "大G", sender: "温尚翊", body: "好喔，那我先把妳刪掉了。掰。", time: "2026-11-02 20:59" }),
+    ];
     const addedNotice = makeItem({
       id: "added-notice",
       title: "大G",
@@ -455,16 +460,21 @@ describe("WeChat cat-rescue story configuration", () => {
     });
     const firstGreeting = makeItem({ id: "greeting-1", title: "大G", sender: "大G", body: "妳是？", time: "2026-11-02 21:01" });
     const prank = makeItem({ id: "prank-1", title: "大G", sender: "我", body: "我是你爸爸。", time: "2026-11-02 21:02", outgoing: true });
-    const firstReaction = makeItem({ id: "reaction-1", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:03" });
-    const repeatedGreeting = makeItem({ id: "greeting-2", title: "大G", sender: "大G", body: "妳是？", time: "2026-11-02 21:04" });
-    const duplicateReaction = makeItem({ id: "reaction-2", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:05" });
-    const ordered = orderCatRescueThreadItems([addedNotice, firstGreeting, prank, firstReaction, repeatedGreeting, duplicateReaction]);
+    const reaction = [
+      makeItem({ id: "new-huh", title: "大G", sender: "大G", body: "……蛤？", time: "2026-11-02 21:03" }),
+      makeItem({ id: "new-who", title: "大G", sender: "大G", body: "妳哪位？我不認識妳喔。", time: "2026-11-02 21:04" }),
+      makeItem({ id: "new-delete", title: "大G", sender: "大G", body: "好喔，那我先把妳刪掉了。掰。", time: "2026-11-02 21:05" }),
+      makeItem({ id: "duplicate-alias", title: "大G", sender: "温尚翊", body: "妳哪位？我不認識妳喔。", time: "2026-11-02 21:06" }),
+    ];
+    const ordered = orderCatRescueThreadItems([...orphaned, addedNotice, firstGreeting, prank, ...reaction]);
     const clean = filterPrankHistoryLines(ordered, true);
     expect(clean.map((item) => item.body)).toEqual([
       "你已添加了大G，现在可以开始聊天了。",
       "妳是？",
       "我是你爸爸。",
       "……蛤？",
+      "妳哪位？我不認識妳喔。",
+      "好喔，那我先把妳刪掉了。掰。",
     ]);
   });
 
