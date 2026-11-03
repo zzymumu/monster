@@ -1521,150 +1521,75 @@
           "type": "unlock",
           "key": "wx-broccoli-44",
           "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-45",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-46",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-47",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-48",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-49",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-50",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-51",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-52",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-53",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-54",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-55",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-56",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-57",
-          "value": true
         }
       ],
-      "next": [
-        "dinner-reaction-choice"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
-      "id": "dinner-reaction-choice",
-      "label": "告诉西蓝花大G答应请吃饭",
-      "type": "choice",
-      "event": "",
-      "target": "",
-      "conditions": [],
-      "logic": "and",
-      "actions": [],
-      "next": [
-        "dinner-ask-why"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "dinner-ask-why",
-      "label": "先回答西蓝花怎么会请吃饭",
+      "id": "broccoli-ask-dinner",
+      "label": "西蓝花追问怎么会请吃饭",
       "type": "action",
-      "event": "choose",
-      "target": "dinner-ask-why",
+      "event": "read",
+      "target": "wx-broccoli-44",
       "conditions": [],
       "logic": "and",
       "actions": [
         {
           "type": "unlock",
-          "key": "wx-broccoli-44",
-          "value": true
-        },
-        {
-          "type": "unlock",
           "key": "wx-broccoli-45",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-explain-choice",
+      "label": "回答西蓝花怎么会请吃饭",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-45",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "dinner-explain"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-explain",
+      "label": "玩家解释只是随口开玩笑",
+      "type": "action",
+      "event": "choose",
+      "target": "dinner-explain",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-46",
           "value": true
         }
       ],
-      "next": [
-        "dinner-forget-choice"
-      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
-      "id": "dinner-forget-choice",
-      "label": "解释自己只是随口开玩笑，没想到他答应",
-      "type": "choice",
-      "event": "",
-      "target": "",
-      "conditions": [],
-      "logic": "and",
-      "actions": [],
-      "next": [
-        "dinner-forget-reply"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "dinner-forget-reply",
-      "label": "西蓝花连续尖叫并追问吃什么、归期",
+      "id": "dinner-scream",
+      "label": "西蓝花看到解释后连续尖叫",
       "type": "action",
-      "event": "choose",
-      "target": "dinner-forget-reply",
+      "event": "read",
+      "target": "wx-broccoli-46",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -1682,7 +1607,38 @@
           "type": "unlock",
           "key": "wx-broccoli-49",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-food-choice",
+      "label": "回答西蓝花问吃什么",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-49",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "dinner-food-answer"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-food-answer",
+      "label": "玩家回应还没问吃什么",
+      "type": "action",
+      "event": "choose",
+      "target": "dinner-food-answer",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-50",
@@ -1692,7 +1648,22 @@
           "type": "unlock",
           "key": "wx-broccoli-51",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-return-question",
+      "label": "西蓝花吐槽忘记问归期",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-51",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-52",
@@ -1702,12 +1673,42 @@
           "type": "unlock",
           "key": "wx-broccoli-53",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-return-answer",
+      "label": "玩家解释太激动忘了问归期",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-53",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-54",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "back-to-wanwan",
+      "label": "回到先照顾玩玩",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-54",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-55",
@@ -1732,7 +1733,7 @@
   ],
   "tests": [
     {
-      "name": "原有预览校验路径",
+      "name": "保留原有预览校验路径",
       "steps": [
         {
           "event": "callEnded",
@@ -1743,7 +1744,7 @@
       "expectUnlocked": []
     },
     {
-      "name": "西蓝花猫咪及请吃饭剧情分支可达",
+      "name": "西蓝花玩玩及请吃饭分支逐步可达",
       "steps": [
         {
           "event": "read",
@@ -1759,10 +1760,38 @@
           "choose": "jump-broccoli"
         },
         {
-          "choose": "dinner-ask-why"
+          "event": "read",
+          "target": "wx-broccoli-44"
         },
         {
-          "choose": "dinner-forget-reply"
+          "event": "read",
+          "target": "wx-broccoli-45"
+        },
+        {
+          "choose": "dinner-explain"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-46"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-49"
+        },
+        {
+          "choose": "dinner-food-answer"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-51"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-53"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-54"
         },
         {
           "event": "callEnded",
