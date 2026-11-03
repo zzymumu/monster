@@ -1122,7 +1122,14 @@ export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
   const [query, setQuery] = useState("");
   const [moments, setMoments] = useState(false);
-  const [contactRemarks, setContactRemarks] = useSkinState<Record<string, string>>(p, "wxContactRemarks", {});
+  const [contactRemarksRaw, setContactRemarksRaw] = useSkinState<string>(p, "wxContactRemarks", "{}");
+  let contactRemarks: Record<string, string> = {};
+  try {
+    const parsedRemarks: unknown = JSON.parse(contactRemarksRaw);
+    if (parsedRemarks && typeof parsedRemarks === "object" && !Array.isArray(parsedRemarks)) {
+      contactRemarks = Object.fromEntries(Object.entries(parsedRemarks).filter((entry): entry is [string, string] => typeof entry[1] === "string"));
+    }
+  } catch { /* Ignore malformed legacy remark data and keep the original names. */ }
   const [remarkEditorContact, setRemarkEditorContact] = useState("");
   const [remarkDraft, setRemarkDraft] = useState("");
 
@@ -1225,7 +1232,7 @@ export function WeChatSkin(p: SkinProps) {
   const saveContactRemark = () => {
     const next = remarkDraft.trim();
     if (!next || !remarkEditorContact) return;
-    setContactRemarks((current) => ({ ...current, [remarkEditorContact]: next }));
+    setContactRemarksRaw(JSON.stringify({ ...contactRemarks, [remarkEditorContact]: next }));
     setRemarkEditorContact("");
   };
   const resolveContactName = (visible: string) =>
