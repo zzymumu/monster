@@ -1225,6 +1225,31 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [meetupDayMigrated, setMeetupDayMigrated] = useSkinState<boolean>(p, "wxMeetupDayMigrationV1", false);
+  useEffect(() => {
+    if (meetupDayMigrated || catRescue.branch !== "monster-cat") return;
+    const replacements = new Map<string, string>([
+      ["哈哈，那我明天有口福了。唉，我最近工作真的有點忙，平常常常隨便吃個便當就算了，明天要好好吃一頓才行。", "哈哈，那我今天有口福了。唉，我最近工作真的有點忙，平常常常隨便吃個便當就算了，今天要好好吃一頓才行。"],
+      ["知道啦，妳講話怎麼跟我媽一樣，哈哈哈。好啦，我明天一定好好吃，不會再隨便打發了。", "知道啦，妳講話怎麼跟我媽一樣，哈哈哈。好啦，我今天一定好好吃，不會再隨便打發了。"],
+      ["哈哈，牠真的很有精神欸。看來在妳那邊過得很舒服，明天我去接牠應該會很捨不得吧。", "哈哈，牠真的很有精神欸。看來在妳那邊過得很舒服，今天我去接牠應該會很捨不得吧。"],
+      ["希望啦！我也很想牠。欸，我到酒店了，終於可以坐下來了，今天真的有點累。", "希望啦！我也很想牠。欸，我還有半小時就到妳家附近了，妳可以先收拾一下，準備帶玩玩下樓啦。"],
+      ["啊那你快去收拾收拾，早點休息吧，明天見～", "好！那我先去收拾一下，準備帶玩玩下樓～"],
+      ["好啦，妳也早點休息！明天見，晚安。", "好，不急，妳慢慢來。我到了附近再跟妳說。"],
+    ]);
+    const removed = new Set(["晚安～你也早點休息，明天見！", "嗯嗯，晚安。明天見。"]);
+    const migratedMessages = catRescue.messages
+      .filter((item) => !removed.has(item.body.trim()))
+      .map((item) => replacements.has(item.body.trim())
+        ? { ...item, body: replacements.get(item.body.trim())! }
+        : item);
+    if (migratedMessages.some((item, index) => item !== catRescue.messages[index]) ||
+        migratedMessages.length !== catRescue.messages.length) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: migratedMessages }));
+    }
+    if (returnDinnerStage === 45) setReturnDinnerStage(44);
+    setMeetupDayMigrated(true);
+  }, [meetupDayMigrated, catRescue.branch, catRescue.messages, returnDinnerStage]);
+
   const vavaOpenerEnqueuedRef = useRef(false);
   const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
   const vavaPlayActive = vavaPlayStage >= 0 || vavaPlayMessagesExist;
