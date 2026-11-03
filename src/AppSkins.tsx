@@ -1374,25 +1374,41 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "真的假的！！！這次真的自己提了欸！！！妳快先去跟他聊啦，剛好我主管在喊我了，我得先忙一下！", thread: "西蓝花" },
       { sender: "西蓝花", body: "快去快去！好好聊，等一下再回來跟我報告，細節一個都不准漏掉！", thread: "西蓝花" },
     ]},
-    { stage: 10, chat: "大G", id: "accept-dinner-invite", label: "方便方便！可以一起吃饭呀，吃完饭再接玩玩也行！不过餐厅可能不太方便带宠物", nextStage: 11, lines: [
-      { sender: "我", body: "方便方便！可以一起吃飯呀。吃完飯再接玩玩也行！不過餐廳可能不太方便帶寵物，牠要不要先留在原本的地方？", thread: "大G" },
-      { sender: "大G", body: "哈哈，對，餐廳應該不太方便帶牠。我可以先把玩玩安頓好，再過去吃飯。妳有沒有想吃什麼？", thread: "大G" },
+    { stage: 10, chat: "大G", id: "accept-dinner-invite", label: "好呀！我明天都有空，可以一起吃飯。不過餐廳可能不方便帶寵物，要不要先去吃飯，再來我家接玩玩？", nextStage: 11, lines: [
+      { sender: "我", body: "好呀！我明天都有空，可以一起吃飯。不過餐廳可能不太方便帶寵物，要不要先去吃飯，然後再來我家接玩玩？", thread: "大G" },
+      { sender: "大G", body: "對喔！幹！！差點忘記這點！哈哈哈哈，那就先去吃飯，吃完再去妳家接玩玩，這樣就不用帶牠去餐廳了啦。", thread: "大G" },
     ]},
-    { stage: 11, chat: "大G", id: "suggest-hot-stir-fry", label: "要不然去吃热炒？可以点很多菜，感觉比较轻松", nextStage: 12, lines: [
-      { sender: "我", body: "要不然我們去吃熱炒？可以點很多菜，感覺也比較輕鬆自在。", thread: "大G" },
-      { sender: "大G", body: "熱炒可以啊，我也好一陣子沒吃了。那就找間評價不錯的，明天到了再跟妳確認是哪一家。", thread: "大G" },
+    { stage: 11, chat: "大G", id: "confirm-food-plan", label: "哈哈哈對啊，這樣比較方便！那我們吃什麼？", nextStage: 12, lines: [
+      { sender: "我", body: "哈哈哈哈對啊，這樣比較方便！那我們吃什麼？", thread: "大G" },
+      { sender: "大G", body: "嗯……妳有沒有特別想吃的？我都可以啦，最近也有點想吃熱炒或是家常菜。", thread: "大G" },
     ]},
-    { stage: 12, chat: "大G", id: "confirm-time", label: "那就明天晚上吧？你接完玩玩、安顿好之后再跟我说", nextStage: 13, lines: [
-      { sender: "我", body: "那就明天晚上吧？你接完玩玩、安頓好之後再跟我說，我時間都可以配合。", thread: "大G" },
-      { sender: "大G", body: "好，那先暫定明天晚上。等我接到玩玩、把牠安頓好，再傳訊息跟妳約確切時間。", thread: "大G" },
+    { stage: 12, chat: "大G", id: "suggest-hot-stir-fry", label: "不然去吃熱炒好了！可以點很多菜，也比較輕鬆。", nextStage: 13, lines: [
+      { sender: "我", body: "不然去吃熱炒好了！可以點很多菜，也比較輕鬆。", thread: "大G" },
+      { sender: "大G", body: "欸好啊！熱炒不錯欸，可以點幾道大家一起吃。那就這樣決定啦，明天再找一間方便的。", thread: "大G" },
     ]},
-    { stage: 13, chat: "大G", id: "ask-flight", label: "你现在还在外地吗？明天回来会不会很赶？", nextStage: 14, lines: [
-      { sender: "我", body: "你現在還在外地嗎？明天回來會不會很趕啊？", thread: "大G" },
-      { sender: "大G", body: "還在外地，今天要先搭飛機回去。明天應該還好，時間我會安排好，妳不用擔心。", thread: "大G" },
+    { stage: 13, chat: "大G", id: "joke-vava-chubby", label: "而且我跟你說，感覺玩玩最近胖了一圈，我上輩子可能是養豬的……", nextStage: 14, lines: [
+      { sender: "我", body: "而且我跟你說，感覺玩玩最近胖了一圈欸，我上輩子可能是養豬的……", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈哈哈！真的假的啦！妳到底餵牠吃多少，怎麼把牠養得這麼澎皮啦！", thread: "大G" },
     ]},
-    { stage: 14, chat: "大G", id: "safe-flight", label: "那你路上小心，到了再跟我说", nextStage: 15, lines: [
-      { sender: "我", body: "好，那你路上小心，到了再跟我說。", thread: "大G" },
-      { sender: "大G", body: "好，謝謝妳。差不多要登機了，我先上飛機，明天再聯絡。", thread: "大G" },
+    { stage: 14, chat: "大G", id: "defend-vava-cute", label: "哪有！牠明明就很可愛，而且現在超會撒嬌！", nextStage: 15, lines: [
+      { sender: "我", body: "哪有！牠明明就很可愛，而且現在超會撒嬌！", thread: "大G" },
+      { sender: "大G", body: "好啦好啦，妳說可愛就可愛。聽起來牠真的被妳寵得很好欸，現在應該很習慣妳了吧。", thread: "大G" },
+    ]},
+    { stage: 15, chat: "大G", id: "talk-about-vava", label: "對啊，牠現在每天都黏著我，常常一副不想理我的樣子，結果又一直跟前跟後。", nextStage: 16, lines: [
+      { sender: "我", body: "對啊，牠現在每天都黏著我，常常一副不想理我的樣子，結果又一直跟前跟後。", thread: "大G" },
+      { sender: "大G", body: "哈哈，這很像牠欸！牠有時候就是那種跩跩的個性啦，但其實很愛撒嬌。真的謝謝妳這段時間照顧牠，明天看到牠應該會很開心。", thread: "大G" },
+    ]},
+    { stage: 16, chat: "大G", id: "confirm-time", label: "那就明天晚上吧？你先把玩玩安頓好，再跟我說時間就好。", nextStage: 17, lines: [
+      { sender: "我", body: "那就明天晚上吧？你先把玩玩安頓好，再跟我說時間就好，我明天都可以配合。", thread: "大G" },
+      { sender: "大G", body: "好啊，那先說好明天晚上！我明天出發前再跟妳聯絡，接到玩玩、安頓好之後再跟妳確認時間。", thread: "大G" },
+    ]},
+    { stage: 17, chat: "大G", id: "ask-flight", label: "你現在還在外地嗎？等一下就要搭飛機了？", nextStage: 18, lines: [
+      { sender: "我", body: "你現在還在外地嗎？等一下就要搭飛機了？", thread: "大G" },
+      { sender: "大G", body: "對啊，我現在準備要去登機了。今天先搭飛機回去，明天就可以去找玩玩了。", thread: "大G" },
+    ]},
+    { stage: 18, chat: "大G", id: "safe-flight", label: "好啦那你快去登機，路上小心，到了再跟我說！", nextStage: 19, lines: [
+      { sender: "我", body: "好啦那你快去登機，路上小心，到了再跟我說！", thread: "大G" },
+      { sender: "大G", body: "好啦好啦，我先進去了。謝謝妳喔，明天見！我到了再跟妳說，掰掰。", thread: "大G" },
     ]},
   ];
   useEffect(() => {
