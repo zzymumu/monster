@@ -32,6 +32,7 @@ export function createWork(title = "雨停之前"): Work {
         "notes",
         "safari",
         "settings",
+        "redbook",
       ].includes(a.id),
       visible: true,
       dock: ["phone", "messages", "safari", "music"].includes(a.id),
@@ -42,6 +43,7 @@ export function createWork(title = "雨停之前"): Work {
           "photos",
           "notes",
           "instagram",
+          "redbook",
           "whatsapp",
           "mail",
           "calendar",
@@ -148,6 +150,14 @@ export function createWork(title = "雨停之前"): Work {
       body: "2026 年 9 月 1 日 · 城南",
       kind: "image",
     }),
+  ];
+  w.data.redbook = [
+    makeItem({ id:"redbook-monster-01", sender:"今天珍重🥕", title:"这次，他没有犹豫 02", body:"翻到好多年前的旧剪报，还是会为那句生日祝福心动。\\n#五月天 #怪兽 #青春回忆", kind:"post", likes:6, folder:"推荐", meta:{art:"newspaper",category:"推荐"} }),
+    makeItem({ id:"redbook-monster-02", sender:"穿拖鞋走红毯", title:"这会不会太纳尼了", body:"试着把狗狗的眼睛修得自然一点，结果越看越好笑。", kind:"post", likes:2950, folder:"热点", meta:{art:"dog",category:"热点"} }),
+    makeItem({ id:"redbook-monster-03", sender:"你还有面包吗🥕", title:"喝个酒五光十色的", body:"演出结束后的后台碎片，五月天的快乐真的会传染。\\n#五月天 #演唱会", kind:"post", likes:3, folder:"音乐", meta:{art:"concert",category:"音乐"} }),
+    makeItem({ id:"redbook-monster-04", sender:"干煎家的喵喵", title:"好嫩啊", body:"今天偶遇一只超可爱的猫咪，镜头差点贴到鼻子上。", kind:"post", likes:112, folder:"推荐", meta:{art:"cat",category:"推荐"} }),
+    makeItem({ id:"redbook-monster-05", sender:"阿沐今天听歌了吗", title:"怪兽的吉他永远有魔法", body:"现场直拍里最喜欢的一个瞬间，灯光亮起来的时候太震撼了。\\n#温尚翊 #五月天", kind:"post", likes:823, folder:"音乐", meta:{art:"guitar",category:"音乐"} }),
+    makeItem({ id:"redbook-monster-06", sender:"小岛日记", title:"北京散步路线分享", body:"傍晚的风刚刚好，随手拍下路边的晚霞。", kind:"post", likes:58, folder:"推荐", meta:{art:"sunset",category:"推荐"} }),
   ];
   w.data.instagram = [
     makeItem({
