@@ -68,7 +68,7 @@ export function defaultLayout(input: Work): DeviceLayout {
     previewLayoutRevision: w.id === "ui-test-phone-v2" ? 1 : 0,
     widgetSeedRevision: 1,
     apps: structuredClone(w.apps)
-      .sort((a, b) => (a.id === "appstore" ? -1 : b.id === "appstore" ? 1 : 0))
+      .sort((a, b) => (a.id === "appstore" ? -1 : b.id === "appstore" ? 1 : a.id === "gamesave" ? -1 : b.id === "gamesave" ? 1 : 0))
       .map((a) =>
         a.id === "appstore"
           ? { ...a, installed: true, visible: true, folder: "", dock: false }
