@@ -1606,15 +1606,14 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 108, chat: "西蓝花", id: "deny-contact-teasing", label: "没有啦！！就是正常把玩玩交给他而已！！", nextStage: 109, lines: [
       { sender: "我", body: "沒有啦！！就是正常把玩玩交給他而已！！妳不要腦補了啦！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哈哈哈哈好啦好啦，不逗妳了。不過妳現在是不是已經開始想晚上要穿什麼了？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈好啦好啦，不逗妳了。不過妳現在是不是小鹿亂撞，一顆心撲通撲通狂跳啊？？", thread: "西蓝花" },
     ]},
-    { stage: 109, chat: "西蓝花", id: "shower-mask-and-date-prep", label: "不说了嘿嘿，我要去洗澡敷面膜，美美地去吃晚饭～哦吼吼！", nextStage: 110, lines: [
-      { sender: "我", body: "不說了嘿嘿，我要去洗澡敷面膜，美美地去吃晚飯～哦吼吼！", thread: "西蓝花" },
+    { stage: 109, chat: "西蓝花", id: "shower-mask-and-date-prep", label: "妳以為戀愛ing啊！不說了，我要去洗澡敷面膜了！", nextStage: 110, lines: [
+      { sender: "我", body: "妳以為戀愛ing啊！不說了，我要去洗澡敷面膜了！", thread: "西蓝花" },
       { sender: "西蓝花", body: "嘖嘖，見色忘友欸！剛剛還在這裡跟我尖叫，現在就急著去洗澡敷面膜了喔？", thread: "西蓝花" },
     ]},
-    { stage: 110, chat: "西蓝花", id: "bestie-begging-goodbye", label: "哎呀～不要这样嘛！我洗完澡再跟你说啦！", nextStage: -1, lines: [
-      { sender: "我", body: "哎呀～不要這樣嘛！我洗完澡再跟妳說啦！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好啦好啦，快去準備！晚上吃完飯記得回來跟我報告，細節一個都不准漏掉！", thread: "西蓝花" },
+    { stage: 110, chat: "西蓝花", id: "bestie-begging-goodbye", label: "嗯嗯！報告媽媽，我去準備了！", nextStage: -1, lines: [
+      { sender: "我", body: "嗯嗯！報告媽媽，我去準備了！", thread: "西蓝花" },
     ]},
     { stage: 46, chat: "西蓝花", id: "private-room-and-queue", label: "好像也是……那到时候我提前去排队好了！不过我又开始烦恼明天穿什么了。", nextStage: 47, lines: [
       { sender: "我", body: "好像也是欸……那就找個包廂好了！人多的話我到時候提前去排隊，先把位置弄好。可是……我現在又開始煩惱明天到底要穿什麼了。", thread: "西蓝花" },
