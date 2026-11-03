@@ -2050,7 +2050,6 @@
       "x": 0,
       "y": 0
     },
-    null,
     {
       "id": "return-find-tag",
       "label": "折返后发现玩玩仍在并查看铭牌",
@@ -2181,6 +2180,26 @@
       "next": [
         "cat-tag-choice"
       ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "story-validation-ending",
+      "label": "本段剧情暂时停在添加微信的悬念处。",
+      "type": "ending",
+      "event": "callEnded",
+      "target": "story-validation-only",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "ending",
+          "key": "story-validation-ending",
+          "value": "本段剧情暂时停在添加微信的悬念处。"
+        }
+      ],
+      "next": [],
       "once": true,
       "x": 0,
       "y": 0
