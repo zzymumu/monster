@@ -1605,10 +1605,13 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "嗯嗯，晚安。明天見。", thread: "大G" },
     ]},
   ];
-  // Contact handoffs are always manual: the next stage appears only after
-  // the player opens the contact assigned to that stage.
-  // Do not auto-switch from Broccoli to DaG: the player must leave this chat
-  // and explicitly open DaG's conversation to continue the story.
+  // Contact handoffs are manual. When the player opens the destination
+  // contact, activate that contact's waiting stage without navigating for them.
+  useEffect(() => {
+    if (returnDinnerStage === 2 && (p.thread === "西蓝花" || p.thread === "西兰花")) {
+      setReturnDinnerStage(3);
+    }
+  }, [returnDinnerStage, p.thread]);
   useEffect(() => {
     // Rewrite the already-saved pickup exchange from the previous ordering so
     // existing testers see the corrected away-from-home explanation too.
