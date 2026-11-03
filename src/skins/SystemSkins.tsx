@@ -359,7 +359,7 @@ export function PhotosSkin(p: Props) {
             </div>
             <div className="shared-album-list">
               {sharedAlbums.map((shared) => {
-                const cover = items.find((i) => i.id === shared.photoIds[0]);
+                const cover = galleryItems.find((i) => i.id === shared.photoIds[0]);
                 return (
                   <button className="shared-album-card" key={shared.id} onClick={() => setActiveShared(shared.id)}>
                     <span className="shared-album-cover">{cover ? <Media item={cover} /> : <Image size={28} />}</span>
@@ -418,7 +418,7 @@ export function PhotosSkin(p: Props) {
           {viewerInfoOpen && <div className="photos-viewer-info"><strong>{viewerPhoto.title}</strong><p>{viewerPhoto.body}</p>{viewerPhoto.meta.credit && <small>圖片來源：{viewerPhoto.meta.credit}</small>}</div>}
           <div className="photos-viewer-bottom">
             <button aria-label="上一張" disabled={viewerIndex === 0} onClick={() => { setViewerIndex((value) => value === null ? null : Math.max(0, value - 1)); setViewerInfoOpen(false); }}><ChevronLeft /></button>
-            <span>{viewerIndex + 1} / {list.length}</span>
+            <span>{(viewerIndex ?? 0) + 1} / {list.length}</span>
             <button aria-label="收藏照片" onClick={() => togglePhotoFavorite(viewerPhoto)}><Heart fill={(viewerPhoto.favorite || photoFavorites.includes(viewerPhoto.id)) ? "currentColor" : "none"} /></button>
             <button aria-label="下一張" disabled={viewerIndex === list.length - 1} onClick={() => { setViewerIndex((value) => value === null ? null : Math.min(list.length - 1, value + 1)); setViewerInfoOpen(false); }}><ChevronRight /></button>
           </div>
