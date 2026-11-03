@@ -1265,7 +1265,7 @@ export function WeChatSkin(p: SkinProps) {
   const vavaPlayChoices: CatChoice[] = [
     { id: "vava-play-intro", label: "嗯嗯，忘记跟你说了哈哈", nextStage: 1, lines: [
       { sender: "我", body: "嗯嗯，忘记跟你说了哈哈。", thread: "大G" },
-      { sender: "大G", body: "哈哈哈，Vava是原本就在你家的喔？玩玩我知道啦，牠最近有沒有乖一點？", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，Vava是原本就在你家的喔！玩玩最近有沒有乖乖的？還好有妳幫我照顧牠。", thread: "大G" },
     ]},
     { id: "vava-play-who-started", label: "对啊，Vava比玩玩大那么多，竟然还打不过玩玩", nextStage: 2, lines: [
       { sender: "我", body: "对啊，Vava明明比玩玩大只那么多，结果竟然还打不过玩玩！", thread: "大G" },
@@ -1277,11 +1277,11 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { id: "vava-play-apology", label: "没事啦，它们闹一闹而已", nextStage: 3, lines: [
       { sender: "我", body: "没事啦，它们闹一闹而已，我会看着它们的。", thread: "大G" },
-      { sender: "大G", body: "唉，還是有點不好意思啦，明明玩玩是我撿回來的，結果還讓你幫忙照顧，現在又害你家的Vava被牠欺負，真的給你添麻煩了。", thread: "大G" },
+      { sender: "大G", body: "唉，真的有點不好意思啦。明明是妳好心幫我照顧玩玩，結果牠還把妳家的Vava欺負成這樣，反而害妳要多操心，真的給妳添麻煩了。", thread: "大G" },
     ]},
     { id: "vava-play-reassure", label: "真的没关系，不用跟我客气", nextStage: 4, lines: [
       { sender: "我", body: "真的没关系，不用跟我客气啦，我也很喜欢它们。", thread: "大G" },
-      { sender: "大G", body: "妳人也太好了吧。其實玩玩當初是我撿回來的，那時候看到牠小小一隻，就捨不得把牠丟在外面。", thread: "大G" },
+      { sender: "大G", body: "妳人也太好了吧。玩玩當初是我撿回來的，牠那時候小小一隻，我就把牠帶回家了。現在還要妳幫我照顧，真的很謝謝妳。", thread: "大G" },
     ]},
     { id: "vava-play-rescue", label: "原来玩玩是你捡来的？你也太有爱心了吧", nextStage: 5, lines: [
       { sender: "我", body: "原来玩玩是你捡来的？你也太有爱心了吧！", thread: "大G" },
@@ -1541,16 +1541,17 @@ export function WeChatSkin(p: SkinProps) {
       } catch { return false; }
     });
     if (!likesAreVisible) return;
-    const opener = makeItem({
-      id: "vava-play-dag-opener",
-      title: "大G",
-      sender: "大G",
-      body: "欸，Vava是你家的原住民喔？玩玩最近還好嗎？",
-      time: "2026-11-03 " + (p.virtualTime || "14:24"),
-      outgoing: false,
-      meta: { storyId: "vava-play-story", storyThread: "大G", storyOrderAt: String(Date.now()) },
-    });
-    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, opener] }));
+    // Hand the opener to the phone-level story queue. It persists the message,
+    // creates the top WeChat banner when the user is elsewhere, and routes the
+    // banner tap to the correct DaG conversation.
+    setPendingCatLines((current) => current.some((line) => line.id === "vava-play-dag-opener")
+      ? current
+      : [...current, {
+          id: "vava-play-dag-opener",
+          sender: "大G",
+          body: "欸，Vava是你家的原住民喔？玩玩最近還好嗎？",
+          thread: "大G",
+        }]);
     setVavaPlayStage(0);
   }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist]);
   const updateMomentCover = (file?: File) => {
