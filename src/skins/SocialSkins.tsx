@@ -403,7 +403,7 @@ export function RedbookSkin(p: Props) {
                 <button className="redbook-card-title" onClick={() => p.onItem(item)}>{item.title}</button>
                 <div className="redbook-card-meta">
                   <button className="redbook-author" onClick={() => p.onItem(item)}><Avatar name={item.sender}/><span>{item.sender}</span></button>
-                  <button className="redbook-like" aria-label={`喜欢${item.title}`} onClick={(e) => {
+                  <button aria-label={`喜欢${item.title}`} onClick={(e) => {
                     e.stopPropagation();
                     setLikedIds((current) => ({ ...current, [item.id]: !current[item.id] }));
                   }} data-redbook-like={likedKey} aria-pressed={!!likedIds[item.id]} className={likedIds[item.id] ? "redbook-like liked" : "redbook-like"}><Heart size={16}/><span>{item.likes + (likedIds[item.id] ? 1 : 0) || ""}</span></button>
