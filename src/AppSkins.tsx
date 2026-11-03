@@ -1556,9 +1556,13 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "那你就不要再聊太晚了啦，到了酒店趕快休息。明天還要回台北，別把自己累壞了。", thread: "大G" },
       { sender: "大G", body: "好啦好啦，我已經快到酒店了。今天真的有點累，等一下洗完澡就直接睡。", thread: "大G" },
     ]},
-    { stage: 54, chat: "大G", id: "hotel-goodnight", label: "好，那你快去休息吧！晚安，明天再聊。", nextStage: 35, lines: [
-      { sender: "我", body: "好，那你快去休息吧！晚安，明天再聊。", thread: "大G" },
-      { sender: "大G", body: "嗯嗯，晚安啦。妳也早點睡，明天再聊。", thread: "大G" },
+    { stage: 54, chat: "大G", id: "check-hotel-arrival", label: "到了吗？已经进酒店了吗？", nextStage: 55, lines: [
+      { sender: "我", body: "到了嗎？已經進酒店了嗎？", thread: "大G" },
+      { sender: "大G", body: "到了，剛進房間而已。今天真的喝得有點多，現在只想趕快洗澡躺下。", thread: "大G" },
+    ]},
+    { stage: 55, chat: "大G", id: "hotel-goodnight", label: "那你快去洗澡休息吧！晚安，明天再聊。", nextStage: 35, lines: [
+      { sender: "我", body: "那你快去洗澡休息吧！晚安，明天再聊。", thread: "大G" },
+      { sender: "大G", body: "好啦，晚安。妳也早點睡，明天再聊。", thread: "大G" },
     ]},
     { stage: 35, chat: "大G", id: "ask-arrived-home", label: "（隔天）你到台北了吗？", nextStage: 36, lines: [
       { sender: "我", body: "早啊！你到台北了嗎？", thread: "大G" },
