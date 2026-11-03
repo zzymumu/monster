@@ -234,6 +234,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[62][0].lines[1].sender).toBe("大G");
     expect(getCatRescueThreadForStage(62)).toBe("大G");
     expect(getCatRescueThreadForStage(63)).toBe("西蓝花");
+    for (const stage of [64, 88, 89, 90, 91]) expect(getCatRescueThreadForStage(stage)).toBe("西蓝花");
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].body).toBe("你敢信！！他要請我吃飯！！！！");
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].sender).toBe("我");
     expect(CAT_RESCUE_CHOICES[63][0].lines[1].sender).toBe("西蓝花");
