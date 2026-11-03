@@ -3071,8 +3071,35 @@
   line-height: 1;
 }
 .youtube-player-modal .youtube-player-frame {
+  display: block;
+  position: relative;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
   margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+  box-sizing: border-box;
+}
+.youtube-player-modal .youtube-player-frame iframe,
+.youtube-player-frame iframe {
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #000 !important;
+  box-sizing: border-box !important;
 }
 .youtube-player-modal-bottom {
   padding: 10px 14px;
