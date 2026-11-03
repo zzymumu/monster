@@ -291,29 +291,31 @@ export function shouldShowPrankHistoryLine(_item: Item, _branch: string, _prankP
 }
 export function filterPrankHistoryLines(items: Item[], prankPath: boolean): Item[] {
   if (!prankPath) return items;
-  // The first prank exchange may exist in both the legacy phone message store
-  // and the canonical story transcript. Deduplicate only its exact scripted
-  // lines, retaining the first occurrence in the chronological transcript.
-  // This includes the original "妳是？" opener, which must remain before the
-  // user's prank reply rather than being replayed after a choice.
-  const duplicateProneLines = new Set([
-    "你已添加了大G，现在可以开始聊天了。",
-    "妳是？",
-    "我是你爸爸。",
-    "我是你爸爸。",
+
+  // Some legacy saves contain the prank reactions once in the old transcript
+  // before the friend-add notice, then append the canonical choice sequence
+  // again after the player sends "我是你爸爸". Those pre-choice reactions
+  // are orphaned history and must not be shown. Keep the reaction sequence
+  // that follows the player's actual prank message.
+  const prankReplyBodies = new Set([
     "……蛤？",
     "妳哪位？我不認識妳喔。",
     "好喔，那我先把妳刪掉了。掰。",
-    "對不起我發錯人了啊啊啊！！！",
-    "对不起我发错人了啊啊啊！！！",
   ]);
-  const seen = new Set<string>();
-  return items.filter((item) => {
+  const firstPrankIndex = items.findIndex((item) =>
+    item.sender === "我" && /我是你爸爸/.test(item.body.trim())
+  );
+  const seenReplies = new Set<string>();
+  return items.filter((item, index) => {
     const body = item.body.trim();
-    if (!duplicateProneLines.has(body)) return true;
-    const key = item.sender + "|" + body;
-    if (seen.has(key)) return false;
-    seen.add(key);
+    if (!prankReplyBodies.has(body)) return true;
+    // Never show a stale copy that appears before the player actually chose
+    // the prank response.
+    if (firstPrankIndex >= 0 && index < firstPrankIndex) return false;
+    // Sender aliases ("大G" and "温尚翊") refer to the same contact. Dedup
+    // by the exact scripted text, not the internal sender label.
+    if (seenReplies.has(body)) return false;
+    seenReplies.add(body);
     return true;
   });
 }
