@@ -242,54 +242,69 @@ export function NeteaseSkin(p: Props) {
 }
 export function YouTubeSkin(p: Props) {
   const channelUrl = "https://www.youtube.com/@monsterbalaja531";
+  const videosUrl = channelUrl + "/videos";
   const playlistUrl = "https://www.youtube.com/playlist?list=UU5ieWR5T4WulmNLXQ8-wiDw";
   const uploadsPlaylist = "UU5ieWR5T4WulmNLXQ8-wiDw";
   const [tab, setTab] = useSkinState<string>(p, "monster-youtube-tab", "首页");
+  const [query, setQuery] = useSkinState<string>(p, "monster-youtube-search", "");
   return (
-    <div className="catalog-skin youtube-ui">
-      <Header p={p} />
+    <div className="catalog-skin youtube-ui" style={{ background: "var(--phone-bg, #fff)", color: "var(--phone-fg, #111)" }}>
+      <div style={{ padding: "9px 12px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, borderBottom: "1px solid rgba(128,128,128,.18)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: 800, fontSize: 19, letterSpacing: "-1px" }}>
+          <span style={{ background: "#f00", color: "#fff", borderRadius: 7, padding: "2px 6px", fontSize: 14 }}>▶</span> YouTube
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, opacity: .85 }}>
+          <a href={videosUrl} target="_blank" rel="noreferrer" aria-label="打开全部视频" style={{ color: "inherit", textDecoration: "none", fontSize: 12 }}>全部视频 ↗</a>
+          <Avatar name={p.owner ?? "我"} />
+        </div>
+      </div>
+      <div style={{ padding: "8px 12px", display: "flex", gap: 8, alignItems: "center" }}>
+        <div style={{ flex: 1 }}><SearchBox value={query} set={setQuery} /></div>
+        <a href={query.trim() ? "https://www.youtube.com/results?search_query=" + encodeURIComponent(query.trim()) : channelUrl} target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "none", padding: "8px 10px", borderRadius: 20, background: "rgba(128,128,128,.12)" }}>⌕</a>
+      </div>
       <div className="catalog-scroll">
-        <section style={{ padding: "14px", display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 54, height: 54, borderRadius: "50%", flexShrink: 0, background: "#e62117", color: "white", display: "grid", placeItems: "center", fontWeight: 800, fontSize: 24 }}>M</div>
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <strong style={{ fontSize: 18 }}>Mayday Monster</strong>
-            <div style={{ fontSize: 12, opacity: .65, marginTop: 4 }}>五月天怪獸 · YouTube 頻道</div>
-            <div style={{ fontSize: 11, opacity: .55, marginTop: 3 }}>频道公开上传视频</div>
+        <div style={{ padding: "10px 12px 0" }}>
+          <div style={{ borderRadius: 12, overflow: "hidden", height: 104, background: "linear-gradient(120deg,#292929,#686868)", display: "flex", alignItems: "center", padding: "0 16px", color: "#fff" }}>
+            <div>
+              <div style={{ fontSize: 20, fontWeight: 800 }}>Mayday Monster</div>
+              <div style={{ fontSize: 12, opacity: .8 }}>五月天怪獸 · 官方 YouTube 頻道</div>
+            </div>
           </div>
-        </section>
-        <div className="youtube-chips">
-          {["首页", "视频", "频道"].map((name) => (
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 2px" }}>
+            <div style={{ width: 48, height: 48, borderRadius: "50%", flexShrink: 0, background: "#222", color: "#fff", display: "grid", placeItems: "center", fontWeight: 800, fontSize: 20 }}>M</div>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <strong style={{ fontSize: 16 }}>Mayday Monster</strong>
+              <div style={{ fontSize: 11, opacity: .62 }}>@monsterbalaja531</div>
+            </div>
+            <a href={channelUrl} target="_blank" rel="noreferrer" style={{ background: "#f2f2f2", color: "#111", padding: "8px 12px", borderRadius: 20, fontSize: 12, textDecoration: "none", whiteSpace: "nowrap" }}>查看频道</a>
+          </div>
+        </div>
+        <div className="youtube-chips" style={{ padding: "4px 12px 10px" }}>
+          {["首页", "全部视频"].map((name) => (
             <button className={tab === name ? "selected" : ""} key={name} onClick={() => setTab(name)}>{name}</button>
           ))}
         </div>
-        {tab === "频道" ? (
-          <div style={{ padding: 18, textAlign: "center" }}>
-            <p>打开 Mayday Monster 的真实 YouTube 频道。</p>
-            <a href={channelUrl} target="_blank" rel="noreferrer">打开频道 ↗</a>
+        <div style={{ padding: "0 12px 18px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "8px 0" }}>
+            <strong style={{ fontSize: 16 }}>怪獸的所有公开视频</strong>
+            <a href={playlistUrl} target="_blank" rel="noreferrer" style={{ color: "inherit", fontSize: 11 }}>完整播放列表 ↗</a>
           </div>
-        ) : (
-          <div style={{ padding: "0 12px 18px" }}>
-            <div style={{ borderRadius: 12, overflow: "hidden", background: "#000", aspectRatio: "16 / 9" }}>
-              <iframe
-                title="Mayday Monster YouTube uploads"
-                src={`https://www.youtube.com/embed?listType=playlist&list=${uploadsPlaylist}&rel=0`}
-                style={{ width: "100%", height: "100%", border: 0 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-              />
-            </div>
-            <div style={{ padding: "12px 2px" }}>
-              <strong>Mayday Monster · 视频列表</strong>
-              <p style={{ fontSize: 12, opacity: .65, margin: "5px 0 10px" }}>这里接入的是怪兽个人频道的上传播放列表。打开完整列表可以逐个浏览和播放所有公开收录的视频；内容由 YouTube 官方托管。</p>
-              <a href={playlistUrl} target="_blank" rel="noreferrer">打开完整上传播放列表（全部视频）↗</a>
-              <div style={{ marginTop: 8 }}><a href={channelUrl + "/videos"} target="_blank" rel="noreferrer">打开怪兽个人频道 ↗</a></div>
-            </div>
+          <div style={{ borderRadius: 12, overflow: "hidden", background: "#000", aspectRatio: "16 / 9" }}>
+            <iframe
+              title="Mayday Monster all public uploads"
+              src={`https://www.youtube.com/embed/videoseries?list=${uploadsPlaylist}&rel=0&modestbranding=1`}
+              style={{ width: "100%", height: "100%", border: 0 }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
           </div>
-        )}
+          <p style={{ fontSize: 12, opacity: .66, lineHeight: 1.5, margin: "9px 0" }}>首页播放器载入频道上传播放列表，按 YouTube 列表顺序逐个播放公开影片。点击右上角「全部视频」可在 YouTube 官方频道浏览缩略图列表与排序。</p>
+          <a href={videosUrl} target="_blank" rel="noreferrer" style={{ display: "block", textAlign: "center", borderRadius: 20, background: "#f2f2f2", color: "#111", padding: "10px 12px", textDecoration: "none", fontSize: 13 }}>在 YouTube 查看全部视频</a>
+        </div>
       </div>
-      <Tabs tabs={["首页", "视频", "频道"]} value={tab} set={setTab} icons={[<Home />, <Video />, <User />]} />
+      <Tabs tabs={["首页", "全部视频"]} value={tab} set={setTab} icons={[<Home />, <Video />]} />
     </div>
   );
 }
