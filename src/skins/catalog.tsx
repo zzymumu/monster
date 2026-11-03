@@ -5,6 +5,7 @@ const messaging = () => import("./MessagingSkins");
 const social = () => import("./SocialSkins");
 const media = () => import("./MediaSkins");
 const commerce = () => import("./CommerceSkins");
+const gameSave = () => import("./GameSave");
 function skin<T>(load: () => Promise<T>, name: keyof T) {
   return lazy(async () => ({
     default: (await load())[name] as ComponentType<SkinProps>,
@@ -12,6 +13,7 @@ function skin<T>(load: () => Promise<T>, name: keyof T) {
 }
 const mymy = () => import("../vendor/mymy/Apps");
 export const catalogSkins = {
+  gamesave: skin(gameSave, "GameSaveSkin"),
   kakao: skin(mymy, "MymyKakao"),
   instagram: skin(mymy, "MymyInstagram"),
   phone: skin(system, "PhoneSkin"),
