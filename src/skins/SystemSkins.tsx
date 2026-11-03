@@ -29,6 +29,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { openStreetMapEmbed, openStreetMapLink, useDeviceLocation } from "../deviceLocation";
 import { download } from "../io";
 import { safeMedia, type Item } from "../schema";
 import {
@@ -1004,12 +1005,35 @@ function LocationMap({
 }
 export function MapsSkin(p: Props) {
   const { q, setQ, items } = useContent(p, "地点");
+  const { position, error, loading, request } = useDeviceLocation();
   return (
     <div className="catalog-skin native-maps">
       <Header p={p} />
-      <LocationMap items={items} onItem={p.onItem} />
+      <div className="device-map">
+        {position ? (
+          <>
+            <iframe
+              title="当前位置地图"
+              src={openStreetMapEmbed(position.latitude, position.longitude, 0.025)}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
+            <div className="device-map-attribution">
+              <span><MapPin size={14} /> 当前位置</span>
+              <a href={openStreetMapLink(position.latitude, position.longitude)} target="_blank" rel="noreferrer">在地图中打开</a>
+            </div>
+          </>
+        ) : (
+          <div className="device-map-permission">
+            <MapPin size={42} />
+            <strong>{loading ? "正在获取当前位置…" : "地图需要定位权限"}</strong>
+            <p>{error || "允许 FoundPhone 使用设备位置，即可显示你当前所在位置。"}</p>
+            <button onClick={request} disabled={loading}>{loading ? "正在定位…" : "允许定位 / 重新定位"}</button>
+          </div>
+        )}
+      </div>
       <div className="map-sheet">
-        <SearchBox value={q} set={setQ} placeholder="搜索虚构地点" />
+        <SearchBox value={q} set={setQ} placeholder="搜索已保存地点" />
         <div className="map-places">
           {items.map((i) => (
             <Row key={i.id} item={i} onItem={p.onItem} leading={<MapPin />} />
