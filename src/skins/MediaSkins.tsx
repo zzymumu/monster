@@ -268,21 +268,32 @@ export function YouTubeSkin(p: Props) {
   const filtered = videos.filter(v => v.title.toLowerCase().includes(query.toLowerCase()));
   return (
     <div className="catalog-skin youtube-ui" style={{ background: "#fff", color: "#0f0f0f" }}>
-      <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #eee" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800, fontSize: 20, letterSpacing: "-1px" }}><span style={{ background: "#f00", color: "#fff", borderRadius: 7, padding: "2px 6px", fontSize: 14 }}>▶</span>YouTube</div>
-        <span style={{ color: "#606060", fontSize: 13 }}>Mayday Monster</span>
+      <div style={{ minHeight: 58, padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, borderBottom: "1px solid #eee", boxSizing: "border-box" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, fontWeight: 800, fontSize: 21, letterSpacing: "-1px", whiteSpace: "nowrap" }}><span style={{ background: "#f00", color: "#fff", borderRadius: 7, padding: "3px 7px", fontSize: 15 }}>▶</span>YouTube</div>
+        <button onClick={() => { setTab("全部视频"); setShowUploads(true); setPlayingId(""); }} style={{ border: 0, background: "transparent", color: "#333", fontSize: 13, whiteSpace: "nowrap" }}>全部视频 ↗</button>
+        <div style={{ width: 42, height: 42, borderRadius: "50%", background: "#c9cdd0", color: "#fff", display: "grid", placeItems: "center", fontSize: 20, flexShrink: 0 }}>我</div>
       </div>
-      <div style={{ padding: "8px 14px" }}><SearchBox value={query} set={setQuery} /></div>
+      <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", gap: 9, borderBottom: "1px solid #f3f3f3" }}>
+        <div style={{ flex: 1, minWidth: 0 }}><SearchBox value={query} set={setQuery} /></div>
+        <button aria-label="搜索" onClick={() => setTab("全部视频")} style={{ width: 40, height: 40, borderRadius: "50%", border: 0, background: "#f2f2f2", color: "#222", fontSize: 17 }}>⌕</button>
+      </div>
       <div className="catalog-scroll">
-        <div style={{ padding: "4px 14px 12px", display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#222", color: "#fff", display: "grid", placeItems: "center", fontWeight: 800 }}>M</div>
-          <div style={{ flex: 1 }}><strong>Mayday Monster</strong><div style={{ color: "#606060", fontSize: 12 }}>@monsterbalaja531 · 五月天怪獸</div></div>
-          <span style={{ background: "#f2f2f2", color: "#111", padding: "8px 12px", borderRadius: 20, fontSize: 12 }}>频道</span>
+        <div style={{ margin: "14px 14px 12px", minHeight: 112, borderRadius: "0 0 22px 22px", background: "linear-gradient(110deg,#333,#666)", color: "#fff", padding: "24px 20px", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <strong style={{ fontSize: 25, lineHeight: 1.2 }}>Mayday Monster</strong>
+          <span style={{ color: "#e1e1e1", fontSize: 14, marginTop: 7 }}>五月天怪獸 · 官方 YouTube 頻道</span>
         </div>
-        <div className="youtube-chips" style={{ padding: "0 14px 12px" }}>
+        <div style={{ padding: "8px 18px 16px", display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ width: 58, height: 58, borderRadius: "50%", background: "#222", color: "#fff", display: "grid", placeItems: "center", fontWeight: 800, fontSize: 26, flexShrink: 0 }}>M</div>
+          <div style={{ flex: 1, minWidth: 0 }}><strong style={{ fontSize: 18 }}>Mayday Monster</strong><div style={{ color: "#606060", fontSize: 12, marginTop: 3 }}>@monsterbalaja531</div></div>
+          <button onClick={() => { setTab("全部视频"); setShowUploads(true); setPlayingId(""); }} style={{ background: "#f2f2f2", color: "#111", padding: "10px 14px", borderRadius: 22, border: 0, fontSize: 12, whiteSpace: "nowrap" }}>查看频道</button>
+        </div>
+        <div className="youtube-chips" style={{ padding: "0 14px 14px" }}>
           {["首页", "全部视频"].map(name => <button key={name} className={tab === name ? "selected" : ""} onClick={() => { setTab(name); if (name === "全部视频") { setShowUploads(true); setPlayingId(""); } else { setShowUploads(false); } }}>{name}</button>)}
         </div>
-        <div style={{ padding: "0 12px 14px", fontWeight: 700 }}>来自 “Mayday Monster” 上传的视频</div>
+        <div style={{ padding: "2px 14px 12px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+          <strong style={{ fontSize: 16 }}>怪獸的所有公开视频</strong>
+          <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); }} style={{ border: 0, background: "transparent", color: "#333", fontSize: 12, whiteSpace: "nowrap" }}>完整播放列表 ↗</button>
+        </div>
         {(playingId || showUploads) && <div style={{ width: "100%", maxWidth: "none", margin: "0 0 16px", padding: 0, overflow: "hidden", background: "#000", lineHeight: 0, boxSizing: "border-box" }}>
           <div style={{ position: "relative", width: "100%", maxWidth: "none", aspectRatio: "16 / 9", background: "#000", overflow: "hidden" }}>
             <iframe title={playingId ? "YouTube 视频播放" : "Mayday Monster 全部上传视频"} src={playingId ? "https://www.youtube-nocookie.com/embed/" + playingId + "?autoplay=1&rel=0" : "https://www.youtube-nocookie.com/embed/videoseries?list=" + uploadsPlaylist} style={{ display: "block", position: "absolute", top: 0, left: 0, width: "100%", maxWidth: "none", height: "100%", border: 0, margin: 0, padding: 0, boxSizing: "border-box" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
@@ -301,13 +312,12 @@ export function YouTubeSkin(p: Props) {
             </div>
             <span style={{ fontSize: 20, lineHeight: 1 }}>⋮</span>
           </button>)}
-          <button onClick={() => { setShowUploads(true); setPlayingId(""); }} style={{ display: "block", background: "#f2f2f2", color: "#111", textAlign: "center", border: 0, borderRadius: 22, padding: 11, width: "100%", fontSize: 13 }}>查看 Mayday Monster 全部上传视频</button>
+          <button onClick={() => { setShowUploads(true); setPlayingId(""); setTab("全部视频"); }} style={{ display: "block", background: "#f2f2f2", color: "#111", textAlign: "center", border: 0, borderRadius: 22, padding: 11, width: "100%", fontSize: 13 }}>查看 Mayday Monster 全部上传视频</button>
         </div>
       </div>
       <Tabs tabs={["首页", "Shorts", "我"]} value={tab === "全部视频" ? "首页" : tab} set={v => setTab(v === "首页" ? "全部视频" : v)} icons={[<Home />, <Video />, <User />]} />
     </div>
-  );
-}
+  );}
 export function BilibiliSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "首页");
   const [category, setCategory] = useState("推荐");
