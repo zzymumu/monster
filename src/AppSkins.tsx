@@ -1605,12 +1605,8 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "嗯嗯，晚安。明天見。", thread: "大G" },
     ]},
   ];
-  // Contact handoffs are always manual: advance the story stage, but let the
-  // player leave this chat and open the next contact themselves.
-  useEffect(() => {
-    if (returnDinnerStage !== 2 || pendingCatLines.length > 0) return;
-    // Stage 3 belongs to 西蓝花 and becomes available when that chat is opened.
-  }, [returnDinnerStage, pendingCatLines.length]);
+  // Contact handoffs are always manual: the next stage appears only after
+  // the player opens the contact assigned to that stage.
   // Do not auto-switch from Broccoli to DaG: the player must leave this chat
   // and explicitly open DaG's conversation to continue the story.
   useEffect(() => {
