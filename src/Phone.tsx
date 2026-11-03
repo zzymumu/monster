@@ -422,6 +422,40 @@ function PhoneRuntime({
     onOpen?.(id);
     event("openApp", id);
   };
+  // The next DaG chapter is gated by the completed Moments/Vava exchange.
+  // YouTube must remain the foreground app continuously for ten seconds.
+  useEffect(() => {
+    if (creator || !ready || locked || app !== "youtube") return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      const wx = current.ui?.wechat ?? {};
+      if (wx.wxVavaMomentSeeded !== true || wx.wxVavaPlayCompleted !== true) return;
+      if (Number(wx.wxReturnDinnerStage || 0) !== 0) return;
+      let queued: Array<{ sender: string; body: string; thread?: string }> = [];
+      try {
+        const raw = wx.wxCatPendingLines;
+        const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
+        if (Array.isArray(parsed)) queued = parsed;
+      } catch { queued = []; }
+      queued.push({
+        sender: "大G",
+        body: "我明天就回去了，想問妳明天什麼時候方便？我過去接玩玩。",
+        thread: "大G",
+      });
+      update({
+        ...current,
+        ui: {
+          ...current.ui,
+          wechat: {
+            ...wx,
+            wxReturnDinnerStage: 1,
+            wxCatPendingLines: JSON.stringify(queued),
+          },
+        },
+      });
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [app, locked, ready, creator, work.id, work.updatedAt]);
   const installedApps = work.apps.filter((a) => a.installed);
   const apps = installedApps.filter((a) => a.visible);
   const unlock = (pin = "") => {
