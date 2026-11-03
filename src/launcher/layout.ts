@@ -35,23 +35,30 @@ export type DeviceLayout = z.infer<typeof layoutSchema>;
 export type Widget = z.infer<typeof widgetSchema>;
 export type AppConfig = Work["apps"][number];
 export function ensureAppStore(work: Work): Work {
-  return work.apps.some((a) => a.id === "appstore")
-    ? work
-    : {
-        ...work,
-        apps: [
-          ...work.apps,
-          {
-            id: "appstore",
-            name: "App Store",
-            installed: true,
-            visible: true,
-            dock: false,
-            folder: "",
-            icon: "",
-          },
-        ],
-      };
+  const additions: Work["apps"] = [];
+  if (!work.apps.some((a) => a.id === "appstore")) {
+    additions.push({
+      id: "appstore",
+      name: "App Store",
+      installed: true,
+      visible: true,
+      dock: false,
+      folder: "",
+      icon: "",
+    });
+  }
+  if (!work.apps.some((a) => a.id === "gamesave")) {
+    additions.push({
+      id: "gamesave",
+      name: "遊戲存檔",
+      installed: true,
+      visible: true,
+      dock: false,
+      folder: "",
+      icon: "",
+    });
+  }
+  return additions.length ? { ...work, apps: [...work.apps, ...additions] } : work;
 }
 export function defaultLayout(input: Work): DeviceLayout {
   const w = ensureAppStore(input);
