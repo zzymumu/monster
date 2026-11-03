@@ -2144,6 +2144,8 @@ export function WeChatSkin(p: SkinProps) {
                     <button key={choice.id} onClick={() => {
                       appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
                       setReturnDinnerStage(choice.nextStage);
+                      const nextChat = returnDinnerChoices.find((nextChoice) => nextChoice.stage === choice.nextStage)?.chat;
+                      if (nextChat && nextChat !== p.thread) p.onThread(nextChat);
                     }}>{choice.label}</button>
                   ))}
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
