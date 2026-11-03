@@ -14,6 +14,8 @@ import {
   Repeat2,
   ChevronDown,
   ShoppingBag,
+  Search,
+  Plus,
   User,
   Users,
   Share2,
