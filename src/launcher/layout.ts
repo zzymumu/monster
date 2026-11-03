@@ -50,7 +50,7 @@ export function ensureAppStore(work: Work): Work {
   if (!work.apps.some((a) => a.id === "gamesave")) {
     additions.push({
       id: "gamesave",
-      name: "遊戲存檔",
+      name: "游戏存档",
       installed: true,
       visible: true,
       dock: false,
