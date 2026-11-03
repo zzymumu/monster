@@ -1751,7 +1751,7 @@ export function WeChatSkin(p: SkinProps) {
   // Pending replies are persisted in WeChat UI state and delivered by the
   // phone-level scheduler, so they continue arriving while another app is open.
 
-  const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch) => {
+  const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch, eventKey = "") => {
     // A choice sends exactly the player's first line. Then only incoming
     // replies are queued, in order, until the next player-authored line.
     // Later player lines in legacy script arrays are NOT auto-sent: the next
@@ -1767,7 +1767,7 @@ export function WeChatSkin(p: SkinProps) {
         ...line,
         // One stable ID per incoming line/stage prevents duplicate delivery
         // if the choice handler or phone-level queue effect is replayed.
-        id: line.id || "cat-rescue-story-" + branch + "-" + nextStage + "-" + queuedLines.length,
+        id: line.id || "cat-rescue-story-" + (eventKey || branch + "-" + nextStage) + "-" + queuedLines.length,
       });
     }
     const immediateItems = immediateLines.map((line, index) => makeItem({
@@ -1792,7 +1792,7 @@ export function WeChatSkin(p: SkinProps) {
     setPendingCatLines((current) => [...current, ...queuedLines]);
   };
   const chooseCatRescue = (choice: CatChoice) => {
-    appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch);
+    appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch, "cat-choice-" + choice.id);
     if (choice.nextStage === 8) { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
     if (choice.nextStage === 13 && (choice.branch || catRescue.branch) === "monster-prank") {
       // The player gets to compose an apology first; the send then visibly fails
@@ -2214,7 +2214,7 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="大G关于Vava和玩玩的回复选项">
                   {vavaPlayChoices.filter((choice) => choice.nextStage === vavaPlayStage + 1 || (vavaPlayStage === 0 && choice.nextStage === 2) || (vavaPlayStage === 6 && choice.nextStage === -1)).slice(0, vavaPlayStage === 0 ? 2 : 1).map((choice) => (
                     <button key={choice.id} onClick={() => {
-                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
+                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch, "vava-" + vavaPlayStage + "-" + choice.id);
                       setVavaPlayStage(choice.nextStage);
                       if (choice.nextStage === -1) setVavaPlayCompleted(true);
                     }}>{choice.label}</button>
@@ -2229,7 +2229,7 @@ export function WeChatSkin(p: SkinProps) {
                       const choiceKey = returnDinnerStage + ":" + choice.id;
                       if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
                       handledReturnDinnerChoicesRef.current.add(choiceKey);
-                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch);
+                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch, "return-dinner-" + returnDinnerStage + "-" + choice.id);
                       setReturnDinnerStage(choice.nextStage);
                       // If the next stage belongs to another contact, keep the
                       // current chat open. The player switches contacts manually.
