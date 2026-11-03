@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type ReactNode, type PointerEvent } from "react";
 import {
   Search,
   Plus,
