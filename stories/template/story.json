@@ -650,10 +650,82 @@
           }
         },
         {
+          "id": "wx-broccoli-70",
+          "body": "呜呜呜帮我找签名！！！我姐妹发达了！！！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:34",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-71",
+          "body": "哈哈哈哈哈你先别激动啦！我连跟他吃饭都还没开始呢！",
+          "senderId": "owner",
+          "time": "2026-11-02 10:35",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-72",
+          "body": "那更要把握机会啊！帮我签名！最好写我的名字！！！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:36",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-73",
+          "body": "你怎么比我还积极啊哈哈哈哈！我努力努力！",
+          "senderId": "owner",
+          "time": "2026-11-02 10:37",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-74",
+          "body": "我已经开始羡慕你了呜呜呜，记得回来跟我汇报每个细节！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:38",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-75",
+          "body": "知道啦！到时候一定第一时间跟你说！不过你先让我冷静一下哈哈哈哈！",
+          "senderId": "owner",
+          "time": "2026-11-02 10:39",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
           "id": "wx-broccoli-49",
           "body": "真的假的他真的要请你吃饭？你运气也太好了吧！你们吃什么？",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:34",
+          "time": "2026-11-02 10:40",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -665,7 +737,7 @@
           "id": "wx-broccoli-50",
           "body": "我哪知道啊！！！我刚刚整个人都在尖叫，根本忘记问了！",
           "senderId": "owner",
-          "time": "2026-11-02 10:35",
+          "time": "2026-11-02 10:41",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -677,7 +749,7 @@
           "id": "wx-broccoli-51",
           "body": "你居然连这个都忘记问！！！你也太激动了吧哈哈哈哈哈",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:36",
+          "time": "2026-11-02 10:42",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -689,7 +761,7 @@
           "id": "wx-broccoli-52",
           "body": "我刚刚真的完全没想到这些，只顾着高兴了啦。",
           "senderId": "owner",
-          "time": "2026-11-02 10:37",
+          "time": "2026-11-02 10:43",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -701,7 +773,7 @@
           "id": "wx-broccoli-53",
           "body": "你现在才想到？？？归期也太重要了吧！！！快去问啊！！！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:38",
+          "time": "2026-11-02 10:44",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -713,7 +785,7 @@
           "id": "wx-broccoli-54",
           "body": "我刚刚太激动了嘛……我现在才想到我连他什么时候回来都没问。",
           "senderId": "owner",
-          "time": "2026-11-02 10:39",
+          "time": "2026-11-02 10:45",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -722,10 +794,34 @@
           }
         },
         {
+          "id": "wx-broccoli-76",
+          "body": "我刚刚查了一下，好像在北京吧？",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:46",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-77",
+          "body": "没事啦，应该最晚就下周的事情？",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:47",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "吃饭与签名",
+            "branch": "main"
+          }
+        },
+        {
           "id": "wx-broccoli-55",
           "body": "哦哦，先不想啦！等他回来再说，现在先把玩玩照顾好。",
           "senderId": "owner",
-          "time": "2026-11-02 10:40",
+          "time": "2026-11-02 10:48",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -737,7 +833,7 @@
           "id": "wx-broccoli-56",
           "body": "好啦好啦，先照顾玩玩！不过你记得有消息要第一时间跟我说哦！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:41",
+          "time": "2026-11-02 10:49",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -749,7 +845,7 @@
           "id": "wx-broccoli-57",
           "body": "还有那顿饭！等他回来你一定要跟我说后续，知道没有！",
           "senderId": "broccoli",
-          "time": "2026-11-02 10:42",
+          "time": "2026-11-02 10:50",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -1993,7 +2089,7 @@
         },
         {
           "type": "unlock",
-          "key": "wx-broccoli-49",
+          "key": "wx-broccoli-70",
           "value": true
         }
       ],
@@ -2023,7 +2119,7 @@
         },
         {
           "type": "unlock",
-          "key": "wx-broccoli-49",
+          "key": "wx-broccoli-70",
           "value": true
         }
       ],
@@ -2111,11 +2207,6 @@
           "type": "unlock",
           "key": "wx-broccoli-54",
           "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-55",
-          "value": true
         }
       ],
       "next": [],
@@ -2161,6 +2252,254 @@
           "type": "ending",
           "key": "story-validation-ending",
           "value": "本段剧情暂时停在添加微信的悬念处。"
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-start",
+      "label": "西蓝花激动地要签名",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-63",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-70",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-reply-choice-71",
+      "label": "回应西蓝花要签名",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-70",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-signature-reply-71"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-reply-71",
+      "label": "笑着告诉西蓝花还没吃上饭",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-signature-reply-71",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-71",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-read-71",
+      "label": "西蓝花坚持要签名",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-71",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-72",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-reply-choice-73",
+      "label": "回应西蓝花的签名要求",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-72",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-signature-reply-73"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-reply-73",
+      "label": "笑西蓝花比自己还积极",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-signature-reply-73",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-73",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-read-73",
+      "label": "西蓝花期待你汇报吃饭细节",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-73",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-74",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-reply-choice-75",
+      "label": "答应有消息第一时间告诉西蓝花",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-74",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-signature-reply-75"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-reply-75",
+      "label": "答应之后向西蓝花汇报",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-signature-reply-75",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-75",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-signature-end",
+      "label": "签名玩笑结束，继续吃饭话题",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-75",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-49",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-return-location",
+      "label": "西蓝花查到怪兽好像在北京",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-54",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-76",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-return-next-week",
+      "label": "西蓝花说最晚可能下周回来",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-76",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-77",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-return-reply",
+      "label": "先不想归期，先照顾玩玩",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-77",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-55",
+          "value": true
         }
       ],
       "next": [],
@@ -2321,6 +2660,43 @@
         },
         {
           "event": "read",
+          "target": "wx-broccoli-63"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-70"
+        },
+        {
+          "choose": "broccoli-signature-reply-71"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-71"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-72"
+        },
+        {
+          "choose": "broccoli-signature-reply-73"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-73"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-74"
+        },
+        {
+          "choose": "broccoli-signature-reply-75"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-75"
+        },
+        {
+          "event": "read",
           "target": "wx-broccoli-49"
         },
         {
@@ -2333,6 +2709,18 @@
         {
           "event": "read",
           "target": "wx-broccoli-53"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-54"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-76"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-77"
         },
         {
           "event": "read",
@@ -2358,7 +2746,15 @@
         "wx-broccoli-29",
         "wx-broccoli-38",
         "wx-big-g-23",
-        "wx-broccoli-57"
+        "wx-broccoli-57",
+        "wx-broccoli-70",
+        "wx-broccoli-71",
+        "wx-broccoli-72",
+        "wx-broccoli-73",
+        "wx-broccoli-74",
+        "wx-broccoli-75",
+        "wx-broccoli-76",
+        "wx-broccoli-77"
       ]
     },
     {
