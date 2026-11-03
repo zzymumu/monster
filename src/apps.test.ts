@@ -25,7 +25,13 @@ describe("optional app lifecycle", () => {
         .filter((a) => a.installed)
         .map((a) => a.id)
         .sort(),
-    ).toEqual([...essentialApps].sort());
+    ).toEqual([...essentialApps, "redbook"].sort());
+    expect(w.apps.find((a) => a.id === "redbook")).toMatchObject({
+      installed: true,
+      visible: true,
+      folder: "",
+    });
+    expect(w.data.redbook).toHaveLength(6);
     expect(w.apps).toHaveLength(49);
   });
   it("upgrades old format v1 app records without uninstalling existing apps", () => {
