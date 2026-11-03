@@ -195,10 +195,16 @@ function PhoneRuntime({
   const [own, setOwn] = useState(() => initialRuntime(work));
   const [ready, setReady] = useState(creator || !!external);
   const [loadError, setLoadError] = useState("");
-  const [saveInfo, setSaveInfo] = useState<{ hasSave: boolean; savedAt: number | null }>({ hasSave: false, savedAt: null });
-  // One stable save slot per game/work. Deployments and release query strings
-  // must never fork or reset the player's local progress.
-  const saveId = work.id;
+  type SaveSlotMeta = { id: string; name: string; savedAt: number };
+  const [saveInfo, setSaveInfo] = useState<{ hasSave: boolean; savedAt: number | null; slots: SaveSlotMeta[]; activeSaveId: string }>({ hasSave: false, savedAt: null, slots: [], activeSaveId: work.id + "::slot::main" });
+  const defaultSaveId = work.id + "::slot::main";
+  const activeSaveIdRef = useRef(defaultSaveId);
+  const refreshSaveSlots = async (activeId = activeSaveIdRef.current) => {
+    const records = await db.saves.toArray();
+    const slots = records.filter((record) => (record.id === work.id || record.id.startsWith(work.id + "::slot::")) && record.state.workId === work.id).map((record) => ({ id: record.id, name: record.name || (record.id === defaultSaveId ? "自动存档" : "未命名存档"), savedAt: record.savedAt ?? 0 })).sort((x, y) => y.savedAt - x.savedAt);
+    const active = slots.find((slot) => slot.id === activeId);
+    setSaveInfo({ hasSave: !!active, savedAt: active?.savedAt ?? null, slots, activeSaveId: activeId });
+  };
   useEffect(() => {
     const el = shell.current;
     if (!el) return;
@@ -234,44 +240,57 @@ function PhoneRuntime({
   useEffect(() => {
     let active = true;
     if (creator || external) return;
-    void db.saves
-      .get(saveId)
-      .then(async (currentSave) => {
-        // Migrate the old release-scoped default save key without losing progress.
-        const saved = currentSave ?? await db.saves.get(`${work.id}::default`);
-        if (!active) return;
-        if (saved && saved.state.workId === work.id) {
-          const savedAt = saved.savedAt ?? Date.now();
-          if (!currentSave || !saved.savedAt) await db.saves.put({ id: saveId, state: saved.state, savedAt });
-          setSaveInfo({ hasSave: true, savedAt });
-          // Keep story progress, chat history, choices, notifications and UI
-          // state across code/content deployments. Only migrate the revision.
-          const fresh = dispatch(work, initialRuntime(work), "start");
-          setOwn({
-            ...fresh,
-            ...saved.state,
-            workId: work.id,
-            revision: work.updatedAt,
-            ui: { ...fresh.ui, ...saved.state.ui },
-            messages: { ...fresh.messages, ...saved.state.messages },
-          });
-        } else {
-          setOwn(dispatch(work, initialRuntime(work), "start"));
-          setSaveInfo({ hasSave: false, savedAt: null });
-          if (saved) setLoadError("存档与当前作品不匹配，已创建新进度。");
+    void (async () => {
+      try {
+        const all = await db.saves.toArray();
+        const legacy = all.find((record) => record.id === work.id && record.state.workId === work.id);
+        let slots = all.filter((record) => record.id.startsWith(work.id + "::slot::") && record.state.workId === work.id);
+        if (legacy && !slots.some((record) => record.id === defaultSaveId)) {
+          await db.saves.put({ id: defaultSaveId, name: "自动存档", state: legacy.state, savedAt: legacy.savedAt ?? Date.now() });
+          slots = [...slots, { ...legacy, id: defaultSaveId, name: "自动存档" }];
         }
+        if (!slots.length) {
+          const fresh = dispatch(work, initialRuntime(work), "start");
+          const created = { id: defaultSaveId, name: "自动存档", state: fresh, savedAt: Date.now() };
+          await db.saves.put(created);
+          slots = [created];
+        }
+        if (!active) return;
+        const selected = slots.find((record) => record.id === activeSaveIdRef.current) ?? slots.find((record) => record.id === defaultSaveId) ?? slots.sort((x, y) => (y.savedAt ?? 0) - (x.savedAt ?? 0))[0];
+        activeSaveIdRef.current = selected.id;
+        const fresh = dispatch(work, initialRuntime(work), "start");
+        setOwn({ ...fresh, ...selected.state, workId: work.id, revision: work.updatedAt, ui: { ...fresh.ui, ...selected.state.ui }, messages: { ...fresh.messages, ...selected.state.messages } });
+        await refreshSaveSlots(selected.id);
         setReady(true);
-      })
-      .catch(() => {
-        setOwn(dispatch(work, initialRuntime(work), "start"));
-        setSaveInfo({ hasSave: false, savedAt: null });
+      } catch {
+        if (!active) return;
+        const fresh = dispatch(work, initialRuntime(work), "start");
+        activeSaveIdRef.current = defaultSaveId;
+        setOwn(fresh);
         setLoadError("无法读取本地存档。本次仍可游玩。");
         setReady(true);
-      });
-    return () => {
-      active = false;
+      }
+    })();
+    return () => { active = false; };
+  }, [work.id, work.updatedAt, creator, external]);
+  useEffect(() => {
+    if (creator || external || !ready) return;
+    let active = true;
+    const persist = () => {
+      const snapshot = runtimeRef.current;
+      const id = activeSaveIdRef.current;
+      const savedAt = Date.now();
+      void db.saves.get(id).then((previous) => db.saves.put({ id, name: previous?.name || (id === defaultSaveId ? "自动存档" : "未命名存档"), state: snapshot, savedAt })).then(() => {
+        if (active) void refreshSaveSlots(id);
+      }).catch(() => { if (active) setLoadError("自动存档失败，请检查浏览器存储权限或导出备份。"); });
     };
-  }, [work.id, work.updatedAt, saveId, creator, external]);
+    persist();
+    const checkpoint = () => persist();
+    const onVisibility = () => { if (document.visibilityState === "hidden") checkpoint(); };
+    window.addEventListener("pagehide", checkpoint);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => { active = false; window.removeEventListener("pagehide", checkpoint); document.removeEventListener("visibilitychange", onVisibility); };
+  }, [own, creator, work.id, external, ready]);
   useEffect(() => {
     if (creator || external || !ready) return;
     let active = true;
@@ -432,22 +451,61 @@ function PhoneRuntime({
   };
   const saveNow = async () => {
     if (creator || external || !ready) return;
+    const id = activeSaveIdRef.current;
+    const previous = await db.saves.get(id);
     const savedAt = Date.now();
-    await db.saves.put({ id: saveId, state: runtimeRef.current, savedAt });
-    setSaveInfo({ hasSave: true, savedAt });
+    await db.saves.put({ id, name: previous?.name || (id === defaultSaveId ? "自动存档" : "未命名存档"), state: runtimeRef.current, savedAt });
+    await refreshSaveSlots(id);
     setLoadError("");
+  };
+  const createSave = async (name: string) => {
+    if (creator || external || !ready) return;
+    const cleanName = name.trim().slice(0, 24) || "新的存档";
+    const id = work.id + "::slot::" + crypto.randomUUID();
+    const savedAt = Date.now();
+    await db.saves.put({ id, name: cleanName, state: structuredClone(runtimeRef.current), savedAt });
+    activeSaveIdRef.current = id;
+    await refreshSaveSlots(id);
+  };
+  const loadSave = async (id: string) => {
+    if (creator || external || !ready) return;
+    const record = await db.saves.get(id);
+    if (!record || record.state.workId !== work.id) { setLoadError("这个存档无法读取，可能已损坏或属于其他游戏。"); return; }
+    const fresh = dispatch(work, initialRuntime(work), "start");
+    const restored = { ...fresh, ...record.state, workId: work.id, revision: work.updatedAt, ui: { ...fresh.ui, ...record.state.ui }, messages: { ...fresh.messages, ...record.state.messages } };
+    activeSaveIdRef.current = id;
+    runtimeRef.current = restored;
+    setOwn(restored);
+    onRuntime?.(restored);
+    await refreshSaveSlots(id);
+    setLoadError("");
+  };
+  const renameSave = async (id: string, name: string) => {
+    const record = await db.saves.get(id);
+    const cleanName = name.trim().slice(0, 24);
+    if (!record || !cleanName) return;
+    await db.saves.put({ ...record, name: cleanName });
+    await refreshSaveSlots();
+  };
+  const deleteSave = async (id: string) => {
+    if (saveInfo.slots.length <= 1) { setLoadError("至少保留一个存档。"); return; }
+    await db.saves.delete(id);
+    if (activeSaveIdRef.current === id) {
+      const next = saveInfo.slots.find((slot) => slot.id !== id);
+      if (next) await loadSave(next.id);
+    } else await refreshSaveSlots();
   };
   const clearSaveAndRestart = async () => {
     if (creator || external || !ready) return;
     const fresh = dispatch(work, initialRuntime(work), "start");
-    // Replace the stable save slot with a clean initial runtime. Future updates
-    // continue writing to the same key, so the next deployment can still migrate it.
     runtimeRef.current = fresh;
     setOwn(fresh);
     onRuntime?.(fresh);
+    const id = activeSaveIdRef.current;
+    const previous = await db.saves.get(id);
     const savedAt = Date.now();
-    await db.saves.put({ id: saveId, state: fresh, savedAt });
-    setSaveInfo({ hasSave: true, savedAt });
+    await db.saves.put({ id, name: previous?.name || "自动存档", state: fresh, savedAt });
+    await refreshSaveSlots(id);
     setLoadError("");
     setApp("");
   };
@@ -815,6 +873,12 @@ function PhoneRuntime({
                   saveReady={ready && !creator && !external}
                   onSaveNow={saveNow}
                   onClearSave={clearSaveAndRestart}
+                  saveSlots={saveInfo.slots}
+                  activeSaveId={saveInfo.activeSaveId}
+                  onCreateSave={createSave}
+                  onLoadSave={loadSave}
+                  onRenameSave={renameSave}
+                  onDeleteSave={deleteSave}
                 />
               </AppWindow>
             ) : (
