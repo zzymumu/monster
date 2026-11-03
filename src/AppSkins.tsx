@@ -2231,7 +2231,7 @@ export function WeChatSkin(p: SkinProps) {
               <div className="wx-contact-list">
                 {contacts.filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => {
                   const avatarItem = allItems.find((i) => displayName(i.sender) === name || displayName(i.title) === name);
-                  return <button className="wx-contact-row" key={name} onClick={() => openContact(name)}>
+                  return <button className="wx-contact-row" key={name} onClick={() => openContact(resolveContactName(name))}>
                     <Avatar name={name} src={avatarItem?.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} /><span onClick={(event) => { event.stopPropagation(); openRemarkEditor(resolveContactName(name)); }} title="点击修改备注" style={{ cursor: "text" }}>{name}</span>
                   </button>;
                 })}
