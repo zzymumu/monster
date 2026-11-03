@@ -1374,39 +1374,55 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "真的假的！！！這次真的自己提了欸！！！妳快先去跟他聊啦，剛好我主管在喊我了，我得先忙一下！", thread: "西蓝花" },
       { sender: "西蓝花", body: "快去快去！好好聊，等一下再回來跟我報告，細節一個都不准漏掉！", thread: "西蓝花" },
     ]},
-    { stage: 10, chat: "大G", id: "accept-dinner-invite", label: "好呀！我明天都有空，可以一起吃飯。不過餐廳可能不方便帶寵物，要不要先去吃飯，再來我家接玩玩？", nextStage: 11, lines: [
-      { sender: "我", body: "好呀！我明天都有空，可以一起吃飯。不過餐廳可能不太方便帶寵物，要不要先去吃飯，然後再來我家接玩玩？", thread: "大G" },
-      { sender: "大G", body: "對喔！幹！！差點忘記這點！哈哈哈哈，那就先去吃飯，吃完再去妳家接玩玩，這樣就不用帶牠去餐廳了啦。", thread: "大G" },
+    { stage: 10, chat: "大G", id: "accept-dinner-invite", label: "好呀！我明天都有空，可以一起吃飯。不過餐廳可能不方便帶寵物，要不要你先來我家接玩玩，把牠帶回家安頓好之後，我們再出去吃飯？", nextStage: 11, lines: [
+      { sender: "我", body: "好呀！我明天都有空，可以一起吃飯。不過餐廳可能不太方便帶寵物，要不要你先來我家接玩玩，把牠帶回家安頓好之後，我們再出去吃飯？", thread: "大G" },
+      { sender: "大G", body: "欸對耶，這樣比較方便！那妳家地址在哪？傳個定位給我好了，我明天從機場過去接玩玩。", thread: "大G" },
     ]},
-    { stage: 11, chat: "大G", id: "confirm-food-plan", label: "哈哈哈哈哈哈，对啊，不然带着它去餐厅也太麻烦了。", nextStage: 12, lines: [
-      { sender: "我", body: "哈哈哈哈哈哈，对啊，不然带着它去餐厅也太麻烦了。", thread: "大G" },
-      { sender: "大G", body: "真的，牠現在應該也滿有份量的吧？最近有沒有比較乖？", thread: "大G" },
+    { stage: 11, chat: "大G", id: "send-home-location", label: "（傳送一則位置分享）📍我的位置", nextStage: 12, lines: [
+      { sender: "我", body: "📍 位置分享\n我的位置\n（已傳送定位）", thread: "大G" },
+      { sender: "大G", body: "欸？妳就這樣把地址傳給陌生人喔？哈哈哈哈。", thread: "大G" },
     ]},
-    { stage: 12, chat: "大G", id: "joke-vava-chubby", label: "我觉得玩玩胖了一圈欸，我上辈子可能是养猪的，不是养猫的。", nextStage: 13, lines: [
-      { sender: "我", body: "我觉得玩玩胖了一圈欸，我上辈子可能是养猪的，不是养猫的。", thread: "大G" },
-      { sender: "大G", body: "哈哈哈哈哈哈，真的假的啦！妳到底都餵牠吃什麼，怎麼可以養成這樣。", thread: "大G" },
+    { stage: 12, chat: "大G", id: "not-a-stranger", label: "你又不是陌生人！你這樣說我會傷心欸，我還以為我們是朋友。", nextStage: 13, lines: [
+      { sender: "我", body: "你又不是陌生人！你這樣說我會傷心欸，我還以為我們是朋友。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈，開玩笑啦！不要這麼認真，我們當然是朋友啊。欸我看了一下，妳家剛好在我家跟機場中間欸，這樣很順路。", thread: "大G" },
     ]},
-    { stage: 13, chat: "大G", id: "defend-vava-cute", label: "明明就很可爱！而且它现在越来越会撒娇了。", nextStage: 14, lines: [
+    { stage: 13, chat: "大G", id: "explain-pickup-route", label: "那你明天從機場過來接玩玩，再帶牠回家安頓好，之後再來找我吃飯就好。", nextStage: 14, lines: [
+      { sender: "我", body: "那你明天從機場過來接玩玩，再帶牠回家安頓好，之後再來找我吃飯就好。", thread: "大G" },
+      { sender: "大G", body: "對啊！我從機場出來先去妳家接牠，帶回我家安頓好，再出來找妳吃飯。這樣就不用讓牠跟著我們跑來跑去，也不用擔心餐廳不能帶寵物。", thread: "大G" },
+    ]},
+    { stage: 14, chat: "大G", id: "confirm-route", label: "好，那就這樣決定！明天見啦。", nextStage: 15, lines: [
+      { sender: "我", body: "好，那就這樣決定！明天見啦。", thread: "大G" },
+      { sender: "大G", body: "好啊，明天見！對了，玩玩最近是不是又胖了一點？妳平常都餵牠吃什麼啊？", thread: "大G" },
+    ]},
+    { stage: 15, chat: "大G", id: "normal-cat-food", label: "就正常猫粮啊！每天定时定量，哪有特别喂它什么。", nextStage: 16, lines: [
+      { sender: "我", body: "就正常貓糧啊！每天定時定量，哪有特別餵牠什麼。", thread: "大G" },
+      { sender: "大G", body: "真的假的啦？那牠怎麼還是圓了一圈，該不會是自己偷偷加餐喔？哈哈哈。", thread: "大G" },
+    ]},
+    { stage: 16, chat: "大G", id: "cat-food-followup", label: "可能是它太会吃了吧！而且它每次都一脸无辜，我哪舍得拒绝。", nextStage: 17, lines: [
+      { sender: "我", body: "可能是牠太會吃了吧！而且牠每次都一臉無辜，我哪捨得拒絕。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈，妳這樣真的很容易把牠寵壞欸！不過牠現在看起來應該過得很爽，完全不用擔心了。", thread: "大G" },
+    ]},
+    { stage: 17, chat: "大G", id: "defend-vava-cute", label: "明明就很可爱！而且它现在越来越会撒娇了。", nextStage: 18, lines: [
       { sender: "我", body: "明明就很可愛！而且牠現在越來越會撒嬌了。", thread: "大G" },
       { sender: "大G", body: "哈哈，聽妳這樣講，感覺牠在妳那邊過得很自在欸。牠現在是不是常常黏著妳？", thread: "大G" },
     ]},
-    { stage: 14, chat: "大G", id: "talk-about-vava", label: "對啊！牠現在每天都黏著我，常常一副不想理我的樣子，結果又一直跟前跟後。", nextStage: 15, lines: [
+    { stage: 18, chat: "大G", id: "talk-about-vava", label: "对啊！它现在每天都黏着我，常常一副不想理我的样子，结果又一直跟前跟后。", nextStage: 19, lines: [
       { sender: "我", body: "對啊！牠現在每天都黏著我，常常一副不想理我的樣子，結果又一直跟前跟後。", thread: "大G" },
       { sender: "大G", body: "哈哈哈哈，這很像牠欸！明明就很愛跟，還要裝作一副跩跩的樣子。聽起來牠真的被妳照顧得很好，我也放心多了。", thread: "大G" },
     ]},
-    { stage: 15, chat: "大G", id: "confirm-time", label: "那我們就約明天晚上吧？你先把玩玩安頓好，再跟我說時間就好。", nextStage: 16, lines: [
+    { stage: 19, chat: "大G", id: "confirm-time", label: "那我们就约明天晚上吧？你先把玩玩安顿好，再跟我说时间就好。", nextStage: 20, lines: [
       { sender: "我", body: "那我們就約明天晚上吧？你先把玩玩安頓好，再跟我說時間就好，我明天都可以配合。", thread: "大G" },
       { sender: "大G", body: "好啊，那就先約明天晚上！我明天出發前再跟妳聯絡，接到玩玩、安頓好之後再跟妳確認時間。", thread: "大G" },
     ]},
-    { stage: 16, chat: "大G", id: "confirm-before-flight", label: "好，那你明天安頓好玩玩再跟我說，我等你消息。", nextStage: 17, lines: [
+    { stage: 20, chat: "大G", id: "confirm-before-flight", label: "好，那你明天安顿好玩玩再跟我说，我等你消息。", nextStage: 21, lines: [
       { sender: "我", body: "好，那你明天安頓好玩玩再跟我說，我等你消息。", thread: "大G" },
       { sender: "大G", body: "沒問題啦，明天我出發前也會先跟妳說一聲。今天先趕回去，明天就能看到玩玩了。", thread: "大G" },
     ]},
-    { stage: 17, chat: "大G", id: "ask-flight", label: "你現在還在外地嗎？是不是差不多要登機了？", nextStage: 18, lines: [
+    { stage: 21, chat: "大G", id: "ask-flight", label: "对了，你现在还在外地吗？是不是差不多要登机了？", nextStage: 22, lines: [
       { sender: "我", body: "對了，你現在還在外地嗎？是不是差不多要登機了？", thread: "大G" },
       { sender: "大G", body: "對啊，我現在準備要去登機了。今天先搭飛機回去，明天就可以去找玩玩了。", thread: "大G" },
     ]},
-    { stage: 18, chat: "大G", id: "safe-flight", label: "好啦，那你快去登機，路上小心，到了再跟我說！", nextStage: 19, lines: [
+    { stage: 22, chat: "大G", id: "safe-flight", label: "好啦，那你快去登机，路上小心，到了再跟我说！", nextStage: 23, lines: [
       { sender: "我", body: "好啦，那你快去登機，路上小心，到了再跟我說！", thread: "大G" },
       { sender: "大G", body: "好啦好啦，我先進去了。謝謝妳喔，明天見！我到了再跟妳說，掰掰。", thread: "大G" },
     ]},
