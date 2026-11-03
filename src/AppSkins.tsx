@@ -1378,17 +1378,17 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "好呀！我明天都有空，可以一起吃飯。不過餐廳可能不太方便帶寵物，要不要先去吃飯，然後再來我家接玩玩？", thread: "大G" },
       { sender: "大G", body: "對喔！幹！！差點忘記這點！哈哈哈哈，那就先去吃飯，吃完再去妳家接玩玩，這樣就不用帶牠去餐廳了啦。", thread: "大G" },
     ]},
-    { stage: 11, chat: "大G", id: "confirm-food-plan", label: "哈哈哈對啊，這樣比較方便！那我們吃什麼？", nextStage: 12, lines: [
-      { sender: "我", body: "哈哈哈哈對啊，這樣比較方便！那我們吃什麼？", thread: "大G" },
-      { sender: "大G", body: "嗯……妳有沒有特別想吃的？我都可以啦，最近也有點想吃熱炒或是家常菜。", thread: "大G" },
+    { stage: 11, chat: "大G", id: "confirm-food-plan", label: "哈哈哈哈哈哈，对啊，不然带着它去餐厅也太麻烦了。", nextStage: 12, lines: [
+      { sender: "我", body: "哈哈哈哈哈哈，对啊，不然带着它去餐厅也太麻烦了。", thread: "大G" },
+      { sender: "大G", body: "真的，牠現在應該也滿有份量的吧？最近有沒有比較乖？", thread: "大G" },
     ]},
-    { stage: 12, chat: "大G", id: "suggest-hot-stir-fry", label: "不然去吃熱炒好了！可以點很多菜，也比較輕鬆。", nextStage: 13, lines: [
-      { sender: "我", body: "不然去吃熱炒好了！可以點很多菜，也比較輕鬆。", thread: "大G" },
-      { sender: "大G", body: "欸好啊！熱炒不錯欸，可以點幾道大家一起吃。那就這樣決定啦，明天再找一間方便的。", thread: "大G" },
+    { stage: 12, chat: "大G", id: "joke-vava-chubby", label: "我觉得玩玩胖了一圈欸，我上辈子可能是养猪的，不是养猫的。", nextStage: 13, lines: [
+      { sender: "我", body: "我觉得玩玩胖了一圈欸，我上辈子可能是养猪的，不是养猫的。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈哈哈，真的假的啦！妳到底都餵牠吃什麼，怎麼可以養成這樣。", thread: "大G" },
     ]},
-    { stage: 13, chat: "大G", id: "joke-vava-chubby", label: "而且我跟你說，感覺玩玩最近胖了一圈，我上輩子可能是養豬的……", nextStage: 14, lines: [
-      { sender: "我", body: "而且我跟你說，感覺玩玩最近胖了一圈欸，我上輩子可能是養豬的……", thread: "大G" },
-      { sender: "大G", body: "哈哈哈哈哈哈！真的假的啦！妳到底餵牠吃多少，怎麼把牠養得這麼澎皮啦！", thread: "大G" },
+    { stage: 13, chat: "大G", id: "defend-vava-cute", label: "明明就很可爱！而且它现在越来越会撒娇了。", nextStage: 14, lines: [
+      { sender: "我", body: "明明就很可爱！而且它现在越来越会撒娇了。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，牠本來就很會撒嬌啦，只是以前比較有個性，不太隨便理人。現在被妳照顧得這麼好，整隻都放鬆下來了。", thread: "大G" },
     ]},
     { stage: 14, chat: "大G", id: "defend-vava-cute", label: "哪有！牠明明就很可愛，而且現在超會撒嬌！", nextStage: 15, lines: [
       { sender: "我", body: "哪有！牠明明就很可愛，而且現在超會撒嬌！", thread: "大G" },
