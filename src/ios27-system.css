@@ -2103,3 +2103,63 @@
     grid-row: 4 / span 2 !important;
   }
 }
+
+/* Liquid-glass lock clock: oversized pearlescent bubble numerals. */
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block {
+  top: 76px !important;
+  left: 0 !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block .lock-unlock-hint {
+  margin: 0 0 2px !important;
+  color: rgba(255,255,255,.97) !important;
+  font-size: 17px !important;
+  line-height: 24px !important;
+  font-weight: 650 !important;
+  letter-spacing: -.3px !important;
+  text-shadow: 0 2px 12px rgba(18,31,65,.30), 0 0 2px rgba(255,255,255,.45) !important;
+}
+.phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
+  display: block !important;
+  width: 100% !important;
+  margin: -1px 0 0 !important;
+  padding: 0 3px 9px 0 !important;
+  box-sizing: border-box !important;
+  color: transparent !important;
+  background: linear-gradient(155deg,
+    #ffffff 0%,
+    #f4f8ff 17%,
+    #cbdcf8 34%,
+    #ffffff 48%,
+    #fff4d8 62%,
+    #d9e7ff 78%,
+    #ffffff 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-text-stroke: 1.15px rgba(255,255,255,.72) !important;
+  font-family: ui-rounded, "SF Pro Rounded", system-ui, sans-serif !important;
+  font-size: clamp(112px, 30vw, 138px) !important;
+  line-height: .96 !important;
+  font-weight: 260 !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: -8px !important;
+  filter:
+    drop-shadow(0 1px 0 rgba(255,255,255,.8))
+    drop-shadow(0 4px 2px rgba(78,102,153,.20))
+    drop-shadow(0 10px 13px rgba(20,31,61,.22)) !important;
+  text-shadow:
+    0 -1px 1px rgba(255,255,255,.55),
+    0 2px 0 rgba(255,255,255,.22),
+    0 0 18px rgba(226,238,255,.22) !important;
+  transform: scaleY(1.035);
+  transform-origin: center top;
+}
+@media (max-width: 380px) {
+  .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
+    font-size: clamp(104px, 29vw, 120px) !important;
+    letter-spacing: -7px !important;
+  }
+}
+
