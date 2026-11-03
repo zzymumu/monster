@@ -435,7 +435,6 @@ export function BilibiliSkin(p: Props) {
                 <img
                   src={activeConcert.cover}
                   alt={activeConcert.title + " 视频预览图"}
-                  referrerPolicy="no-referrer"
                   loading="eager"
                 />
                 <span className="bili-featured-play">▶</span>
@@ -463,8 +462,7 @@ export function BilibiliSkin(p: Props) {
                         src={video.cover}
                         alt={video.title + " 视频封面"}
                         loading="lazy"
-                        referrerPolicy="no-referrer"
-                      />
+                            />
                       <span className="bili-cover-play">▶</span>
                       <small>{video.duration}</small>
                     </span>
@@ -542,8 +540,7 @@ export function BilibiliSkin(p: Props) {
                       src={video.cover}
                       alt=""
                       loading="lazy"
-                      referrerPolicy="no-referrer"
-                    />
+                        />
                     <span>{video.title}</span>
                   </button>
                 ))}
