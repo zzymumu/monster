@@ -195,9 +195,9 @@ function PhoneRuntime({
   const [own, setOwn] = useState(() => initialRuntime(work));
   const [ready, setReady] = useState(creator || !!external);
   const [loadError, setLoadError] = useState("");
-  // A release-specific save key keeps every published test build independent.
-  const releaseId = new URLSearchParams(window.location.search).get("release") || "default";
-  const saveId = `${work.id}::${releaseId}`;
+  // One stable save slot per game/work. Deployments and release query strings
+  // must never fork or reset the player's local progress.
+  const saveId = work.id;
   useEffect(() => {
     const el = shell.current;
     if (!el) return;
@@ -237,11 +237,21 @@ function PhoneRuntime({
       .get(saveId)
       .then((saved) => {
         if (!active) return;
-        if (saved && saved.state.revision === work.updatedAt)
-          setOwn(saved.state);
-        else {
+        if (saved && saved.state.workId === work.id) {
+          // Keep story progress, chat history, choices, notifications and UI
+          // state across code/content deployments. Only migrate the revision.
+          const fresh = dispatch(work, initialRuntime(work), "start");
+          setOwn({
+            ...fresh,
+            ...saved.state,
+            workId: work.id,
+            revision: work.updatedAt,
+            ui: { ...fresh.ui, ...saved.state.ui },
+            messages: { ...fresh.messages, ...saved.state.messages },
+          });
+        } else {
           setOwn(dispatch(work, initialRuntime(work), "start"));
-          if (saved) setLoadError("作品已更新，已开始新的进度。");
+          if (saved) setLoadError("存档与当前作品不匹配，已创建新进度。");
         }
         setReady(true);
       })
@@ -255,10 +265,28 @@ function PhoneRuntime({
     };
   }, [work.id, work.updatedAt, saveId, creator, external]);
   useEffect(() => {
-    if (!creator && !external && ready)
-      void db.saves
-        .put({ id: saveId, state: own })
-        .catch(() => setLoadError("存档失败，请检查浏览器存储权限。"));
+    if (creator || external || !ready) return;
+    let active = true;
+    const persist = () => {
+      const snapshot = runtimeRef.current;
+      void db.saves.put({ id: saveId, state: snapshot }).catch(() => {
+        if (active) setLoadError("自动存档失败，请检查浏览器存储权限或导出备份。");
+      });
+    };
+    // Every meaningful runtime/UI/story update is persisted immediately.
+    persist();
+    // Also checkpoint when the page is backgrounded or about to close.
+    const checkpoint = () => persist();
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") checkpoint();
+    };
+    window.addEventListener("pagehide", checkpoint);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      active = false;
+      window.removeEventListener("pagehide", checkpoint);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [own, creator, work.id, saveId, external, ready]);
   useEffect(() => {
     if (creator || !ready) return;
