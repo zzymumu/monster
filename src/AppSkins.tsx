@@ -1762,7 +1762,12 @@ export function WeChatSkin(p: SkinProps) {
     const queuedLines: CatLine[] = [];
     for (const line of prepared.slice(immediateLines.length)) {
       if (line.sender === "我") break;
-      queuedLines.push(line);
+      queuedLines.push({
+        ...line,
+        // One stable ID per incoming line/stage prevents duplicate delivery
+        // if the choice handler or phone-level queue effect is replayed.
+        id: line.id || "cat-rescue-story-" + branch + "-" + nextStage + "-" + queuedLines.length,
+      });
     }
     const immediateItems = immediateLines.map((line, index) => makeItem({
       id: "cat-rescue-" + Date.now() + "-" + index + "-" + Math.random().toString(36).slice(2, 7),
