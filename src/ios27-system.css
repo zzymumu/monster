@@ -2104,70 +2104,78 @@
   }
 }
 
-/* Reference-matched lock clock: inflated translucent glass numerals. */
+/* Exact warm champagne-glass lock clock based on the user's latest reference. */
 .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block {
-  top: 76px !important;
+  top: 64px !important;
   left: 0 !important;
+  right: 0 !important;
   width: 100% !important;
   text-align: center !important;
 }
 .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block .lock-unlock-hint {
-  margin: 0 0 1px !important;
+  display: block !important;
+  margin: 0 0 3px !important;
   color: rgba(255,255,255,.98) !important;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif !important;
-  font-size: 17px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif !important;
+  font-size: 18px !important;
   line-height: 25px !important;
-  font-weight: 600 !important;
+  font-weight: 650 !important;
   letter-spacing: -.35px !important;
-  text-shadow: 0 1px 3px rgba(24,35,62,.28), 0 0 10px rgba(255,255,255,.22) !important;
+  text-shadow: 0 1px 2px rgba(73,55,29,.24), 0 0 8px rgba(255,255,255,.24) !important;
 }
 .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
   display: block !important;
   width: 100% !important;
   margin: 0 !important;
-  padding: 0 4px 12px 0 !important;
+  padding: 0 5px 10px 0 !important;
   box-sizing: border-box !important;
-  color: rgba(255,255,255,.78) !important;
+  color: rgba(255,246,220,.94) !important;
   background: linear-gradient(180deg,
-    rgba(255,255,255,.94) 0%,
-    rgba(247,250,255,.82) 13%,
-    rgba(218,231,251,.64) 28%,
-    rgba(178,202,239,.48) 43%,
-    rgba(255,255,255,.86) 51%,
-    rgba(255,248,232,.72) 65%,
-    rgba(220,231,249,.60) 82%,
-    rgba(255,255,255,.90) 100%) !important;
+    #fffdf2 0%,
+    #fff4d9 12%,
+    #f5e4bf 27%,
+    #dfc99f 42%,
+    #fff7e4 52%,
+    #f3dfb4 66%,
+    #d9c294 81%,
+    #fff5db 94%,
+    #fffdf3 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 2.15px rgba(255,255,255,.86) !important;
+  -webkit-text-stroke: 1.45px rgba(255,250,231,.92) !important;
   paint-order: stroke fill;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif !important;
-  font-size: clamp(146px, 42vw, 184px) !important;
-  line-height: .96 !important;
-  font-weight: 400 !important;
+  font-size: clamp(102px, 28.5vw, 122px) !important;
+  line-height: .98 !important;
+  font-weight: 500 !important;
   font-variant-numeric: tabular-nums !important;
-  letter-spacing: -8px !important;
+  letter-spacing: -5.5px !important;
   filter:
-    drop-shadow(0 -2px 1px rgba(255,255,255,.96))
-    drop-shadow(0 1px 1px rgba(255,255,255,.72))
-    drop-shadow(0 4px 2px rgba(137,164,207,.34))
-    drop-shadow(0 8px 8px rgba(18,31,59,.22)) !important;
+    drop-shadow(0 -1px 1px rgba(255,255,255,.92))
+    drop-shadow(0 1px 1px rgba(255,249,227,.76))
+    drop-shadow(0 3px 2px rgba(174,143,91,.42))
+    drop-shadow(0 6px 6px rgba(69,52,28,.18)) !important;
   text-shadow:
-    0 -2px 1px rgba(255,255,255,.98),
-    1px 0 1px rgba(255,255,255,.82),
-    -1px 1px 1px rgba(255,255,255,.62),
-    0 2px 0 rgba(166,190,225,.52),
-    0 4px 3px rgba(104,130,176,.34),
-    0 0 16px rgba(231,241,255,.32) !important;
+    0 -1px 1px rgba(255,255,255,.96),
+    1px 0 1px rgba(255,255,255,.76),
+    -1px 1px 1px rgba(255,255,255,.72),
+    0 1px 0 rgba(179,151,104,.52),
+    0 3px 2px rgba(156,126,78,.34),
+    0 0 12px rgba(255,244,214,.26) !important;
   transform: none !important;
   transform-origin: center top;
 }
 @media (max-width: 380px) {
   .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block > h1 {
-    font-size: clamp(132px, 40vw, 158px) !important;
-    letter-spacing: -7px !important;
-    -webkit-text-stroke-width: 1.9px !important;
+    font-size: clamp(96px, 27vw, 108px) !important;
+    letter-spacing: -5px !important;
+    -webkit-text-stroke-width: 1.3px !important;
+  }
+}
+@media (max-height: 760px) {
+  .phone-shell.ios27 .lock-screen.device-lock:not(.pin-open) .lock-clock-block {
+    top: 56px !important;
   }
 }
 
