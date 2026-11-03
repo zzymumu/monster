@@ -242,7 +242,7 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
     })
     .map(({ item }) => item);
 }
-type CatLine = { sender: "我" | "西蓝花" | "大G"; body: string; thread?: "西蓝花" | "大G"; kind?: Item["kind"]; media?: string; meta?: Record<string, string> };
+type CatLine = { id?: string; sender: "我" | "西蓝花" | "大G"; body: string; thread?: "西蓝花" | "大G"; kind?: Item["kind"]; media?: string; meta?: Record<string, string> };
 type CatChoice = {
   id: string;
   label: string;
