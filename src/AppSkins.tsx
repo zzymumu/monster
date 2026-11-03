@@ -1544,14 +1544,13 @@ export function WeChatSkin(p: SkinProps) {
     // Hand the opener to the phone-level story queue. It persists the message,
     // creates the top WeChat banner when the user is elsewhere, and routes the
     // banner tap to the correct DaG conversation.
-    setPendingCatLines((current) => current.some((line) => line.id === "vava-play-dag-opener")
-      ? current
-      : [...current, {
-          id: "vava-play-dag-opener",
-          sender: "大G",
-          body: "欸，Vava是你家的原住民喔？玩玩最近還好嗎？",
-          thread: "大G",
-        }]);
+    setPendingCatLines((current) => current.some((line) =>
+      line.sender === "大G" && line.thread === "大G" && line.body === "欸，Vava是你家的原住民喔？玩玩最近還好嗎？"
+    ) ? current : [...current, {
+      sender: "大G",
+      body: "欸，Vava是你家的原住民喔？玩玩最近還好嗎？",
+      thread: "大G",
+    }]);
     setVavaPlayStage(0);
   }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist]);
   const updateMomentCover = (file?: File) => {
