@@ -64,6 +64,13 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(shouldAutoReturnToBroccoli(66, 0, "大G")).toBe(false);
     expect(shouldAutoReturnToBroccoli(65, 1, "")).toBe(false);
     expect(shouldAutoReturnToBroccoli(66, 0, "西蓝花")).toBe(false);
+    // The autograph and return-date stages are Broccoli dialogue. When the
+    // branch is reached from DaG, switch contacts after queued replies drain.
+    for (const stage of [88, 89, 90, 91, 92, 93, 94, 95, 96]) {
+      expect(shouldAutoReturnToBroccoli(stage, 0, "大G")).toBe(true);
+      expect(shouldAutoReturnToBroccoli(stage, 0, "西蓝花")).toBe(false);
+      expect(shouldAutoReturnToBroccoli(stage, 1, "大G")).toBe(false);
+    }
   });
 
   it("keeps the remaining rescue choices in the Broccoli thread without a return-home branch", () => {
