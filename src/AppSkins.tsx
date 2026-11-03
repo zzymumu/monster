@@ -1580,7 +1580,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "那你快去洗澡休息吧！晚安，明天再聊。", thread: "大G" },
       { sender: "大G", body: "好啦，晚安。妳也早點睡，明天再聊。", thread: "大G" },
     ]},
-    { stage: 35, chat: "大G", id: "ask-arrived-home", label: "（隔天）你到台北了吗？", nextStage: 36, lines: [
+    { stage: 35, chat: "大G", id: "ask-arrived-home", label: "（今天早上）你到台北了吗？", nextStage: 36, lines: [
       { sender: "我", body: "早啊！你到台北了嗎？", thread: "大G" },
       { sender: "大G", body: "剛到台北！一下車就覺得好熱喔，外面真的又悶又熱。", thread: "大G" },
     ]},
