@@ -333,6 +333,7 @@ export function BilibiliSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "首页");
   const [category, setCategory] = useState("推荐");
   const [featuredBvid, setFeaturedBvid] = useState("BV1xNMvzLE3v");
+  const [playerOpen, setPlayerOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [covers, setCovers] = useState<Record<string, string>>({});
   const concerts = [
@@ -366,7 +367,7 @@ export function BilibiliSkin(p: Props) {
   const list = tab === "历史" ? items.filter((item) => item.folder === "历史") : tab === "动态" ? items.filter((item) => item.folder === "动态") : items;
   return (
     <div className="catalog-skin bilibili-ui">
-      {showSplash && <div className="bili-splash"><img className="bili-splash-image" src="/assets/bilibili-splash.jpg" alt="哔哩哔哩开屏" /><span className="bili-splash-wordmark">bilibili</span></div>}
+      {showSplash && <div className="bili-splash"><img className="bili-splash-image" src="/assets/bilibili-splash.jpg" alt="哔哩哔哩开屏" onError={(e) => { e.currentTarget.style.display = "none"; }} /><span className="bili-splash-wordmark">bilibili</span></div>}
       <div className="bili-topbar">
         <Avatar name={p.owner || "我"} />
         <SearchBox value={q} set={setQ} />
@@ -380,7 +381,7 @@ export function BilibiliSkin(p: Props) {
       </div>
       <div className="catalog-scroll">
         {tab === "首页" && <>
-          <section className="bili-featured-video">
+          {playerOpen && <section className="bili-featured-video">
             <div className="bili-featured-player">
               <iframe key={activeConcert.bvid} src={"https://player.bilibili.com/player.html?bvid=" + activeConcert.bvid + "&autoplay=0&high_quality=1"} title={activeConcert.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
             </div>
@@ -389,11 +390,11 @@ export function BilibiliSkin(p: Props) {
               <span>相信音乐 · 五月天演唱会 · {activeConcert.duration}</span>
               <a href={"https://www.bilibili.com/video/" + activeConcert.bvid + "/"} target="_blank" rel="noreferrer">在哔哩哔哩打开原视频 ↗</a>
             </div>
-          </section>
+          </section>}
           <section className="bili-concert-shelf">
             <h3>相信音乐 · 五月天演唱会</h3>
             <div className="bili-concert-grid">
-              {concerts.map((video) => <button key={video.bvid} className="bili-video-card" onClick={() => setFeaturedBvid(video.bvid)}>
+              {concerts.map((video) => <button key={video.bvid} className="bili-video-card" onClick={() => { setFeaturedBvid(video.bvid); setPlayerOpen(true); }}>
                 <span className="bili-video-cover">
                   <img src={covers[video.bvid] || `https://api.bilibili.com/x/web-interface/view?bvid=${video.bvid}`} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                   <span className="bili-cover-play">▶</span><small>{video.duration}</small>
