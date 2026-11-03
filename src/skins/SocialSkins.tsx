@@ -328,7 +328,7 @@ export function FacebookSkin(p: Props) {
 export function RedbookSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "发现");
   const [category, setCategory] = useState("推荐");
-  const [location, setLocation] = useState("北京");
+  const location = "北京";
   const [showSearch, setShowSearch] = useState(false);
   const [bottomTab, setBottomTab] = useState("首页");
   const [sortBy, setSortBy] = useState("推荐");
