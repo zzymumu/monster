@@ -639,3 +639,129 @@
   border-color: #343539;
 }
 .dark-phone.ios18 .wechat-ui .wx-contact-shortcuts button { color: #f2f2f4; }
+
+
+/* Photos app: immersive native-style photo viewer and library chrome. */
+.ios27-photos .photos-title-row {
+  padding: 8px 20px 12px;
+  min-height: 82px;
+}
+.ios27-photos .photos-title-row h1 {
+  font-size: 35px;
+  letter-spacing: -1.1px;
+  font-weight: 760;
+}
+.ios27-photos .photos-library-label {
+  font-size: 12px;
+  color: #8b8c94;
+  font-weight: 650;
+}
+.ios27-photos .photo-mosaic {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  padding: 0 2px;
+}
+.ios27-photos .photo-mosaic > button {
+  aspect-ratio: 1;
+  background: #e5e6eb;
+  border-radius: 1px;
+}
+.ios27-photos .photo-mosaic img {
+  transition: transform .18s ease;
+}
+.ios27-photos .photo-mosaic > button:active img {
+  transform: scale(.97);
+}
+.ios27-photos .photos-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  background: #050505;
+  color: #fff;
+}
+.ios27-photos .photos-viewer-top {
+  flex: 0 0 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(env(safe-area-inset-top), 10px) 14px 8px;
+  background: rgba(12,12,14,.94);
+}
+.ios27-photos .photos-viewer-top button,
+.ios27-photos .photos-viewer-bottom button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255,255,255,.13);
+}
+.ios27-photos .photos-viewer-top > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.ios27-photos .photos-viewer-top strong {
+  font-size: 14px;
+  font-weight: 650;
+}
+.ios27-photos .photos-viewer-top small {
+  font-size: 11px;
+  color: rgba(255,255,255,.68);
+}
+.ios27-photos .photos-viewer-image {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #050505;
+}
+.ios27-photos .photos-viewer-image img,
+.ios27-photos .photos-viewer-image video {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ios27-photos .photos-viewer-info {
+  padding: 12px 18px 4px;
+  background: #111;
+  color: #fff;
+}
+.ios27-photos .photos-viewer-info strong {
+  font-size: 14px;
+}
+.ios27-photos .photos-viewer-info p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: rgba(255,255,255,.82);
+  line-height: 1.45;
+}
+.ios27-photos .photos-viewer-info small {
+  font-size: 10px;
+  color: rgba(255,255,255,.5);
+}
+.ios27-photos .photos-viewer-bottom {
+  flex: 0 0 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 5px 14px max(env(safe-area-inset-bottom), 8px);
+  background: rgba(12,12,14,.96);
+}
+.ios27-photos .photos-viewer-bottom span {
+  font-size: 12px;
+  color: rgba(255,255,255,.68);
+  font-variant-numeric: tabular-nums;
+}
+.ios27-photos .photos-viewer-bottom button:disabled {
+  opacity: .25;
+}
