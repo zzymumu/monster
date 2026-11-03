@@ -241,8 +241,6 @@ export function NeteaseSkin(p: Props) {
   );
 }
 export function YouTubeSkin(p: Props) {
-  const channelUrl = "https://www.youtube.com/@monsterbalaja531";
-  const videosUrl = channelUrl + "/videos";
   const uploadsPlaylist = "UU5ieWR5T4WulmNLXQ8-wiDw";
   const [tab, setTab] = useSkinState<string>(p, "monster-youtube-tab", "首页");
   const [query, setQuery] = useSkinState<string>(p, "monster-youtube-search", "");
