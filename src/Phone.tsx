@@ -633,7 +633,7 @@ function PhoneRuntime({
                   ]}
                   creator={creator}
                   state={s}
-                  virtualTime={virtualTime}
+                  virtualTime={displayTime}
                   onRead={(id) => {
                     event("read", id);
                     if (app === "wechat") markWeChatThreadRead(id);
@@ -1193,7 +1193,7 @@ function AppContent({
             <Skin
               appId={app.id}
               owner={work.phone.owner}
-              virtualTime={displayTime}
+              virtualTime={virtualTime}
               ui={state.ui?.[app.id]}
               onUi={creator ? undefined : onUi}
               name={name}
