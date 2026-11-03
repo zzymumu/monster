@@ -325,7 +325,11 @@ export function YouTubeSkin(p: Props) {
           <div className="youtube-player-modal-bottom">正在 App 内播放</div>
         </div>
       </div>}
-      <Tabs tabs={["首页", "Shorts", "我"]} value={tab === "全部视频" ? "首页" : tab} set={v => setTab(v === "首页" ? "全部视频" : v)} icons={[<Home />, <Video />, <User />]export function BilibiliSkin(p: Props) {
+      <Tabs tabs={["首页", "Shorts", "我"]} value={tab === "全部视频" ? "首页" : tab} set={v => setTab(v === "首页" ? "全部视频" : v)} icons={[<Home />, <Video />, <User />]} />
+    </div>
+  );
+}
+export function BilibiliSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "首页");
   const [category, setCategory] = useState("推荐");
   const [featuredBvid, setFeaturedBvid] = useState("BV1xNMvzLE3v");
@@ -409,9 +413,6 @@ export function YouTubeSkin(p: Props) {
         {tab === "首页" && <Empty items={list} />}
       </div>
       <Tabs tabs={["首页", "动态", "历史"]} value={tab} set={setTab} icons={[<Home />, <MessageCircle />, <User />]} />
-    </div>
-  );
-}} />
     </div>
   );
 }
