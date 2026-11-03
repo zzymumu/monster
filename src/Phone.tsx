@@ -634,7 +634,7 @@ function PhoneRuntime({
                   creator={creator}
                   state={s}
                   virtualTime={displayTime}
-                  virtualDate={virtualDate}
+                  virtualDate={systemDate}
                   onRead={(id) => {
                     event("read", id);
                     if (app === "wechat") markWeChatThreadRead(id);
@@ -1197,7 +1197,7 @@ function AppContent({
               appId={app.id}
               owner={work.phone.owner}
               virtualTime={virtualTime}
-              virtualDate={systemDate}
+              virtualDate={virtualDate}
               ui={state.ui?.[app.id]}
               onUi={creator ? undefined : onUi}
               name={name}
