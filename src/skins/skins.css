@@ -3212,6 +3212,7 @@
   padding: 8px 3px;
 }
 .bilibili-ui {
+  position: relative;
   --app-accent: #e879a5;
   background: #fff;
   color: #222;
