@@ -1254,7 +1254,7 @@ export function WeChatSkin(p: SkinProps) {
   const isCurrentChoiceThread =
     (isBroccoliThread && choiceThread === "西蓝花") ||
     (isMonsterThread && choiceThread === "大G");
-  const catChoices = !vavaPlayActive
+  const catChoices = vavaPlayStage >= 0 ? [] :
     // Stage 53 is the explicit DaG follow-up after "妳？？？怎麼啦？".
     // Keep its two replies visible in DaG's own chat even if an unrelated
     // stale queue entry remains from the previous contact.
