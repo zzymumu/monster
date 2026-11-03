@@ -1217,6 +1217,19 @@ export function WeChatSkin(p: SkinProps) {
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2 }));
   }, [pickupMessagesWereMigrated, catRescue.stage, catRescue.messages]);
   useEffect(() => {
+    // Existing testers may already have a saved stage 38 from the build that
+    // skipped the missing Broccoli reassurance exchange. Resume that segment
+    // once for those saves; fresh runs reach stage 38 only after stage 91 has
+    // delivered the same exchange, so they are left untouched.
+    if (catRescue.stage !== 38) return;
+    const hasReassuranceExchange = catRescue.messages.some((item) =>
+      item.body.includes("先讓我尖叫三秒") ||
+      item.body.includes("我現在整個人都在抖")
+    );
+    if (hasReassuranceExchange) return;
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: 91 }));
+  }, [catRescue.stage, catRescue.messages.length]);
+  useEffect(() => {
     // Repair saves made by the broken build where the player had already sent
     // "我是你爸爸" but the three incoming reactions and reply choices vanished.
     if (catRescue.stage !== 17 || !hasPrankPath) return;
