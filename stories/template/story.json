@@ -1009,7 +1009,7 @@
     },
     {
       "id": "broccoli-cat-reveal",
-      "label": "讀到西藍花認出玩玩",
+      "label": "读到西蓝花认出玩玩",
       "type": "choice",
       "event": "read",
       "target": "wx-broccoli-18",
@@ -1026,7 +1026,7 @@
     },
     {
       "id": "branch-take-home",
-      "label": "選擇先把玩玩帶回家",
+      "label": "先把玩玩带回家",
       "type": "action",
       "event": "choose",
       "target": "branch-take-home",
@@ -1073,7 +1073,7 @@
     },
     {
       "id": "branch-listen-home",
-      "label": "選擇聽西藍花勸先回家，後悔再折返",
+      "label": "听西蓝花劝先回家，后悔再折返",
       "type": "action",
       "event": "choose",
       "target": "branch-listen-home",
@@ -1215,24 +1215,24 @@
     },
     {
       "id": "cat-tag-choice",
-      "label": "發現項圈上的主人姓名",
+      "label": "决定如何联系项圈上的主人",
       "type": "choice",
-      "event": [
-        "call-owner",
-        "add-owner"
-      ],
+      "event": "",
       "target": "",
       "conditions": [],
       "logic": "and",
       "actions": [],
-      "next": "",
+      "next": [
+        "call-owner",
+        "add-owner"
+      ],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
       "id": "call-owner",
-      "label": "先打電話，無人接聽後改加微信",
+      "label": "先打电话，没人接后改加微信",
       "type": "action",
       "event": "choose",
       "target": "call-owner",
@@ -1299,7 +1299,7 @@
     },
     {
       "id": "add-owner",
-      "label": "直接用聯絡資訊加微信",
+      "label": "直接通过联系方式加微信",
       "type": "action",
       "event": "choose",
       "target": "add-owner",
@@ -1366,23 +1366,23 @@
     },
     {
       "id": "big-g-start-choice",
-      "label": "確認主人後加入大G微信",
+      "label": "进入大G微信对话",
       "type": "choice",
-      "event": [
-        "big-g-open"
-      ],
+      "event": "",
       "target": "",
       "conditions": [],
       "logic": "and",
       "actions": [],
-      "next": "",
+      "next": [
+        "big-g-open"
+      ],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
       "id": "big-g-open",
-      "label": "打開大G對話",
+      "label": "打开大G对话",
       "type": "action",
       "event": "choose",
       "target": "big-g-open",
@@ -1494,23 +1494,23 @@
     },
     {
       "id": "big-g-dinner-choice",
-      "label": "大G答謝並提出請吃飯",
+      "label": "结束与大G的对话，回到西蓝花",
       "type": "choice",
-      "event": [
-        "jump-broccoli"
-      ],
+      "event": "",
       "target": "",
       "conditions": [],
       "logic": "and",
       "actions": [],
-      "next": "",
+      "next": [
+        "jump-broccoli"
+      ],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
       "id": "jump-broccoli",
-      "label": "結束大G對話後回到西藍花",
+      "label": "切换回西蓝花，分享请吃饭的消息",
       "type": "action",
       "event": "choose",
       "target": "jump-broccoli",
@@ -1597,23 +1597,23 @@
     },
     {
       "id": "dinner-reaction-choice",
-      "label": "告訴西藍花大G答應請吃飯",
+      "label": "告诉西蓝花大G答应请吃饭",
       "type": "choice",
-      "event": [
-        "dinner-ask-why"
-      ],
+      "event": "",
       "target": "",
       "conditions": [],
       "logic": "and",
       "actions": [],
-      "next": "",
+      "next": [
+        "dinner-ask-why"
+      ],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
       "id": "dinner-ask-why",
-      "label": "西藍花追問怎麼會請吃飯",
+      "label": "先回答西蓝花怎么会请吃饭",
       "type": "action",
       "event": "choose",
       "target": "dinner-ask-why",
@@ -1634,7 +1634,40 @@
           "type": "unlock",
           "key": "wx-broccoli-46",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "dinner-forget-choice"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-forget-choice",
+      "label": "解释自己只是随口开玩笑，没想到他答应",
+      "type": "choice",
+      "event": "",
+      "target": "",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "dinner-forget-reply"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "dinner-forget-reply",
+      "label": "西蓝花连续尖叫并追问吃什么、归期",
+      "type": "action",
+      "event": "choose",
+      "target": "dinner-forget-reply",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-47",
@@ -1649,40 +1682,7 @@
           "type": "unlock",
           "key": "wx-broccoli-49",
           "value": true
-        }
-      ],
-      "next": [
-        "dinner-forget-choice"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "dinner-forget-choice",
-      "label": "解釋自己只是隨口開玩笑",
-      "type": "choice",
-      "event": [
-        "dinner-forget-reply"
-      ],
-      "target": "",
-      "conditions": [],
-      "logic": "and",
-      "actions": [],
-      "next": "",
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "dinner-forget-reply",
-      "label": "西藍花瘋狂尖叫並追問吃什麼",
-      "type": "action",
-      "event": "choose",
-      "target": "dinner-forget-reply",
-      "conditions": [],
-      "logic": "and",
-      "actions": [
+        },
         {
           "type": "unlock",
           "key": "wx-broccoli-50",
@@ -1732,7 +1732,7 @@
   ],
   "tests": [
     {
-      "name": "保留原有预览校验路径",
+      "name": "原有预览校验路径",
       "steps": [
         {
           "event": "callEnded",
@@ -1743,7 +1743,7 @@
       "expectUnlocked": []
     },
     {
-      "name": "西蓝花玩玩支线与请吃饭对话可达",
+      "name": "西蓝花猫咪及请吃饭剧情分支可达",
       "steps": [
         {
           "event": "read",
@@ -1753,25 +1753,13 @@
           "choose": "branch-listen-home"
         },
         {
-          "choose": "big-g-start-choice"
-        },
-        {
           "choose": "big-g-open"
-        },
-        {
-          "choose": "big-g-dinner-choice"
         },
         {
           "choose": "jump-broccoli"
         },
         {
-          "choose": "dinner-reaction-choice"
-        },
-        {
           "choose": "dinner-ask-why"
-        },
-        {
-          "choose": "dinner-forget-choice"
         },
         {
           "choose": "dinner-forget-reply"
