@@ -1617,6 +1617,41 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 110, chat: "西蓝花", id: "bestie-begging-goodbye", label: "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！", nextStage: -1, lines: [
       { sender: "我", body: "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！", thread: "西蓝花" },
     ]},
+    { stage: 111, chat: "大G", id: "after-dinner-arrived-home", label: "剛到！玩玩還好嗎？", nextStage: 112, lines: [
+      { sender: "我", body: "剛到！玩玩還好嗎？", thread: "大G" },
+      { sender: "大G", body: "很好啦，能吃能喝的。對了，牠在妳家吃的是哪一款貓糧？感覺很不錯的樣子。", thread: "大G" },
+    ]},
+    { stage: 112, chat: "大G", id: "recommend-orijen-chicken", label: "渴望啦，就是很普通的那個雞肉味。", nextStage: 113, lines: [
+      { sender: "我", body: "渴望啦，就是很普通的那個雞肉味。", thread: "大G" },
+      { sender: "大G", body: "好哦，那我去網購一點好了～", thread: "大G" },
+    ]},
+    { stage: 113, chat: "大G", id: "offer-cat-food-shop", label: "嗯呐，我有一個常買的店家可以推薦給你。", nextStage: 114, lines: [
+      { sender: "我", body: "嗯呐，我有一個常買的店家可以推薦給你。", thread: "大G" },
+      { sender: "大G", body: "那就太好了！", thread: "大G" },
+    ]},
+    { stage: 114, chat: "大G", id: "ask-about-a-ma-hot-stir-fry", label: "對了，你覺得阿嬤熱炒好吃嗎？", nextStage: 115, lines: [
+      { sender: "我", body: "對了，你覺得阿嬤熱炒好吃嗎？", thread: "大G" },
+      { sender: "大G", body: "好吃！就是人好多……", thread: "大G" },
+    ]},
+    { stage: 115, chat: "大G", id: "agree-hot-stir-fry-crowded", label: "對啊，網紅店真的沒辦法！還好我們去得還比較早。", nextStage: 116, lines: [
+      { sender: "我", body: "對啊，網紅店真的沒辦法！還好我們去得還比較早。", thread: "大G" },
+      { sender: "大G", body: "真的，妳家附近好吃的店好多，下次可以試試別的。", thread: "大G" },
+    ]},
+    { stage: 116, chat: "大G", id: "agree-try-another-restaurant", label: "好呀！", nextStage: 117, lines: [
+      { sender: "我", body: "好呀！", thread: "大G" },
+    ]},
+    { stage: 117, chat: "西蓝花", id: "tell-broccoli-next-restaurant", label: "怪獸說下次要跟我試試別的店！！", nextStage: 118, lines: [
+      { sender: "我", body: "怪獸說下次要跟我試試別的店！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？等一下，他是在約會嗎？？？", thread: "西蓝花" },
+    ]},
+    { stage: 118, chat: "西蓝花", id: "deny-monster-date", label: "不可能吧，他一個大明星，找我約會幹什麼？", nextStage: 119, lines: [
+      { sender: "我", body: "不可能吧，他一個大明星，找我約會幹什麼？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳不要急著否認啦！一般會主動說『下次再試試別家』，就是想跟妳再約下一次啊！這聽起來就很有意思欸。", thread: "西蓝花" },
+    ]},
+    { stage: 119, chat: "西蓝花", id: "explain-cat-food-gratitude", label: "萬一是因為我推薦了貓糧，他很感激呢！", nextStage: -1, lines: [
+      { sender: "我", body: "萬一是因為我推薦了貓糧，他很感激呢！", thread: "西蓝花" },
+      { sender: "大G", body: "我就是想謝謝妳一下，妳給我推薦的貓糧啦。", thread: "大G" },
+    ]},
     { stage: 46, chat: "西蓝花", id: "private-room-and-queue", label: "好像也是……那到时候我提前去排队好了！不过我又开始烦恼明天穿什么了。", nextStage: 47, lines: [
       { sender: "我", body: "好像也是欸……那就找個包廂好了！人多的話我到時候提前去排隊，先把位置弄好。可是……我現在又開始煩惱明天到底要穿什麼了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈妳也太忙了吧，餐廳都還沒吃到，現在先煩惱穿搭喔？", thread: "西蓝花" },
@@ -2223,7 +2258,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {!postPickupGoodbyeSent && pendingCatLines.length === 0 && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {(!postPickupGoodbyeSent || returnDinnerStage >= 111) && pendingCatLines.length === 0 && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
