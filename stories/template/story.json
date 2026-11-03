@@ -279,7 +279,7 @@
         },
         {
           "id": "wx-broccoli-19",
-          "body": "玩玩？？？怪兽家的猫就叫玩玩啊！！！真的假的！！！你确定是怪兽家的玩玩？？？",
+          "body": "玩玩？？？怪兽的猫就叫玩玩啊！！！真的假的！！！",
           "senderId": "broccoli",
           "time": "2026-11-02 09:27",
           "hidden": true,
@@ -291,6 +291,18 @@
         },
         {
           "id": "wx-broccoli-20",
+          "body": "啊啊啊啊啊啊救命！！！这是什么神仙运气啊！！！怎么随便捡只猫都能捡到怪兽家的玩玩！！！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 09:27",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-21",
           "body": "对啊我知道所以我才来找你啊啊啊啊！他真的是怪兽啊啊啊啊啊啊啊啊！我靠我靠我靠我这什么神仙运气啊！！！",
           "senderId": "owner",
           "time": "2026-11-02 09:28",
@@ -302,8 +314,20 @@
           }
         },
         {
-          "id": "wx-broccoli-21",
-          "body": "啊啊啊啊啊啊啊啊？？？？你先冷静！！！我现在也要尖叫了！！！",
+          "id": "wx-broccoli-22",
+          "body": "我现在整个人都在抖，我真的不敢相信欸！我只是出门捡到一只猫，怎么会直接捡到怪兽家的猫啦！！",
+          "senderId": "owner",
+          "time": "2026-11-02 09:28",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "玩玩与温尚翊",
+            "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-broccoli-23",
+          "body": "先让我尖叫三秒！！！但妳先深呼吸，别吓到玩玩啦！",
           "senderId": "broccoli",
           "time": "2026-11-02 09:29",
           "hidden": true,
@@ -314,70 +338,10 @@
           }
         },
         {
-          "id": "wx-broccoli-22",
-          "body": "等一下，你先跟我说，玩玩现在还在你旁边吗？你有没有看清楚它的项圈？",
-          "senderId": "broccoli",
-          "time": "2026-11-02 09:30",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-64",
-          "body": "你真的要把玩玩带回家？至少先带它去医院检查一下！",
-          "senderId": "broccoli",
-          "time": "2026-11-02 09:30",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-23",
-          "body": "还在！我不敢走，我怕它跑掉！我刚刚才看到它项圈上好像有牌子！",
-          "senderId": "owner",
-          "time": "2026-11-02 09:31",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-65",
-          "body": "好啦好啦，我答应你，先带玩玩去医院检查。",
-          "senderId": "owner",
-          "time": "2026-11-02 09:31",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
           "id": "wx-broccoli-24",
-          "body": "先不要急着把它抱走啦！你先看看周围有没有人，确认一下它是不是走失了。",
+          "body": "先等等！！！妳先不要一激动就全招了啦！他现在还不知道妳认出他了吧？",
           "senderId": "broccoli",
-          "time": "2026-11-02 09:32",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-66",
-          "body": "这才对嘛！它的健康最重要，别忘记跟我说检查结果。",
-          "senderId": "broccoli",
-          "time": "2026-11-02 09:32",
+          "time": "2026-11-02 09:29",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -387,21 +351,9 @@
         },
         {
           "id": "wx-broccoli-25",
-          "body": "你先听我的，别一时冲动把它带回家。先回去冷静一下，好不好？",
-          "senderId": "broccoli",
-          "time": "2026-11-02 09:33",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-67",
-          "body": "我知道，我会先照顾好它，再联系主人。",
+          "body": "对啊，他应该还以为我只是捡到猫、照着名牌联络他的路人而已……",
           "senderId": "owner",
-          "time": "2026-11-02 09:33",
+          "time": "2026-11-02 09:30",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -411,9 +363,9 @@
         },
         {
           "id": "wx-broccoli-26",
-          "body": "好啦……我先回家。可是我真的一直在想它。",
-          "senderId": "owner",
-          "time": "2026-11-02 09:34",
+          "body": "那就先自然一点啊！先把玩玩照顾好，等他回来接猫再看情况。这种事慢慢来比较有趣！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 09:31",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -423,9 +375,9 @@
         },
         {
           "id": "wx-broccoli-27",
-          "body": "不然我们先聊点别的！你今天不是还有事情要忙吗？",
+          "body": "对！就当作普通失主联络，别突然把人家吓到。妳有新消息一定要第一时间跟我说！",
           "senderId": "broccoli",
-          "time": "2026-11-02 09:35",
+          "time": "2026-11-02 09:32",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -435,9 +387,9 @@
         },
         {
           "id": "wx-broccoli-28",
-          "body": "有啦有啦，我刚刚还在看五月天的视频，完全没办法专心。",
+          "body": "知道啦！我先回去看看玩玩，晚点再跟你说。",
           "senderId": "owner",
-          "time": "2026-11-02 09:36",
+          "time": "2026-11-02 09:33",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -447,43 +399,7 @@
         },
         {
           "id": "wx-broccoli-29",
-          "body": "哈哈哈哈哈你真的没救了，先去吃点东西啦！",
-          "senderId": "broccoli",
-          "time": "2026-11-02 09:37",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-30",
-          "body": "不行，我还是放心不下玩玩……我想回去看看它。",
-          "senderId": "owner",
-          "time": "2026-11-02 09:38",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-31",
-          "body": "那你小心一点！如果它还在附近，先确认项圈和主人信息。",
-          "senderId": "broccoli",
-          "time": "2026-11-02 09:39",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-32",
-          "body": "我回来了！！！它真的还在！！！",
+          "body": "等一下……牌子上写着：主人是温尚翊。",
           "senderId": "owner",
           "time": "2026-11-02 09:40",
           "hidden": true,
@@ -494,8 +410,8 @@
           }
         },
         {
-          "id": "wx-broccoli-33",
-          "body": "你看吧！！！我就说先别急！！！快看看牌子上写什么！",
+          "id": "wx-broccoli-30",
+          "body": "温尚翊？？？？？？",
           "senderId": "broccoli",
           "time": "2026-11-02 09:41",
           "hidden": true,
@@ -506,9 +422,9 @@
           }
         },
         {
-          "id": "wx-broccoli-34",
-          "body": "等一下……牌子上写着：主人是温尚翊。",
-          "senderId": "owner",
+          "id": "wx-broccoli-31",
+          "body": "温尚翊？？啊？？啊？？？你确定你没看错？？？",
+          "senderId": "broccoli",
           "time": "2026-11-02 09:42",
           "hidden": true,
           "meta": {
@@ -518,9 +434,9 @@
           }
         },
         {
-          "id": "wx-broccoli-35",
-          "body": "温尚翊？？？？？？",
-          "senderId": "broccoli",
+          "id": "wx-broccoli-32",
+          "body": "我真的看了三遍！就是温尚翊！",
+          "senderId": "owner",
           "time": "2026-11-02 09:43",
           "hidden": true,
           "meta": {
@@ -530,8 +446,8 @@
           }
         },
         {
-          "id": "wx-broccoli-36",
-          "body": "温尚翊？？啊？？啊？？？你确定你没看错？？？",
+          "id": "wx-broccoli-33",
+          "body": "先等等，会不会只是同名？温尚翊也不是只有一个吧！！！",
           "senderId": "broccoli",
           "time": "2026-11-02 09:44",
           "hidden": true,
@@ -542,8 +458,8 @@
           }
         },
         {
-          "id": "wx-broccoli-37",
-          "body": "我真的看了三遍！就是温尚翊！",
+          "id": "wx-broccoli-34",
+          "body": "可是它真的叫玩玩……而且牌子上还有联系方式。",
           "senderId": "owner",
           "time": "2026-11-02 09:45",
           "hidden": true,
@@ -554,8 +470,8 @@
           }
         },
         {
-          "id": "wx-broccoli-38",
-          "body": "先等等，会不会只是同名？温尚翊也不是只有一个吧！！！",
+          "id": "wx-broccoli-35",
+          "body": "那你先打电话问问看！不要自己吓自己！",
           "senderId": "broccoli",
           "time": "2026-11-02 09:46",
           "hidden": true,
@@ -566,8 +482,8 @@
           }
         },
         {
-          "id": "wx-broccoli-39",
-          "body": "可是它真的叫玩玩……而且牌子上还有联系方式。",
+          "id": "wx-broccoli-36",
+          "body": "我打了……没有人接。",
           "senderId": "owner",
           "time": "2026-11-02 09:47",
           "hidden": true,
@@ -578,8 +494,8 @@
           }
         },
         {
-          "id": "wx-broccoli-40",
-          "body": "那你先打电话问问看！不要自己吓自己！",
+          "id": "wx-broccoli-37",
+          "body": "那看看有没有微信可以加！先确认是不是本人！",
           "senderId": "broccoli",
           "time": "2026-11-02 09:48",
           "hidden": true,
@@ -590,34 +506,10 @@
           }
         },
         {
-          "id": "wx-broccoli-41",
-          "body": "我打了……没有人接。",
-          "senderId": "owner",
-          "time": "2026-11-02 09:49",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-42",
-          "body": "那看看有没有微信可以加！先确认是不是本人！",
-          "senderId": "broccoli",
-          "time": "2026-11-02 09:50",
-          "hidden": true,
-          "meta": {
-            "storyId": "cat-rescue",
-            "chapter": "玩玩与温尚翊",
-            "branch": "interactive"
-          }
-        },
-        {
-          "id": "wx-broccoli-43",
+          "id": "wx-broccoli-38",
           "body": "我找到微信号了，我先加看看。",
           "senderId": "owner",
-          "time": "2026-11-02 09:51",
+          "time": "2026-11-02 09:49",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -1177,27 +1069,10 @@
     },
     {
       "id": "broccoli-cat-reveal",
-      "label": "读到西蓝花认出玩玩",
-      "type": "choice",
+      "label": "西蓝花看到你说捡到小黑猫",
+      "type": "action",
       "event": "read",
       "target": "wx-broccoli-18",
-      "conditions": [],
-      "logic": "and",
-      "actions": [],
-      "next": [
-        "branch-take-home",
-        "branch-listen-home"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "branch-take-home",
-      "label": "先把玩玩带回家",
-      "type": "action",
-      "event": "choose",
-      "target": "branch-take-home",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -1205,67 +1080,65 @@
           "type": "unlock",
           "key": "wx-broccoli-19",
           "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-20",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-21",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-22",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-23",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-24",
-          "value": true
         }
       ],
       "next": [
-        "take-home-hospital"
+        "broccoli-read-19"
       ],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
-      "id": "take-home-hospital",
-      "label": "多轮商量后答应先带玩玩去医院",
+      "id": "broccoli-read-19",
+      "label": "西蓝花继续尖叫",
       "type": "action",
       "event": "read",
-      "target": "wx-broccoli-24",
+      "target": "wx-broccoli-19",
       "conditions": [],
       "logic": "and",
       "actions": [
         {
           "type": "unlock",
-          "key": "wx-broccoli-64",
+          "key": "wx-broccoli-20",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-reply-choice-21"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-choice-21",
+      "label": "回应西蓝花的惊讶",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-20",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-21"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-21",
+      "label": "告诉西蓝花你知道是怪兽家的玩玩",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-reply-21",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
-          "key": "wx-broccoli-65",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-66",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-67",
+          "key": "wx-broccoli-21",
           "value": true
         }
       ],
@@ -1275,236 +1148,505 @@
       "y": 0
     },
     {
-      "id": "branch-listen-home",
-      "label": "听西蓝花劝先回家，后悔再折返",
+      "id": "broccoli-reply-choice-22",
+      "label": "继续表达自己激动得发抖",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-21",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-22"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-22",
+      "label": "告诉西蓝花自己整个人都在发抖",
       "type": "action",
       "event": "choose",
-      "target": "branch-listen-home",
+      "target": "broccoli-reply-22",
       "conditions": [],
       "logic": "and",
       "actions": [
         {
           "type": "unlock",
-          "key": "wx-broccoli-19",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-20",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-21",
-          "value": true
-        },
-        {
-          "type": "unlock",
           "key": "wx-broccoli-22",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-22",
+      "label": "西蓝花让你先深呼吸",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-22",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-23",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-read-23"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-23",
+      "label": "西蓝花提醒你不要暴露已经认出怪兽",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-23",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-24",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-reply-choice-25"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-choice-25",
+      "label": "解释自己目前只是普通路人",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-24",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-25"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-25",
+      "label": "解释怪兽还以为你只是捡到猫的路人",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-reply-25",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-25",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-25",
+      "label": "西蓝花建议先自然照顾玩玩",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-25",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-26",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-read-26"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-26",
+      "label": "西蓝花叮嘱有新消息第一时间告诉她",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-26",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-27",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-reply-choice-28"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-choice-28",
+      "label": "答应先回去照顾玩玩",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-27",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-28"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-28",
+      "label": "告诉西蓝花先回去看看玩玩",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-reply-28",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-28",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-28",
+      "label": "之后看到玩玩项圈上的主人信息",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-28",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-29",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-reply-choice-29"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-choice-29",
+      "label": "把项圈上的主人姓名告诉西蓝花",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-29",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-29"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-29",
+      "label": "告诉西蓝花主人是温尚翊",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-reply-29",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-29",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-29",
+      "label": "西蓝花震惊于温尚翊的名字",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-29",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-30",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-read-30"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-30",
+      "label": "西蓝花再次确认你有没有看错",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-30",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-31",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-reply-choice-32"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-choice-32",
+      "label": "确认自己看清楚了名字",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-31",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-32"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-32",
+      "label": "告诉西蓝花自己看了三遍",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-reply-32",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-32",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-32",
+      "label": "西蓝花提醒可能只是同名",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-32",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-33",
           "value": true
         }
       ],
+      "next": [
+        "broccoli-reply-choice-34"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-choice-34",
+      "label": "补充项圈上还有玩玩和联系方式",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-33",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-34"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-34",
+      "label": "告诉西蓝花项圈上还有联系方式",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-reply-34",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-34",
+          "value": true
+        }
+      ],
       "next": [],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
-      "id": "cat-tag-choice",
-      "label": "决定如何联系项圈上的主人",
-      "type": "choice",
-      "event": "",
-      "target": "",
-      "conditions": [],
-      "logic": "and",
-      "actions": [],
-      "next": [
-        "call-owner",
-        "add-owner"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "call-owner",
-      "label": "先打电话，没人接后改加微信",
+      "id": "broccoli-read-34",
+      "label": "西蓝花建议先打电话联系",
       "type": "action",
-      "event": "choose",
-      "target": "call-owner",
+      "event": "read",
+      "target": "wx-broccoli-34",
       "conditions": [],
       "logic": "and",
       "actions": [
         {
           "type": "unlock",
-          "key": "wx-broccoli-34",
-          "value": true
-        },
-        {
-          "type": "unlock",
           "key": "wx-broccoli-35",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-36",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-37",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-38",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-39",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-40",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-41",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-42",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-43",
           "value": true
         }
       ],
       "next": [
-        "big-g-start-choice"
+        "broccoli-reply-choice-36"
       ],
       "once": true,
       "x": 0,
       "y": 0
     },
     {
-      "id": "add-owner",
-      "label": "直接通过联系方式加微信",
+      "id": "broccoli-reply-choice-36",
+      "label": "告诉西蓝花电话没有接通",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-35",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-36"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-36",
+      "label": "告诉西蓝花电话无人接听",
       "type": "action",
       "event": "choose",
-      "target": "add-owner",
+      "target": "broccoli-reply-36",
       "conditions": [],
       "logic": "and",
       "actions": [
         {
           "type": "unlock",
-          "key": "wx-broccoli-34",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-35",
-          "value": true
-        },
-        {
-          "type": "unlock",
           "key": "wx-broccoli-36",
           "value": true
-        },
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-read-36",
+      "label": "西蓝花建议通过微信确认主人",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-36",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-37",
           "value": true
-        },
+        }
+      ],
+      "next": [
+        "broccoli-reply-choice-38"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-choice-38",
+      "label": "告诉西蓝花找到了微信号",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-37",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-reply-38"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-reply-38",
+      "label": "告诉西蓝花准备添加微信",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-reply-38",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
         {
           "type": "unlock",
           "key": "wx-broccoli-38",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-39",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-40",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-41",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-42",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-43",
           "value": true
         }
       ],
@@ -1517,7 +1659,7 @@
     },
     {
       "id": "big-g-start-choice",
-      "label": "进入大G微信对话",
+      "label": "准备进入大G微信对话",
       "type": "choice",
       "event": "",
       "target": "",
@@ -2051,140 +2193,6 @@
       "y": 0
     },
     {
-      "id": "return-find-tag",
-      "label": "折返后发现玩玩仍在并查看铭牌",
-      "type": "action",
-      "event": "read",
-      "target": "wx-broccoli-33",
-      "conditions": [],
-      "logic": "and",
-      "actions": [
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-34",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-35",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-36",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-37",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-38",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-39",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-40",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-41",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-42",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-43",
-          "value": true
-        }
-      ],
-      "next": [
-        "cat-tag-choice"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "id": "home-find-tag",
-      "label": "医院检查后发现项圈铭牌信息",
-      "type": "action",
-      "event": "read",
-      "target": "wx-broccoli-67",
-      "conditions": [],
-      "logic": "and",
-      "actions": [
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-34",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-35",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-36",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-37",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-38",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-39",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-40",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-41",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-42",
-          "value": true
-        },
-        {
-          "type": "unlock",
-          "key": "wx-broccoli-43",
-          "value": true
-        }
-      ],
-      "next": [
-        "cat-tag-choice"
-      ],
-      "once": true,
-      "x": 0,
-      "y": 0
-    },
-    {
       "id": "story-validation-ending",
       "label": "本段剧情暂时停在添加微信的悬念处。",
       "type": "ending",
@@ -2207,7 +2215,70 @@
   ],
   "tests": [
     {
-      "name": "原有预览校验路径",
+      "name": "截图中西蓝花完整聊天逐条可达",
+      "steps": [
+        {
+          "event": "read",
+          "target": "wx-broccoli-18"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-19"
+        },
+        {
+          "choose": "broccoli-reply-21"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-21"
+        },
+        {
+          "choose": "broccoli-reply-22"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-22"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-23"
+        },
+        {
+          "choose": "broccoli-reply-25"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-25"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-26"
+        },
+        {
+          "choose": "broccoli-reply-28"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-28"
+        }
+      ],
+      "ending": "",
+      "expectUnlocked": [
+        "wx-broccoli-19",
+        "wx-broccoli-20",
+        "wx-broccoli-21",
+        "wx-broccoli-22",
+        "wx-broccoli-23",
+        "wx-broccoli-24",
+        "wx-broccoli-25",
+        "wx-broccoli-26",
+        "wx-broccoli-27",
+        "wx-broccoli-28",
+        "wx-broccoli-29"
+      ]
+    },
+    {
+      "name": "保留原有预览校验路径",
       "steps": [
         {
           "event": "callEnded",
@@ -2216,180 +2287,6 @@
       ],
       "ending": "本段剧情暂时停在添加微信的悬念处。",
       "expectUnlocked": []
-    },
-    {
-      "name": "听劝回家后悔折返支线完整可达",
-      "steps": [
-        {
-          "event": "read",
-          "target": "wx-broccoli-18"
-        },
-        {
-          "choose": "branch-listen-home"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-33"
-        },
-        {
-          "choose": "call-owner"
-        },
-        {
-          "choose": "big-g-open"
-        },
-        {
-          "choose": "jump-broccoli"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-44"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-45"
-        },
-        {
-          "choose": "dinner-explain"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-46"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-48"
-        },
-        {
-          "choose": "outfit-start"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-60"
-        },
-        {
-          "choose": "outfit-soft"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-49"
-        },
-        {
-          "choose": "dinner-food-answer"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-51"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-53"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-55"
-        },
-        {
-          "event": "callEnded",
-          "target": "story-validation-only"
-        }
-      ],
-      "ending": "本段剧情暂时停在添加微信的悬念处。",
-      "expectUnlocked": [
-        "wx-broccoli-19",
-        "wx-broccoli-34",
-        "wx-broccoli-55",
-        "wx-broccoli-57",
-        "wx-big-g-23"
-      ]
-    },
-    {
-      "name": "带玩玩回家并承诺先送医院支线完整可达",
-      "steps": [
-        {
-          "event": "read",
-          "target": "wx-broccoli-18"
-        },
-        {
-          "choose": "branch-take-home"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-24"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-67"
-        },
-        {
-          "choose": "call-owner"
-        },
-        {
-          "choose": "big-g-open"
-        },
-        {
-          "choose": "jump-broccoli"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-44"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-45"
-        },
-        {
-          "choose": "dinner-explain"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-46"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-48"
-        },
-        {
-          "choose": "outfit-later"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-60"
-        },
-        {
-          "choose": "outfit-cool"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-49"
-        },
-        {
-          "choose": "dinner-food-answer"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-51"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-53"
-        },
-        {
-          "event": "read",
-          "target": "wx-broccoli-55"
-        },
-        {
-          "event": "callEnded",
-          "target": "story-validation-only"
-        }
-      ],
-      "ending": "本段剧情暂时停在添加微信的悬念处。",
-      "expectUnlocked": [
-        "wx-broccoli-19",
-        "wx-broccoli-65",
-        "wx-broccoli-34",
-        "wx-broccoli-55",
-        "wx-big-g-23"
-      ]
     }
   ]
 }
