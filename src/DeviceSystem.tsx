@@ -114,11 +114,32 @@ export function DeviceLock({
     }
   };
   const lockDate = new Date((work.phone.date || new Date().toISOString().slice(0, 10)) + "T12:00:00");
-  const lockDateLabel = new Intl.DateTimeFormat("zh-CN", {
-    weekday: "long",
+  const solarDateLabel =
+    new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric" }).format(lockDate) +
+    new Intl.DateTimeFormat("zh-CN", { weekday: "short" }).format(lockDate);
+  const lunarParts = new Intl.DateTimeFormat("zh-CN-u-ca-chinese", {
+    year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(lockDate);
+  }).formatToParts(lockDate);
+  const lunarYear = lunarParts.find((part) => part.type === "yearName")?.value;
+  const lunarMonth = lunarParts.find((part) => part.type === "month")?.value;
+  const lunarDayNumber = Number(lunarParts.find((part) => part.type === "day")?.value);
+  const lunarDayNames = [
+    "",
+    "初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十",
+    "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九",
+    "廿", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十",
+  ];
+  const lunarDateLabel =
+    lunarYear && lunarMonth && lunarDayNames[lunarDayNumber]
+      ? `${lunarYear}年${lunarMonth}${lunarDayNames[lunarDayNumber]}`
+      : new Intl.DateTimeFormat("zh-CN-u-ca-chinese", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }).format(lockDate);
+  const lockDateLabel = `${solarDateLabel} · ${lunarDateLabel}`;
   return (
     <motion.div
       className={"lock-screen device-lock " + (pinOpen ? "pin-open" : "")}
