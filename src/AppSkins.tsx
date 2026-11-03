@@ -672,17 +672,29 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   37: [
-    { id: "double-down-coincidence", label: "我觉得也不是不可能嘛……真的有这么巧吧！", nextStage: 38, lines: [
+    { id: "double-down-coincidence", label: "我觉得也不是不可能嘛……真的有这么巧吧！", nextStage: 91, lines: [
       { sender: "我", body: "我覺得也不是不可能嘛……真的有這麼巧吧！", thread: "西蓝花" },
       { sender: "西蓝花", body: "……我真的不知道該怎麼吐槽妳。好啦，先不跟妳爭，妳現在是在醫院對不對？", thread: "西蓝花" },
       { sender: "我", body: "對啊，我還在等醫生確認玩玩的狀況。", thread: "西蓝花" },
       { sender: "西蓝花", body: "那先顧好玩玩啦！不管主人是不是怪獸，牠現在需要妳。等一下妳再想想要怎麼跟那個失主聊。", thread: "西蓝花" },
     ]},
-    { id: "admit-too-coincidental", label: "好啦……我也觉得巧得有点离谱", nextStage: 38, lines: [
+    { id: "admit-too-coincidental", label: "好啦……我也觉得巧得有点离谱", nextStage: 91, lines: [
       { sender: "我", body: "好啦……我也覺得巧得有點離譜，我現在腦袋整個亂掉。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這才正常！妳剛剛還硬要說重名，真的快被妳笑死。", thread: "西蓝花" },
       { sender: "我", body: "我只是還不敢相信嘛……先讓我冷靜一下。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好啦，深呼吸。先把玩玩照顧好，之後再跟大G確認清楚。", thread: "西蓝花" },
+    ]},
+  ],
+  91: [
+    { id: "tell-broccoli-shaking", label: "我现在整个人都在抖，我真的不敢相信欸！我只是出门捡到一只猫，怎么会直接捡到怪兽家的猫啦！！", nextStage: 38, lines: [
+      { sender: "我", body: "我現在整個人都在抖，我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會直接撿到怪獸家的貓啦！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "先等等！！！妳先不要一激動就全招了啦！他現在還不知道妳認出他了吧？", thread: "西蓝花" },
+    ]},
+    { id: "tell-broccoli-still-shocked", label: "我真的不敢相信，怎么会这么巧啦！", nextStage: 38, lines: [
+      { sender: "我", body: "我真的不敢相信欸！我只是出門撿到一隻貓，怎麼會遇到怪獸家的玩玩啦！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "先讓我尖叫三秒！！！但妳先深呼吸，別嚇到玩玩啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "先等等！！！妳先不要一激動就全招了啦！他現在還不知道妳認出他了吧？", thread: "西蓝花" },
     ]},
   ],
   38: [
@@ -693,10 +705,11 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "拜託，這已經不是巧合了啦！妳先冷靜，等一下再去跟他確認玩玩的事情。", thread: "西蓝花" },
     ]},
     { id: "keep-natural", label: "好，我先不说破，正常跟他聊玩玩的事", nextStage: 39, lines: [
-      { sender: "我", body: "好啦，我先不說破，先正常跟他聊玩玩的事情好了。" , thread: "西蓝花" },
-      { sender: "西蓝花", body: "對！就當作普通失主聯絡，別突然把人家嚇到。妳有新消息一定要第一時間跟我說！" , thread: "西蓝花" },
-      { sender: "我", body: "知道啦！我先回去看看玩玩，晚點再跟你說。" , thread: "西蓝花" },
-      { sender: "西蓝花", body: "快去快去！替我摸摸玩玩，啊不對，先確認牠願不願意給妳摸，哈哈哈哈！" , thread: "西蓝花" },
+      { sender: "我", body: "對啊，他應該還以為我只是撿到貓、照著名牌聯絡他的路人而已……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那就先自然一點啊！先把玩玩照顧好，等他回來接貓再看情況。這種事慢慢來比較有趣！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "對！就當作普通失主聯絡，別突然把人家嚇到。妳有新消息一定要第一時間跟我說！", thread: "西蓝花" },
+      { sender: "我", body: "知道啦！我先回去看看玩玩，晚點再跟你說。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "快去快去！替我摸摸玩玩，啊不對，先確認牠願不願意給妳摸，哈哈哈哈！", thread: "西蓝花" },
     ]},
   ],
   39: [
