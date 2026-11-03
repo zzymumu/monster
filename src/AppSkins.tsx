@@ -1291,39 +1291,54 @@ export function WeChatSkin(p: SkinProps) {
       : [];
   const vavaPlayChoices: CatChoice[] = [
     { id: "vava-play-intro", label: "嗯嗯，忘记跟你说了哈哈", nextStage: 1, lines: [
-      { sender: "我", body: "嗯嗯，忘记跟你说了哈哈。", thread: "大G" },
-      { sender: "大G", body: "哈哈哈，Vava是原本就在你家的喔！玩玩最近有沒有乖乖的？還好有妳幫我照顧牠。", thread: "大G" },
+      { sender: "我", body: "嗯嗯，忘記跟你說了哈哈。Vava是我家的原住民，牠平常很有自己的地盤意識。", thread: "大G" },
+      { sender: "大G", body: "哈哈，原來如此！那玩玩這陣子有沒有乖乖的？牠剛到妳那邊，還要麻煩妳多照顧一下了。", thread: "大G" },
     ]},
-    { id: "vava-play-who-started", label: "对啊，Vava比玩玩大那么多，竟然还打不过玩玩", nextStage: 2, lines: [
-      { sender: "我", body: "对啊，Vava明明比玩玩大只那么多，结果竟然还打不过玩玩！", thread: "大G" },
-      { sender: "大G", body: "真的假的啦？玩玩明明小小一隻欸，怎麼這麼勇猛，連Vava都打不過牠喔。", thread: "大G" },
+    { id: "vava-play-intro-alt", label: "对啊，Vava是家里的原住民", nextStage: 1, lines: [
+      { sender: "我", body: "對啊，Vava本來就在我家，玩玩來了之後家裡就多了一位新室友。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，這樣喔！那牠們兩個相處得還可以嗎？玩玩有沒有適應妳家的生活？", thread: "大G" },
     ]},
-    { id: "vava-play-small", label: "玩玩那么小一只，Vava竟然还打不过它", nextStage: 2, lines: [
-      { sender: "我", body: "玩玩那么小一只，Vava竟然还打不过它，我真的笑死。", thread: "大G" },
-      { sender: "大G", body: "哈哈哈，玩玩小歸小，氣勢倒是很大欸。Vava那麼大隻還輸，牠一定很不服氣吧。", thread: "大G" },
+    { id: "vava-play-who-started", label: "Vava比玩玩大那么多，竟然还打不过玩玩", nextStage: 2, lines: [
+      { sender: "我", body: "牠們今天還打起來了！Vava明明比玩玩大隻那麼多，結果竟然還打不過玩玩！", thread: "大G" },
+      { sender: "大G", body: "真的假的啦？玩玩明明小小一隻欸！牠是怎麼打的？Vava有沒有被抓傷？妳有沒有看著牠們？", thread: "大G" },
     ]},
-    { id: "vava-play-apology", label: "没事啦，它们闹一闹而已", nextStage: 3, lines: [
-      { sender: "我", body: "没事啦，它们闹一闹而已，我会看着它们的。", thread: "大G" },
-      { sender: "大G", body: "唉，真的有點不好意思啦。明明是妳好心幫我照顧玩玩，結果牠還把妳家的Vava欺負成這樣，反而害妳要多操心，真的給妳添麻煩了。", thread: "大G" },
+    { id: "vava-play-small", label: "玩玩小小一只，气势倒是很大", nextStage: 2, lines: [
+      { sender: "我", body: "玩玩真的小小一隻，可是打起來氣勢超強，Vava都被牠逼到退開。", thread: "大G" },
+      { sender: "大G", body: "牠平常看起來那麼小一隻，沒想到這麼有個性！不過Vava有沒有怎麼樣？不要真的受傷了喔。", thread: "大G" },
     ]},
-    { id: "vava-play-reassure", label: "真的没关系，不用跟我客气", nextStage: 4, lines: [
-      { sender: "我", body: "真的没关系，不用跟我客气啦，我也很喜欢它们。", thread: "大G" },
-      { sender: "大G", body: "妳人也太好了吧。玩玩當初是我撿回來的，牠那時候小小一隻，我就把牠帶回家了。現在還要妳幫我照顧，真的很謝謝妳。", thread: "大G" },
+    { id: "vava-play-apology", label: "没事啦，它们闹一闹而已，我会看着它们", nextStage: 3, lines: [
+      { sender: "我", body: "沒事啦，應該只是互相試探、鬧一鬧而已，我會在旁邊看著牠們，不會讓牠們真的打傷彼此。", thread: "大G" },
+      { sender: "大G", body: "那就好……唉，還是有點不好意思啦。明明是妳好心幫我照顧玩玩，結果牠還欺負妳家的Vava，反而害妳要多操心，真的給妳添麻煩了。", thread: "大G" },
+    ]},
+    { id: "vava-play-apology-alt", label: "我会注意的，你不用太担心", nextStage: 3, lines: [
+      { sender: "我", body: "我會注意牠們的啦，你先不用太擔心，有狀況我會跟你說。", thread: "大G" },
+      { sender: "大G", body: "好，妳有幫我顧著牠我真的很感謝。只是玩玩要是太皮，妳也要跟我說，不要自己一個人累到。", thread: "大G" },
+    ]},
+    { id: "vava-play-reassure", label: "真的没关系，我也很喜欢玩玩", nextStage: 4, lines: [
+      { sender: "我", body: "真的沒關係啦，我也很喜歡玩玩，牠在我這裡挺好的，不用一直覺得麻煩我。", thread: "大G" },
+      { sender: "大G", body: "妳這樣講我比較放心了。玩玩當初是我撿回來的，看到牠那麼小一隻，就想說不能放著不管。", thread: "大G" },
+    ]},
+    { id: "vava-play-reassure-alt", label: "你别客气啦，玩玩现在也是我家的小朋友", nextStage: 4, lines: [
+      { sender: "我", body: "你別客氣啦，玩玩現在也是我家的小朋友，我會好好照顧牠的。", thread: "大G" },
+      { sender: "大G", body: "真的很謝謝妳。牠是我當初撿回來的，沒想到現在有人跟我一起疼牠，這樣我就安心很多了。", thread: "大G" },
     ]},
     { id: "vava-play-rescue", label: "原来玩玩是你捡来的？你也太有爱心了吧", nextStage: 5, lines: [
-      { sender: "我", body: "原来玩玩是你捡来的？你也太有爱心了吧！", thread: "大G" },
-      { sender: "大G", body: "哪有啦，剛好遇到而已。那時候牠小小一隻，看起來很可憐，總不能放著不管吧。", thread: "大G" },
+      { sender: "我", body: "原來玩玩是你撿來的喔？你也太有愛心了吧，看到小小一隻就把牠帶回家。", thread: "大G" },
+      { sender: "大G", body: "哪有啦，真的就是剛好遇到。那時候牠小小一隻又沒人照顧，我就捨不得走掉啊。", thread: "大G" },
     ]},
-    { id: "vava-play-kind", label: "愿意把它带回家照顾就已经很温柔了", nextStage: 6, lines: [
-      { sender: "我", body: "愿意把它带回家照顾就已经很温柔了，它现在一定过得很幸福。", thread: "大G" },
-      { sender: "大G", body: "希望是啦。牠現在有吃有住，還有妳家的原住民可以陪牠鬧，應該比以前好多了。", thread: "大G" },
+    { id: "vava-play-kind", label: "愿意把它带回家照顾就已经很温柔了", nextStage: 5, lines: [
+      { sender: "我", body: "願意把牠帶回家照顧就已經很溫柔了，玩玩現在一定過得很幸福。", thread: "大G" },
+      { sender: "大G", body: "希望牠有感受到啦。牠現在有妳照顧，還有Vava陪牠（雖然好像常常被牠欺負），比以前好多了。", thread: "大G" },
     ]},
-    { id: "vava-play-wrap", label: "哈哈哈现在它们两个都有人疼", nextStage: -1, lines: [
-      { sender: "我", body: "哈哈哈，现在它们两个都有人疼啦。", thread: "大G" },
-      { sender: "大G", body: "這樣就好啦。下次牠們又打架記得拍給我看，我想看看玩玩到底有多勇猛。", thread: "大G" },
+    { id: "vava-play-wrap", label: "哈哈哈，现在它们两个都有人疼", nextStage: 6, lines: [
+      { sender: "我", body: "哈哈哈，現在牠們兩個都有人疼啦，只希望下次不要再打架了。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，我也希望。下次牠們又鬧起來記得拍給我看，我想看看玩玩到底有多勇猛。真的謝謝妳照顧牠。", thread: "大G" },
     ]},
-  ];
-  useEffect(() => {
+    { id: "vava-play-final", label: "好啦，我会继续看着它们的", nextStage: -1, lines: [
+      { sender: "我", body: "好啦，我會繼續看著牠們的，你放心忙你的。", thread: "大G" },
+      { sender: "大G", body: "好，那就拜託妳了。等我回去再請妳吃飯，好好謝謝妳。", thread: "大G" },
+    ]},
+  ];  useEffect(() => {
     // Rewrite the already-saved pickup exchange from the previous ordering so
     // existing testers see the corrected away-from-home explanation too.
     if (!pickupMessagesWereMigrated) return;
