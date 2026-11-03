@@ -335,7 +335,7 @@ export function BilibiliSkin(p: Props) {
   const [featuredBvid, setFeaturedBvid] = useState("BV1xNMvzLE3v");
   const [playerOpen, setPlayerOpen] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-  const splashSrc = import.meta.env.BASE_URL + "assets/bilibili-splash.jpg";
+  const splashSrc = import.meta.env.BASE_URL + "assets/bilibili-splash.jpg?v=20261104";
   const concerts = [
     {
       bvid: "BV1xNMvzLE3v",
