@@ -2968,6 +2968,46 @@
 }
 .youtube-ui {
   --app-accent: #151515;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.youtube-ui > .catalog-scroll {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  align-self: stretch;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+.youtube-ui .youtube-player-frame {
+  display: block;
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 16px;
+  padding: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+  box-sizing: border-box;
+  line-height: 0;
+}
+.youtube-ui .youtube-player-frame iframe {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  box-sizing: border-box;
 }
 .youtube-ui .catalog-nav {
   background: #fff;
