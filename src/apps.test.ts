@@ -13,7 +13,7 @@ describe("optional app lifecycle", () => {
   it("starts newly authored projects without seeded optional content or story", () => {
     const w = createEmptyWork();
     expect(w.nodes).toEqual([]);
-    expect(Object.keys(w.data).sort()).toEqual([...essentialApps].sort());
+    expect(Object.keys(w.data).sort()).toEqual([...essentialApps, "redbook"].sort());
     expect(Object.values(w.data).every((items) => items.length === 0)).toBe(
       true,
     );
