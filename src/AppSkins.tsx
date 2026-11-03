@@ -1265,23 +1265,23 @@ export function WeChatSkin(p: SkinProps) {
   const vavaPlayChoices: CatChoice[] = [
     { id: "vava-play-intro", label: "嗯嗯，忘记跟你说了哈哈", nextStage: 1, lines: [
       { sender: "我", body: "嗯嗯，忘记跟你说了哈哈。", thread: "大G" },
-      { sender: "大G", body: "哈哈哈，原來你家還有原住民喔！那玩玩算是後來加入的？", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，Vava是原本就在你家的喔？玩玩我知道啦，牠最近有沒有乖一點？", thread: "大G" },
     ]},
-    { id: "vava-play-who-started", label: "对呀，牠们有时候会闹起来", nextStage: 2, lines: [
-      { sender: "我", body: "对呀，牠们有时候会闹起来，今天又打成一团了。", thread: "大G" },
-      { sender: "大G", body: "我剛剛看照片，沒想到玩玩看起來小小一隻，打起架來這麼厲害欸！", thread: "大G" },
+    { id: "vava-play-who-started", label: "对啊，Vava比玩玩大那么多，竟然还打不过玩玩", nextStage: 2, lines: [
+      { sender: "我", body: "对啊，Vava明明比玩玩大只那么多，结果竟然还打不过玩玩！", thread: "大G" },
+      { sender: "大G", body: "真的假的啦？玩玩明明小小一隻欸，怎麼這麼勇猛，連Vava都打不過牠喔。", thread: "大G" },
     ]},
-    { id: "vava-play-small", label: "玩玩平时看着很乖，打起来完全不一样", nextStage: 2, lines: [
-      { sender: "我", body: "玩玩平时看着很乖，打起来完全不一样。", thread: "大G" },
-      { sender: "大G", body: "真的看不出來欸，牠是不是平常都在忍，今天終於忍不住了哈哈。", thread: "大G" },
+    { id: "vava-play-small", label: "玩玩那么小一只，Vava竟然还打不过它", nextStage: 2, lines: [
+      { sender: "我", body: "玩玩那么小一只，Vava竟然还打不过它，我真的笑死。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈，玩玩小歸小，氣勢倒是很大欸。Vava那麼大隻還輸，牠一定很不服氣吧。", thread: "大G" },
     ]},
     { id: "vava-play-apology", label: "没事啦，它们闹一闹而已", nextStage: 3, lines: [
       { sender: "我", body: "没事啦，它们闹一闹而已，我会看着它们的。", thread: "大G" },
-      { sender: "大G", body: "那就好啦，還是有點不好意思，給你添麻煩了。牠們打起來你還要在旁邊顧。", thread: "大G" },
+      { sender: "大G", body: "唉，還是有點不好意思啦，明明玩玩是我撿回來的，結果還讓你幫忙照顧，現在又害你家的Vava被牠欺負，真的給你添麻煩了。", thread: "大G" },
     ]},
     { id: "vava-play-reassure", label: "真的没关系，不用跟我客气", nextStage: 4, lines: [
       { sender: "我", body: "真的没关系，不用跟我客气啦，我也很喜欢它们。", thread: "大G" },
-      { sender: "大G", body: "妳人也太好了吧。其實玩玩是我撿來的，那時候看到牠一個人在外面，就想說先把牠帶回家。", thread: "大G" },
+      { sender: "大G", body: "妳人也太好了吧。其實玩玩當初是我撿回來的，那時候看到牠小小一隻，就捨不得把牠丟在外面。", thread: "大G" },
     ]},
     { id: "vava-play-rescue", label: "原来玩玩是你捡来的？你也太有爱心了吧", nextStage: 5, lines: [
       { sender: "我", body: "原来玩玩是你捡来的？你也太有爱心了吧！", thread: "大G" },
@@ -1545,7 +1545,7 @@ export function WeChatSkin(p: SkinProps) {
       id: "vava-play-dag-opener",
       title: "大G",
       sender: "大G",
-      body: "欸，你家有原住民喔？",
+      body: "欸，Vava是你家的原住民喔？玩玩最近還好嗎？",
       time: "2026-11-03 " + (p.virtualTime || "14:24"),
       outgoing: false,
       meta: { storyId: "vava-play-story", storyThread: "大G", storyOrderAt: String(Date.now()) },
