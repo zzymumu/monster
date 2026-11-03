@@ -393,7 +393,20 @@ export function BilibiliSkin(p: Props) {
         ))}
       </div>
       <div className="catalog-scroll">
-        {tab === "首页" && <section className="bili-concert-shelf">
+        {tab === "首页" && <>
+          <section className="bili-featured-video">
+            <button className="bili-featured-poster" onClick={() => setPlayerOpen(true)} aria-label="播放五月天 2025 线上跨年演唱会">
+              {covers[featuredBvid] && <img src={covers[featuredBvid]} alt={activeConcert.title + " 视频预览图"} referrerPolicy="no-referrer" />}
+              <span className="bili-featured-play">▶</span>
+              <small>{activeConcert.duration}</small>
+            </button>
+            <div className="bili-featured-meta">
+              <strong>{activeConcert.title}</strong>
+              <span>相信音乐 · 五月天演唱会 · {activeConcert.duration}</span>
+              <button onClick={() => setPlayerOpen(true)}>在哔哩哔哩打开视频 ↗</button>
+            </div>
+          </section>
+          <section className="bili-concert-shelf">
           <h3>相信音乐 · 五月天演唱会</h3>
           <div className="bili-concert-list">
             {concerts.map((video) => <button key={video.bvid} className="bili-video-card" onClick={() => { setFeaturedBvid(video.bvid); setPlayerOpen(true); }}>
@@ -404,7 +417,8 @@ export function BilibiliSkin(p: Props) {
               <span className="bili-video-copy"><strong>{video.title}</strong><small>相信音乐 · {video.year}</small></span>
             </button>)}
           </div>
-        </section>}
+          </section>
+        </>}
         {tab !== "首页" && <div className="bili-empty-state"><strong>{tab}</strong><span>这里暂时还没有内容</span></div>}
       </div>
       {playerOpen && <div className="bili-player-overlay" role="dialog" aria-modal="true" aria-label="五月天演唱会播放器">
