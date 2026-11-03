@@ -1178,6 +1178,32 @@ export function WeChatSkin(p: SkinProps) {
   const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
   const vavaPlayActive = vavaPlayStage >= 0 || vavaPlayMessagesExist;
 
+  // Repair duplicate copies already persisted by earlier builds. Only dedupe
+  // this exact one-time opener; never touch any other DaG or story messages.
+  useEffect(() => {
+    const openerText = "欸，Vava是你家的原住民喔？玩玩最近還好嗎？";
+    let kept = false;
+    const cleanedMessages = catRescue.messages.filter((item) => {
+      if (item.sender !== "大G" || item.body !== openerText) return true;
+      if (kept) return false;
+      kept = true;
+      return true;
+    });
+    if (cleanedMessages.length !== catRescue.messages.length) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, messages: cleanedMessages }));
+    }
+    let pendingKept = false;
+    const cleanedPending = pendingCatLines.filter((line) => {
+      if (line.sender !== "大G" || line.thread !== "大G" || line.body !== openerText) return true;
+      if (pendingKept) return false;
+      pendingKept = true;
+      return true;
+    });
+    if (cleanedPending.length !== pendingCatLines.length) {
+      setPendingCatLinesRaw(JSON.stringify(cleanedPending));
+    }
+  }, [catRescueRaw, pendingCatLinesRaw]);
+
   const displayName = (name: string) => name === "温尚翊" ? "大G" : name;
   const isMonsterName = (name: string) => name === "大G" || name === "温尚翊";
   // The canonical story transcript stores an explicit destination on every
