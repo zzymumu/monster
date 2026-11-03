@@ -375,7 +375,7 @@ export function BilibiliSkin(p: Props) {
   const activeConcert = concerts.find((video) => video.bvid === featuredBvid) || concerts[0];
   return (
     <div className="catalog-skin bilibili-ui">
-      {showSplash && <div className="bili-splash"><img className="bili-splash-image" src="/assets/bilibili-splash.jpg" alt="哔哩哔哩开屏动画" /></div>}
+      {showSplash && <div className="bili-splash"><img className="bili-splash-image" src="assets/bilibili-splash.jpg" alt="哔哩哔哩开屏动画" /></div>}
       <div className="bili-titlebar">
         <button aria-label="返回" onClick={() => setTab("首页")}>‹</button>
         <strong>哔哩哔哩</strong>
