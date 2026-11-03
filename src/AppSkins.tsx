@@ -1174,7 +1174,7 @@ export function WeChatSkin(p: SkinProps) {
   // existing DaG story messages so it survives app switches and reloads.
   const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
-  const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
+  const [, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const vavaOpenerEnqueuedRef = useRef(false);
   const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
