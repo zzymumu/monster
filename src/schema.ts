@@ -197,7 +197,8 @@ export function validateWork(input: unknown): Work {
 }
 export function safeMedia(value: string) {
   return /^data:(image\/(png|jpeg|webp|gif)|audio\/(mpeg|mp3|wav|ogg|webm|mp4)|video\/(mp4|webm));base64,[a-zA-Z0-9+/=\s]+$/.test(value) ||
-    /^(\.\/)?assets\/[a-zA-Z0-9._/-]+\.(png|jpe?g|webp|gif)$/i.test(value)
+    /^(\.\/)?assets\/[a-zA-Z0-9._/-]+\.(png|jpe?g|webp|gif)$/i.test(value) ||
+    (value.startsWith("https://images.unsplash.com/") && !/[\r\n]/.test(value))
     ? value
     : "";
 }
