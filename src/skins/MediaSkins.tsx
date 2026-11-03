@@ -7,7 +7,6 @@ import {
   Heart,
   Home,
   MessageCircle,
-  Compass,
   Music,
   Play,
   Plus,
