@@ -18,7 +18,7 @@ describe("optional app lifecycle", () => {
       true,
     );
   });
-  it("installs only six necessary system apps in new works", () => {
+  it("preinstalls the Xiaohongshu app alongside necessary system apps", () => {
     const w = createWork();
     expect(
       w.apps
