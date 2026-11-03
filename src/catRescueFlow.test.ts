@@ -203,7 +203,11 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[82][0].nextStage).toBe(63);
     expect(CAT_RESCUE_CHOICES[63][0].lines[0].body).toBe("你敢信！！他要請我吃飯！！！！");
     expect(CAT_RESCUE_CHOICES[63][0].nextStage).toBe(64);
-    expect(CAT_RESCUE_CHOICES[64][0].nextStage).toBe(65);
+    expect(CAT_RESCUE_CHOICES[64][0].nextStage).toBe(88);
+    expect(CAT_RESCUE_CHOICES[88][0].nextStage).toBe(89);
+    expect(CAT_RESCUE_CHOICES[89][0].nextStage).toBe(90);
+    expect(CAT_RESCUE_CHOICES[90][0].nextStage).toBe(91);
+    expect(CAT_RESCUE_CHOICES[91][0].nextStage).toBe(65);
     expect(CAT_RESCUE_CHOICES[65][0].nextStage).toBe(79);
     expect(CAT_RESCUE_CHOICES[65][0].lines.filter((line) => line.sender === "西蓝花")).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[65][1].lines.filter((line) => line.sender === "西蓝花")).toHaveLength(2);
@@ -216,7 +220,7 @@ describe("WeChat cat-rescue story configuration", () => {
     }
     expect(CAT_RESCUE_CHOICES[83]).toBeUndefined();
     
-    for (const [stage, next, count] of [[25,85,1],[85,86,1],[86,87,1],[87,59,1],[56,61,2],[59,60,2],[60,61,2],[61,82,2],[82,63,1],[62,63,2],[63,64,2],[64,65,2],[65,79,2],[77,78,2],[78,79,2],[79,84,2],[84,66,2]] as const) {
+    for (const [stage, next, count] of [[25,85,1],[85,86,1],[86,87,1],[87,59,1],[56,61,2],[59,60,2],[60,61,2],[61,82,2],[82,63,1],[62,63,2],[63,64,2],[64,88,2],[88,89,2],[89,90,2],[90,91,2],[91,65,2],[65,79,2],[77,78,2],[78,79,2],[79,84,2],[84,66,2]] as const) {
       expect(CAT_RESCUE_CHOICES[stage]).toHaveLength(count);
       expect(CAT_RESCUE_CHOICES[stage].every((choice) => choice.nextStage === next)).toBe(true);
     }
@@ -266,11 +270,14 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[55].every((choice) => choice.nextStage === 56)).toBe(true);
     expect(CAT_RESCUE_CHOICES[56]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[64]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[64][0].lines.map((line) => line.sender)).toEqual(["我", "西蓝花", "我", "西蓝花"]);
-    expect(CAT_RESCUE_CHOICES[64][0].lines[0].body).toContain("忘了問");
-    expect(CAT_RESCUE_CHOICES[64][0].lines[1].body).toContain("重要的事情也能忘");
-    expect(CAT_RESCUE_CHOICES[64][0].lines[2].body).toContain("特種兵行程");
-    expect(CAT_RESCUE_CHOICES[64][0].lines[3].body).toContain("北京");
+    expect(CAT_RESCUE_CHOICES[64]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[64][0].lines[1].body).toContain("做夢");
+    expect(CAT_RESCUE_CHOICES[88][0].lines[0].body).toContain("穿什麼");
+    expect(CAT_RESCUE_CHOICES[89][0].lines[1].body).toContain("什麼時候回來");
+    expect(CAT_RESCUE_CHOICES[90][0].lines[0].body).toContain("忘了問");
+    expect(CAT_RESCUE_CHOICES[90][0].lines[1].body).toContain("重要的事情");
+    expect(CAT_RESCUE_CHOICES[91][0].lines[0].body).toContain("太激動");
+    expect(CAT_RESCUE_CHOICES[91][0].lines[1].body).toContain("北京");
     expect(CAT_RESCUE_CHOICES[65]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[65][0].lines[0].body).toContain("哦哦，先不想啦");
     expect(CAT_RESCUE_CHOICES[65].every((choice) => choice.nextStage === 79)).toBe(true);
