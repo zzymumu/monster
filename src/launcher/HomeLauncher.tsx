@@ -14,7 +14,6 @@ import {
 import { motion } from "motion/react";
 import { AppDock } from "../vendor/ios-web/Launcher";
 import { category } from "../apps";
-import { useDeviceLocation } from "../deviceLocation";
 import type { Work } from "../schema";
 import {
   homeEntries,
@@ -116,31 +115,26 @@ function WidgetFace({
   );
 }
 export function HomeLauncher(p: Props) {
-  const { position } = useDeviceLocation();
   const [liveWeather, setLiveWeather] = useState<{ city: string; temperature: number; condition: string } | null>(null);
   useEffect(() => {
-    if (!position) return;
     let cancelled = false;
     const params = new URLSearchParams({
-      latitude: String(position.latitude),
-      longitude: String(position.longitude),
+      latitude: "25.0330",
+      longitude: "121.5654",
       current: "temperature_2m,weather_code",
-      timezone: "auto",
+      timezone: "Asia/Taipei",
     });
     const describe = (code: number) => code === 0 ? "晴朗" : [1, 2].includes(code) ? "大致晴朗" : code === 3 ? "阴天" : [45, 48].includes(code) ? "有雾" : [51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code) ? "下雨" : [71, 73, 75, 77, 85, 86].includes(code) ? "下雪" : [95, 96, 99].includes(code) ? "雷暴" : "天气状况";
-    void Promise.all([
-      fetch("https://api.open-meteo.com/v1/forecast?" + params.toString()).then(r => { if (!r.ok) throw new Error("weather"); return r.json(); }),
-      fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" + position.latitude + "&longitude=" + position.longitude + "&localityLanguage=zh").then(r => r.ok ? r.json() : {}),
-    ]).then(([weather, place]) => {
+    void fetch("https://api.open-meteo.com/v1/forecast?" + params.toString()).then(r => { if (!r.ok) throw new Error("weather"); return r.json(); }).then((weather) => {
       if (cancelled) return;
       setLiveWeather({
-        city: place.city || place.locality || place.principalSubdivision || "当前位置",
+        city: "台北市",
         temperature: Math.round(weather.current.temperature_2m),
         condition: describe(weather.current.weather_code),
       });
     }).catch(() => {});
     return () => { cancelled = true; };
-  }, [position?.latitude, position?.longitude]);
+  }, []);
   const [editing, setEditing] = useState(false),
     [sheet, setSheet] = useState(p.storeOpen ? "library" : ""),
     [query, setQuery] = useState(""),
