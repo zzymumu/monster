@@ -1174,6 +1174,7 @@ export function WeChatSkin(p: SkinProps) {
   // existing DaG story messages so it survives app switches and reloads.
   const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
+  const vavaOpenerEnqueuedRef = useRef(false);
   const vavaPlayMessagesExist = catRescue.messages.some((item) => item.meta?.storyId === "vava-play-story");
   const vavaPlayActive = vavaPlayStage >= 0 || vavaPlayMessagesExist;
 
@@ -1532,7 +1533,9 @@ export function WeChatSkin(p: SkinProps) {
     // Phase 2: only after the user has opened Moments and the post with
     // both likes has been rendered in that view, DaG may start the chat.
     // No Moments visit means no message, notification, or chat transcript.
-    if (!moments || !vavaMomentSeeded || vavaPlayMessagesExist) return;
+    if (!moments || !vavaMomentSeeded || vavaPlayMessagesExist || vavaPlayStage >= 0 || vavaOpenerEnqueuedRef.current) return;
+    // Latch synchronously: React StrictMode and state persistence can replay effects.
+    vavaOpenerEnqueuedRef.current = true;
     const postId = "moment-vava-wanwan-play-fight";
     const likesAreVisible = momentPostData.some((raw) => {
       try {
@@ -1552,7 +1555,7 @@ export function WeChatSkin(p: SkinProps) {
       thread: "大G",
     }]);
     setVavaPlayStage(0);
-  }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist]);
+  }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist, vavaPlayStage]);
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
     if (file.size > 4 * 1024 * 1024) {
