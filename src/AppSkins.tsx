@@ -263,7 +263,7 @@ export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" 
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
   return pendingCount === 0 &&
-    [32, 33, 37, 38, 39, 63, 64, 65].includes(stage) &&
+    [32, 33, 37, 38, 39, 63, 64, 65, 88, 89, 90, 91, 92, 93, 94, 95, 96].includes(stage) &&
     currentThread !== "西蓝花" && currentThread !== "西兰花";
 }
 export function shouldCloseBroccoliAtStoryEnd(_stage: number, _pendingCount: number, _currentThread: string): boolean {
