@@ -106,6 +106,15 @@ export function validateLayout(raw: unknown, input: Work) {
     store.visible = true;
     store.folder = "";
   }
+  const gameSave = layout.apps.find((a) => a.id === "gamesave");
+  if (gameSave) {
+    gameSave.installed = true;
+    gameSave.visible = true;
+    gameSave.folder = "";
+    gameSave.dock = false;
+    delete layout.positions[gameSave.id];
+    if (!layout.order.includes(gameSave.id)) layout.order.push(gameSave.id);
+  }
   if (layout.widgetSeedRevision < 1) {
     if (layout.widgets.length === 0) {
       layout.widgets.push(
