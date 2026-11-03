@@ -295,7 +295,7 @@ function PhoneRuntime({
     window.addEventListener("pagehide", checkpoint);
     document.addEventListener("visibilitychange", onVisibility);
     return () => { active = false; window.removeEventListener("pagehide", checkpoint); document.removeEventListener("visibilitychange", onVisibility); };
-  }, [own, creator, work.id, external, ready, saveInfo.slots]);
+  }, [own, creator, work.id, external, ready]);
   useEffect(() => {
     if (creator || !ready) return;
     const interval = setInterval(() => {
