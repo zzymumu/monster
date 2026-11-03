@@ -123,7 +123,7 @@ export function Media({
         onClick={(e) => e.stopPropagation()}
       />
     ) : (
-      <img className={className} loading="lazy" alt={item.title} src={src} />
+      <img className={className} loading="lazy" alt={item.title} src={src} onError={(e) => { const img = e.currentTarget; if (img.dataset.fallback) return; img.dataset.fallback = "1"; img.src = "https://i.epochtimes.com/assets/uploads/2016/08/1608291220162382.jpg"; }} />
     )
   ) : (
     <div className={`catalog-art ${className}`}>
