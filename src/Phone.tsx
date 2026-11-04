@@ -1228,14 +1228,19 @@ function AppSearch({
   );
 }
 function Media({ item }: { item: Item }) {
-  const src = safeMedia(item.media);
+  // This story photo is a bundled public asset. Resolve it from the site root
+  // so an older local save with a stale media path still displays the image.
+  const src =
+    item.id === "hotel-wannwan-sleeping-photo-v2"
+      ? "/assets/wannwan-sleeping-cat.jpg"
+      : safeMedia(item.media);
   return src ? (
     item.kind === "audio" ? (
       <audio controls src={src} />
     ) : item.kind === "video" ? (
       <video controls playsInline src={src} />
     ) : (
-      <img loading="lazy" src={src} alt={item.title} />
+      <img loading="eager" src={src} alt={item.title || "玩玩睡着了"} />
     )
   ) : (
     <div
