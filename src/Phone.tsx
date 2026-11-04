@@ -339,6 +339,20 @@ function PhoneRuntime({
   }, [s.incomingCall, s.ui?.wechat?.wxBroccoliCallRequestedV1, s.ui?.wechat?.wxBroccoliCallStartedV1, ready, locked, creator]);
 
   useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const wx = runtimeRef.current.ui?.wechat ?? {};
+    const openedThread = String(wx.openThread ?? "");
+    const isBigGThread = openedThread === "大G" || openedThread === "温尚翊";
+    if (!isBigGThread || wx.wxBroccoliAfterDoorCallV1 !== true || wx.wxBroccoliAfterDoorCallStartedV2 === true || wx.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
+    const current = runtimeRef.current;
+    update({
+      ...current,
+      incomingCall: { caller: "西蓝花", target: "西蓝花", status: "ringing" },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxBroccoliAfterDoorCallStartedV2: true } },
+    });
+  }, [s.incomingCall, s.ui?.wechat?.openThread, s.ui?.wechat?.wxBroccoliAfterDoorCallV1, s.ui?.wechat?.wxBroccoliAfterDoorCallStartedV2, s.ui?.wechat?.wxBroccoliAfterDoorCallDeclinedV1, ready, locked, creator]);
+
+  useEffect(() => {
     const call = s.incomingCall;
     if (creator || !ready || !call || call.caller !== "西蓝花" || call.status !== "ringing" || s.ui?.wechat?.wxBroccoliAfterDoorCallV1 !== true || s.ui?.wechat?.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
     const timer = window.setTimeout(() => {
@@ -436,9 +450,7 @@ function PhoneRuntime({
 
       update({
         ...latest,
-        incomingCall: line.meta?.startBroccoliAfterDoor === "yes"
-          ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
-          : line.meta?.startBroccoliCall === "yes"
+        incomingCall: line.meta?.startBroccoliCall === "yes"
           ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
           : line.meta?.startBigGCall === "yes" ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
         messages: { ...latest.messages, wechat: nextWechatMessages },
