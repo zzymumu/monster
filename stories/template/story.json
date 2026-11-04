@@ -3028,6 +3028,11 @@
       "actions": [
         {
           "type": "unlock",
+          "key": "wx-big-g-24",
+          "value": true
+        },
+        {
+          "type": "unlock",
           "key": "wx-broccoli-89",
           "value": true
         },
