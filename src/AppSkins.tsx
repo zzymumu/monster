@@ -1520,7 +1520,7 @@ export function WeChatSkin(p: SkinProps) {
   // after the handoff. Hiding the Broccoli story view at later stages made
   // delivered replies appear in notifications but disappear when opened.
   const hasDrunkStoryInMonsterChat = isMonsterThread && [...allItems, ...pendingCatLines].some((item) =>
-    item.title === "大G" && item.body.trim() === "喂！你怎么不说话！"
+    ("title" in item ? item.title : item.thread) === "大G" && item.body.trim() === "喂！你怎么不说话！"
   );
   const catRescueActive =
     isBroccoliThread ||
