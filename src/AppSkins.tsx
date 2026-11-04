@@ -151,6 +151,11 @@ function MessageList({
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
         const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
+        if (i.meta?.systemNotice === "yes") {
+          return <div key={i.id} className="wx-call-system-notice" style={{ display: "flex", justifyContent: "center", padding: "8px 12px", color: "#f1f1f1", fontSize: 12, textAlign: "center" }}>
+            <span style={{ padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.28)" }}>{body}</span>
+          </div>;
+        }
         return <div
           key={i.id}
           className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
@@ -2784,7 +2789,7 @@ export function WeChatSkin(p: SkinProps) {
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
               {isMonsterThread &&
                 (() => {
-                  const prompts: Array<{ trigger: string; body: string; replyId: string; reply: string; callAfterSend?: boolean }> = [
+                  const prompts: Array<{ trigger: string; body: string; replyId: string; reply: string; callAfterSend?: boolean; replyLines?: CatLine[] }> = [
                     { trigger: "喂！你怎么不说话！", body: "我跟你說喔……那個燈一直在跟我講話……", replyId: "drunk-big-g-how-much-v4", reply: "你是喝了多少！" },
                     { trigger: "你是喝了多少！", body: "等一下……我的鞋子是不是不見了……", replyId: "drunk-big-g-stop-drinking-v4", reply: "我不是叫你別喝了！" },
                     { trigger: "我不是叫你別喝了！", body: "我明明有兩個手機……怎麼只有一個……", replyId: "drunk-big-g-vomit-v4", reply: "你吐過了？" },
@@ -2803,6 +2808,10 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "所以現在去睡覺，好不好？睡一覺就不難受了。", body: "我不睡！我就不睡！", replyId: "drunk-big-g-refuse-sleep-v8", reply: "給我睡覺！" },
                     { trigger: "給我睡覺！", body: "我不要！", replyId: "drunk-big-g-refuse-again-v8", reply: "睡覺！！！" },
                     { trigger: "睡覺！！！", body: "No！！！", replyId: "drunk-big-g-call-trigger-v8", reply: "", callAfterSend: true },
+                    { trigger: "接電話。", body: "你怎麼能命令你爸爸？？？？", replyId: "drunk-big-g-dad-reply-v9", reply: "", replyLines: [
+                      { id: "drunk-big-g-ellipsis-v9", sender: "大G", body: "…………", thread: "大G" },
+                      { id: "drunk-big-g-wait-v9", sender: "大G", body: "妳等我。", thread: "大G" },
+                    ] },
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
                   const current = prompts.find((prompt) =>
@@ -2820,7 +2829,7 @@ export function WeChatSkin(p: SkinProps) {
                           thread: "大G",
                           ...(current.callAfterSend ? { meta: { drunkCallAfterLine: "yes" } } : {}),
                         }], catRescue.stage, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
-                        setPendingCatLines(current.reply ? [{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }] : []);
+                        setPendingCatLines(current.replyLines ? current.replyLines : current.reply ? [{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }] : []);
                         if (current.callAfterSend) p.onUi?.("wxDrunkCallRequestedV8", true);
                       }}>{current.body}</button>
                       <div className="cat-rescue-option-hint">點擊選項後才會發送</div>
