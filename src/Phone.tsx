@@ -333,7 +333,7 @@ function PhoneRuntime({
   currentAppRef.current = app;
   useEffect(() => {
     if (creator || !ready || typeof pendingStoryQueueRaw !== "string" || !pendingStoryQueueRaw || pendingStoryQueueRaw === "[]") return;
-    let parsedQueue: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+    let parsedQueue: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string }> = [];
     try {
       const parsed = JSON.parse(pendingStoryQueueRaw);
       if (Array.isArray(parsed)) parsedQueue = parsed.filter((line) =>
