@@ -332,7 +332,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -1980,6 +1980,68 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 248, chat: "西蓝花", id: "hotel-bestie-goodnight-end-v1", label: "滾。", nextStage: -1, lines: [
       { sender: "我", body: "滾。", thread: "西蓝花" },
+    ]},
+    { stage: 249, chat: "大G", id: "drunk-night-call-out-v1", label: "溫尚翊你混蛋！你耍我！！！", nextStage: 250, lines: [
+      { sender: "我", body: "溫尚翊你混蛋！", thread: "大G" },
+      { sender: "我", body: "你耍我！！！", thread: "大G" },
+      { sender: "大G", body: "？", thread: "大G" },
+      { sender: "大G", body: "妳還沒睡嗎？", thread: "大G" },
+    ]},
+    { stage: 250, chat: "大G", id: "drunk-night-why-prank-v1", label: "你管我睡沒睡！", nextStage: 251, lines: [
+      { sender: "我", body: "妳管我睡沒睡！", thread: "大G" },
+    ]},
+    { stage: 251, chat: "大G", id: "drunk-night-demand-explain-v1", label: "說！", nextStage: 252, lines: [
+      { sender: "我", body: "說！", thread: "大G" },
+      { sender: "我", body: "你為什麼耍我！", thread: "大G" },
+      { sender: "大G", body: "我耍妳什麼了喔？", thread: "大G" },
+      { sender: "大G", body: "突然這麼兇🤕", thread: "大G" },
+    ]},
+    { stage: 252, chat: "大G", id: "drunk-night-no-emoji-v1", label: "你說你耍我什麼了！", nextStage: 253, lines: [
+      { sender: "我", body: "你說你耍我什麼了！", thread: "大G" },
+      { sender: "我", body: "還有！不准用我的表情！", thread: "大G" },
+      { sender: "大G", body: "好啦好啦，我不用。", thread: "大G" },
+      { sender: "大G", body: "怎麼了這是？", thread: "大G" },
+    ]},
+    { stage: 253, chat: "大G", id: "drunk-night-fake-photo-v1", label: "我說你給我發玩玩的照片是假的！", nextStage: 254, lines: [
+      { sender: "我", body: "我說你給我發玩玩的照片是假的！", thread: "大G" },
+      { sender: "我", body: "根本點不開！", thread: "大G" },
+      { sender: "我", body: "我還以為是我網不好呢！", thread: "大G" },
+      { sender: "我", body: "結果我一看你發的明明是個表情包！", thread: "大G" },
+      { sender: "大G", body: "哈哈，被妳發現。", thread: "大G" },
+    ]},
+    { stage: 254, chat: "大G", id: "drunk-night-why-laugh-v1", label: "你還好意思笑，耍我很好玩嗎？", nextStage: 255, lines: [
+      { sender: "我", body: "你還好意思笑，耍我很好玩嗎？", thread: "大G" },
+      { sender: "大G", body: "拍謝啦，今天剛看到這個表情包，覺得很有意思🤕", thread: "大G" },
+    ]},
+    { stage: 255, chat: "大G", id: "drunk-night-stop-emoji-v1", label: "我都說了你不准用我的表情！", nextStage: 256, lines: [
+      { sender: "我", body: "我都說了你不准用我的表情！", thread: "大G" },
+      { sender: "大G", body: "拍謝拍謝，我錯了大小姐。", thread: "大G" },
+    ]},
+    { stage: 256, chat: "大G", id: "drunk-night-forgive-v1", label: "哼，這還差不多。", nextStage: 257, lines: [
+      { sender: "我", body: "哼，這還差不多。", thread: "大G" },
+    ]},
+    { stage: 257, chat: "大G", id: "drunk-night-feeling-sick-v1", label: "嗚嗚嗚嗚嗚我好難受，頭好暈，臉好熱。", nextStage: 258, lines: [
+      { sender: "我", body: "嗚嗚嗚嗚嗚我好難受，頭好暈，臉好熱。", thread: "大G" },
+      { sender: "大G", body: "欸？妳怎麼了？", thread: "大G" },
+      { sender: "大G", body: "前面不是還好好的嗎？", thread: "大G" },
+    ]},
+    { stage: 258, chat: "大G", id: "drunk-night-sparkling-wine-v1", label: "嗚嗚嗚嗚我太渴了，去冰箱找飲料喝。", nextStage: 259, lines: [
+      { sender: "我", body: "嗚嗚嗚嗚我太渴了，去冰箱找飲料喝。", thread: "大G" },
+      { sender: "我", body: "喝完才發現是氣泡酒嗚嗚嗚嗚嗚😭", thread: "大G" },
+      { sender: "大G", body: "等一下，妳喝了多少？", thread: "大G" },
+    ]},
+    { stage: 259, chat: "大G", id: "drunk-night-one-bottle-v1", label: "還好啦，就一瓶……", nextStage: 260, lines: [
+      { sender: "我", body: "還好啦，就一瓶……", thread: "大G" },
+      { sender: "大G", body: "一瓶？妳先不要再喝了，旁邊有沒有水？", thread: "大G" },
+      { sender: "大G", body: "先坐下來休息一下，不要自己亂跑。", thread: "大G" },
+    ]},
+    { stage: 260, chat: "大G", id: "drunk-night-hotel-water-complaint-v1", label: "你混蛋！你定的什麼破酒店！都沒有水！！", nextStage: 261, lines: [
+      { sender: "我", body: "你混蛋！", thread: "大G" },
+      { sender: "我", body: "你定的什麼破酒店！", thread: "大G" },
+      { sender: "我", body: "都沒有水！！", thread: "大G" },
+      { sender: "大G", body: "好啦好啦，先不要生氣。", thread: "大G" },
+      { sender: "大G", body: "我幫妳想辦法，先看看房間裡有沒有瓶裝水，或是打電話請櫃檯送上去。", thread: "大G" },
+      { sender: "大G", body: "妳先坐著，慢慢來，不要再喝酒了，好不好？", thread: "大G" },
     ]},
 
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
