@@ -338,6 +338,21 @@ function PhoneRuntime({
     update({ ...current, incomingCall: { caller: "西蓝花", target: "西蓝花", status: "ringing" }, ui: { ...current.ui, wechat: { ...wx, wxBroccoliCallStartedV1: true } } });
   }, [s.incomingCall, s.ui?.wechat?.wxBroccoliCallRequestedV1, s.ui?.wechat?.wxBroccoliCallStartedV1, ready, locked, creator]);
 
+  useEffect(() => {
+    const call = s.incomingCall;
+    if (creator || !ready || !call || call.caller !== "西蓝花" || call.status !== "ringing" || s.ui?.wechat?.wxBroccoliAfterDoorCallV1 !== true || s.ui?.wechat?.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      const active = current.incomingCall;
+      const wx = current.ui?.wechat ?? {};
+      if (!active || active.caller !== "西蓝花" || active.status !== "ringing" || wx.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
+      const next = dispatch(work, { ...current, incomingCall: null }, "callDeclined", active.target || active.caller);
+      const queued = [{ id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "☎️ 已取消", thread: "西蓝花", meta: { systemNotice: "yes" } }];
+      update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [s.incomingCall, s.ui?.wechat?.wxBroccoliAfterDoorCallV1, s.ui?.wechat?.wxBroccoliAfterDoorCallDeclinedV1, ready, creator, work.id]);
+
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
   };
