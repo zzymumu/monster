@@ -2789,6 +2789,14 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "你是喝了多少！", body: "等一下……我的鞋子是不是不見了……", replyId: "drunk-big-g-stop-drinking-v4", reply: "我不是叫你別喝了！" },
                     { trigger: "我不是叫你別喝了！", body: "我明明有兩個手機……怎麼只有一個……", replyId: "drunk-big-g-vomit-v4", reply: "你吐過了？" },
                     { trigger: "你吐過了？", body: "你不要轉喔……房間在晃……", replyId: "drunk-big-g-last-warning-v4", reply: "前台跟我說敲門沒人開" },
+                    { trigger: "前台跟我說敲門沒人開", body: "我有開門啊……我剛剛明明跟門講了好久……", replyId: "drunk-big-g-door-v5", reply: "妳跟門講話有什麼用啦！" },
+                    { trigger: "妳跟門講話有什麼用啦！", body: "可是它都不理我……它是不是討厭我……", replyId: "drunk-big-g-door2-v5", reply: "妳先不要跟門吵架，拜託。" },
+                    { trigger: "妳先不要跟門吵架，拜託。", body: "你說溫尚翊怎麼可以這麼帥呢？？？", replyId: "drunk-big-g-handsome-v5", reply: "……妳現在是在說誰？" },
+                    { trigger: "……妳現在是在說誰？", body: "就是溫尚翊啊！！！你不覺得他帥到很過分嗎！！！", replyId: "drunk-big-g-who-v5", reply: "妳真的醉得不輕欸。" },
+                    { trigger: "妳真的醉得不輕欸。", body: "他是不是給我下藥了？？？不然我怎麼一直想到他……", replyId: "drunk-big-g-drug-v5", reply: "哪有人這樣講自己的啦！" },
+                    { trigger: "哪有人這樣講自己的啦！", body: "我剛剛看到天花板在游泳……牠是不是也喝醉了……", replyId: "drunk-big-g-ceiling-v5", reply: "天花板沒有喝酒，妳不要再看它了。" },
+                    { trigger: "天花板沒有喝酒，妳不要再看它了。", body: "我好想溫尚翊嗚嗚嗚嗚嗚嗚嗚嗚嗚嗚……", replyId: "drunk-big-g-miss-v5", reply: "妳不是才剛剛一直在講他嗎！" },
+                    { trigger: "妳不是才剛剛一直在講他嗎！", body: "我沒有醉！我只是有一點點喜歡他……一點點而已……", replyId: "drunk-big-g-denial-v5", reply: "好好好，一點點。妳先乖乖坐好。" },
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
                   const current = prompts.find((prompt) =>
