@@ -1242,6 +1242,21 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => { if (postPickupGoodbyeSent && returnDinnerStage < 111 && returnDinnerStage !== -2) setReturnDinnerStage(-2); }, [postPickupGoodbyeSent, returnDinnerStage]);
   const [postMeetupDialogueMigratedV2, setPostMeetupDialogueMigratedV2] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV2", false);
   const [bigGHomeSequenceQueuedV2, setBigGHomeSequenceQueuedV2] = useSkinState<boolean>(p, "wxBigGHomeSequenceQueuedV2", false);
+  const [postMeetupDialogueMigratedV3, setPostMeetupDialogueMigratedV3] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV3", false);
+  const hasLastOldBroccoliLine = allItems.some((item) => /這種近距離接觸的機會欸|这种近距离接触的机会欸/.test(item.body));
+  const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
+  // Migrate by the actual transcript text, not a guessed stage number. Older
+  // saves may have different counters (or a previous migration flag) while
+  // showing this exact final line in the screenshot.
+  useEffect(() => {
+    if (postMeetupDialogueMigratedV3) return;
+    if (hasLastOldBroccoliLine && !hasNewBroccoliReply && returnDinnerStage < 200 && returnDinnerStage !== -2) {
+      setReturnDinnerStage(200);
+    }
+    if (hasNewBroccoliReply || returnDinnerStage >= 200 || returnDinnerStage === -2) {
+      setPostMeetupDialogueMigratedV3(true);
+    }
+  }, [postMeetupDialogueMigratedV3, hasLastOldBroccoliLine, hasNewBroccoliReply, returnDinnerStage]);
   // Existing saves reached catRescue stage 103 but never received the missing
   // reply choices. Move only those unfinished saves into the new, dedicated
   // return-dinner sequence; do not reset the player's chat history.
