@@ -2784,7 +2784,7 @@ export function WeChatSkin(p: SkinProps) {
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
               {isMonsterThread &&
                 (() => {
-                  const prompts = [
+                  const prompts: Array<{ trigger: string; body: string; replyId: string; reply: string; callAfterSend?: boolean }> = [
                     { trigger: "喂！你怎么不说话！", body: "我跟你說喔……那個燈一直在跟我講話……", replyId: "drunk-big-g-how-much-v4", reply: "你是喝了多少！" },
                     { trigger: "你是喝了多少！", body: "等一下……我的鞋子是不是不見了……", replyId: "drunk-big-g-stop-drinking-v4", reply: "我不是叫你別喝了！" },
                     { trigger: "我不是叫你別喝了！", body: "我明明有兩個手機……怎麼只有一個……", replyId: "drunk-big-g-vomit-v4", reply: "你吐過了？" },
@@ -2806,7 +2806,7 @@ export function WeChatSkin(p: SkinProps) {
                   const current = prompts.find((prompt) =>
                     transcript.includes(prompt.trigger) &&
                     !transcript.includes(prompt.body) &&
-                    !transcript.includes(prompt.reply)
+                    (!prompt.reply || !transcript.includes(prompt.reply))
                   );
                   if (!current) return null;
                   return (
