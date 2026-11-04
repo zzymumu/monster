@@ -2444,7 +2444,7 @@ export function WeChatSkin(p: SkinProps) {
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
-  const [, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
+  const [drunkCallReady, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
   const [, setDrunkCallEnded] = useSkinState<boolean>(p, "wxDrunkCallEndedV1", false);
   const [, setDrunkCallSeen] = useSkinState<boolean>(p, "wxDrunkCallSeenV1", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
@@ -2859,22 +2859,16 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               {isBroccoliThread &&
-                allItems.filter((item) =>
-                  item.body.trim() === "已取消" &&
-                  (item.title === "西蓝花" || item.title === "西兰花" ||
-                    item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花")
-                ).length >= 3 &&
-                !allItems.some((item) => item.sender === "我" && item.body.includes("%……&*……（）…（）*") &&
-                  (item.title === "西蓝花" || item.title === "西兰花" ||
-                    item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花")) && (
+                threadItems.some((item) => item.sender === "西蓝花" && item.body.trim() === "妳怎麼不說話？？？") &&
+                !drunkCallReady && (
                 <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
                   <button onClick={() => {
-                    appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v3");
+                    appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v4");
                     setDrunkCallEnded(false);
                     setDrunkCallSeen(false);
                     setDrunkCallReady(true);
                   }}>%……&*……（）……%（）*</button>
-                  <div className="cat-rescue-option-hint">三条未接来电已结束，选择回复</div>
+                  <div className="cat-rescue-option-hint">選擇回覆</div>
                 </div>
               )}
               <Compose
