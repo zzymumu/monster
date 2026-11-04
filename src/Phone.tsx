@@ -580,7 +580,7 @@ function PhoneRuntime({
     if (creator || !ready || locked || s.incomingCall) return;
     const current = runtimeRef.current;
     const wx = current.ui?.wechat ?? {};
-    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || wx.wxDrunkCallSeenV1 !== true || wx.wxDoorMessageQueuedV1 === true) return;
+    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || wx.wxDrunkCallEndedV1 !== true || wx.wxDoorMessageQueuedV1 === true) return;
     const queued = [{ id: "drunk-after-call-open-door-v1", sender: "大G", body: "開門。", thread: "大G" }];
     update({
       ...current,
@@ -592,7 +592,7 @@ function PhoneRuntime({
         wxCatPendingLines: JSON.stringify(queued),
       }},
     });
-  }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, s.ui?.wechat?.wxDrunkCallSeenV1, ready, locked, creator]);
+  }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, s.ui?.wechat?.wxDrunkCallEndedV1, ready, locked, creator]);
   // The final nausea line starts DaG's simulated incoming call.
   useEffect(() => {
     if (creator || !ready || locked) return;
@@ -1084,17 +1084,30 @@ function PhoneRuntime({
                   className="decline-call"
                   onClick={() => {
                     const call = runtimeRef.current.incomingCall;
-                    if (call)
-                      update(
-                        dispatch(
-                          work,
-                          { ...runtimeRef.current, incomingCall: null },
-                          call.status === "ringing"
-                            ? "callDeclined"
-                            : "callEnded",
-                          call.target || call.caller,
-                        ),
+                    if (call) {
+                      const current = runtimeRef.current;
+                      const next = dispatch(
+                        work,
+                        { ...current, incomingCall: null },
+                        call.status === "ringing" ? "callDeclined" : "callEnded",
+                        call.target || call.caller,
                       );
+                      const isStoryHangup =
+                        call.status === "answered" &&
+                        call.caller === "大G" &&
+                        Number(current.ui?.wechat?.wxReturnDinnerStage) === 266 &&
+                        current.ui?.wechat?.wxDrunkCallReadyV1 === true;
+                      update(isStoryHangup ? {
+                        ...next,
+                        ui: {
+                          ...next.ui,
+                          wechat: {
+                            ...(next.ui?.wechat ?? {}),
+                            wxDrunkCallEndedV1: true,
+                          },
+                        },
+                      } : next);
+                    }
                   }}
                 >
                   <PhoneIcon size={25} />
