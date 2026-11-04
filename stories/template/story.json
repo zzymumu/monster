@@ -4096,6 +4096,14 @@
         },
         {
           "event": "read",
+          "target": "wx-broccoli-56"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-57"
+        },
+        {
+          "event": "read",
           "target": "wx-broccoli-78"
         },
         {
