@@ -567,6 +567,32 @@ function PhoneRuntime({
     }, 10000);
     return () => window.clearTimeout(timer);
   }, [app, locked, ready, creator, work.id, work.updatedAt]);
+  // Remember that the player has seen DaG's call, then wait for an
+  // explicit hang-up before delivering the "open the door" message.
+  useEffect(() => {
+    if (creator || !ready || !s.incomingCall || s.incomingCall.caller !== "大G") return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallSeenV1 === true) return;
+    update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxDrunkCallSeenV1: true } } });
+  }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, ready, creator]);
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallSeenV1 !== true || wx.wxDoorMessageQueuedV1 === true) return;
+    const queued = [{ id: "drunk-after-call-open-door-v1", sender: "大G", body: "開門。", thread: "大G" }];
+    update({
+      ...current,
+      notifications: [...current.notifications, "微信：大G：開門。"].slice(-60),
+      ui: { ...current.ui, wechat: {
+        ...wx,
+        wxReturnDinnerStage: 267,
+        wxDoorMessageQueuedV1: true,
+        wxCatPendingLines: JSON.stringify(queued),
+      }},
+    });
+  }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, s.ui?.wechat?.wxDrunkCallSeenV1, ready, locked, creator]);
   // The final nausea line starts DaG's simulated incoming call.
   useEffect(() => {
     if (creator || !ready || locked) return;
