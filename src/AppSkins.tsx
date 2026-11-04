@@ -2444,13 +2444,6 @@ export function WeChatSkin(p: SkinProps) {
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
-  const [, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
-  const [, setDrunkCallEnded] = useSkinState<boolean>(p, "wxDrunkCallEndedV1", false);
-  const [, setDrunkCallSeen] = useSkinState<boolean>(p, "wxDrunkCallSeenV1", false);
-  const [, setDrunkCallCount] = useSkinState<number>(p, "wxDrunkCallCountV2", 0);
-  const [, setBroccoliCallReady] = useSkinState<boolean>(p, "wxBroccoliCallReadyV2", false);
-  const [, setBroccoliCallEnded] = useSkinState<boolean>(p, "wxBroccoliCallEndedV2", false);
-  const [, setDoorMessageQueued] = useSkinState<boolean>(p, "wxDoorMessageQueuedV2", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[] };
@@ -2473,15 +2466,7 @@ export function WeChatSkin(p: SkinProps) {
     setMomentComposer(false);
     if (isDrunkLovePost && !drunkMomentSequenceStarted) {
       setDrunkMomentSequenceStarted(true);
-      // Reset legacy call flags so an earlier test save cannot hide the reply.
-      setDrunkCallReady(false);
-      setDrunkCallEnded(false);
-      setDrunkCallSeen(false);
-      setDrunkCallCount(0);
-      setBroccoliCallReady(false);
-      setBroccoliCallEnded(false);
-      setDoorMessageQueued(false);
-      setReturnDinnerStage(0);
+      // This story segment is message-only; phone-call triggers are disabled.
       setPendingCatLines((current) => [
         ...current,
         { id: "drunk-moment-broccoli-1", sender: "西蓝花", body: "？", thread: "西蓝花" },
@@ -2871,21 +2856,25 @@ export function WeChatSkin(p: SkinProps) {
               {isMonsterThread &&
                 (() => {
                   const prompts = [
-                    { after: "drunk-moment-big-g-checkin-v2", body: "我跟你說喔……那個燈一直在跟我講話……", replyId: "drunk-big-g-how-much-v3", reply: "你是喝了多少！" },
-                    { after: "drunk-big-g-how-much-v3", body: "等一下……我的鞋子是不是不見了……", replyId: "drunk-big-g-stop-drinking-v3", reply: "我不是叫你別喝了！" },
-                    { after: "drunk-big-g-stop-drinking-v3", body: "我明明有兩個手機……怎麼只有一個……", replyId: "drunk-big-g-vomit-v3", reply: "你吐過了？" },
-                    { after: "drunk-big-g-vomit-v3", body: "你不要轉喔……房間在晃……", replyId: "drunk-big-g-last-warning-v2", reply: "前台跟我說敲門沒人開" },
+                    { trigger: "喂！你怎么不说话！", body: "我跟你說喔……那個燈一直在跟我講話……", replyId: "drunk-big-g-how-much-v4", reply: "你是喝了多少！" },
+                    { trigger: "你是喝了多少！", body: "等一下……我的鞋子是不是不見了……", replyId: "drunk-big-g-stop-drinking-v4", reply: "我不是叫你別喝了！" },
+                    { trigger: "我不是叫你別喝了！", body: "我明明有兩個手機……怎麼只有一個……", replyId: "drunk-big-g-vomit-v4", reply: "你吐過了？" },
+                    { trigger: "你吐過了？", body: "你不要轉喔……房間在晃……", replyId: "drunk-big-g-last-warning-v4", reply: "前台跟我說敲門沒人開" },
                   ];
-                  const latestMessage = threadItems[threadItems.length - 1];
-                  const current = prompts.find((prompt) => prompt.after === latestMessage?.id);
+                  const transcript = threadItems.map((item) => item.body.trim());
+                  const current = prompts.find((prompt) =>
+                    transcript.includes(prompt.trigger) &&
+                    !transcript.includes(prompt.body) &&
+                    !transcript.includes(prompt.reply)
+                  );
                   if (!current) return null;
                   return (
-                    <div className="cat-rescue-choices" aria-label="醉酒后的手动回复" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
-                      <button onClick={() => {
-                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], 266, catRescue.branch, "drunk-manual-user-line-v4-" + current.after);
+                    <div className="cat-rescue-choices" aria-label="醉酒后的手动回复" style={{ position: "sticky", bottom: 0, zIndex: 20, display: "flex", flexDirection: "column", gap: 8, padding: "10px 12px", background: "rgba(255,255,255,.96)", borderTop: "1px solid #e5e5e5" }}>
+                      <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
+                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], 0, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
                         setPendingCatLines([{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }]);
                       }}>{current.body}</button>
-                      <div className="cat-rescue-option-hint">點擊後才會發送</div>
+                      <div className="cat-rescue-option-hint">點擊選項後才會發送</div>
                     </div>
                   );
                 })()}
