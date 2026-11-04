@@ -162,7 +162,12 @@ function MessageList({
             className="skin-bubble"
             onClick={() => (creator ? onItem(i) : onRead(i.id))}
           >
-            {["image", "audio", "video"].includes(i.kind) ? (
+            {i.kind === "call" ? (
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "#777" }}>
+                <Phone size={15} style={{ transform: "rotate(135deg)" }} />
+                {body}
+              </span>
+            ) : ["image", "audio", "video"].includes(i.kind) ? (
               <ItemMedia item={i} />
             ) : i.kind === "transfer" ? (
               <div className="skin-transfer">
@@ -2440,6 +2445,8 @@ export function WeChatSkin(p: SkinProps) {
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
   const [, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
+  const [, setDrunkCallEnded] = useSkinState<boolean>(p, "wxDrunkCallEndedV1", false);
+  const [, setDrunkCallSeen] = useSkinState<boolean>(p, "wxDrunkCallSeenV1", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[] };
@@ -2470,6 +2477,9 @@ export function WeChatSkin(p: SkinProps) {
         { id: "drunk-moment-broccoli-4", sender: "西蓝花", body: "妳瘋了？", thread: "西蓝花" },
         { id: "drunk-moment-broccoli-5", sender: "西蓝花", body: "妳夢遊了？", thread: "西蓝花" },
         { id: "drunk-moment-broccoli-6", sender: "西蓝花", body: "妳怎麼不說話？？？", thread: "西蓝花" },
+        { id: "drunk-moment-broccoli-call-1", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
+        { id: "drunk-moment-broccoli-call-2", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
+        { id: "drunk-moment-broccoli-call-3", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
       ]);
     }
   };
@@ -2851,6 +2861,8 @@ export function WeChatSkin(p: SkinProps) {
                   const reply = value.trim();
                   if (!reply) return;
                   appendCatLines([{ sender: "我", body: reply, thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v1");
+                  setDrunkCallEnded(false);
+                  setDrunkCallSeen(false);
                   setDrunkCallReady(true);
                 } : isMonsterThread && monsterRemoved && catRescue.stage === 13 ? (value) => {
                   const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
