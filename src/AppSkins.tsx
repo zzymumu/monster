@@ -1410,8 +1410,9 @@ export function WeChatSkin(p: SkinProps) {
       }));
     }
     setDrunkNightHandoffRepairedV1(true);
-    if (p.thread !== "大G" && p.thread !== "温尚翊") p.onThread("大G");
-  }, [returnDinnerStage, drunkNightHandoffRepairedV1, p.items, p.thread, catRescue.messages, catRescueRaw]);
+    // Keep the player in Broccoli's chat. The player must open DaG's
+    // conversation manually after sending「滾」.
+  }, [returnDinnerStage, drunkNightHandoffRepairedV1, p.items, catRescue.messages, catRescueRaw]);
   // After the hotel goodnight is sent in DaG's chat, notify the player that Broccoli is waiting.
   useEffect(() => {
     if (returnDinnerStage !== 226 || hotelBroccoliFollowupQueued || pendingCatLines.length > 0) return;
@@ -2023,7 +2024,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "妳還沒睡嗎？", thread: "大G" },
     ]},
     { stage: 250, chat: "大G", id: "drunk-night-why-prank-v1", label: "你管我睡沒睡！", nextStage: 251, lines: [
-      { sender: "我", body: "妳管我睡沒睡！", thread: "大G" },
+      { sender: "我", body: "你管我睡沒睡！", thread: "大G" },
     ]},
     { stage: 251, chat: "大G", id: "drunk-night-demand-explain-v1", label: "說！", nextStage: 252, lines: [
       { sender: "我", body: "說！", thread: "大G" },
