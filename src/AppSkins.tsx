@@ -1293,6 +1293,7 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const [pickupSceneRebuiltV1, setPickupSceneRebuiltV1] = useSkinState<boolean>(p, "wxPickupSceneRebuiltV1", false);
+  const [hotelBroccoliFollowupQueued, setHotelBroccoliFollowupQueued] = useSkinState<boolean>(p, "wxHotelBroccoliFollowupQueuedV1", false);
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
   const [postPickupStoryMigrated, setPostPickupStoryMigrated] = useSkinState<boolean>(p, "wxPostPickupStoryMigratedV1", false);
   useEffect(() => {
@@ -1376,6 +1377,15 @@ export function WeChatSkin(p: SkinProps) {
   // 200-204). The former effect reset them to 102/103 and deleted the player's
   // banter, causing the same nose/skin replies to loop and skipping the
   // concert-screen and fan-identity conversation.
+  // After the hotel goodnight is sent in DaG's chat, notify the player that Broccoli is waiting.
+  useEffect(() => {
+    if (returnDinnerStage !== 218 || hotelBroccoliFollowupQueued || pendingCatLines.length > 0) return;
+    setHotelBroccoliFollowupQueued(true);
+    setPendingCatLines((current) => [...current,
+      { id: "hotel-night-broccoli-checkin", sender: "西蓝花", body: "妳怎麼沒消息？吃飯怎麼樣？", thread: "西蓝花" },
+    ]);
+    setReturnDinnerStage(219);
+  }, [returnDinnerStage, hotelBroccoliFollowupQueued, pendingCatLines.length]);
   // After the final Broccoli line has arrived, start Big G's home update as
   // separate incoming chat messages. The phone-level queue creates the
   // notification because the player is still in Broccoli's conversation.
@@ -1838,6 +1848,63 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 214, chat: "西蓝花", id: "bestie-love-mom-goodbye-v2", label: "好啦，愛妳呦，媽媽～", nextStage: -1, lines: [
       { sender: "我", body: "好啦，愛妳呦，媽媽～", thread: "西蓝花" },
     ]},
+    { stage: 215, chat: "大G", id: "hotel-apology-for-key-v1", label: "對不起……我也沒想到我會忘記帶鑰匙😭", nextStage: 216, lines: [
+      { sender: "我", body: "對不起……我也沒想到我會忘記帶鑰匙😭", thread: "大G" },
+      { sender: "我", body: "讓你破費了。", thread: "大G" },
+      { sender: "大G", body: "沒事啦，妳別放在心上。", thread: "大G" },
+      { sender: "大G", body: "剛好那家酒店的早餐自助很好吃。", thread: "大G" },
+      { sender: "大G", body: "明天我再過去找妳吃早餐，好不好？", thread: "大G" },
+    ]},
+    { stage: 216, chat: "大G", id: "hotel-thanks-and-rest-v1", label: "真的謝謝你。你也累了一天，早點休息啦。", nextStage: 217, lines: [
+      { sender: "我", body: "真的謝謝你。", thread: "大G" },
+      { sender: "我", body: "你也累了一天，早點休息啦。", thread: "大G" },
+      { sender: "大G", body: "好，晚安。", thread: "大G" },
+    ]},
+    { stage: 217, chat: "大G", id: "hotel-goodnight-emoji-v1", label: "晚安🌙", nextStage: 218, lines: [
+      { sender: "我", body: "晚安🌙", thread: "大G" },
+    ]},
+    { stage: 219, chat: "西蓝花", id: "hotel-night-broccoli-reply-v1", label: "……我都不知道要怎麼跟妳說。", nextStage: 220, lines: [
+      { sender: "我", body: "……我都不知道要怎麼跟妳說。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怎麼了？", thread: "西蓝花" },
+    ]},
+    { stage: 220, chat: "西蓝花", id: "hotel-night-misunderstanding-v1", label: "……我現在在酒店。", nextStage: 221, lines: [
+      { sender: "我", body: "……我現在在酒店。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳們進展這麼快？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "大嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "活好嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "舒服嗎？", thread: "西蓝花" },
+    ]},
+    { stage: 221, chat: "西蓝花", id: "hotel-key-explanation-v1", label: "什麼啊！！是我出門忘記帶鑰匙了，回不了家！！！", nextStage: 222, lines: [
+      { sender: "我", body: "什麼啊！！是我出門忘記帶鑰匙了，回不了家！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "……白激動了。", thread: "西蓝花" },
+    ]},
+    { stage: 222, chat: "西蓝花", id: "hotel-yellow-thoughts-v1", label: "妳腦子裝的都是什麼啊！黃色廢料！！", nextStage: 223, lines: [
+      { sender: "我", body: "妳腦子裝的都是什麼啊！黃色廢料！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳自己說的在酒店啊。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳們前面剛吃完飯，現在就在酒店，讓人很難不多想啊🥺", thread: "西蓝花" },
+    ]},
+    { stage: 223, chat: "西蓝花", id: "hotel-first-meeting-worry-v1", label: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", nextStage: 224, lines: [
+      { sender: "我", body: "……（無語）", thread: "西蓝花" },
+      { sender: "我", body: "唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "嗯……他現在對妳的態度怎麼樣？", thread: "西蓝花" },
+    ]},
+    { stage: 224, chat: "西蓝花", id: "hotel-breakfast-invitation-v1", label: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", nextStage: 225, lines: [
+      { sender: "我", body: "還好吧，沒什麼變化。", thread: "西蓝花" },
+      { sender: "我", body: "前面還問我酒店住得習不習慣。", thread: "西蓝花" },
+      { sender: "我", body: "哦對，他說明早要來找我吃早飯。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他這是在約妳？", thread: "西蓝花" },
+    ]},
+    { stage: 225, chat: "西蓝花", id: "hotel-breakfast-excuse-v1", label: "啊？不是啦，他說這家酒店的早餐自助很好吃。", nextStage: 226, lines: [
+      { sender: "我", body: "啊？不是啦，他說這家酒店的早餐自助很好吃。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "這他媽是他的藉口吧，他就是想跟妳繼續接觸。", thread: "西蓝花" },
+    ]},
+    { stage: 226, chat: "西蓝花", id: "hotel-mom-interview-defense-v1", label: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。", nextStage: 227, lines: [
+      { sender: "我", body: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。", thread: "西蓝花" },
+      { sender: "我", body: "妳沒考古之前的採訪嗎？都說怪獸像媽媽，他就是單純關心我而已。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我話放這了，他要是沒看上妳，我跟妳姓！", thread: "西蓝花" },
+    ]},
+
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
       { sender: "我", body: "我真的快暈了……妳不要再說了！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "等一下，先回答我！他鼻子挺不挺？皮膚白不白？本人是不是比照片還好看？", thread: "西蓝花" },
