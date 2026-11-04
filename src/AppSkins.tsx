@@ -1289,6 +1289,51 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => { if (postPickupGoodbyeSent && returnDinnerStage < 111 && returnDinnerStage !== -2) setReturnDinnerStage(-2); }, [postPickupGoodbyeSent, returnDinnerStage]);
   const [bigGHomeSequenceQueuedV2, setBigGHomeSequenceQueuedV2] = useSkinState<boolean>(p, "wxBigGHomeSequenceQueuedV2", false);
   const [postMeetupDialogueMigratedV3, setPostMeetupDialogueMigratedV3] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV3", false);
+  const [meetupQuestionSplitMigratedV1, setMeetupQuestionSplitMigratedV1] = useSkinState<boolean>(p, "wxMeetupQuestionSplitMigratedV1", false);
+  // Existing saves may already contain the old single combined nose/skin
+  // question. Rewrite that persisted bubble into four separate incoming
+  // messages, both in the story transcript and in the pending delivery queue.
+  useEffect(() => {
+    if (meetupQuestionSplitMigratedV1) return;
+    const isOldCombinedQuestion = (body: string) =>
+      /鼻子挺不挺[？?].*皮膚白不白[？?].*(本人是不是比照片還好看|本人是不是比照片还好看)/.test(body) ||
+      /等一下[，,]?先回答我[！!].*鼻子挺不挺[？?].*皮膚白不白/.test(body);
+    const splitBodies = [
+      "他鼻子挺不挺？",
+      "皮膚白不白？",
+      "整個人在陽光下是不是會bulingbuling發光？",
+      "妳有沒有看著流口水？",
+    ];
+    let changedMessages = false;
+    const migratedMessages = catRescue.messages.flatMap((item) => {
+      if (item.sender !== "西蓝花" || !isOldCombinedQuestion(item.body)) return [item];
+      changedMessages = true;
+      const orderBase = Number(item.meta?.storyOrderAt || Date.now());
+      return splitBodies.map((body, index) => ({
+        ...item,
+        id: String(item.id || "meetup-nose-question") + "-split-" + (index + 1),
+        body,
+        time: item.time,
+        meta: { ...item.meta, storyOrderAt: String(orderBase + index) },
+      }));
+    });
+    if (changedMessages) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: migratedMessages }));
+    }
+    let changedPending = false;
+    const migratedPending = pendingCatLines.flatMap((line) => {
+      if (line.sender !== "西蓝花" || !isOldCombinedQuestion(line.body)) return [line];
+      changedPending = true;
+      return splitBodies.map((body, index) => ({
+        ...line,
+        id: String(line.id || "meetup-nose-question") + "-split-" + (index + 1),
+        body,
+      }));
+    });
+    if (changedPending) setPendingCatLinesRaw(JSON.stringify(migratedPending));
+    setMeetupQuestionSplitMigratedV1(true);
+  }, [meetupQuestionSplitMigratedV1, catRescueRaw, pendingCatLinesRaw]);
+
   const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
   // Do not infer story progress from a single old line or jump from stage 103
   // to 200: stages 101-105 contain the nose/skin, physical-contact and
@@ -1305,8 +1350,8 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     if (returnDinnerStage < 200 || returnDinnerStage > 201 || postPickupGoodbyeSent) return;
     const transcript = [...p.items, ...catRescue.messages];
-    const hasNoseQuestion = transcript.some((item) => /他鼻子挺不挺.*皮膚白不白|他鼻子挺不挺.*皮肤白不白/.test(item.body));
-    const hasPhysicalQuestion = transcript.some((item) => /有沒有肢體接觸.*有沒有碰到手|有没有肢体接触.*有没有碰到手/.test(item.body));
+    const hasNoseQuestion = transcript.some((item) => /他鼻子挺不挺|鼻子挺不挺/.test(item.body));
+    const hasPhysicalQuestion = transcript.some((item) => /有沒有肢體接觸|有沒有碰到手/.test(item.body));
     const hasHandsomeLine = transcript.some((item) => /真人比照片好看無數倍|真人比照片好看无数倍/.test(item.body));
     const repairedMessages = catRescue.messages.filter((item) =>
       !(/我哪裡沒用了|我哪里没用了/.test(item.body) ||
@@ -1321,7 +1366,10 @@ export function WeChatSkin(p: SkinProps) {
     if (!hasNoseQuestion && hasHandsomeLine) {
       setPendingCatLines((current) => [
         ...current.filter((item) => !/他鼻子挺不挺/.test(item.body)),
-        { sender: "西蓝花", body: "等一下，先回答我！他鼻子挺不挺？皮膚白不白？本人是不是比照片還好看？", thread: "西蓝花", id: "meetup-nose-question-repair" },
+        { sender: "西蓝花", body: "他鼻子挺不挺？", thread: "西蓝花", id: "meetup-nose-question-repair-1" },
+        { sender: "西蓝花", body: "皮膚白不白？", thread: "西蓝花", id: "meetup-nose-question-repair-2" },
+        { sender: "西蓝花", body: "整個人在陽光下是不是會bulingbuling發光？", thread: "西蓝花", id: "meetup-nose-question-repair-3" },
+        { sender: "西蓝花", body: "妳有沒有看著流口水？", thread: "西蓝花", id: "meetup-nose-question-repair-4" },
       ]);
       setReturnDinnerStage(102);
     } else if (!hasPhysicalQuestion) {
