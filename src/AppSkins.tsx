@@ -152,8 +152,9 @@ function MessageList({
         const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
         if (i.meta?.systemNotice === "yes" || i.id === "drunk-big-g-call-declined-v9" || i.body.trim() === "对方已拒绝") {
+          const noticeText = i.body.trim() || "对方已拒绝";
           return <div key={i.id} className="wx-call-system-notice" style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", boxSizing: "border-box", padding: "8px 12px", color: "#f1f1f1", fontSize: 12, textAlign: "center" }}>
-            <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.32)" }}>对方已拒绝</span>
+            <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.32)" }}>{noticeText}</span>
           </div>;
         }
         return <div
