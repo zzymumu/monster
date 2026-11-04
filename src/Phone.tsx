@@ -539,6 +539,46 @@ function PhoneRuntime({
     }, 10000);
     return () => window.clearTimeout(timer);
   }, [app, locked, ready, creator, work.id, work.updatedAt]);
+  // After the player leaves DaG's tipsy chat and stays in Bilibili for
+  // ten seconds, deliver DaG's late-night check-in as a real WeChat notice.
+  useEffect(() => {
+    if (creator || !ready || locked || app !== "bilibili") return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      const wx = current.ui?.wechat ?? {};
+      if (Number(wx.wxReturnDinnerStage) !== 261 || wx.wxDrunkBilibiliPingV1 === true) return;
+      let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+      try {
+        const raw = wx.wxCatPendingLines;
+        const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
+        if (Array.isArray(parsed)) queued = parsed;
+      } catch { queued = []; }
+      queued.push({ id: "drunk-bilibili-da-g-checkin-v1", sender: "大G", body: "不回消息喔？睡了是不是？晚安。", thread: "大G" });
+      update({
+        ...current,
+        notifications: [...current.notifications, "微信：大G：不回消息喔？睡了是不是？晚安。"].slice(-60),
+        ui: { ...current.ui, wechat: {
+          ...wx,
+          wxReturnDinnerStage: 262,
+          wxDrunkBilibiliPingV1: true,
+          wxCatPendingLines: JSON.stringify(queued),
+        }},
+      });
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [app, locked, ready, creator, work.id, work.updatedAt]);
+  // The final nausea line starts DaG's simulated incoming call.
+  useEffect(() => {
+    if (creator || !ready || locked) return;
+    const wx = s.ui?.wechat ?? {};
+    if (Number(wx.wxReturnDinnerStage) !== 266 || s.incomingCall) return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      if (Number(current.ui?.wechat?.wxReturnDinnerStage) !== 266 || current.incomingCall) return;
+      update({ ...current, incomingCall: { caller: "大G", target: "大G", status: "ringing" } });
+    }, 1200);
+    return () => window.clearTimeout(timer);
+  }, [s.ui?.wechat?.wxReturnDinnerStage, s.incomingCall, locked, ready, creator]);
   // After the final Broccoli goodnight, staying in Xiaohongshu continuously
   // for ten seconds triggers DaG's hotel check-in message exactly once.
   useEffect(() => {
