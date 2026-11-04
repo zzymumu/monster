@@ -1862,8 +1862,8 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "不會啦！", thread: "大G" },
       { sender: "大G", body: "都是朋友，這麼客氣幹什麼。", thread: "大G" },
     ]},
-    { stage: 218, chat: "大G", id: "hotel-thanks-emoji-v2", label: "真的謝謝妳😭", nextStage: 219, lines: [
-      { sender: "我", body: "真的謝謝妳😭", thread: "大G" },
+    { stage: 218, chat: "大G", id: "hotel-thanks-emoji-v2", label: "真的謝謝妳🥺", nextStage: 219, lines: [
+      { sender: "我", body: "真的謝謝妳🥺", thread: "大G" },
       { sender: "大G", body: "哈哈！這個表情好可愛。", thread: "大G" },
     ]},
     { stage: 219, chat: "大G", id: "hotel-cute-emoji-reply-v2", label: "對吧對吧！我可喜歡了！", nextStage: 220, lines: [
