@@ -2066,9 +2066,13 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "不要！", thread: "大G" },
       { sender: "大G", body: "好啦，聽話，先休息一下。", thread: "大G" },
     ]},
-    { stage: 265, chat: "大G", id: "drunk-night-nausea-v1", label: "不行，一會再跟你說，我想吐了！", nextStage: 266, lines: [
-      { sender: "我", body: "不行，一會再跟你說，我想吐了！", thread: "大G" },
-      { sender: "大G", body: "妳先別動，我現在打給妳。", thread: "大G" },
+    { stage: 265, chat: "大G", id: "drunk-night-nausea-v2", label: "不行！一會再跟你說，我想吐了！", nextStage: 266, lines: [
+      { sender: "我", body: "不行！一會再跟你說，我想吐了！", thread: "大G" },
+      { sender: "大G", body: "怎麼突然想吐了？", thread: "大G" },
+      { sender: "大G", body: "妳先坐著，不要亂動。", thread: "大G" },
+      { sender: "大G", body: "有沒有很不舒服？", thread: "大G" },
+      { sender: "大G", body: "先不要再喝了，聽到沒有？", thread: "大G" },
+      { sender: "大G", body: "我有點擔心妳。", thread: "大G" },
     ]},
 
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
@@ -2753,7 +2757,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
