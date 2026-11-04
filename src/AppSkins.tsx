@@ -2871,7 +2871,7 @@ export function WeChatSkin(p: SkinProps) {
                   return (
                     <div className="cat-rescue-choices" aria-label="醉酒后的手动回复" style={{ position: "sticky", bottom: 0, zIndex: 20, display: "flex", flexDirection: "column", gap: 8, padding: "10px 12px", background: "rgba(255,255,255,.96)", borderTop: "1px solid #e5e5e5" }}>
                       <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
-                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], 0, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
+                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], catRescue.stage, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
                         setPendingCatLines([{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }]);
                       }}>{current.body}</button>
                       <div className="cat-rescue-option-hint">點擊選項後才會發送</div>
