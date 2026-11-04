@@ -604,7 +604,7 @@ function PhoneRuntime({
         item.sender === "我" && /好啦，愛妳呦，媽媽/.test(item.body?.trim() || "")
       );
       if (!goodbyeExists) return;
-      let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+      let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
       try {
         const raw = wx.wxCatPendingLines;
         const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
