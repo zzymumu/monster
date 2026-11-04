@@ -235,26 +235,34 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
     ? (Number.isFinite(anchorRaw) && anchorRaw > 0 ? anchorRaw : Date.parse(handsome.time))
     : NaN;
   const reflowIndex = (body: string): number => {
+    // Explicit chronology for the meetup conversation. The four split
+    // appearance questions must all precede the player's "I'm composed"
+    // reply; then the physical-contact exchange and signature exchange follow.
+    if (/他鼻子挺不挺/.test(body)) return 1;
+    if (/皮膚白不白/.test(body)) return 2;
+    if (/整個人在陽光下是不是會bulingbuling發光/.test(body)) return 3;
+    if (/妳有沒有看著流口水/.test(body)) return 4;
     if (/等一下[，,]?先回答我！他鼻子挺不挺/.test(body)) return 1;
-    if (/妳亂說什麼啊！！我很矜持的好不好/.test(body)) return 2;
-    if (/好好好[，,]?矜持。那我再問一個/.test(body)) return 3;
-    if (/沒有啦！！就是正常把玩玩交給他/.test(body)) return 4;
-    if (/幫我要簽名了嗎/.test(body) || /行吧[，,]?就知道妳?慫.*有沒有幫我.*簽名/.test(body)) return 5;
-    if (/斯米馬賽|斯米马赛/.test(body)) return 6;
-    if (/我都沒敢暴露我是粉絲/.test(body)) return 8;
-    if (/妳怎麼這麼沒用|妳怎麼這麼沒用/.test(body)) return 9;
-    if (/我哪裡沒用了/.test(body)) return 10;
-    if (/妳少來！我才不會咧/.test(body)) return 11;
-    if (/也不知道之前是誰.*演唱會大屏/.test(body)) return 12;
-    if (/妳不也差點暈過去/.test(body)) return 13;
-    if (/我那可能是低血糖了吧/.test(body)) return 14;
-    if (/妳就扯/.test(body)) return 15;
-    if (/要是早點買內場就好了/.test(body)) return 16;
-    if (/而且妳也可以幫我要簽名/.test(body)) return 17;
-    if (/我現在跟怪獸可是朋友/.test(body)) return 18;
-    if (/放長線釣大魚/.test(body)) return 19;
-    if (/妳說得對，妳說得都對/.test(body)) return 20;
-    if (/好啦好啦，不跟妳鬧了/.test(body)) return 21;
+    if (/妳亂說什麼啊！！我很矜持的好不好/.test(body)) return 5;
+    if (/好好好[，,]?矜持。那我再問一個/.test(body)) return 6;
+    if (/沒有啦！！就是正常把玩玩交給他/.test(body)) return 7;
+    if (/幫我要簽名了嗎/.test(body) || /行吧[，,]?就知道妳?慫.*有沒有幫我.*簽名/.test(body)) return 8;
+    if (/斯米馬賽|斯米马赛/.test(body)) return 9;
+    if (/我都沒敢暴露我是粉絲/.test(body)) return 10;
+    if (/啊啊啊啊啊妳怎麼這麼沒用|啊啊啊啊啊你怎么这么没用/.test(body)) return 11;
+    if (/妳怎麼這麼沒用|妳怎麼這麼沒用/.test(body)) return 11;
+    if (/我哪裡沒用了/.test(body)) return 12;
+    if (/妳少來！我才不會咧/.test(body)) return 13;
+    if (/也不知道之前是誰.*演唱會大屏/.test(body)) return 14;
+    if (/妳不也差點暈過去/.test(body)) return 15;
+    if (/我那可能是低血糖了吧/.test(body)) return 16;
+    if (/妳就扯/.test(body)) return 17;
+    if (/要是早點買內場就好了/.test(body)) return 18;
+    if (/而且妳也可以幫我要簽名/.test(body)) return 19;
+    if (/我現在跟怪獸可是朋友/.test(body)) return 20;
+    if (/放長線釣大魚/.test(body)) return 21;
+    if (/妳說得對，妳說得都對/.test(body)) return 22;
+    if (/好啦好啦，不跟妳鬧了/.test(body)) return 23;
     return 0;
   };
   const transformed = unique.map((item) => {
