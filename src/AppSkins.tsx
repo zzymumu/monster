@@ -2810,7 +2810,7 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "睡覺！！！", body: "No！！！", replyId: "drunk-big-g-call-trigger-v8", reply: "", callAfterSend: true },
                     { trigger: "接電話。", body: "我接個屁，你怎麼能命令你爸爸？？？？", replyId: "drunk-big-g-dad-reply-v10", reply: "", replyLines: [
                       { id: "drunk-big-g-ellipsis-v9", sender: "大G", body: "…………", thread: "大G" },
-                      { id: "drunk-big-g-wait-v9", sender: "大G", body: "妳等我。", thread: "大G" },
+                      { id: "drunk-big-g-wait-v11", sender: "大G", body: "妳等我。", thread: "大G", meta: { switchThread: "西蓝花" } },
                     ] },
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
@@ -2836,6 +2836,25 @@ export function WeChatSkin(p: SkinProps) {
                     </div>
                   );
                 })()}
+              {isBroccoliThread && (() => {
+                const broccoliPrompts: Array<{ trigger: string; body: string; replyId: string; replyLines?: CatLine[]; callAfterSend?: boolean }> = [
+                  { trigger: "妳等我。", body: "我在說話啊！我一直在說話！", replyId: "drunk-broccoli-speaking-v1", replyLines: [{ id: "drunk-broccoli-poison-v1", sender: "西蓝花", body: ".......你今晚吃的熱炒是有毒嗎？", thread: "西蓝花" }] },
+                  { trigger: ".......你今晚吃的熱炒是有毒嗎？", body: "對啊我中了名叫溫尚翊的毒。", replyId: "drunk-broccoli-poison-reply-v1", replyLines: [{ id: "drunk-broccoli-brain-v1", sender: "西蓝花", body: "。。。。。。不是，你腦子真壞了？", thread: "西蓝花" }] },
+                  { trigger: "。。。。。。不是，你腦子真壞了？", body: "嘻嘻你說溫尚翊會喜歡我嗎？會喜歡我嗎？我這麼可愛！", replyId: "drunk-broccoli-crush-v1", replyLines: [{ id: "drunk-broccoli-dont-know-v1", sender: "西蓝花", body: "......我真不知道您是怎麼了。", thread: "西蓝花" }] },
+                  { trigger: "......我真不知道您是怎麼了。", body: "你幹嘛不回答我！嗚嗚嗚你不愛我了。", replyId: "drunk-broccoli-call-v1", callAfterSend: true },
+                ];
+                const transcript = threadItems.map((item) => item.body.trim());
+                const current = broccoliPrompts.find((prompt) => transcript.includes(prompt.trigger) && !transcript.includes(prompt.body));
+                if (!current || pendingCatLines.length > 0) return null;
+                return <div className="cat-rescue-choices" aria-label="西蓝花醉酒对话回复" style={{ position: "sticky", bottom: 0, zIndex: 20, display: "flex", flexDirection: "column", gap: 8, padding: "10px 12px", background: "rgba(255,255,255,.96)", borderTop: "1px solid #e5e5e5" }}>
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
+                    appendCatLines([{ sender: "我", body: current.body, thread: "西蓝花" }], catRescue.stage, catRescue.branch, "drunk-broccoli-user-" + current.replyId);
+                    setPendingCatLines(current.replyLines || []);
+                    if (current.callAfterSend) p.onUi?.("wxBroccoliCallRequestedV1", true);
+                  }}>{current.body}</button>
+                  <div className="cat-rescue-option-hint">點擊選項後才會發送</div>
+                </div>;
+              })()}
               {isBroccoliThread && catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
               {vavaPlayActive && isMonsterThread && vavaPlayStage >= 0 && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G关于Vava和玩玩的回复选项">
