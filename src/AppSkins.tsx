@@ -2428,9 +2428,11 @@ export function WeChatSkin(p: SkinProps) {
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
+  const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
+  const [drunkCallReady, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
-      const post = JSON.parse(raw) as { id: string; body: string; time: string };
+      const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[] };
       return post.id && post.body ? [post] : [];
     } catch {
       return [];
@@ -2439,13 +2441,27 @@ export function WeChatSkin(p: SkinProps) {
   const publishMoment = () => {
     const body = momentDraft.trim();
     if (!body) return;
+    const isDrunkLovePost = /我愛溫尚翊一輩子|我爱温尚翊一辈子/.test(body);
     setMomentPostData((current) => [...current, JSON.stringify({
-      id: `moment-${Date.now()}`,
+      id: isDrunkLovePost ? "moment-drunk-love-monster-v1" : `moment-${Date.now()}`,
       body,
       time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      ...(isDrunkLovePost ? { comments: ["西蓝花：？"] } : {}),
     })]);
     setMomentDraft("");
     setMomentComposer(false);
+    if (isDrunkLovePost && !drunkMomentSequenceStarted) {
+      setDrunkMomentSequenceStarted(true);
+      setPendingCatLines((current) => [
+        ...current,
+        { id: "drunk-moment-broccoli-1", sender: "西蓝花", body: "？", thread: "西蓝花" },
+        { id: "drunk-moment-broccoli-2", sender: "西蓝花", body: "妳幹嘛？", thread: "西蓝花" },
+        { id: "drunk-moment-broccoli-3", sender: "西蓝花", body: "妳怎麼了？", thread: "西蓝花" },
+        { id: "drunk-moment-broccoli-4", sender: "西蓝花", body: "妳瘋了？", thread: "西蓝花" },
+        { id: "drunk-moment-broccoli-5", sender: "西蓝花", body: "妳夢遊了？", thread: "西蓝花" },
+        { id: "drunk-moment-broccoli-6", sender: "西蓝花", body: "妳怎麼不說話？？？", thread: "西蓝花" },
+      ]);
+    }
   };
   useEffect(() => {
     // Phase 1: after the original found-cat conversation is complete,
@@ -2821,7 +2837,23 @@ export function WeChatSkin(p: SkinProps) {
               <Compose
                 creator={p.creator}
                 onAdd={p.onAdd}
-                onSend={isMonsterThread && monsterRemoved && catRescue.stage === 13 ? (value) => {
+                onSend={isBroccoliThread && returnDinnerStage === 266 && drunkMomentSequenceStarted ? (value) => {
+                  const reply = value.trim();
+                  if (!reply) return;
+                  p.onAdd(makeItem({
+                    id: "drunk-broccoli-player-reply-" + Date.now(),
+                    title: "西蓝花",
+                    sender: "我",
+                    body: reply,
+                    time: "2026-11-04 " + (storyClockRef.current || "19:15"),
+                    outgoing: true,
+                    avatar: "",
+                    kind: "text",
+                    media: "",
+                    meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(Date.now()) },
+                  }));
+                  setDrunkCallReady(true);
+                } : isMonsterThread && monsterRemoved && catRescue.stage === 13 ? (value) => {
                   const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
                   const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
                   const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
@@ -2858,7 +2890,7 @@ export function WeChatSkin(p: SkinProps) {
           {myMomentPosts.map((post) => (
             <div key={post.id} className="wx-moment-post wx-moment-user-post">
               <Avatar name={ownerName} src={ownerAvatar} />
-              <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small>{post.id === "moment-vava-wanwan-play-fight" && <div className="wx-moment-social-likes">♡ 西蓝花、大G 赞了这条朋友圈</div>}</div>
+              <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small>{post.id === "moment-vava-wanwan-play-fight" && <div className="wx-moment-social-likes">♡ 西蓝花、大G 赞了这条朋友圈</div>}{post.comments?.map((comment, index) => <div className="wx-moment-social-likes" key={index}>{comment}</div>)}</div>
             </div>
           ))}
           {posts.map((i) => (
