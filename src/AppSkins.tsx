@@ -239,9 +239,8 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
     if (/妳亂說什麼啊！！我很矜持的好不好/.test(body)) return 2;
     if (/好好好[，,]?矜持。那我再問一個/.test(body)) return 3;
     if (/沒有啦！！就是正常把玩玩交給他/.test(body)) return 4;
-    if (/幫我要簽名了嗎/.test(body) || /行吧就知道妳?慫.*有沒有幫我.*簽名/.test(body)) return 5;
+    if (/幫我要簽名了嗎/.test(body) || /行吧[，,]?就知道妳?慫.*有沒有幫我.*簽名/.test(body)) return 5;
     if (/斯米馬賽|斯米马赛/.test(body)) return 6;
-    if (/妳真的沒要喔|妳居然真的沒要/.test(body)) return 7;
     if (/我都沒敢暴露我是粉絲/.test(body)) return 8;
     if (/妳怎麼這麼沒用|妳怎麼這麼沒用/.test(body)) return 9;
     if (/我哪裡沒用了/.test(body)) return 10;
@@ -268,29 +267,17 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
   // after the pickup announcement. Reflow those bubbles next to the first
   // handsome reaction so the existing transcript reads in the intended order.
   const hasFanConfession = transformed.some((item) => /我都沒敢暴露我是粉絲/.test(item.body));
-  const hasApology = transformed.some((item) => /斯米馬賽|斯米马赛/.test(item.body));
   const additions: Item[] = [];
-  if (handsome && hasFanConfession && !hasApology && Number.isFinite(anchorTime)) {
-    additions.push(
-      makeItem({
-        id: "wx-meetup-signature-apology-reflow-v1",
-        title: "西蓝花",
-        sender: "我",
-        body: "……沒有，斯米馬賽。",
-        time: handsome.time,
-        outgoing: true,
-        meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(anchorTime + 6) },
-      }),
-      makeItem({
-        id: "wx-meetup-signature-reaction-reflow-v1",
-        title: "西蓝花",
-        sender: "西蓝花",
-        body: "妳真的沒要喔？！",
-        time: handsome.time,
-        outgoing: false,
-        meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(anchorTime + 7) },
-      }),
-    );
+  if (handsome && hasFanConfession && !transformed.some((item) => /斯米馬賽|斯米马赛/.test(item.body)) && Number.isFinite(anchorTime)) {
+    additions.push(makeItem({
+      id: "wx-meetup-signature-apology-reflow-v2",
+      title: "西蓝花",
+      sender: "我",
+      body: "……沒有，斯米馬賽。",
+      time: handsome.time,
+      outgoing: true,
+      meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(anchorTime + 6) },
+    }));
   }
   return [...transformed, ...additions]
     .map((item, index) => {
@@ -1704,7 +1691,6 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 104, chat: "西蓝花", id: "apologize-no-signature", label: "……沒有，斯米馬賽。", nextStage: 105, lines: [
       { sender: "我", body: "……沒有，斯米馬賽。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "妳真的沒要喔？！", thread: "西蓝花" },
     ]},
     { stage: 105, chat: "西蓝花", id: "did-not-reveal-fan-reordered", label: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", nextStage: 200, lines: [
       { sender: "我", body: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", thread: "西蓝花" },
