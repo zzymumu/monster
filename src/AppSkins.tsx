@@ -2445,6 +2445,7 @@ export function WeChatSkin(p: SkinProps) {
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
   const [drunkCallReady, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
+  const [drunkManualTurn, setDrunkManualTurn] = useSkinState<number>(p, "wxDrunkManualTurnV3", 0);
   const [, setDrunkCallEnded] = useSkinState<boolean>(p, "wxDrunkCallEndedV1", false);
   const [, setDrunkCallSeen] = useSkinState<boolean>(p, "wxDrunkCallSeenV1", false);
   const [, setDrunkCallCount] = useSkinState<number>(p, "wxDrunkCallCountV2", 0);
@@ -2474,6 +2475,7 @@ export function WeChatSkin(p: SkinProps) {
     if (isDrunkLovePost && !drunkMomentSequenceStarted) {
       setDrunkMomentSequenceStarted(true);
       // Reset legacy call flags so an earlier test save cannot hide the reply.
+      setDrunkManualTurn(0);
       setDrunkCallReady(false);
       setDrunkCallEnded(false);
       setDrunkCallSeen(false);
@@ -2869,24 +2871,33 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               {isMonsterThread &&
-                threadItems.some((item) => item.id === "drunk-big-g-last-warning-v2") &&
                 pendingCatLines.length === 0 &&
-                !drunkCallReady && (
-                <div className="cat-rescue-choices" aria-label="醉酒后的乱码回复选项" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
-                  <button onClick={() => {
-                    appendCatLines([{ sender: "我", body: "#@￥%@%……&&", thread: "大G" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v6");
-                    setReturnDinnerStage(266);
-                    setDrunkCallCount(0);
-                    setDrunkCallEnded(false);
-                    setDrunkCallSeen(false);
-                    setBroccoliCallReady(false);
-                    setBroccoliCallEnded(false);
-                    setDoorMessageQueued(false);
-                    setDrunkCallReady(true);
-                  }}>#@￥%@%……&&</button>
-                  <div className="cat-rescue-option-hint">選擇回覆</div>
-                </div>
-              )}
+                !drunkCallReady &&
+                (() => {
+                  const prompts = [
+                    { after: "drunk-moment-big-g-checkin-v2", body: "我跟你說喔……那個燈一直在跟我講話……", reply: "你是喝了多少！" },
+                    { after: "drunk-big-g-how-much-v2", body: "等一下……我的鞋子是不是不見了……", reply: "我不是叫你別喝了！" },
+                    { after: "drunk-big-g-stop-drinking-v2", body: "我明明有兩個手機……怎麼只有一個……", reply: "你吐過了？" },
+                    { after: "drunk-big-g-vomit-v2", body: "你不要轉喔……房間在晃……", reply: "前台跟我說敲門沒人開" },
+                  ];
+                  const current = prompts[drunkManualTurn];
+                  if (!current || !threadItems.some((item) => item.id === current.after)) return null;
+                  return (
+                    <div className="cat-rescue-choices" aria-label="醉酒后的手动回复" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
+                      <button onClick={() => {
+                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], 266, catRescue.branch, "drunk-manual-user-line-v3-" + drunkManualTurn);
+                        setDrunkManualTurn((turn) => turn + 1);
+                        setPendingCatLines((queue) => [...queue, {
+                          id: ["drunk-big-g-how-much-v2", "drunk-big-g-stop-drinking-v2", "drunk-big-g-vomit-v2", "drunk-big-g-last-warning-v2"][drunkManualTurn],
+                          sender: "大G",
+                          body: current.reply,
+                          thread: "大G",
+                        }]);
+                      }}>{current.body}</button>
+                      <div className="cat-rescue-option-hint">點擊後才會發送</div>
+                    </div>
+                  );
+                })()}
               <Compose
                 creator={p.creator}
                 onAdd={p.onAdd}
