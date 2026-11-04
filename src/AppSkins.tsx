@@ -2822,9 +2822,9 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "好，妳先站穩，然後扶著牆，慢慢走到門邊，給我開門好不好？我看看妳有沒有事。", body: "你答應我一個要求我就開門！", replyId: "drunk-big-g-condition-v3", reply: "什麼？" },
                     { trigger: "什麼？", body: "你猜。", replyId: "drunk-big-g-guess-v3", reply: "妳開門我就猜。" },
                     { trigger: "妳開門我就猜。", body: "你不猜我就不開門。", replyId: "drunk-big-g-no-guess-v3", reply: "我拜託妳先開門好不好？我現在站在走廊跟妳猜謎是不是……" },
-                    { trigger: "我拜託妳先開門好不好？我現在站在走廊跟妳猜謎是不是……", body: "不行！你先猜！猜錯了也不行！", replyId: "drunk-big-g-frustrated-v3", reply: "……好，我猜。妳先把門打開，我保證不會跑掉。" },
-                    { trigger: "……好，我猜。妳先把門打開，我保證不會跑掉。", body: "……你要先答應我！", replyId: "drunk-big-g-promise-v3", reply: "好。" },
-                    { trigger: "好。", body: "那你把頭像給換了！！", replyId: "drunk-big-g-avatar-demand-v3", reply: "？" },
+                    { trigger: "我拜託妳先開門好不好？我現在站在走廊跟妳猜謎是不是……", body: "不行！你先猜！猜錯了也不行！", replyId: "drunk-big-g-frustrated-v4", reply: "開門！" },
+                    { trigger: "開門！", body: "不開！", replyId: "drunk-big-g-open-no-v4", reply: "開門！" },
+                    { trigger: "開門！", body: "不開！說不開就不開！", replyId: "drunk-big-g-open-no-again-v4", reply: "妳先把門打開好不好？我保證不會跑掉。" },
                     { trigger: "？", body: "你這頭像也太醜了！換掉！！", replyId: "drunk-big-g-avatar-ugly-v3", reply: "……好，妳等我一下。" },
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
