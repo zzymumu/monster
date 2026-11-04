@@ -2850,18 +2850,7 @@ export function WeChatSkin(p: SkinProps) {
                 onSend={isBroccoliThread && returnDinnerStage === 266 && drunkMomentSequenceStarted ? (value) => {
                   const reply = value.trim();
                   if (!reply) return;
-                  p.onAdd(makeItem({
-                    id: "drunk-broccoli-player-reply-" + Date.now(),
-                    title: "西蓝花",
-                    sender: "我",
-                    body: reply,
-                    time: "2026-11-04 " + (storyClockRef.current || "19:15"),
-                    outgoing: true,
-                    avatar: "",
-                    kind: "text",
-                    media: "",
-                    meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(Date.now()) },
-                  }));
+                  appendCatLines([{ sender: "我", body: reply, thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v1");
                   setDrunkCallReady(true);
                 } : isMonsterThread && monsterRemoved && catRescue.stage === 13 ? (value) => {
                   const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
