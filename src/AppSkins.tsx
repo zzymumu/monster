@@ -2808,9 +2808,13 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "所以現在去睡覺，好不好？睡一覺就不難受了。", body: "我不睡！我就不睡！", replyId: "drunk-big-g-refuse-sleep-v8", reply: "給我睡覺！" },
                     { trigger: "給我睡覺！", body: "我不要！", replyId: "drunk-big-g-refuse-again-v8", reply: "睡覺！！！" },
                     { trigger: "睡覺！！！", body: "No！！！", replyId: "drunk-big-g-call-trigger-v8", reply: "", callAfterSend: true },
+                    { trigger: "妳等我。", body: "你在說什麼？", replyId: "drunk-big-g-what-v1", reply: "", replyLines: [
+                      { id: "drunk-broccoli-first-user-v2", sender: "我", body: "我在說話啊！我一直在說話！", thread: "西蓝花" },
+                      { id: "drunk-broccoli-first-reply-v2", sender: "西蓝花", body: ".......你今晚吃的熱炒是有毒嗎？", thread: "西蓝花" },
+                    ] },
                     { trigger: "接電話。", body: "我接個屁，你怎麼能命令你爸爸？？？？", replyId: "drunk-big-g-dad-reply-v10", reply: "", replyLines: [
                       { id: "drunk-big-g-ellipsis-v9", sender: "大G", body: "…………", thread: "大G" },
-                      { id: "drunk-big-g-wait-v11", sender: "大G", body: "妳等我。", thread: "大G", meta: { switchThread: "西蓝花" } },
+                      { id: "drunk-big-g-wait-v11", sender: "大G", body: "妳等我。", thread: "大G" },
                     ] },
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
@@ -2838,13 +2842,12 @@ export function WeChatSkin(p: SkinProps) {
                 })()}
               {isBroccoliThread && (() => {
                 const broccoliPrompts: Array<{ trigger: string; body: string; replyId: string; replyLines?: CatLine[]; callAfterSend?: boolean }> = [
-                  { trigger: "妳等我。", body: "我在說話啊！我一直在說話！", replyId: "drunk-broccoli-speaking-v1", replyLines: [{ id: "drunk-broccoli-poison-v1", sender: "西蓝花", body: ".......你今晚吃的熱炒是有毒嗎？", thread: "西蓝花" }] },
                   { trigger: ".......你今晚吃的熱炒是有毒嗎？", body: "對啊我中了名叫溫尚翊的毒。", replyId: "drunk-broccoli-poison-reply-v1", replyLines: [{ id: "drunk-broccoli-brain-v1", sender: "西蓝花", body: "。。。。。。不是，你腦子真壞了？", thread: "西蓝花" }] },
                   { trigger: "。。。。。。不是，你腦子真壞了？", body: "嘻嘻你說溫尚翊會喜歡我嗎？會喜歡我嗎？我這麼可愛！", replyId: "drunk-broccoli-crush-v1", replyLines: [{ id: "drunk-broccoli-dont-know-v1", sender: "西蓝花", body: "......我真不知道您是怎麼了。", thread: "西蓝花" }] },
                   { trigger: "......我真不知道您是怎麼了。", body: "你幹嘛不回答我！嗚嗚嗚你不愛我了。", replyId: "drunk-broccoli-call-v1", replyLines: [{ id: "drunk-broccoli-love-v1", sender: "西蓝花", body: "我哪有不愛妳……妳先回答我，現在到底在哪裡？", thread: "西蓝花" }] },
                   { trigger: "我哪有不愛妳……妳先回答我，現在到底在哪裡？", body: "不過我還是愛你的，不過，我更愛溫尚翊啦哈哈哈哈哈啊哈哈哈", replyId: "drunk-broccoli-love-monster-v1", replyLines: [{ id: "drunk-broccoli-earth-v1", sender: "西蓝花", body: "天啊，妳到底在幹嘛啊！是明天地球要毀滅了嗎？", thread: "西蓝花" }] },
-                  { trigger: "天啊，妳到底在幹嘛啊！是明天地球要毀滅了嗎？", body: "啊？明天地球要毀滅了嗎？那我得抓緊機會跟溫尚翊睡一覺啊。", replyId: "drunk-broccoli-earth-reply-v1", replyLines: [{ id: "drunk-broccoli-ellipsis-v1", sender: "西蓝花", body: ".....................", thread: "西蓝花" }] },
-                  { trigger: ".....................", body: "我接電話！", replyId: "drunk-broccoli-call-v2", callAfterSend: true },
+                  { trigger: "天啊，妳到底在幹嘛啊！是明天地球要毀滅了嗎？", body: "啊？明天地球要毀滅了嗎？那我得抓緊機會跟溫尚翊睡一覺啊。", replyId: "drunk-broccoli-earth-reply-v1", replyLines: [{ id: "drunk-broccoli-ellipsis-v2", sender: "西蓝花", body: ".....................", thread: "西蓝花", meta: { startBroccoliCall: "yes" } }] },
+
                 ];
                 const transcript = threadItems.map((item) => item.body.trim());
                 const current = broccoliPrompts.find((prompt) => transcript.includes(prompt.trigger) && !transcript.includes(prompt.body));
