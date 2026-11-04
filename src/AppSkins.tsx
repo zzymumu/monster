@@ -2859,8 +2859,14 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               {isBroccoliThread &&
-                threadItems.filter((item) => item.body.trim() === "已取消").length >= 3 &&
-                !threadItems.some((item) => item.sender === "我" && item.body.includes("%……&*……（）……%（）*")) && (
+                allItems.filter((item) =>
+                  item.body.trim() === "已取消" &&
+                  (item.title === "西蓝花" || item.title === "西兰花" ||
+                    item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花")
+                ).length >= 3 &&
+                !allItems.some((item) => item.sender === "我" && item.body.includes("%……&*……（）…（）*") &&
+                  (item.title === "西蓝花" || item.title === "西兰花" ||
+                    item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花")) && (
                 <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
                   <button onClick={() => {
                     appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v3");
