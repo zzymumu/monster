@@ -1978,7 +1978,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "早點睡吧妳，夢裡啥都有。", thread: "西蓝花" },
       { sender: "西蓝花", body: "嘻嘻，晚安啦怪獸嫂～", thread: "西蓝花" },
     ]},
-    { stage: 248, chat: "西蓝花", id: "hotel-bestie-goodnight-end-v1", label: "滾。", nextStage: -1, lines: [
+    { stage: 248, chat: "西蓝花", id: "hotel-bestie-goodnight-end-v1", label: "滾。", nextStage: 249, lines: [
       { sender: "我", body: "滾。", thread: "西蓝花" },
     ]},
     { stage: 249, chat: "大G", id: "drunk-night-call-out-v1", label: "溫尚翊你混蛋！你耍我！！！", nextStage: 250, lines: [
