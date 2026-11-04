@@ -332,7 +332,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -1917,20 +1917,50 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "妳自己說的在酒店啊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳們前面剛吃完飯，現在就在酒店，讓人很難不多想啊🥺", thread: "西蓝花" },
     ]},
-    { stage: 231, chat: "西蓝花", id: "hotel-first-meeting-worry-v1", label: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", nextStage: 232, lines: [
-      { sender: "我", body: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", thread: "西蓝花" },
+    { stage: 231, chat: "西蓝花", id: "hotel-first-meeting-worry-start-v2", label: "……（無語）唉，怎麼辦啊？", nextStage: 232, lines: [
+      { sender: "我", body: "……（無語）唉，怎麼辦啊？", thread: "西蓝花" },
+    ]},
+    { stage: 232, chat: "西蓝花", id: "hotel-first-meeting-worry-middle-v2", label: "第一次見面就鬧成這樣，", nextStage: 233, lines: [
+      { sender: "我", body: "第一次見面就鬧成這樣，", thread: "西蓝花" },
+    ]},
+    { stage: 233, chat: "西蓝花", id: "hotel-first-meeting-worry-end-v2", label: "他不會以為我故意不帶鑰匙，想騙他去酒店吧？", nextStage: 234, lines: [
+      { sender: "我", body: "他不會以為我故意不帶鑰匙，想騙他去酒店吧？", thread: "西蓝花" },
       { sender: "西蓝花", body: "嗯……他現在對妳的態度怎麼樣？", thread: "西蓝花" },
     ]},
-    { stage: 232, chat: "西蓝花", id: "hotel-breakfast-invitation-v1", label: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", nextStage: 233, lines: [
-      { sender: "我", body: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", thread: "西蓝花" },
+    { stage: 234, chat: "西蓝花", id: "hotel-breakfast-attitude-v2", label: "還好吧，沒什麼變化。", nextStage: 235, lines: [
+      { sender: "我", body: "還好吧，沒什麼變化。", thread: "西蓝花" },
+    ]},
+    { stage: 235, chat: "西蓝花", id: "hotel-breakfast-habit-v2", label: "前面還問我酒店住得習不習慣。", nextStage: 236, lines: [
+      { sender: "我", body: "前面還問我酒店住得習不習慣。", thread: "西蓝花" },
+    ]},
+    { stage: 236, chat: "西蓝花", id: "hotel-breakfast-invitation-v2", label: "哦對，他說明早要來找我吃早飯。", nextStage: 237, lines: [
+      { sender: "我", body: "哦對，他說明早要來找我吃早飯。", thread: "西蓝花" },
       { sender: "西蓝花", body: "他這是在約妳？", thread: "西蓝花" },
     ]},
-    { stage: 233, chat: "西蓝花", id: "hotel-breakfast-excuse-v1", label: "啊？不是啦，他說這家酒店的早餐自助很好吃。", nextStage: 234, lines: [
-      { sender: "我", body: "啊？不是啦，他說這家酒店的早餐自助很好吃。", thread: "西蓝花" },
+    { stage: 237, chat: "西蓝花", id: "hotel-breakfast-excuse-start-v2", label: "啊？不是啦，", nextStage: 238, lines: [
+      { sender: "我", body: "啊？不是啦，", thread: "西蓝花" },
+    ]},
+    { stage: 238, chat: "西蓝花", id: "hotel-breakfast-excuse-end-v2", label: "他說這家酒店的早餐自助很好吃。", nextStage: 239, lines: [
+      { sender: "我", body: "他說這家酒店的早餐自助很好吃。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這他媽是他的藉口吧，他就是想跟妳繼續接觸。", thread: "西蓝花" },
     ]},
-    { stage: 234, chat: "西蓝花", id: "hotel-mom-interview-defense-v1", label: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。", nextStage: 235, lines: [
-      { sender: "我", body: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。妳沒考古之前的採訪嗎？都說怪獸像媽媽，他就是單純關心我而已。", thread: "西蓝花" },
+    { stage: 239, chat: "西蓝花", id: "hotel-mom-interview-defense-start-v2", label: "妳亂說什麼啊……", nextStage: 240, lines: [
+      { sender: "我", body: "妳亂說什麼啊……", thread: "西蓝花" },
+    ]},
+    { stage: 240, chat: "西蓝花", id: "hotel-mom-interview-defense-middle-v2", label: "我有什麼好接觸的，", nextStage: 241, lines: [
+      { sender: "我", body: "我有什麼好接觸的，", thread: "西蓝花" },
+    ]},
+    { stage: 241, chat: "西蓝花", id: "hotel-mom-interview-defense-simple-v2", label: "他就是單純人好。", nextStage: 242, lines: [
+      { sender: "我", body: "他就是單純人好。", thread: "西蓝花" },
+    ]},
+    { stage: 242, chat: "西蓝花", id: "hotel-mom-interview-defense-interview-v2", label: "妳沒考古之前的採訪嗎？", nextStage: 243, lines: [
+      { sender: "我", body: "妳沒考古之前的採訪嗎？", thread: "西蓝花" },
+    ]},
+    { stage: 243, chat: "西蓝花", id: "hotel-mom-interview-defense-mom-v2", label: "都說怪獸像媽媽，", nextStage: 244, lines: [
+      { sender: "我", body: "都說怪獸像媽媽，", thread: "西蓝花" },
+    ]},
+    { stage: 244, chat: "西蓝花", id: "hotel-mom-interview-defense-end-v2", label: "他就是單純關心我而已。", nextStage: 245, lines: [
+      { sender: "我", body: "他就是單純關心我而已。", thread: "西蓝花" },
       { sender: "西蓝花", body: "我話放這了，他要是沒看上妳，我跟妳姓！", thread: "西蓝花" },
     ]},
 
