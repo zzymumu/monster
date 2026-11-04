@@ -531,22 +531,21 @@ function PhoneRuntime({
     }, 10000);
     return () => window.clearTimeout(timer);
   }, [app, locked, ready, creator, work.id, work.updatedAt]);
-  // After the completed pickup/goodbye scene, staying in Xiaohongshu
-  // continuously for ten seconds triggers DaG's one-time "home yet?" message.
-  // Keep this separate from the existing YouTube timer and its original gate.
+  // After the final Broccoli goodnight, staying in Xiaohongshu continuously
+  // for ten seconds triggers DaG's hotel check-in message exactly once.
   useEffect(() => {
     if (creator || !ready || locked || app !== "redbook") return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
       const wx = current.ui?.wechat ?? {};
-      if (Number(wx.wxReturnDinnerStage) !== -2 || wx.wxRedbookAfterPickupTriggered === true) return;
+      if (Number(wx.wxReturnDinnerStage) !== -1 || wx.wxRedbookAfterPickupTriggered === true) return;
       let catState: { messages?: Array<{ sender?: string; body?: string }> } = {};
       try {
         const raw = wx.catRescueState;
         if (typeof raw === "string") catState = JSON.parse(raw);
       } catch { catState = {}; }
       const goodbyeExists = (catState.messages ?? []).some((item) =>
-        item.sender === "我" && item.body?.trim() === "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！"
+        item.sender === "我" && /好啦，愛妳呦，媽媽/.test(item.body?.trim() || "")
       );
       if (!goodbyeExists) return;
       let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
@@ -555,13 +554,11 @@ function PhoneRuntime({
         const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
         if (Array.isArray(parsed)) queued = parsed;
       } catch { queued = []; }
-      if (queued.some((line) => line.id === "redbook-after-pickup-home-check")) return;
-      queued.push({
-        id: "redbook-after-pickup-home-check",
-        sender: "大G",
-        body: "到家了嗎？",
-        thread: "大G",
-      });
+      if (queued.some((line) => line.id === "redbook-hotel-arrival-checkin")) return;
+      queued.push(
+        { id: "redbook-hotel-arrival-checkin-1", sender: "大G", body: "我到家了。", thread: "大G" },
+        { id: "redbook-hotel-arrival-checkin-2", sender: "大G", body: "妳早點休息，酒店住得習慣嗎？", thread: "大G" },
+      );
       update({
         ...current,
         ui: {
@@ -569,7 +566,7 @@ function PhoneRuntime({
           wechat: {
             ...wx,
             wxRedbookAfterPickupTriggered: true,
-            wxReturnDinnerStage: 111,
+            wxReturnDinnerStage: 215,
             wxCatPendingLines: JSON.stringify(queued),
           },
         },
