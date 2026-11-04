@@ -332,7 +332,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -1963,6 +1963,23 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 244, chat: "西蓝花", id: "hotel-mom-interview-defense-end-v2", label: "他就是單純關心我而已。", nextStage: 245, lines: [
       { sender: "我", body: "他就是單純關心我而已。", thread: "西蓝花" },
       { sender: "西蓝花", body: "我話放這了，他要是沒看上妳，我跟妳姓！", thread: "西蓝花" },
+    ]},
+    { stage: 245, chat: "西蓝花", id: "hotel-bestie-surname-challenge-v1", label: "那妳跟我姓！天天就知道亂說話，一個大明星什麼漂亮女生沒見過啊，能看上我？", nextStage: 246, lines: [
+      { sender: "我", body: "那妳跟我姓！天天就知道亂說話，一個大明星什麼漂亮女生沒見過啊，能看上我？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "緣分很難說啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳能撿到他的貓，這完全就是上天的旨意！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "🙏", thread: "西蓝花" },
+      { sender: "西蓝花", body: "苟富貴，勿相忘！", thread: "西蓝花" },
+    ]},
+    { stage: 246, chat: "西蓝花", id: "hotel-bestie-godsend-reply-v1", label: "……行，我當上嫂子了妳就是怪獸嫂閨蜜。", nextStage: 247, lines: [
+      { sender: "我", body: "……行，我當上嫂子了妳就是怪獸嫂閨蜜。", thread: "西蓝花" },
+    ]},
+    { stage: 247, chat: "西蓝花", id: "hotel-bestie-go-sleep-v1", label: "早點睡吧妳，夢裡啥都有。", nextStage: 248, lines: [
+      { sender: "我", body: "早點睡吧妳，夢裡啥都有。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "嘻嘻，晚安啦怪獸嫂～", thread: "西蓝花" },
+    ]},
+    { stage: 248, chat: "西蓝花", id: "hotel-bestie-goodnight-end-v1", label: "去睡啦！", nextStage: -1, lines: [
+      { sender: "我", body: "去睡啦！", thread: "西蓝花" },
     ]},
 
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
