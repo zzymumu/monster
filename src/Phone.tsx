@@ -317,19 +317,18 @@ function PhoneRuntime({
     if (creator || !ready || locked || s.incomingCall) return;
     const current = runtimeRef.current;
     const wx = current.ui?.wechat ?? {};
-    if (wx.wxDrunkFinalCallStartedV7 === true || wx.wxDrunkFinalCallFinishedV7 === true) return;
-    const finalLine = (current.messages.wechat ?? []).some((item) =>
-      item.title === "大G" &&
-      item.sender === "我" &&
-      item.body.trim() === "我不睡！我就不睡！"
-    );
-    if (!finalLine) return;
+    if (wx.wxDrunkCallRequestedV8 !== true || wx.wxDrunkCallStartedV8 === true) return;
     update({
       ...current,
       incomingCall: { caller: "大G", target: "大G", status: "ringing" },
-      ui: { ...current.ui, wechat: { ...wx, wxDrunkFinalCallStartedV7: true } },
+      ui: { ...current.ui, wechat: {
+        ...wx,
+        wxDrunkCallStartedV8: true,
+        // Keep the legacy flag so the existing manual-hang-up follow-up remains compatible.
+        wxDrunkFinalCallStartedV7: true,
+      } },
     });
-  }, [s.messages.wechat, s.incomingCall, s.ui?.wechat?.wxDrunkFinalCallStartedV7, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, ready, locked, creator]);
+  }, [s.incomingCall, s.ui?.wechat?.wxDrunkCallRequestedV8, s.ui?.wechat?.wxDrunkCallStartedV8, ready, locked, creator]);
 
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
