@@ -248,21 +248,21 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
     if (/沒有啦！！就是正常把玩玩交給他/.test(body)) return 7;
     if (/幫我要簽名了嗎/.test(body) || /行吧[，,]?就知道妳?慫.*有沒有幫我.*簽名/.test(body)) return 8;
     if (/斯米馬賽|斯米马赛/.test(body)) return 9;
-    if (/我都沒敢暴露我是粉絲/.test(body)) return 10;
-    if (/啊啊啊啊啊妳怎麼這麼沒用|啊啊啊啊啊你怎么这么没用/.test(body)) return 11;
-    if (/妳怎麼這麼沒用|妳怎麼這麼沒用/.test(body)) return 11;
-    if (/我哪裡沒用了/.test(body)) return 12;
-    if (/妳少來！我才不會咧/.test(body)) return 13;
-    if (/也不知道之前是誰.*演唱會大屏/.test(body)) return 14;
-    if (/妳不也差點暈過去/.test(body)) return 15;
-    if (/我那可能是低血糖了吧/.test(body)) return 16;
-    if (/妳就扯/.test(body)) return 17;
-    if (/要是早點買內場就好了/.test(body)) return 18;
-    if (/而且妳也可以幫我要簽名/.test(body)) return 19;
-    if (/我現在跟怪獸可是朋友/.test(body)) return 20;
-    if (/放長線釣大魚/.test(body)) return 21;
-    if (/妳說得對，妳說得都對/.test(body)) return 22;
-    if (/好啦好啦，不跟妳鬧了/.test(body)) return 23;
+    if (/妳怎麼這麼沒用！?$/.test(body)) return 10;
+    if (/我都沒敢暴露我是粉絲/.test(body)) return 11;
+    if (/啊啊啊啊啊妳怎麼這麼沒用|啊啊啊啊啊你怎么这么没用/.test(body)) return 12;
+    if (/我哪裡沒用了/.test(body)) return 13;
+    if (/妳少來！我才不會咧/.test(body)) return 14;
+    if (/也不知道之前是誰.*演唱會大屏/.test(body)) return 15;
+    if (/妳不也差點暈過去/.test(body)) return 16;
+    if (/我那可能是低血糖了吧/.test(body)) return 17;
+    if (/妳就扯/.test(body)) return 18;
+    if (/要是早點買內場就好了/.test(body)) return 19;
+    if (/而且妳也可以幫我要簽名/.test(body)) return 20;
+    if (/我現在跟怪獸可是朋友/.test(body)) return 21;
+    if (/放長線釣大魚/.test(body)) return 22;
+    if (/妳說得對，妳說得都對/.test(body)) return 23;
+    if (/好啦好啦，不跟妳鬧了/.test(body)) return 24;
     return 0;
   };
   const transformed = unique.map((item) => {
@@ -1734,6 +1734,7 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 104, chat: "西蓝花", id: "apologize-no-signature", label: "……沒有，斯米馬賽。", nextStage: 105, lines: [
       { sender: "我", body: "……沒有，斯米馬賽。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳怎麼這麼沒用！", thread: "西蓝花" },
     ]},
     { stage: 105, chat: "西蓝花", id: "did-not-reveal-fan-reordered", label: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", nextStage: 200, lines: [
       { sender: "我", body: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", thread: "西蓝花" },
