@@ -2797,6 +2797,10 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "我哪有！妳不要亂冤枉我啦。", body: "我剛剛看到天花板在游泳……牠是不是也喝醉了……", replyId: "drunk-big-g-ceiling-v6", reply: "天花板沒有喝酒，妳不要再看它了。" },
                     { trigger: "天花板沒有喝酒，妳不要再看它了。", body: "我好想你嗚嗚嗚嗚嗚嗚嗚嗚嗚嗚……", replyId: "drunk-big-g-miss-v6", reply: "我就在這裡啊，妳到底在想誰啦……" },
                     { trigger: "我就在這裡啊，妳到底在想誰啦……", body: "我沒有醉！我只是有一點點喜歡你……一點點而已……", replyId: "drunk-big-g-denial-v6", reply: "好好好，一點點。妳先乖乖坐好。" },
+                    { trigger: "好好好，一點點。妳先乖乖坐好。", body: "你說溫尚翊會不會喜歡我呢……他那麼好，有那麼多人喜歡他，但我就是個小粉絲而已，他根本不知道我是誰……", replyId: "drunk-big-g-know-me-v7", reply: "怎麼會不知道妳是誰呢？妳是撿到玩玩的小女孩，很天真很可愛啊。" },
+                    { trigger: "怎麼會不知道妳是誰呢？妳是撿到玩玩的小女孩，很天真很可愛啊。", body: "嘻嘻……你覺得我可愛喔……", replyId: "drunk-big-g-pretty-v7", reply: "嗯……也很漂亮啊！！" },
+                    { trigger: "嗯……也很漂亮啊！！", body: "嘻嘻傻笑……我漂亮耶……", replyId: "drunk-big-g-sleep-v7", reply: "所以現在去睡覺，好不好？睡一覺就不難受了。" },
+                    { trigger: "所以現在去睡覺，好不好？睡一覺就不難受了。", body: "我不睡！我就不睡！", replyId: "drunk-big-g-call-trigger-v7", reply: "", callAfterSend: true },
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
                   const current = prompts.find((prompt) =>
@@ -2808,8 +2812,13 @@ export function WeChatSkin(p: SkinProps) {
                   return (
                     <div className="cat-rescue-choices" aria-label="醉酒后的手动回复" style={{ position: "sticky", bottom: 0, zIndex: 20, display: "flex", flexDirection: "column", gap: 8, padding: "10px 12px", background: "rgba(255,255,255,.96)", borderTop: "1px solid #e5e5e5" }}>
                       <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
-                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], catRescue.stage, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
-                        setPendingCatLines([{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }]);
+                        appendCatLines([{
+                          sender: "我",
+                          body: current.body,
+                          thread: "大G",
+                          ...(current.callAfterSend ? { meta: { drunkCallAfterLine: "yes" } } : {}),
+                        }], catRescue.stage, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
+                        setPendingCatLines(current.reply ? [{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }] : []);
                       }}>{current.body}</button>
                       <div className="cat-rescue-option-hint">點擊選項後才會發送</div>
                     </div>
