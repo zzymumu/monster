@@ -1351,41 +1351,11 @@ export function WeChatSkin(p: SkinProps) {
       setPostMeetupDialogueMigratedV3(true);
     }
   }, [postMeetupDialogueMigratedV3, hasNewBroccoliReply, returnDinnerStage]);
-  // Recover existing saves that were fast-forwarded by the previous build.
-  // Resume from the first missing beat without replaying the player's already
-  // sent "真人好帥" line. If the nose/skin question is missing, queue it;
-  // if it exists but the physical-contact question does not, show stage 102.
-  useEffect(() => {
-    if (returnDinnerStage < 200 || returnDinnerStage > 201 || postPickupGoodbyeSent) return;
-    const transcript = [...p.items, ...catRescue.messages];
-    const hasNoseQuestion = transcript.some((item) => /他鼻子挺不挺|鼻子挺不挺/.test(item.body));
-    const hasPhysicalQuestion = transcript.some((item) => /有沒有肢體接觸|有沒有碰到手/.test(item.body));
-    const hasHandsomeLine = transcript.some((item) => /真人比照片好看無數倍|真人比照片好看无数倍/.test(item.body));
-    const repairedMessages = catRescue.messages.filter((item) =>
-      !(/我哪裡沒用了|我哪里没用了/.test(item.body) ||
-        item.body.trim() === "妳少來！我才不會咧！")
-    );
-    if (repairedMessages.length !== catRescue.messages.length) {
-      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repairedMessages }));
-    }
-    setPendingCatLines((current) => current.filter((item) =>
-      !(/妳少來！我才不會咧！/.test(item.body) || /我哪裡沒用了|我哪里没用了/.test(item.body))
-    ));
-    if (!hasNoseQuestion && hasHandsomeLine) {
-      setPendingCatLines((current) => [
-        ...current.filter((item) => !/他鼻子挺不挺/.test(item.body)),
-        { sender: "西蓝花", body: "他鼻子挺不挺？", thread: "西蓝花", id: "meetup-nose-question-repair-1" },
-        { sender: "西蓝花", body: "皮膚白不白？", thread: "西蓝花", id: "meetup-nose-question-repair-2" },
-        { sender: "西蓝花", body: "整個人在陽光下是不是會bulingbuling發光？", thread: "西蓝花", id: "meetup-nose-question-repair-3" },
-        { sender: "西蓝花", body: "妳有沒有看著流口水？", thread: "西蓝花", id: "meetup-nose-question-repair-4" },
-      ]);
-      setReturnDinnerStage(102);
-    } else if (!hasPhysicalQuestion) {
-      setReturnDinnerStage(102);
-    } else {
-      setReturnDinnerStage(103);
-    }
-  }, [returnDinnerStage, postPickupGoodbyeSent, catRescue.messages, p.items]);
+  // Do not run the old stage-200/201 recovery here. Those stage numbers are
+  // now the intentional continuation after the fan-confession beat (stages
+  // 200-204). The former effect reset them to 102/103 and deleted the player's
+  // banter, causing the same nose/skin replies to loop and skipping the
+  // concert-screen and fan-identity conversation.
   // After the final Broccoli line has arrived, start Big G's home update as
   // separate incoming chat messages. The phone-level queue creates the
   // notification because the player is still in Broccoli's conversation.
