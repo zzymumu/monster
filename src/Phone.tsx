@@ -330,6 +330,35 @@ function PhoneRuntime({
     });
   }, [s.incomingCall, s.ui?.wechat?.wxDrunkCallRequestedV8, s.ui?.wechat?.wxDrunkCallStartedV8, ready, locked, creator]);
 
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    if (wx.wxBroccoliCallRequestedV1 !== true || wx.wxBroccoliCallStartedV1 === true) return;
+    update({ ...current, incomingCall: { caller: "西蓝花", target: "西蓝花", status: "ringing" }, ui: { ...current.ui, wechat: { ...wx, wxBroccoliCallStartedV1: true } } });
+  }, [s.incomingCall, s.ui?.wechat?.wxBroccoliCallRequestedV1, s.ui?.wechat?.wxBroccoliCallStartedV1, ready, locked, creator]);
+
+  useEffect(() => {
+    const call = s.incomingCall;
+    if (creator || !ready || !call || call.caller !== "西蓝花" || call.status !== "answered") return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      const active = current.incomingCall;
+      if (!active || active.caller !== "西蓝花" || active.status !== "answered") return;
+      const next = dispatch(work, { ...current, incomingCall: null }, "callEnded", active.target || active.caller);
+      const wx = next.ui?.wechat ?? {};
+      const queued = [
+        { id: "drunk-broccoli-call-ended-v1", sender: "西蓝花", body: "你在說什麼我聽不清！！", thread: "西蓝花" },
+        { id: "drunk-broccoli-where-v1", sender: "西蓝花", body: "妳現在到底在幹嘛？", thread: "西蓝花" },
+        { id: "drunk-broccoli-answer-v1", sender: "西蓝花", body: "喂？有沒有在聽我說話？", thread: "西蓝花" },
+        { id: "drunk-broccoli-poison-check-v1", sender: "西蓝花", body: "妳不回我，該不會真的中毒了吧？", thread: "西蓝花" },
+        { id: "drunk-broccoli-hotel-v1", sender: "西蓝花", body: "妳酒店到底在哪裡？把地址發我！", thread: "西蓝花", meta: { startBigGCall: "yes" } },
+      ];
+      update({ ...next, ui: { ...next.ui, wechat: { ...wx, wxCatPendingLines: JSON.stringify(queued) } } });
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [s.incomingCall, ready, creator]);
+
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
   };
@@ -413,6 +442,7 @@ function PhoneRuntime({
 
       update({
         ...latest,
+        incomingCall: line.meta?.startBigGCall === "yes" ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
         messages: { ...latest.messages, wechat: nextWechatMessages },
         ui: {
           ...latest.ui,
@@ -427,6 +457,8 @@ function PhoneRuntime({
             wxCatPendingLines: JSON.stringify(
               currentQueue.slice(1)
             ),
+            ...(line.meta?.switchThread ? { openThread: line.meta.switchThread } : {}),
+            ...(line.meta?.startBigGCall === "yes" ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxBroccoliFinalGCallV1: true } : {}),
           },
         },
         notifications: nextNotifications.slice(-60),
@@ -1076,7 +1108,15 @@ function PhoneRuntime({
                       );
                       const wx = current.ui?.wechat ?? {};
                       const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
-                      if (isDrunkFinalCall) {
+                      if (isDrunkFinalCall && wx.wxBroccoliFinalGCallV1 === true) {
+                        let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
+                        try {
+                          const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
+                          if (Array.isArray(parsed)) queued = parsed;
+                        } catch { queued = []; }
+                        queued.push({ id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" });
+                        update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                      } else if (isDrunkFinalCall) {
                         let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
                         try {
                           const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
