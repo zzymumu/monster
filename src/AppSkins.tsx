@@ -1382,7 +1382,6 @@ export function WeChatSkin(p: SkinProps) {
   // pending queue. Materialize them directly in DaG's transcript.
   // The stage-249 choice itself owns the two opening replies. Do not seed
   // them from an effect: that made DaG speak before the player's first bubble.
-  const [drunkNightHandoffRepairedV2] = useSkinState<boolean>(p, "wxDrunkNightHandoffRepairedV2", true);
   // After the hotel goodnight is sent in DaG's chat, notify the player that Broccoli is waiting.
   useEffect(() => {
     if (returnDinnerStage !== 226 || hotelBroccoliFollowupQueued || pendingCatLines.length > 0) return;
