@@ -394,6 +394,7 @@ function PhoneRuntime({
         if (!nextNotifications.includes(notification)) nextNotifications.push(notification);
       }
 
+      const startsDrunkCallSequence = line.id === "drunk-big-g-last-warning-v2";
       update({
         ...latest,
         messages: { ...latest.messages, wechat: nextWechatMessages },
@@ -401,6 +402,15 @@ function PhoneRuntime({
           ...latest.ui,
           wechat: {
             ...wx,
+            ...(startsDrunkCallSequence ? {
+              wxReturnDinnerStage: 266,
+              wxDrunkCallReadyV1: true,
+              wxDrunkCallCountV2: 0,
+              wxDrunkCallSequenceFinishedV2: false,
+              wxBroccoliCallReadyV2: false,
+              wxBroccoliCallEndedV2: false,
+              wxDoorMessageQueuedV2: false,
+            } : {}),
             catRescueState: JSON.stringify({
               version: 2,
               stage: Number(catState.stage) || 0,
@@ -408,19 +418,7 @@ function PhoneRuntime({
               messages: nextStoryMessages,
             }),
             wxCatPendingLines: JSON.stringify(
-              line.id === "drunk-moment-big-g-checkin-v2"
-                ? [
-                    ...currentQueue.slice(1),
-                    { id: "drunk-user-babble-1-v2", sender: "我", body: "窩債鎖花啊……", thread: "大G" },
-                    { id: "drunk-user-babble-2-v2", sender: "我", body: "泥們都系花花……", thread: "大G" },
-                    { id: "drunk-user-babble-3-v2", sender: "我", body: "我沒有醉我很清醒……", thread: "大G" },
-                    { id: "drunk-user-babble-4-v2", sender: "我", body: "花花在飛……窩也在飛……", thread: "大G" },
-                    { id: "drunk-big-g-how-much-v2", sender: "大G", body: "你是喝了多少！", thread: "大G" },
-                    { id: "drunk-big-g-stop-drinking-v2", sender: "大G", body: "我不是叫你別喝了！", thread: "大G" },
-                    { id: "drunk-big-g-vomit-v2", sender: "大G", body: "你吐過了？", thread: "大G" },
-                    { id: "drunk-big-g-last-warning-v2", sender: "大G", body: "前台跟我說敲門沒人開", thread: "大G" },
-                  ]
-                : currentQueue.slice(1)
+              currentQueue.slice(1)
             ),
           },
         },
