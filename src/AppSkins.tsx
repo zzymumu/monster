@@ -1693,7 +1693,10 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 101, chat: "西蓝花", id: "scream-monster-handsome", label: "救命啊啊啊怪兽好帅！！真人比照片好看无数倍，怎么可以这么帅？？？", nextStage: 102, lines: [
       { sender: "我", body: "救命啊啊啊怪獸好帥……我的天真人比照片好看無數倍，怎麼可以這麼帥？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "等一下，先回答我！他鼻子挺不挺？皮膚白不白？本人是不是比照片還好看？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他鼻子挺不挺？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "皮膚白不白？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "整個人在陽光下是不是會bulingbuling發光？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳有沒有看著流口水？", thread: "西蓝花" },
     ]},
     { stage: 102, chat: "西蓝花", id: "insist-i-was-composed-reordered", label: "妳亂說什麼啊！！我很矜持的好不好！！", nextStage: 103, lines: [
       { sender: "我", body: "妳亂說什麼啊！！我很矜持的好不好！！", thread: "西蓝花" },
