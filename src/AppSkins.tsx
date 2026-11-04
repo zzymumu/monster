@@ -1246,10 +1246,14 @@ export function WeChatSkin(p: SkinProps) {
   // reply choices. Move only those unfinished saves into the new, dedicated
   // return-dinner sequence; do not reset the player's chat history.
   useEffect(() => {
-    if (postMeetupDialogueMigratedV2 || postPickupGoodbyeSent || catRescue.branch !== "monster-cat" || catRescue.stage !== 103) return;
-    if (returnDinnerStage < 200) setReturnDinnerStage(200);
+    // The meetup dialogue has its own wxReturnDinnerStage counter. The cat
+    // rescue main-story stage remains at 100 while these chat choices advance,
+    // so checking catRescue.stage here strands existing saves with no choice.
+    // Migrate the exact old "reply-thanks-for-wanwan" point (103) instead.
+    if (postMeetupDialogueMigratedV2 || postPickupGoodbyeSent || catRescue.branch !== "monster-cat" || returnDinnerStage !== 103) return;
+    setReturnDinnerStage(200);
     setPostMeetupDialogueMigratedV2(true);
-  }, [postMeetupDialogueMigratedV2, postPickupGoodbyeSent, catRescue.branch, catRescue.stage, returnDinnerStage]);
+  }, [postMeetupDialogueMigratedV2, postPickupGoodbyeSent, catRescue.branch, returnDinnerStage]);
   // After the final Broccoli line has arrived, start Big G's home update as
   // separate incoming chat messages. The phone-level queue creates the
   // notification because the player is still in Broccoli's conversation.
