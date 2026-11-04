@@ -2825,6 +2825,8 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "我拜託妳先開門好不好？我現在站在走廊跟妳猜謎是不是……", body: "不行！你先猜！猜錯了也不行！", replyId: "drunk-big-g-frustrated-v4", reply: "開門！" },
                     { trigger: "開門！", body: "不開！", replyId: "drunk-big-g-open-no-v4", reply: "開門！" },
                     { trigger: "開門！", body: "不開！說不開就不開！", replyId: "drunk-big-g-open-no-again-v4", reply: "妳先把門打開好不好？我保證不會跑掉。" },
+                    { trigger: "妳先把門打開好不好？我保證不會跑掉。", body: "你快說好！說了我就開。", replyId: "drunk-big-g-say-yes-v4", reply: "……好啦。" },
+                    { trigger: "……好啦。", body: "嘻嘻，那你把頭像給換了！！", replyId: "drunk-big-g-avatar-demand-v4", reply: "？" },
                     { trigger: "？", body: "你這頭像也太醜了！換掉！！", replyId: "drunk-big-g-avatar-ugly-v3", reply: "……好，妳等我一下。" },
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
