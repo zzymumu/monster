@@ -1285,7 +1285,7 @@ export function WeChatSkin(p: SkinProps) {
     ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
     : { ...parsedCatRescue, messages: correctedPickupMessages };
   const allItems = [...p.items, ...catRescue.messages];
-  const postPickupGoodbyeSent = allItems.some((item) => item.sender === "我" && item.body.trim() === "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！");
+  const postPickupGoodbyeSent = allItems.some((item) => item.sender === "我" && /好啦，愛妳呦，媽媽/.test(item.body.trim()));
   // One-time Vava/玩玩 Moments event. Its transcript is stored with the
   // existing DaG story messages so it survives app switches and reloads.
   const [vavaMomentSeeded, setVavaMomentSeeded] = useSkinState<boolean>(p, "wxVavaMomentSeeded", false);
@@ -1774,9 +1774,47 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "好，那我先陪牠玩一會，晚點見。", thread: "大G" },
       { sender: "西蓝花", body: "妳在幹嘛？怎麼不理我！", thread: "西蓝花" },
     ]},
-    { stage: 207, chat: "西蓝花", id: "report-personal-pickup-v3", label: "啊啊啊啊啊他說要來親自接我！怪獸！親自！開車！", nextStage: 109, lines: [
+    { stage: 207, chat: "西蓝花", id: "report-personal-pickup-v4", label: "啊啊啊啊啊他說要來親自接我！怪獸！親自！開車！", nextStage: 208, lines: [
       { sender: "我", body: "啊啊啊啊啊他說要來親自接我！怪獸！親自！開車！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "真的假的？！他居然要親自開車來接妳！妳晚上回來一定要跟我詳細報告！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的假的？！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好幸福哦，可以坐怪獸的車欸……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "也不知道他開什麼車啊。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他開車一定很帥吧……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "天哪！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳一定要坐副駕！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "看他完美的側臉、高挺的鼻樑……", thread: "西蓝花" },
+    ]},
+    { stage: 208, chat: "西蓝花", id: "offer-broccoli-to-go-instead", label: "要不妳替我去吧。", nextStage: 209, lines: [
+      { sender: "我", body: "要不妳替我去吧。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的可以嗎？！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那我現在就去收拾！", thread: "西蓝花" },
+    ]},
+    { stage: 209, chat: "西蓝花", id: "broccoli-joke-and-heartbeat", label: "喂！妳腦子壞了！", nextStage: 210, lines: [
+      { sender: "我", body: "喂！妳腦子壞了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "嘿嘿，我開玩笑嘛～", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我知道妳現在一定很激動。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "一顆心撲通撲通地亂跳，對不對！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳就是太激動了，所以才故作冷漠！", thread: "西蓝花" },
+    ]},
+    { stage: 210, chat: "西蓝花", id: "shower-mask-before-pickup-v2", label: "妳以為戀愛ing啊！不說了，我要去洗澡敷面膜了！", nextStage: 211, lines: [
+      { sender: "我", body: "妳以為戀愛ing啊！不說了，我要去洗澡敷面膜了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "嘖嘖嘖，見色忘友欸！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我什麼時候能有這個待遇啊？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳跟我出來逛街都不洗頭！", thread: "西蓝花" },
+    ]},
+    { stage: 211, chat: "西蓝花", id: "silent-face-and-bestie-reassurance", label: "……（無語）", nextStage: 212, lines: [
+      { sender: "我", body: "……（無語）", thread: "西蓝花" },
+      { sender: "西蓝花", body: "麼麼麼麼，逗妳玩啦～", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我知道，不洗頭見面可是最高待遇！", thread: "西蓝花" },
+    ]},
+    { stage: 212, chat: "西蓝花", id: "hurry-and-report-back", label: "就妳會貧！哎呀！時間真的要來不及，我先溜了！", nextStage: 213, lines: [
+      { sender: "我", body: "就妳會貧！", thread: "西蓝花" },
+      { sender: "我", body: "哎呀！時間真的要來不及，我先溜了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "去吧去吧～", thread: "西蓝花" },
+      { sender: "西蓝花", body: "記得回來後跟我匯報～", thread: "西蓝花" },
+    ]},
+    { stage: 213, chat: "西蓝花", id: "bestie-love-mom-goodbye", label: "好啦，愛妳呦，媽媽～", nextStage: -1, lines: [
+      { sender: "我", body: "好啦，愛妳呦，媽媽～", thread: "西蓝花" },
     ]},
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
       { sender: "我", body: "我真的快暈了……妳不要再說了！！", thread: "西蓝花" },
