@@ -2290,14 +2290,18 @@ export function WeChatSkin(p: SkinProps) {
   // phone-level scheduler, so they continue arriving while another app is open.
 
   const appendCatLines = (lines: CatLine[], nextStage = catRescue.stage, branch = catRescue.branch, eventKey = "") => {
-    // A choice sends exactly the player's first line. Then only incoming
-    // replies are queued, in order, until the next player-authored line.
-    // Later player lines in legacy script arrays are NOT auto-sent: the next
-    // stage's visible choices are how the player responds.
+    // Send every consecutive player-authored bubble at the start of this
+    // choice, then queue incoming replies in order. Stop at the first incoming
+    // message: later player lines belong to a later explicit choice.
+    // This preserves deliberate split bubbles such as "溫尚翊你混蛋！"
+    // followed by "你耍我！！！" without auto-sending replies from later turns.
     const destination = getCatRescueThreadForStage(nextStage);
     const prepared = lines.map((line) => ({ ...line, thread: line.thread || destination }));
     const immediateLines: CatLine[] = [];
-    if (prepared[0]?.sender === "我") immediateLines.push(prepared[0]);
+    for (const line of prepared) {
+      if (line.sender !== "我") break;
+      immediateLines.push(line);
+    }
     const queuedLines: CatLine[] = [];
     for (const line of prepared.slice(immediateLines.length)) {
       if (line.sender === "我") break;
