@@ -3558,6 +3558,220 @@
       "steps": [
         {
           "event": "read",
+          "target": "wx-broccoli-18"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-19"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-20"
+        },
+        {
+          "choose": "broccoli-reply-21"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-21"
+        },
+        {
+          "choose": "broccoli-reply-22"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-22"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-23"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-24"
+        },
+        {
+          "choose": "broccoli-reply-25"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-25"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-26"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-27"
+        },
+        {
+          "choose": "broccoli-reply-28"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-28"
+        },
+        {
+          "choose": "broccoli-reply-29"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-29"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-30"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-31"
+        },
+        {
+          "choose": "broccoli-reply-32"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-32"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-33"
+        },
+        {
+          "choose": "broccoli-reply-34"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-34"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-35"
+        },
+        {
+          "choose": "broccoli-reply-36"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-36"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-37"
+        },
+        {
+          "choose": "broccoli-reply-38"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-38"
+        },
+        {
+          "choose": "big-g-open"
+        },
+        {
+          "choose": "jump-broccoli"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-44"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-45"
+        },
+        {
+          "choose": "dinner-explain"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-46"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-48"
+        },
+        {
+          "choose": "outfit-start"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-60"
+        },
+        {
+          "choose": "outfit-soft"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-63"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-70"
+        },
+        {
+          "choose": "broccoli-signature-reply-71"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-71"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-72"
+        },
+        {
+          "choose": "broccoli-signature-reply-73"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-73"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-74"
+        },
+        {
+          "choose": "broccoli-signature-reply-75"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-75"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-49"
+        },
+        {
+          "choose": "dinner-food-answer"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-51"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-53"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-54"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-76"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-77"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-55"
+        },
+        {
+          "event": "read",
           "target": "wx-broccoli-57"
         },
         {
