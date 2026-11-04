@@ -3,7 +3,7 @@
   "id": "monster-iphone-simulator",
   "title": "我的 iPhone",
   "description": "iOS 风格互动手机模拟器。上滑进入密码界面，输入六位密码后解锁。",
-  "revision": 10,
+  "revision": 11,
   "phone": {
     "owner": "我的 iPhone",
     "date": "2026-11-02",
@@ -1050,6 +1050,66 @@
           "body": "哈哈哈哈哈好啦好啦不說了！妳先深呼吸，等他到了再跟我報告！",
           "senderId": "broccoli",
           "time": "2026-11-02 11:14",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "見面後的訊息",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-95",
+          "body": "妳也可以幫我要簽名啊！現在都跟他這麼熟了，機會不是更多嗎？",
+          "senderId": "broccoli",
+          "time": "2026-11-02 11:03",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "見面後的訊息",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-96",
+          "body": "簽名簽名簽名！妳就知道簽名！我現在跟怪獸可是朋友，簽名什麼時候要不到！",
+          "senderId": "owner",
+          "time": "2026-11-02 11:04",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "見面後的訊息",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-97",
+          "body": "妳說得也對！我們要放長線釣大魚，不能急不能急！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 11:05",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "見面後的訊息",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-98",
+          "body": "對啦對啦，妳說得都對。",
+          "senderId": "owner",
+          "time": "2026-11-02 11:06",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "見面後的訊息",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-99",
+          "body": "好啦，不跟妳鬧了！妳先忙，等晚上吃完飯一定要跟我報告細節！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 11:07",
           "hidden": true,
           "meta": {
             "storyId": "cat-rescue",
@@ -2899,10 +2959,26 @@
     },
     {
       "id": "broccoli-meeting-82",
-      "label": "妳反駁換成她也會暈過去",
-      "type": "action",
+      "label": "回嘴：我哪裡沒用了！換成妳妳指不定能當場暈過去好嗎！！！",
+      "type": "choice",
       "event": "read",
       "target": "wx-broccoli-82",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-meeting-reply-83"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-reply-83",
+      "label": "我哪裡沒用了！換成妳妳指不定能當場暈過去好嗎！！！",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-meeting-reply-83",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -2939,10 +3015,26 @@
     },
     {
       "id": "broccoli-meeting-84",
-      "label": "妳拿演唱會看大屏嗷嗷叫反擊",
-      "type": "action",
+      "label": "反擊：也不知道之前是誰，看個演唱會大屏就嗷嗷叫的！",
+      "type": "choice",
       "event": "read",
       "target": "wx-broccoli-84",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-meeting-reply-85"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-reply-85",
+      "label": "也不知道之前是誰，看個演唱會大屏就嗷嗷叫的！",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-meeting-reply-85",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -2979,10 +3071,26 @@
     },
     {
       "id": "broccoli-meeting-86",
-      "label": "妳說可能是低血糖",
-      "type": "action",
+      "label": "低血糖藉口：我那可能是低血糖了吧！",
+      "type": "choice",
       "event": "read",
       "target": "wx-broccoli-86",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-meeting-reply-87"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-reply-87",
+      "label": "我那可能是低血糖了吧！",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-meeting-reply-87",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -2999,7 +3107,7 @@
     },
     {
       "id": "broccoli-meeting-87",
-      "label": "西藍花翻白眼吐槽妳",
+      "label": "西藍花翻白眼：妳就扯 🙄",
       "type": "action",
       "event": "read",
       "target": "wx-broccoli-87",
@@ -3019,21 +3127,169 @@
     },
     {
       "id": "broccoli-meeting-88",
-      "label": "妳後悔沒早點買內場，對話暫停",
-      "type": "action",
+      "label": "後悔沒早點買內場，先暫停西藍花對話",
+      "type": "choice",
       "event": "read",
       "target": "wx-broccoli-88",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-meeting-reply-89"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-reply-89",
+      "label": "哎呀，要是早點買內場就好了，現在指不定就能平靜很多……",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-meeting-reply-89",
       "conditions": [],
       "logic": "and",
       "actions": [
         {
           "type": "unlock",
-          "key": "wx-big-g-24",
+          "key": "wx-broccoli-89",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-89",
+      "label": "西藍花說妳也可以幫她要簽名",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-89",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-95",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-95",
+      "label": "吐槽簽名：簽名簽名簽名！妳就知道簽名！",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-95",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-meeting-reply-96"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-reply-96",
+      "label": "簽名簽名簽名！妳就知道簽名！我現在跟怪獸可是朋友，簽名什麼時候要不到！",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-meeting-reply-96",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-96",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-96",
+      "label": "西藍花認同放長線釣大魚",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-96",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-97",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-97",
+      "label": "敷衍西藍花：對啦對啦，妳說得都對。",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-97",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-meeting-reply-98"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-reply-98",
+      "label": "對啦對啦，妳說得都對。",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-meeting-reply-98",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-98",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-meeting-98",
+      "label": "西藍花最後叮嚀，妳暫時沒理她",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-98",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-99",
           "value": true
         },
         {
           "type": "unlock",
-          "key": "wx-broccoli-89",
+          "key": "wx-big-g-24",
           "value": true
         },
         {
@@ -3110,9 +3366,25 @@
     {
       "id": "big-g-home-27",
       "label": "大G感謝妳用心照顧玩玩",
-      "type": "action",
+      "type": "choice",
       "event": "read",
       "target": "wx-big-g-27",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "big-g-home-reply-28"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "big-g-home-reply-28",
+      "label": "沒事啦，應該的！看到玩玩平安到家我就放心了。",
+      "type": "action",
+      "event": "choose",
+      "target": "big-g-home-reply-28",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -3170,9 +3442,25 @@
     {
       "id": "big-g-home-30",
       "label": "大G說會開車過去接妳",
-      "type": "action",
+      "type": "choice",
       "event": "read",
       "target": "wx-big-g-30",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "big-g-home-reply-31"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "big-g-home-reply-31",
+      "label": "可以的～那你快陪玩玩吧！",
+      "type": "action",
+      "event": "choose",
+      "target": "big-g-home-reply-31",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -3214,10 +3502,26 @@
     },
     {
       "id": "broccoli-return-90",
-      "label": "妳回到西藍花對話框",
-      "type": "action",
+      "label": "回覆西藍花：啊啊啊啊啊她說要來親自接我！",
+      "type": "choice",
       "event": "read",
       "target": "wx-broccoli-90",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-return-reply-91"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-return-reply-91",
+      "label": "啊啊啊啊啊她說要來親自接我！怪獸！親自！開車！",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-return-reply-91",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -3254,10 +3558,26 @@
     },
     {
       "id": "broccoli-return-92",
-      "label": "妳說自己真的快暈了",
-      "type": "action",
+      "label": "西藍花說妳下一秒要開心到暈過去",
+      "type": "choice",
       "event": "read",
       "target": "wx-broccoli-92",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-return-reply-93"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-return-reply-93",
+      "label": "我真的快暈了……妳不要再說了！！",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-return-reply-93",
       "conditions": [],
       "logic": "and",
       "actions": [
@@ -3795,12 +4115,18 @@
           "target": "wx-broccoli-82"
         },
         {
+          "choose": "broccoli-meeting-reply-83"
+        },
+        {
           "event": "read",
           "target": "wx-broccoli-83"
         },
         {
           "event": "read",
           "target": "wx-broccoli-84"
+        },
+        {
+          "choose": "broccoli-meeting-reply-85"
         },
         {
           "event": "read",
@@ -3811,12 +4137,48 @@
           "target": "wx-broccoli-86"
         },
         {
+          "choose": "broccoli-meeting-reply-87"
+        },
+        {
           "event": "read",
           "target": "wx-broccoli-87"
         },
         {
           "event": "read",
           "target": "wx-broccoli-88"
+        },
+        {
+          "choose": "broccoli-meeting-reply-89"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-89"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-95"
+        },
+        {
+          "choose": "broccoli-meeting-reply-96"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-96"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-97"
+        },
+        {
+          "choose": "broccoli-meeting-reply-98"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-98"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-99"
         },
         {
           "event": "read",
@@ -3835,6 +4197,9 @@
           "target": "wx-big-g-27"
         },
         {
+          "choose": "big-g-home-reply-28"
+        },
+        {
           "event": "read",
           "target": "wx-big-g-28"
         },
@@ -3847,6 +4212,9 @@
           "target": "wx-big-g-30"
         },
         {
+          "choose": "big-g-home-reply-31"
+        },
+        {
           "event": "read",
           "target": "wx-big-g-31"
         },
@@ -3855,12 +4223,18 @@
           "target": "wx-broccoli-90"
         },
         {
+          "choose": "broccoli-return-reply-91"
+        },
+        {
           "event": "read",
           "target": "wx-broccoli-91"
         },
         {
           "event": "read",
           "target": "wx-broccoli-92"
+        },
+        {
+          "choose": "broccoli-return-reply-93"
         },
         {
           "event": "read",
@@ -3897,7 +4271,12 @@
         "wx-broccoli-91",
         "wx-broccoli-92",
         "wx-broccoli-93",
-        "wx-broccoli-94"
+        "wx-broccoli-94",
+        "wx-broccoli-95",
+        "wx-broccoli-96",
+        "wx-broccoli-97",
+        "wx-broccoli-98",
+        "wx-broccoli-99"
       ]
     }
   ]
