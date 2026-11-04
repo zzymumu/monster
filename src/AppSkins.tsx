@@ -229,25 +229,85 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
   const unique = items.filter((item, index, all) =>
     all.findIndex((candidate) => candidate.id === item.id) === index
   );
-  return unique
+  const handsome = unique.find((item) => /救命啊啊啊怪獸好帥|救命啊啊啊怪兽好帅/.test(item.body));
+  const anchorRaw = handsome ? Number(handsome.meta?.storyOrderAt) : NaN;
+  const anchorTime = handsome
+    ? (Number.isFinite(anchorRaw) && anchorRaw > 0 ? anchorRaw : Date.parse(handsome.time))
+    : NaN;
+  const reflowIndex = (body: string): number => {
+    if (/等一下[，,]?先回答我！他鼻子挺不挺/.test(body)) return 1;
+    if (/妳亂說什麼啊！！我很矜持的好不好/.test(body)) return 2;
+    if (/好好好[，,]?矜持。那我再問一個/.test(body)) return 3;
+    if (/沒有啦！！就是正常把玩玩交給他/.test(body)) return 4;
+    if (/幫我要簽名了嗎/.test(body) || /行吧就知道妳?慫.*有沒有幫我.*簽名/.test(body)) return 5;
+    if (/斯米馬賽|斯米马赛/.test(body)) return 6;
+    if (/妳真的沒要喔|妳居然真的沒要/.test(body)) return 7;
+    if (/我都沒敢暴露我是粉絲/.test(body)) return 8;
+    if (/妳怎麼這麼沒用|妳怎麼這麼沒用/.test(body)) return 9;
+    if (/我哪裡沒用了/.test(body)) return 10;
+    if (/妳少來！我才不會咧/.test(body)) return 11;
+    if (/也不知道之前是誰.*演唱會大屏/.test(body)) return 12;
+    if (/妳不也差點暈過去/.test(body)) return 13;
+    if (/我那可能是低血糖了吧/.test(body)) return 14;
+    if (/妳就扯/.test(body)) return 15;
+    if (/要是早點買內場就好了/.test(body)) return 16;
+    if (/而且妳也可以幫我要簽名/.test(body)) return 17;
+    if (/我現在跟怪獸可是朋友/.test(body)) return 18;
+    if (/放長線釣大魚/.test(body)) return 19;
+    if (/妳說得對，妳說得都對/.test(body)) return 20;
+    if (/好啦好啦，不跟妳鬧了/.test(body)) return 21;
+    return 0;
+  };
+  const transformed = unique.map((item) => {
+    if (/幫我要簽名了嗎/.test(item.body)) {
+      return { ...item, body: "行吧，就知道妳慫。那妳有沒有幫我要簽名？" };
+    }
+    return item;
+  });
+  // Older saves already contain the nose/skin and physical-contact exchange
+  // after the pickup announcement. Reflow those bubbles next to the first
+  // handsome reaction so the existing transcript reads in the intended order.
+  const hasFanConfession = transformed.some((item) => /我都沒敢暴露我是粉絲/.test(item.body));
+  const hasApology = transformed.some((item) => /斯米馬賽|斯米马赛/.test(item.body));
+  const additions: Item[] = [];
+  if (handsome && hasFanConfession && !hasApology && Number.isFinite(anchorTime)) {
+    additions.push(
+      makeItem({
+        id: "wx-meetup-signature-apology-reflow-v1",
+        title: "西蓝花",
+        sender: "我",
+        body: "……沒有，斯米馬賽。",
+        time: handsome.time,
+        outgoing: true,
+        meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(anchorTime + 6) },
+      }),
+      makeItem({
+        id: "wx-meetup-signature-reaction-reflow-v1",
+        title: "西蓝花",
+        sender: "西蓝花",
+        body: "妳真的沒要喔？！",
+        time: handsome.time,
+        outgoing: false,
+        meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(anchorTime + 7) },
+      }),
+    );
+  }
+  return [...transformed, ...additions]
     .map((item, index) => {
       const precise = Number(item.meta?.storyOrderAt);
       const hasPrecise = Number.isFinite(precise) && precise > 0;
+      const priority = reflowIndex(item.body);
+      const isReflowTarget = priority > 0 && Number.isFinite(anchorTime) && item.id !== handsome?.id;
       return {
         item,
         index,
-        timestamp: hasPrecise ? precise : Date.parse(item.time),
-        precise: hasPrecise,
+        timestamp: isReflowTarget ? anchorTime + priority / 1000 : hasPrecise ? precise : Date.parse(item.time),
       };
     })
     .sort((a, b) => {
-      // Story messages carry millisecond delivery timestamps. Use those
-      // before the display clock (which only has minute precision), so a
-      // later player reply can never be moved above an earlier incoming line.
       if (Number.isFinite(a.timestamp) && Number.isFinite(b.timestamp) && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
       const aValid = Number.isFinite(a.timestamp);
       const bValid = Number.isFinite(b.timestamp);
-      if (aValid && bValid && a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
       if (aValid !== bValid) return aValid ? 1 : -1;
       return a.index - b.index;
     })
@@ -1632,9 +1692,21 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 101, chat: "西蓝花", id: "scream-monster-handsome", label: "救命啊啊啊怪兽好帅！！真人比照片好看无数倍，怎么可以这么帅？？？", nextStage: 102, lines: [
       { sender: "我", body: "救命啊啊啊怪獸好帥……我的天真人比照片好看無數倍，怎麼可以這麼帥？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "幫我要簽名了嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下，先回答我！他鼻子挺不挺？皮膚白不白？本人是不是比照片還好看？", thread: "西蓝花" },
     ]},
-    { stage: 102, chat: "西蓝花", id: "did-not-reveal-fan", label: "我都没敢暴露我是粉丝！要什么签名啊！！", nextStage: 103, lines: [
+    { stage: 102, chat: "西蓝花", id: "insist-i-was-composed-reordered", label: "妳亂說什麼啊！！我很矜持的好不好！！", nextStage: 103, lines: [
+      { sender: "我", body: "妳亂說什麼啊！！我很矜持的好不好！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好好好，矜持。那我再問一個——你們有沒有肢體接觸？有沒有碰到手？快從實招來！", thread: "西蓝花" },
+    ]},
+    { stage: 103, chat: "西蓝花", id: "deny-contact-before-signature", label: "沒有啦！！就是正常把玩玩交給他而已！！妳不要腦補了啦！", nextStage: 104, lines: [
+      { sender: "我", body: "沒有啦！！就是正常把玩玩交給他而已！！妳不要腦補了啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "行吧，就知道妳慫。那妳有沒有幫我要簽名？", thread: "西蓝花" },
+    ]},
+    { stage: 104, chat: "西蓝花", id: "apologize-no-signature", label: "……沒有，斯米馬賽。", nextStage: 105, lines: [
+      { sender: "我", body: "……沒有，斯米馬賽。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的沒要喔？！", thread: "西蓝花" },
+    ]},
+    { stage: 105, chat: "西蓝花", id: "did-not-reveal-fan-reordered", label: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", nextStage: 200, lines: [
       { sender: "我", body: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "啊啊啊啊啊妳怎麼這麼沒用！！！這種近距離接觸的機會欸！！！", thread: "西蓝花" },
       // Big G's home update is queued only after the complete Broccoli exchange.
@@ -1672,9 +1744,9 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "好，那我先陪牠玩一會，晚點見。", thread: "大G" },
       { sender: "西蓝花", body: "妳在幹嘛？怎麼不理我！", thread: "西蓝花" },
     ]},
-    { stage: 207, chat: "西蓝花", id: "report-personal-pickup-v2", label: "啊啊啊啊啊她說要來親自接我！怪獸！親自！開車！", nextStage: 106, lines: [
-      { sender: "我", body: "啊啊啊啊啊她說要來親自接我！怪獸！親自！開車！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我真的怕妳下一秒開心到暈過去欸！！！", thread: "西蓝花" },
+    { stage: 207, chat: "西蓝花", id: "report-personal-pickup-v3", label: "啊啊啊啊啊他說要來親自接我！怪獸！親自！開車！", nextStage: 109, lines: [
+      { sender: "我", body: "啊啊啊啊啊他說要來親自接我！怪獸！親自！開車！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真的假的？！他居然要親自開車來接妳！妳晚上回來一定要跟我詳細報告！", thread: "西蓝花" },
     ]},
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
       { sender: "我", body: "我真的快暈了……妳不要再說了！！", thread: "西蓝花" },
