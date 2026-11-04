@@ -2843,7 +2843,7 @@ export function WeChatSkin(p: SkinProps) {
                 })()}
               {isBroccoliThread && (() => {
                 const broccoliPrompts: Array<{ trigger: string; body: string; replyId: string; replyLines?: CatLine[]; callAfterSend?: boolean }> = [
-                  { trigger: "☎️ 已取消", body: "你好我是溫尚翊，你朋友喝多了現在睡著了，不用擔心，我會照顧好她。", replyId: "drunk-broccoli-monster-intro-v2", replyLines: [
+                  { trigger: "☎️ 已取消", body: "你好我是溫尚翊，你朋友喝多了，不用擔心，我會照顧好她。", replyId: "drunk-broccoli-monster-intro-v2", replyLines: [
                     { id: "drunk-broccoli-monster-shock-v2a", sender: "西蓝花", body: "………………", thread: "西蓝花" },
                     { id: "drunk-broccoli-monster-shock-v2b", sender: "西蓝花", body: "等一下？？？？", thread: "西蓝花" },
                     { id: "drunk-broccoli-monster-shock-v2c", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
