@@ -546,7 +546,7 @@ function PhoneRuntime({
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
       const wx = current.ui?.wechat ?? {};
-      if (Number(wx.wxReturnDinnerStage) !== 261 || wx.wxDrunkBilibiliPingV1 === true) return;
+      if (Number(wx.wxReturnDinnerStage) !== 262 || wx.wxDrunkBilibiliPingV1 === true) return;
       let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
       try {
         const raw = wx.wxCatPendingLines;
@@ -559,7 +559,7 @@ function PhoneRuntime({
         notifications: [...current.notifications, "微信：大G：不回消息喔？睡了是不是？晚安。"].slice(-60),
         ui: { ...current.ui, wechat: {
           ...wx,
-          wxReturnDinnerStage: 262,
+          wxReturnDinnerStage: 263,
           wxDrunkBilibiliPingV1: true,
           wxCatPendingLines: JSON.stringify(queued),
         }},
