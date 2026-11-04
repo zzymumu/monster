@@ -350,7 +350,7 @@ function PhoneRuntime({
   currentAppRef.current = app;
   useEffect(() => {
     if (creator || !ready || typeof pendingStoryQueueRaw !== "string" || !pendingStoryQueueRaw || pendingStoryQueueRaw === "[]") return;
-    let parsedQueue: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string }> = [];
+    let parsedQueue: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; meta?: Record<string, string> }> = [];
     try {
       const parsed = JSON.parse(pendingStoryQueueRaw);
       if (Array.isArray(parsed)) parsedQueue = parsed.filter((line) =>
@@ -395,7 +395,7 @@ function PhoneRuntime({
         outgoing: line.sender === "我",
         kind: line.kind || "text",
         media: line.media || "",
-        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(orderAt) },
+        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(orderAt), ...(line.meta || {}) },
       });
       const alreadyDelivered = storyMessages.some((item) => item.id === created.id) ||
         wechatMessages.some((item) => item.id === created.id);
@@ -566,7 +566,7 @@ function PhoneRuntime({
       const current = runtimeRef.current;
       const wx = current.ui?.wechat ?? {};
       if (Number(wx.wxReturnDinnerStage) !== 261 || wx.wxDrunkBilibiliPingV1 === true) return;
-      let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+      let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
       try {
         const raw = wx.wxCatPendingLines;
         const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
@@ -1082,7 +1082,10 @@ function PhoneRuntime({
                           const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
                           if (Array.isArray(parsed)) queued = parsed;
                         } catch { queued = []; }
-                        queued.push({ id: "drunk-big-g-pick-up-v7", sender: "大G", body: "接電話。", thread: "大G" });
+                        queued.push(
+                          { id: "drunk-big-g-call-declined-v9", sender: "大G", body: "对方已拒绝", thread: "大G", meta: { systemNotice: "yes" } },
+                          { id: "drunk-big-g-pick-up-v9", sender: "大G", body: "接電話。", thread: "大G" },
+                        );
                         update({
                           ...next,
                           ui: { ...next.ui, wechat: {
