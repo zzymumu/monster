@@ -1883,7 +1883,8 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 222, chat: "大G", id: "hotel-sleepy-cat-photo-v2", label: "對啦，我現在就有點困了。", nextStage: 223, lines: [
       { sender: "我", body: "對啦，我現在就有點困了。", thread: "大G" },
       { sender: "大G", body: "那不打擾妳了。", thread: "大G" },
-      { sender: "大G", body: "玩玩都睡著了。", thread: "大G", kind: "image", media: "/assets/wannwan-sleeping-cat.jpg" },
+      { sender: "大G", body: "", thread: "大G", kind: "image", media: "assets/wannwan-sleeping-cat.jpg", id: "hotel-wannwan-sleeping-photo-v2" },
+      { sender: "大G", body: "玩玩都睡著了。", thread: "大G", id: "hotel-wannwan-sleeping-caption-v2" },
     ]},
     { stage: 223, chat: "大G", id: "hotel-cat-is-cute-v2", label: "好可愛！", nextStage: 224, lines: [
       { sender: "我", body: "好可愛！", thread: "大G" },
@@ -2193,6 +2194,24 @@ export function WeChatSkin(p: SkinProps) {
     }));
     setPendingCatLines((current) => [...current, ...queuedLines]);
   };
+  useEffect(() => {
+    const delivered = [...p.items, ...parsedCatRescue.messages];
+    const photoExists = delivered.some((item) =>
+      item.kind === "image" && item.media.includes("wannwan-sleeping-cat")
+    );
+    if (!photoExists) return;
+    const caption = "玩玩都睡著了。";
+    const captionExists = delivered.some((item) => item.sender === "大G" && item.body.trim() === caption) ||
+      pendingCatLines.some((line) => line.sender === "大G" && line.body.trim() === caption);
+    if (!captionExists) {
+      setPendingCatLines((current) => [...current, {
+        id: "hotel-wannwan-sleeping-caption-v2",
+        sender: "大G",
+        body: caption,
+        thread: "大G",
+      }]);
+    }
+  }, [p.items, parsedCatRescue.messages, pendingCatLines]);
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch, "cat-choice-" + choice.id);
     if (choice.nextStage === 8) { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
