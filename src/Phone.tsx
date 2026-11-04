@@ -538,7 +538,7 @@ function PhoneRuntime({
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
       const wx = current.ui?.wechat ?? {};
-      if (Number(wx.wxReturnDinnerStage) !== -1 || wx.wxRedbookAfterPickupTriggered === true) return;
+      if (Number(wx.wxReturnDinnerStage) !== -1 || wx.wxRedbookHotelAfterPickupTriggeredV1 === true) return;
       let catState: { messages?: Array<{ sender?: string; body?: string }> } = {};
       try {
         const raw = wx.catRescueState;
@@ -565,7 +565,7 @@ function PhoneRuntime({
           ...current.ui,
           wechat: {
             ...wx,
-            wxRedbookAfterPickupTriggered: true,
+            wxRedbookHotelAfterPickupTriggeredV1: true,
             wxReturnDinnerStage: 215,
             wxCatPendingLines: JSON.stringify(queued),
           },
