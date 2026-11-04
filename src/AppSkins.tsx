@@ -324,7 +324,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 105, 106, 107, 108, 109, 110]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -1292,30 +1292,40 @@ export function WeChatSkin(p: SkinProps) {
   const [postMeetupDialogueMigratedV3, setPostMeetupDialogueMigratedV3] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV3", false);
   const hasLastOldBroccoliLine = allItems.some((item) => /這種近距離接觸的機會欸|这种近距离接触的机会欸/.test(item.body));
   const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
-  // Migrate by the actual transcript text, not a guessed stage number. Older
-  // saves may have different counters (or a previous migration flag) while
-  // showing this exact final line in the screenshot.
+  // IMPORTANT: do not fast-forward the meetup chat based on the presence of
+  // the old "近距離接觸" line or the numeric value 103. Those are valid
+  // intermediate beats in the current sequence; skipping to stage 200 removes
+  // the signature question, the apology choice, and the fan-confession banter.
+  // Keep existing progress exactly where the player left it.
   useEffect(() => {
-    if (postMeetupDialogueMigratedV3) return;
-    if (hasLastOldBroccoliLine && !hasNewBroccoliReply && returnDinnerStage < 200 && returnDinnerStage !== -2) {
-      setReturnDinnerStage(200);
-    }
     if (hasNewBroccoliReply || returnDinnerStage >= 200 || returnDinnerStage === -2) {
-      setPostMeetupDialogueMigratedV3(true);
+      if (!postMeetupDialogueMigratedV3) setPostMeetupDialogueMigratedV3(true);
     }
-  }, [postMeetupDialogueMigratedV3, hasLastOldBroccoliLine, hasNewBroccoliReply, returnDinnerStage]);
-  // Existing saves reached catRescue stage 103 but never received the missing
-  // reply choices. Move only those unfinished saves into the new, dedicated
-  // return-dinner sequence; do not reset the player's chat history.
+  }, [postMeetupDialogueMigratedV3, hasNewBroccoliReply, returnDinnerStage]);
+  // Repair saves affected by the old fast-forward bug. If the player has only
+  // just sent "我哪裡沒用了" and the signature exchange is absent, remove that
+  // premature turn and resume at the missing contact/signature question.
   useEffect(() => {
-    // The meetup dialogue has its own wxReturnDinnerStage counter. The cat
-    // rescue main-story stage remains at 100 while these chat choices advance,
-    // so checking catRescue.stage here strands existing saves with no choice.
-    // Migrate the exact old "reply-thanks-for-wanwan" point (103) instead.
-    if (postMeetupDialogueMigratedV2 || postPickupGoodbyeSent || catRescue.branch !== "monster-cat" || returnDinnerStage !== 103) return;
-    setReturnDinnerStage(200);
-    setPostMeetupDialogueMigratedV2(true);
-  }, [postMeetupDialogueMigratedV2, postPickupGoodbyeSent, catRescue.branch, returnDinnerStage]);
+    if (returnDinnerStage < 200 || returnDinnerStage > 201 || postPickupGoodbyeSent) return;
+    const hasPrematureDefence = catRescue.messages.some((item) =>
+      item.sender === "我" && /我哪裡沒用了|我哪里没用了/.test(item.body)
+    );
+    const hasSignatureQuestion = catRescue.messages.some((item) =>
+      /行吧[，,]?就知道妳?慫.*有沒有幫我.*簽名/.test(item.body)
+    );
+    if (!hasPrematureDefence || hasSignatureQuestion) return;
+    const repairedMessages = catRescue.messages.filter((item) =>
+      !(/我哪裡沒用了|我哪里没用了/.test(item.body) ||
+        item.body.trim() === "妳少來！我才不會咧！")
+    );
+    if (repairedMessages.length !== catRescue.messages.length) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repairedMessages }));
+    }
+    setPendingCatLines((current) => current.filter((item) =>
+      !(/妳少來！我才不會咧！/.test(item.body) || /我哪裡沒用了|我哪里没用了/.test(item.body))
+    ));
+    setReturnDinnerStage(103);
+  }, [returnDinnerStage, postPickupGoodbyeSent, catRescue.messages]);
   // After the final Broccoli line has arrived, start Big G's home update as
   // separate incoming chat messages. The phone-level queue creates the
   // notification because the player is still in Broccoli's conversation.
