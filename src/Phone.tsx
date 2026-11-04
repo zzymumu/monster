@@ -567,44 +567,84 @@ function PhoneRuntime({
     }, 10000);
     return () => window.clearTimeout(timer);
   }, [app, locked, ready, creator, work.id, work.updatedAt]);
-  // Remember that the player has seen DaG's call, then wait for an
-  // explicit hang-up before delivering the "open the door" message.
-  useEffect(() => {
-    if (creator || !ready || !s.incomingCall || s.incomingCall.caller !== "大G") return;
-    const current = runtimeRef.current;
-    const wx = current.ui?.wechat ?? {};
-    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || wx.wxDrunkCallSeenV1 === true) return;
-    update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxDrunkCallSeenV1: true } } });
-  }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, ready, creator]);
+  // The drunk-story sequence is intentionally gated by manual hang-ups:
+  // three DaG calls, then one Broccoli call, then the final door notification.
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
     const current = runtimeRef.current;
     const wx = current.ui?.wechat ?? {};
-    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || wx.wxDrunkCallEndedV1 !== true || wx.wxDoorMessageQueuedV1 === true) return;
-    const queued = [{ id: "drunk-after-call-open-door-v1", sender: "大G", body: "開門。", thread: "大G" }];
+    const count = Number(wx.wxDrunkCallCountV2 || 0);
+    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || count >= 3) return;
+    const timer = window.setTimeout(() => {
+      const latest = runtimeRef.current;
+      const latestWx = latest.ui?.wechat ?? {};
+      if (Number(latestWx.wxReturnDinnerStage) !== 266 || latestWx.wxDrunkCallReadyV1 !== true ||
+          Number(latestWx.wxDrunkCallCountV2 || 0) >= 3 || latest.incomingCall) return;
+      update({ ...latest, incomingCall: { caller: "大G", target: "大G", status: "ringing" } });
+    }, 900);
+    return () => window.clearTimeout(timer);
+  }, [s.ui?.wechat?.wxReturnDinnerStage, s.ui?.wechat?.wxDrunkCallReadyV1, s.ui?.wechat?.wxDrunkCallCountV2, s.incomingCall, locked, ready, creator]);
+
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    if (Number(wx.wxReturnDinnerStage) !== 266 || Number(wx.wxDrunkCallCountV2 || 0) < 3 ||
+        wx.wxDrunkCallReadyV1 !== true || wx.wxDrunkCallSequenceFinishedV2 === true) return;
+    let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+    try {
+      const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
+      if (Array.isArray(parsed)) queued = parsed;
+    } catch { queued = []; }
+    queued.push({ id: "drunk-after-three-calls-wait-v2", sender: "大G", body: "你等我", thread: "大G" });
     update({
       ...current,
-      notifications: [...current.notifications, "微信：大G：開門。"].slice(-60),
+      notifications: [...current.notifications, "微信：大G：你等我"].slice(-60),
       ui: { ...current.ui, wechat: {
         ...wx,
-        wxReturnDinnerStage: 267,
-        wxDoorMessageQueuedV1: true,
+        wxDrunkCallSequenceFinishedV2: true,
+        wxDrunkCallEndedV1: true,
+        wxBroccoliCallReadyV2: true,
         wxCatPendingLines: JSON.stringify(queued),
       }},
     });
-  }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, s.ui?.wechat?.wxDrunkCallEndedV1, ready, locked, creator]);
-  // The final nausea line starts DaG's simulated incoming call.
+  }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, s.ui?.wechat?.wxDrunkCallCountV2, s.ui?.wechat?.wxDrunkCallReadyV1, s.ui?.wechat?.wxDrunkCallSequenceFinishedV2, ready, locked, creator]);
+
   useEffect(() => {
-    if (creator || !ready || locked) return;
-    const wx = s.ui?.wechat ?? {};
-    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || s.incomingCall) return;
+    if (creator || !ready || locked || s.incomingCall) return;
+    const wx = runtimeRef.current.ui?.wechat ?? {};
+    if (wx.wxBroccoliCallReadyV2 !== true || wx.wxBroccoliCallEndedV2 === true) return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
-      if (Number(current.ui?.wechat?.wxReturnDinnerStage) !== 266 || current.incomingCall) return;
-      update({ ...current, incomingCall: { caller: "大G", target: "大G", status: "ringing" } });
-    }, 1200);
+      const latestWx = current.ui?.wechat ?? {};
+      if (latestWx.wxBroccoliCallReadyV2 !== true || latestWx.wxBroccoliCallEndedV2 === true || current.incomingCall) return;
+      update({ ...current, incomingCall: { caller: "西蓝花", target: "西蓝花", status: "ringing" } });
+    }, 1700);
     return () => window.clearTimeout(timer);
-  }, [s.ui?.wechat?.wxReturnDinnerStage, s.incomingCall, locked, ready, creator]);
+  }, [s.incomingCall, s.ui?.wechat?.wxBroccoliCallReadyV2, s.ui?.wechat?.wxBroccoliCallEndedV2, ready, locked, creator]);
+
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    if (wx.wxBroccoliCallEndedV2 !== true || wx.wxDoorMessageQueuedV2 === true) return;
+    let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+    try {
+      const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
+      if (Array.isArray(parsed)) queued = parsed;
+    } catch { queued = []; }
+    queued.push({ id: "drunk-after-broccoli-call-open-door-v2", sender: "大G", body: "开门", thread: "大G" });
+    update({
+      ...current,
+      notifications: [...current.notifications, "微信：大G：开门"].slice(-60),
+      ui: { ...current.ui, wechat: {
+        ...wx,
+        wxReturnDinnerStage: 267,
+        wxDoorMessageQueuedV2: true,
+        wxCatPendingLines: JSON.stringify(queued),
+      }},
+    });
+  }, [s.incomingCall, s.ui?.wechat?.wxBroccoliCallEndedV2, s.ui?.wechat?.wxDoorMessageQueuedV2, ready, locked, creator]);
   // After the final Broccoli goodnight, staying in Xiaohongshu continuously
   // for ten seconds triggers DaG's hotel check-in message exactly once.
   useEffect(() => {
@@ -1092,20 +1132,29 @@ function PhoneRuntime({
                         call.status === "ringing" ? "callDeclined" : "callEnded",
                         call.target || call.caller,
                       );
-                      const isStoryHangup =
-                        call.status === "answered" &&
+                      const wx = current.ui?.wechat ?? {};
+                      const isDrunkDaGCall =
                         call.caller === "大G" &&
-                        Number(current.ui?.wechat?.wxReturnDinnerStage) === 266 &&
-                        current.ui?.wechat?.wxDrunkCallReadyV1 === true;
-                      update(isStoryHangup ? {
+                        Number(wx.wxReturnDinnerStage) === 266 &&
+                        wx.wxDrunkCallReadyV1 === true &&
+                        Number(wx.wxDrunkCallCountV2 || 0) < 3;
+                      const isDrunkBroccoliCall =
+                        call.caller === "西蓝花" &&
+                        wx.wxBroccoliCallReadyV2 === true &&
+                        wx.wxBroccoliCallEndedV2 !== true;
+                      update(isDrunkDaGCall ? {
                         ...next,
-                        ui: {
-                          ...next.ui,
-                          wechat: {
-                            ...(next.ui?.wechat ?? {}),
-                            wxDrunkCallEndedV1: true,
-                          },
-                        },
+                        ui: { ...next.ui, wechat: {
+                          ...(next.ui?.wechat ?? {}),
+                          wxDrunkCallCountV2: Number(wx.wxDrunkCallCountV2 || 0) + 1,
+                          wxDrunkCallSeenV1: true,
+                        }},
+                      } : isDrunkBroccoliCall ? {
+                        ...next,
+                        ui: { ...next.ui, wechat: {
+                          ...(next.ui?.wechat ?? {}),
+                          wxBroccoliCallEndedV2: true,
+                        }},
                       } : next);
                     }
                   }}
