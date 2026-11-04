@@ -573,14 +573,14 @@ function PhoneRuntime({
     if (creator || !ready || !s.incomingCall || s.incomingCall.caller !== "大G") return;
     const current = runtimeRef.current;
     const wx = current.ui?.wechat ?? {};
-    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallSeenV1 === true) return;
+    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || wx.wxDrunkCallSeenV1 === true) return;
     update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxDrunkCallSeenV1: true } } });
   }, [s.incomingCall, s.ui?.wechat?.wxReturnDinnerStage, ready, creator]);
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
     const current = runtimeRef.current;
     const wx = current.ui?.wechat ?? {};
-    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallSeenV1 !== true || wx.wxDoorMessageQueuedV1 === true) return;
+    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || wx.wxDrunkCallSeenV1 !== true || wx.wxDoorMessageQueuedV1 === true) return;
     const queued = [{ id: "drunk-after-call-open-door-v1", sender: "大G", body: "開門。", thread: "大G" }];
     update({
       ...current,
@@ -597,7 +597,7 @@ function PhoneRuntime({
   useEffect(() => {
     if (creator || !ready || locked) return;
     const wx = s.ui?.wechat ?? {};
-    if (Number(wx.wxReturnDinnerStage) !== 266 || s.incomingCall) return;
+    if (Number(wx.wxReturnDinnerStage) !== 266 || wx.wxDrunkCallReadyV1 !== true || s.incomingCall) return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
       if (Number(current.ui?.wechat?.wxReturnDinnerStage) !== 266 || current.incomingCall) return;
