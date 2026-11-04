@@ -1849,15 +1849,13 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "好啦，愛妳呦，媽媽～", thread: "西蓝花" },
     ]},
     { stage: 215, chat: "大G", id: "hotel-apology-for-key-v1", label: "對不起……我也沒想到我會忘記帶鑰匙😭", nextStage: 216, lines: [
-      { sender: "我", body: "對不起……我也沒想到我會忘記帶鑰匙😭", thread: "大G" },
-      { sender: "我", body: "讓你破費了。", thread: "大G" },
+      { sender: "我", body: "對不起……我也沒想到我會忘記帶鑰匙😭 讓你破費了。", thread: "大G" },
       { sender: "大G", body: "沒事啦，妳別放在心上。", thread: "大G" },
       { sender: "大G", body: "剛好那家酒店的早餐自助很好吃。", thread: "大G" },
       { sender: "大G", body: "明天我再過去找妳吃早餐，好不好？", thread: "大G" },
     ]},
     { stage: 216, chat: "大G", id: "hotel-thanks-and-rest-v1", label: "真的謝謝你。你也累了一天，早點休息啦。", nextStage: 217, lines: [
-      { sender: "我", body: "真的謝謝你。", thread: "大G" },
-      { sender: "我", body: "你也累了一天，早點休息啦。", thread: "大G" },
+      { sender: "我", body: "真的謝謝你。你也累了一天，早點休息啦。", thread: "大G" },
       { sender: "大G", body: "好，晚安。", thread: "大G" },
     ]},
     { stage: 217, chat: "大G", id: "hotel-goodnight-emoji-v1", label: "晚安🌙", nextStage: 218, lines: [
@@ -1885,14 +1883,11 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "妳們前面剛吃完飯，現在就在酒店，讓人很難不多想啊🥺", thread: "西蓝花" },
     ]},
     { stage: 223, chat: "西蓝花", id: "hotel-first-meeting-worry-v1", label: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", nextStage: 224, lines: [
-      { sender: "我", body: "……（無語）", thread: "西蓝花" },
-      { sender: "我", body: "唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", thread: "西蓝花" },
+      { sender: "我", body: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", thread: "西蓝花" },
       { sender: "西蓝花", body: "嗯……他現在對妳的態度怎麼樣？", thread: "西蓝花" },
     ]},
     { stage: 224, chat: "西蓝花", id: "hotel-breakfast-invitation-v1", label: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", nextStage: 225, lines: [
-      { sender: "我", body: "還好吧，沒什麼變化。", thread: "西蓝花" },
-      { sender: "我", body: "前面還問我酒店住得習不習慣。", thread: "西蓝花" },
-      { sender: "我", body: "哦對，他說明早要來找我吃早飯。", thread: "西蓝花" },
+      { sender: "我", body: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", thread: "西蓝花" },
       { sender: "西蓝花", body: "他這是在約妳？", thread: "西蓝花" },
     ]},
     { stage: 225, chat: "西蓝花", id: "hotel-breakfast-excuse-v1", label: "啊？不是啦，他說這家酒店的早餐自助很好吃。", nextStage: 226, lines: [
@@ -1900,8 +1895,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "這他媽是他的藉口吧，他就是想跟妳繼續接觸。", thread: "西蓝花" },
     ]},
     { stage: 226, chat: "西蓝花", id: "hotel-mom-interview-defense-v1", label: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。", nextStage: 227, lines: [
-      { sender: "我", body: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。", thread: "西蓝花" },
-      { sender: "我", body: "妳沒考古之前的採訪嗎？都說怪獸像媽媽，他就是單純關心我而已。", thread: "西蓝花" },
+      { sender: "我", body: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。妳沒考古之前的採訪嗎？都說怪獸像媽媽，他就是單純關心我而已。", thread: "西蓝花" },
       { sender: "西蓝花", body: "我話放這了，他要是沒看上妳，我跟妳姓！", thread: "西蓝花" },
     ]},
 
