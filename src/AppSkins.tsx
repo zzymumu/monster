@@ -1240,6 +1240,29 @@ export function WeChatSkin(p: SkinProps) {
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
   const [postPickupStoryMigrated, setPostPickupStoryMigrated] = useSkinState<boolean>(p, "wxPostPickupStoryMigratedV1", false);
   useEffect(() => { if (postPickupGoodbyeSent && returnDinnerStage < 111 && returnDinnerStage !== -2) setReturnDinnerStage(-2); }, [postPickupGoodbyeSent, returnDinnerStage]);
+  const [postMeetupDialogueMigratedV2, setPostMeetupDialogueMigratedV2] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV2", false);
+  const [bigGHomeSequenceQueuedV2, setBigGHomeSequenceQueuedV2] = useSkinState<boolean>(p, "wxBigGHomeSequenceQueuedV2", false);
+  // Existing saves reached catRescue stage 103 but never received the missing
+  // reply choices. Move only those unfinished saves into the new, dedicated
+  // return-dinner sequence; do not reset the player's chat history.
+  useEffect(() => {
+    if (postMeetupDialogueMigratedV2 || postPickupGoodbyeSent || catRescue.branch !== "monster-cat" || catRescue.stage !== 103) return;
+    if (returnDinnerStage < 200) setReturnDinnerStage(200);
+    setPostMeetupDialogueMigratedV2(true);
+  }, [postMeetupDialogueMigratedV2, postPickupGoodbyeSent, catRescue.branch, catRescue.stage, returnDinnerStage]);
+  // After the final Broccoli line has arrived, start Big G's home update as
+  // separate incoming chat messages. The phone-level queue creates the
+  // notification because the player is still in Broccoli's conversation.
+  useEffect(() => {
+    if (returnDinnerStage !== 205 || pendingCatLines.length > 0 || bigGHomeSequenceQueuedV2) return;
+    setBigGHomeSequenceQueuedV2(true);
+    setPendingCatLines((current) => [...current,
+      { sender: "大G", body: "剛剛帶玩玩到家了。", thread: "大G", id: "meetup-home-v2-1" },
+      { sender: "大G", body: "牠一路上都很乖。", thread: "大G", id: "meetup-home-v2-2" },
+      { sender: "大G", body: "看得出來妳真的把牠照顧得很好。", thread: "大G", id: "meetup-home-v2-3" },
+      { sender: "大G", body: "謝謝妳這段時間這麼用心照顧牠。", thread: "大G", id: "meetup-home-v2-4" },
+    ]);
+  }, [returnDinnerStage, pendingCatLines.length, bigGHomeSequenceQueuedV2]);
   useEffect(() => {
     // Older saves ended stage 100 at -1. Resume the newly added follow-up once,
     // without replaying or rewriting any existing messages.
@@ -1595,18 +1618,43 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 102, chat: "西蓝花", id: "did-not-reveal-fan", label: "我都没敢暴露我是粉丝！要什么签名啊！！", nextStage: 103, lines: [
       { sender: "我", body: "我都沒敢暴露我是粉絲！要什麼簽名啊！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "啊啊啊啊啊妳怎麼這麼沒用！！！這種近距離接觸的機會欸！！！", thread: "西蓝花" },
-      { sender: "大G", body: "剛剛帶玩玩到家了，牠一路上都很乖。看得出來妳真的把牠照顧得很好，謝謝妳這段時間這麼用心照顧牠。", thread: "大G" },
+      // Big G's home update is queued only after the complete Broccoli exchange.
     ]},
-    { stage: 103, chat: "大G", id: "reply-thanks-for-wanwan", label: "没事啦，应该的！看到玩玩平安到家我就放心了。", nextStage: 104, lines: [
+    { stage: 200, chat: "西蓝花", id: "defend-not-useless-v2", label: "我哪裡沒用了！！換成妳妳指不定能當場暈過去好嗎！！！", nextStage: 201, lines: [
+      { sender: "我", body: "我哪裡沒用了！！換成妳妳指不定能當場暈過去好嗎！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳少來！我才不會咧！", thread: "西蓝花" },
+    ]},
+    { stage: 201, chat: "西蓝花", id: "tease-big-screen-v2", label: "也不知道之前是誰，看個演唱會大屏就嗷嗷叫的！", nextStage: 202, lines: [
+      { sender: "我", body: "也不知道之前是誰，之前看個演唱會大屏就嗷嗷叫的！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳不也差點暈過去，還說我？", thread: "西蓝花" },
+    ]},
+    { stage: 202, chat: "西蓝花", id: "low-blood-sugar-and-inner-seats-v2", label: "我那可能是低血糖了吧！", nextStage: 203, lines: [
+      { sender: "我", body: "我那可能是低血糖了吧！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳就扯 🙄", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哎呀，要是早點買內場就好了，現在指不定就能平靜很多……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且妳也可以幫我要簽名啊！", thread: "西蓝花" },
+    ]},
+    { stage: 203, chat: "西蓝花", id: "signature-is-no-problem-v2", label: "簽名簽名簽名！妳就知道簽名！我現在跟怪獸可是朋友，簽名什麼時候要不到！", nextStage: 204, lines: [
+      { sender: "我", body: "簽名簽名簽名！妳就知道簽名！我現在跟怪獸可是朋友，簽名什麼時候要不到！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳說得也對！我們要放長線釣大魚，不能急不能急！", thread: "西蓝花" },
+    ]},
+    { stage: 204, chat: "西蓝花", id: "agree-long-game-v2", label: "妳說得對，妳說得都對。", nextStage: 205, lines: [
+      { sender: "我", body: "妳說得對，妳說得都對。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，不跟妳鬧了！妳先忙，等一下記得回來跟我報告後續！", thread: "西蓝花" },
+    ]},
+    { stage: 205, chat: "大G", id: "reply-thanks-for-wanwan-v2", label: "沒事啦，應該的！看到玩玩平安到家我就放心了。", nextStage: 206, lines: [
       { sender: "我", body: "沒事啦，應該的！看到玩玩平安到家我就放心了。", thread: "大G" },
-      { sender: "大G", body: "我先帶玩玩在家裡玩一會，晚上六點我去找妳吃飯可以嗎？我開車過去接妳。", thread: "大G" },
+      { sender: "大G", body: "我先帶玩玩在家裡玩一會。", thread: "大G" },
+      { sender: "大G", body: "晚上八點我去找妳吃飯可以嗎？", thread: "大G" },
+      { sender: "大G", body: "我開車過去接妳。", thread: "大G" },
     ]},
-    { stage: 104, chat: "大G", id: "accept-six-pm-pickup", label: "可以的～那你快陪玩玩吧！", nextStage: 105, lines: [
+    { stage: 206, chat: "大G", id: "accept-eight-pm-pickup-v2", label: "可以的～那你快陪玩玩吧！", nextStage: 207, lines: [
       { sender: "我", body: "可以的～那你快陪玩玩吧！", thread: "大G" },
       { sender: "大G", body: "好，那我先陪牠玩一會，晚點見。", thread: "大G" },
+      { sender: "西蓝花", body: "妳在幹嘛？怎麼不理我！", thread: "西蓝花" },
     ]},
-    { stage: 105, chat: "西蓝花", id: "scream-he-is-driving-to-get-me", label: "啊啊啊啊他说要来开车接我！！怪兽！亲自！开车！！", nextStage: 106, lines: [
-      { sender: "我", body: "啊啊啊啊啊啊他說要來開車接我！！怪獸！親自！開車！！", thread: "西蓝花" },
+    { stage: 207, chat: "西蓝花", id: "report-personal-pickup-v2", label: "啊啊啊啊啊她說要來親自接我！怪獸！親自！開車！", nextStage: 106, lines: [
+      { sender: "我", body: "啊啊啊啊啊她說要來親自接我！怪獸！親自！開車！", thread: "西蓝花" },
       { sender: "西蓝花", body: "我真的怕妳下一秒開心到暈過去欸！！！", thread: "西蓝花" },
     ]},
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
