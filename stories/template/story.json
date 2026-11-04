@@ -3,7 +3,7 @@
   "id": "monster-iphone-simulator",
   "title": "我的 iPhone",
   "description": "iOS 风格互动手机模拟器。上滑进入密码界面，输入六位密码后解锁。",
-  "revision": 7,
+  "revision": 8,
   "phone": {
     "owner": "我的 iPhone",
     "date": "2026-11-02",
@@ -852,6 +852,174 @@
             "chapter": "玩玩与温尚翊",
             "branch": "interactive"
           }
+        },
+        {
+          "id": "wx-broccoli-78",
+          "body": "快去快去！等妳忙完再跟我說，祝妳一切順利！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:51",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-79",
+          "body": "救命啊啊啊怪獸好帥……我的天真人比照片好看無數倍，怎麼可以這麼帥？？？",
+          "senderId": "owner",
+          "time": "2026-11-02 10:52",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-80",
+          "body": "幫我要簽名了嗎？",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:53",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-81",
+          "body": "我都沒敢暴露我是粉絲！要什麼簽名啊！！",
+          "senderId": "owner",
+          "time": "2026-11-02 10:54",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-82",
+          "body": "啊啊啊啊啊妳怎麼這麼沒用！！！這種近距離接觸的機會欸！！！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:55",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-83",
+          "body": "我哪裡沒用了！！換成妳妳指不定能當場暈過去好嗎！！！",
+          "senderId": "owner",
+          "time": "2026-11-02 10:56",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-84",
+          "body": "我？我才不會！……好啦，可能真的會啦！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:57",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-85",
+          "body": "妳看吧！我現在光是想起來都覺得腿軟了，妳還敢說我沒用！",
+          "senderId": "owner",
+          "time": "2026-11-02 10:58",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-86",
+          "body": "哈哈哈哈哈好啦不笑妳了！那妳現在是不是又緊張又期待？",
+          "senderId": "broccoli",
+          "time": "2026-11-02 10:59",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-87",
+          "body": "超緊張的……我現在腦袋還是一片空白，感覺等一下連話都不會說了。",
+          "senderId": "owner",
+          "time": "2026-11-02 11:00",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-88",
+          "body": "啊啊啊啊啊啊他說要來開車接我！！怪獸！親自！開車！！",
+          "senderId": "owner",
+          "time": "2026-11-02 11:02",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-89",
+          "body": "我看妳下一秒開心到暈過去欸！！！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 11:03",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-90",
+          "body": "我真的快暈了……妳不要再說了！！",
+          "senderId": "owner",
+          "time": "2026-11-02 11:04",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
+        },
+        {
+          "id": "wx-broccoli-91",
+          "body": "哈哈哈哈哈好啦好啦不說了！妳先深呼吸，等他到了再跟我報告！",
+          "senderId": "broccoli",
+          "time": "2026-11-02 11:05",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "见面后的惊喜",
+            "branch": "main"
+          }
         }
       ]
     },
@@ -1138,6 +1306,18 @@
             "storyId": "cat-rescue",
             "chapter": "玩玩与温尚翊",
             "branch": "interactive"
+          }
+        },
+        {
+          "id": "wx-big-g-24",
+          "body": "如果妳方便的話，我開車過去接妳。",
+          "senderId": "big-g",
+          "time": "2026-11-02 11:01",
+          "hidden": true,
+          "meta": {
+            "storyId": "cat-rescue",
+            "chapter": "接妳過去",
+            "branch": "main"
           }
         }
       ]
@@ -2496,6 +2676,327 @@
       "once": true,
       "x": 0,
       "y": 0
+    },
+    {
+      "id": "broccoli-pickup-start",
+      "label": "忙完後向西藍花報告見面感想",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-57",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-78",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-78",
+      "label": "西藍花祝妳忙完再聊",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-78",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-79",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-79",
+      "label": "玩家驚嘆怪獸真人更帥",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-79",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-80",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-80",
+      "label": "西藍花追問簽名",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-80",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-81",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-81",
+      "label": "玩家說自己沒敢暴露粉絲身份",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-81",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-82",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-retort-choice",
+      "label": "反駁西藍花說妳沒用",
+      "type": "choice",
+      "event": "read",
+      "target": "wx-broccoli-82",
+      "conditions": [],
+      "logic": "and",
+      "actions": [],
+      "next": [
+        "broccoli-retort"
+      ],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-retort",
+      "label": "回嗆換成西藍花也會當場暈倒",
+      "type": "action",
+      "event": "choose",
+      "target": "broccoli-retort",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-83",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-83",
+      "label": "西藍花嘴硬說自己才不會",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-83",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-84",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-84",
+      "label": "玩家反擊西藍花也會腿軟",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-84",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-85",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-85",
+      "label": "西藍花笑著追問緊不緊張",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-85",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-86",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-86",
+      "label": "玩家坦白緊張到腦袋空白",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-86",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-87",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "big-g-pickup-notification",
+      "label": "大G主動提出開車來接妳並彈出微信通知",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-87",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-big-g-24",
+          "value": true
+        },
+        {
+          "type": "notification",
+          "key": "",
+          "value": "微信：大G：如果妳方便的話，我開車過去接妳。"
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-share",
+      "label": "看到大G接送訊息後告訴西藍花",
+      "type": "action",
+      "event": "read",
+      "target": "wx-big-g-24",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-88",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-88",
+      "label": "玩家激動告訴西藍花大G要開車來接",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-88",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-89",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-89",
+      "label": "西藍花笑妳快開心到暈倒",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-89",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-90",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "broccoli-pickup-90",
+      "label": "玩家承認真的快暈了",
+      "type": "action",
+      "event": "read",
+      "target": "wx-broccoli-90",
+      "conditions": [],
+      "logic": "and",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "wx-broccoli-91",
+          "value": true
+        }
+      ],
+      "next": [],
+      "once": true,
+      "x": 0,
+      "y": 0
     }
   ],
   "tests": [
@@ -2757,6 +3258,96 @@
       ],
       "ending": "本段剧情暂时停在添加微信的悬念处。",
       "expectUnlocked": []
+    },
+    {
+      "name": "見面後反駁西藍花，收到大G開車接送通知並分享",
+      "steps": [
+        {
+          "event": "read",
+          "target": "wx-broccoli-57"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-78"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-79"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-80"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-81"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-82"
+        },
+        {
+          "choose": "broccoli-retort"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-83"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-84"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-85"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-86"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-87"
+        },
+        {
+          "event": "read",
+          "target": "wx-big-g-24"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-88"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-89"
+        },
+        {
+          "event": "read",
+          "target": "wx-broccoli-90"
+        },
+        {
+          "event": "read",
+          "target": "story-validation-only"
+        }
+      ],
+      "ending": "本段剧情暂时停在添加微信的悬念处。",
+      "expectUnlocked": [
+        "wx-broccoli-78",
+        "wx-broccoli-79",
+        "wx-broccoli-80",
+        "wx-broccoli-81",
+        "wx-broccoli-82",
+        "wx-broccoli-83",
+        "wx-broccoli-84",
+        "wx-broccoli-85",
+        "wx-broccoli-86",
+        "wx-broccoli-87",
+        "wx-big-g-24",
+        "wx-broccoli-88",
+        "wx-broccoli-89",
+        "wx-broccoli-90",
+        "wx-broccoli-91"
+      ]
     }
   ]
 }
