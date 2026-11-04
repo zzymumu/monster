@@ -2480,10 +2480,10 @@ export function WeChatSkin(p: SkinProps) {
         { id: "drunk-moment-broccoli-3", sender: "西蓝花", body: "妳怎麼了？", thread: "西蓝花" },
         { id: "drunk-moment-broccoli-4", sender: "西蓝花", body: "妳瘋了？", thread: "西蓝花" },
         { id: "drunk-moment-broccoli-5", sender: "西蓝花", body: "妳夢遊了？", thread: "西蓝花" },
-        { id: "drunk-moment-broccoli-6", sender: "西蓝花", body: "妳怎麼不說話？？？", thread: "西蓝花" },
         { id: "drunk-moment-broccoli-call-1", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
         { id: "drunk-moment-broccoli-call-2", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
         { id: "drunk-moment-broccoli-call-3", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
+        { id: "drunk-moment-broccoli-6", sender: "西蓝花", body: "妳怎麼不說話？？？", thread: "西蓝花" },
       ]);
     }
   };
