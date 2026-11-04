@@ -2444,7 +2444,7 @@ export function WeChatSkin(p: SkinProps) {
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
-  const [drunkCallReady, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
+  const [, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
   const [, setDrunkCallEnded] = useSkinState<boolean>(p, "wxDrunkCallEndedV1", false);
   const [, setDrunkCallSeen] = useSkinState<boolean>(p, "wxDrunkCallSeenV1", false);
   const [, setDrunkCallCount] = useSkinState<number>(p, "wxDrunkCallCountV2", 0);
