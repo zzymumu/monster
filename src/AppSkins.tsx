@@ -1380,39 +1380,9 @@ export function WeChatSkin(p: SkinProps) {
   // Repair the handoff after Broccoli's final choice. Older saves can
   // advance the stage while leaving DaG's opening replies stranded in the
   // pending queue. Materialize them directly in DaG's transcript.
-  const [drunkNightHandoffRepairedV1, setDrunkNightHandoffRepairedV1] = useSkinState<boolean>(p, "wxDrunkNightHandoffRepairedV1", false);
-  useEffect(() => {
-    if (returnDinnerStage !== 249 || drunkNightHandoffRepairedV1) return;
-    const openingBodies = ["？", "妳還沒睡嗎？"];
-    const existing = [...p.items, ...catRescue.messages];
-    const additions = openingBodies
-      .filter((body) => !existing.some((item) =>
-        (item.title === "大G" || item.meta?.storyThread === "大G") &&
-        item.sender === "大G" && item.body.trim() === body
-      ))
-      .map((body, index) => makeItem({
-        id: "drunk-night-handoff-opening-v1-" + index,
-        title: "大G",
-        sender: "大G",
-        body,
-        time: "2026-11-04 " + (storyClockRef.current || "18:43"),
-        outgoing: false,
-        avatar: "",
-        kind: "text",
-        media: "",
-        meta: { storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(Date.now() + index) },
-      }));
-    if (additions.length) {
-      setCatRescueRaw(JSON.stringify({
-        ...catRescue,
-        version: 2,
-        messages: [...catRescue.messages, ...additions],
-      }));
-    }
-    setDrunkNightHandoffRepairedV1(true);
-    // Keep the player in Broccoli's chat. The player must open DaG's
-    // conversation manually after sending「滾」.
-  }, [returnDinnerStage, drunkNightHandoffRepairedV1, p.items, catRescue.messages, catRescueRaw]);
+  // The stage-249 choice itself owns the two opening replies. Do not seed
+  // them from an effect: that made DaG speak before the player's first bubble.
+  const [drunkNightHandoffRepairedV2] = useSkinState<boolean>(p, "wxDrunkNightHandoffRepairedV2", true);
   // After the hotel goodnight is sent in DaG's chat, notify the player that Broccoli is waiting.
   useEffect(() => {
     if (returnDinnerStage !== 226 || hotelBroccoliFollowupQueued || pendingCatLines.length > 0) return;
