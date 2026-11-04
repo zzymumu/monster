@@ -421,7 +421,9 @@ function PhoneRuntime({
 
       update({
         ...latest,
-        incomingCall: line.meta?.startBroccoliCall === "yes"
+        incomingCall: line.meta?.startBroccoliAfterDoor === "yes"
+          ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
+          : line.meta?.startBroccoliCall === "yes"
           ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
           : line.meta?.startBigGCall === "yes" ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
         messages: { ...latest.messages, wechat: nextWechatMessages },
@@ -440,6 +442,7 @@ function PhoneRuntime({
             ),
             ...(line.meta?.switchThread ? { openThread: line.meta.switchThread } : {}),
             ...(line.meta?.startBroccoliCall === "yes" ? { wxBroccoliCallStartedV1: true } : {}),
+            ...(line.meta?.startBroccoliAfterDoor === "yes" ? { wxBroccoliAfterDoorCallV1: true } : {}),
             ...(line.meta?.startBigGCall === "yes" ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxBroccoliFinalGCallV1: true } : {}),
           },
         },
@@ -1090,7 +1093,10 @@ function PhoneRuntime({
                       );
                       const wx = current.ui?.wechat ?? {};
                       const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
-                      if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
+                      if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
+                        const queued = [{ id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "☎️ 已取消", thread: "西蓝花", meta: { systemNotice: "yes" } }];
+                        update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                      } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
                         const queued: Array<{ id: string; sender: string; body: string; thread: string; meta?: Record<string, string> }> = [
                           { id: "drunk-broccoli-call-ended-v2", sender: "西蓝花", body: "你在說什麼我聽不清！！", thread: "西蓝花" },
                           { id: "drunk-broccoli-where-v2", sender: "西蓝花", body: "妳現在到底在幹嘛？", thread: "西蓝花" },
@@ -1105,7 +1111,7 @@ function PhoneRuntime({
                           const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
                           if (Array.isArray(parsed)) queued = parsed;
                         } catch { queued = []; }
-                        queued.push({ id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" });
+                        queued.push({ id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G", meta: { startBroccoliAfterDoor: "yes" } });
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (isDrunkFinalCall) {
                         let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
