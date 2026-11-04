@@ -151,9 +151,9 @@ function MessageList({
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
         const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
-        if (i.meta?.systemNotice === "yes") {
-          return <div key={i.id} className="wx-call-system-notice" style={{ display: "flex", justifyContent: "center", padding: "8px 12px", color: "#f1f1f1", fontSize: 12, textAlign: "center" }}>
-            <span style={{ padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.28)" }}>{body}</span>
+        if (i.meta?.systemNotice === "yes" || i.id === "drunk-big-g-call-declined-v9" || i.body.trim() === "对方已拒绝") {
+          return <div key={i.id} className="wx-call-system-notice" style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", boxSizing: "border-box", padding: "8px 12px", color: "#f1f1f1", fontSize: 12, textAlign: "center" }}>
+            <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.32)" }}>对方已拒绝</span>
           </div>;
         }
         return <div
@@ -2808,7 +2808,7 @@ export function WeChatSkin(p: SkinProps) {
                     { trigger: "所以現在去睡覺，好不好？睡一覺就不難受了。", body: "我不睡！我就不睡！", replyId: "drunk-big-g-refuse-sleep-v8", reply: "給我睡覺！" },
                     { trigger: "給我睡覺！", body: "我不要！", replyId: "drunk-big-g-refuse-again-v8", reply: "睡覺！！！" },
                     { trigger: "睡覺！！！", body: "No！！！", replyId: "drunk-big-g-call-trigger-v8", reply: "", callAfterSend: true },
-                    { trigger: "接電話。", body: "你怎麼能命令你爸爸？？？？", replyId: "drunk-big-g-dad-reply-v9", reply: "", replyLines: [
+                    { trigger: "接電話。", body: "我接個屁，你怎麼能命令你爸爸？？？？", replyId: "drunk-big-g-dad-reply-v10", reply: "", replyLines: [
                       { id: "drunk-big-g-ellipsis-v9", sender: "大G", body: "…………", thread: "大G" },
                       { id: "drunk-big-g-wait-v9", sender: "大G", body: "妳等我。", thread: "大G" },
                     ] },
