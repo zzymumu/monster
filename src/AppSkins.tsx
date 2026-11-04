@@ -1377,6 +1377,41 @@ export function WeChatSkin(p: SkinProps) {
   // 200-204). The former effect reset them to 102/103 and deleted the player's
   // banter, causing the same nose/skin replies to loop and skipping the
   // concert-screen and fan-identity conversation.
+  // Repair the handoff after Broccoli's final choice. Older saves can
+  // advance the stage while leaving DaG's opening replies stranded in the
+  // pending queue. Materialize them directly in DaG's transcript.
+  const [drunkNightHandoffRepairedV1, setDrunkNightHandoffRepairedV1] = useSkinState<boolean>(p, "wxDrunkNightHandoffRepairedV1", false);
+  useEffect(() => {
+    if (returnDinnerStage !== 249 || drunkNightHandoffRepairedV1) return;
+    const openingBodies = ["？", "妳還沒睡嗎？"];
+    const existing = [...p.items, ...catRescue.messages];
+    const additions = openingBodies
+      .filter((body) => !existing.some((item) =>
+        (item.title === "大G" || item.meta?.storyThread === "大G") &&
+        item.sender === "大G" && item.body.trim() === body
+      ))
+      .map((body, index) => makeItem({
+        id: "drunk-night-handoff-opening-v1-" + index,
+        title: "大G",
+        sender: "大G",
+        body,
+        time: "2026-11-04 " + (storyClockRef.current || "18:43"),
+        outgoing: false,
+        avatar: "",
+        kind: "text",
+        media: "",
+        meta: { storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(Date.now() + index) },
+      }));
+    if (additions.length) {
+      setCatRescueRaw(JSON.stringify({
+        ...catRescue,
+        version: 2,
+        messages: [...catRescue.messages, ...additions],
+      }));
+    }
+    setDrunkNightHandoffRepairedV1(true);
+    if (p.thread !== "大G" && p.thread !== "温尚翊") p.onThread("大G");
+  }, [returnDinnerStage, drunkNightHandoffRepairedV1, p.items, p.thread, catRescue.messages, catRescueRaw]);
   // After the hotel goodnight is sent in DaG's chat, notify the player that Broccoli is waiting.
   useEffect(() => {
     if (returnDinnerStage !== 226 || hotelBroccoliFollowupQueued || pendingCatLines.length > 0) return;
@@ -2743,7 +2778,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(!postPickupGoodbyeSent || returnDinnerStage >= 111) && pendingCatLines.length === 0 && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {(!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
