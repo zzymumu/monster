@@ -332,7 +332,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -1868,6 +1868,7 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 219, chat: "大G", id: "hotel-cute-emoji-reply-v2", label: "對吧對吧！我可喜歡了！", nextStage: 220, lines: [
       { sender: "我", body: "對吧對吧！我可喜歡了！", thread: "大G" },
+      { sender: "大G", body: "很適合妳。", thread: "大G" },
       { sender: "大G", body: "晚上吃飯還好嗎？", thread: "大G" },
       { sender: "大G", body: "不是說很能吃嗎？", thread: "大G" },
       { sender: "大G", body: "但我看妳都沒有吃多少，是不合口味嗎？", thread: "大G" },
@@ -1877,11 +1878,11 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 221, chat: "大G", id: "hotel-daytime-food-reason-v2", label: "可能白天吃太多了……", nextStage: 222, lines: [
       { sender: "我", body: "可能白天吃太多了……", thread: "大G" },
-      { sender: "大G", body: "吃飽了好睡覺。", thread: "大G" },
+      { sender: "大G", body: "哈哈，吃飽了好睡覺。", thread: "大G" },
     ]},
     { stage: 222, chat: "大G", id: "hotel-sleepy-cat-photo-v2", label: "對啦，我現在就有點困了。", nextStage: 223, lines: [
       { sender: "我", body: "對啦，我現在就有點困了。", thread: "大G" },
-      { sender: "大G", body: "那晚安～", thread: "大G" },
+      { sender: "大G", body: "那不打擾妳了。", thread: "大G" },
       { sender: "大G", body: "玩玩都睡著了。", thread: "大G", kind: "image", media: "/assets/wannwan-sleeping-cat.jpg" },
     ]},
     { stage: 223, chat: "大G", id: "hotel-cat-is-cute-v2", label: "好可愛！", nextStage: 224, lines: [
