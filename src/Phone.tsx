@@ -319,7 +319,9 @@ function PhoneRuntime({
     const wx = current.ui?.wechat ?? {};
     if (wx.wxDrunkFinalCallStartedV7 === true || wx.wxDrunkFinalCallFinishedV7 === true) return;
     const finalLine = (current.messages.wechat ?? []).some((item) =>
-      item.meta?.drunkCallAfterLine === "yes" && item.title === "大G"
+      item.title === "大G" &&
+      item.sender === "我" &&
+      item.body.trim() === "我不睡！我就不睡！"
     );
     if (!finalLine) return;
     update({
