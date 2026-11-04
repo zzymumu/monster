@@ -421,7 +421,9 @@ function PhoneRuntime({
 
       update({
         ...latest,
-        incomingCall: line.meta?.startBigGCall === "yes" ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
+        incomingCall: line.meta?.startBroccoliCall === "yes"
+          ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
+          : line.meta?.startBigGCall === "yes" ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
         messages: { ...latest.messages, wechat: nextWechatMessages },
         ui: {
           ...latest.ui,
@@ -437,6 +439,7 @@ function PhoneRuntime({
               currentQueue.slice(1)
             ),
             ...(line.meta?.switchThread ? { openThread: line.meta.switchThread } : {}),
+            ...(line.meta?.startBroccoliCall === "yes" ? { wxBroccoliCallStartedV1: true } : {}),
             ...(line.meta?.startBigGCall === "yes" ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxBroccoliFinalGCallV1: true } : {}),
           },
         },
@@ -1111,7 +1114,7 @@ function PhoneRuntime({
                           if (Array.isArray(parsed)) queued = parsed;
                         } catch { queued = []; }
                         queued.push(
-                          { id: "drunk-big-g-call-declined-v9", sender: "大G", body: "对方已拒绝", thread: "大G", meta: { systemNotice: "yes" } },
+                          { id: "drunk-big-g-call-declined-v9", sender: "大G", body: "您已拒绝对方来电", thread: "大G", meta: { systemNotice: "yes" } },
                           { id: "drunk-big-g-pick-up-v9", sender: "大G", body: "接電話。", thread: "大G" },
                         );
                         update({
