@@ -1292,9 +1292,29 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [pickupSceneRebuiltV1, setPickupSceneRebuiltV1] = useSkinState<boolean>(p, "wxPickupSceneRebuiltV1", false);
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
   const [postPickupStoryMigrated, setPostPickupStoryMigrated] = useSkinState<boolean>(p, "wxPostPickupStoryMigratedV1", false);
-  useEffect(() => { if (postPickupGoodbyeSent && returnDinnerStage < 111 && returnDinnerStage !== -2) setReturnDinnerStage(-2); }, [postPickupGoodbyeSent, returnDinnerStage]);
+  useEffect(() => {
+    if (pickupSceneRebuiltV1) return;
+    const legacyPickupBodies = new Set([
+      "啊啊啊啊啊他說要來親自接我！怪獸！親自！開車！",
+      "真的假的？！他居然要親自開車來接妳！妳晚上回來一定要跟我詳細報告！",
+      "妳以為戀愛ing啊！不說了，我要去洗澡敷面膜了！",
+      "嘖嘖，見色忘友欸！剛剛還在這裡跟我尖叫，現在就急著去洗澡敷面膜了喔？",
+      "嗯嗯我就是見色忘友！我愛怪獸！我去準備了媽媽拜拜！！",
+    ]);
+    const hasLegacyPickupScene = [...allItems, ...pendingCatLines].some((item) => legacyPickupBodies.has(item.body.trim()));
+    const hasNewPickupEnding = allItems.some((item) => item.sender === "我" && /好啦，愛妳呦，媽媽/.test(item.body.trim()));
+    if (hasLegacyPickupScene && !hasNewPickupEnding && (returnDinnerStage < 0 || (returnDinnerStage >= 109 && returnDinnerStage <= 110))) {
+      const cleanedMessages = catRescue.messages.filter((item) => !legacyPickupBodies.has(item.body.trim()));
+      const cleanedPending = pendingCatLines.filter((item) => !legacyPickupBodies.has(item.body.trim()));
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, stage: 207, messages: cleanedMessages }));
+      if (cleanedPending.length !== pendingCatLines.length) setPendingCatLinesRaw(JSON.stringify(cleanedPending));
+      setReturnDinnerStage(207);
+    }
+    setPickupSceneRebuiltV1(true);
+  }, [pickupSceneRebuiltV1, allItems, pendingCatLinesRaw, returnDinnerStage, catRescueRaw]);
   const [bigGHomeSequenceQueuedV2, setBigGHomeSequenceQueuedV2] = useSkinState<boolean>(p, "wxBigGHomeSequenceQueuedV2", false);
   const [postMeetupDialogueMigratedV3, setPostMeetupDialogueMigratedV3] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV3", false);
   const [meetupQuestionSplitMigratedV1, setMeetupQuestionSplitMigratedV1] = useSkinState<boolean>(p, "wxMeetupQuestionSplitMigratedV1", false);
@@ -1807,13 +1827,15 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "麼麼麼麼，逗妳玩啦～", thread: "西蓝花" },
       { sender: "西蓝花", body: "我知道，不洗頭見面可是最高待遇！", thread: "西蓝花" },
     ]},
-    { stage: 212, chat: "西蓝花", id: "hurry-and-report-back", label: "就妳會貧！哎呀！時間真的要來不及，我先溜了！", nextStage: 213, lines: [
+    { stage: 212, chat: "西蓝花", id: "banter-before-leaving", label: "就妳會貧！", nextStage: 213, lines: [
       { sender: "我", body: "就妳會貧！", thread: "西蓝花" },
+    ]},
+    { stage: 213, chat: "西蓝花", id: "hurry-and-report-back-v2", label: "哎呀！時間真的要來不及，我先溜了！", nextStage: 214, lines: [
       { sender: "我", body: "哎呀！時間真的要來不及，我先溜了！", thread: "西蓝花" },
       { sender: "西蓝花", body: "去吧去吧～", thread: "西蓝花" },
       { sender: "西蓝花", body: "記得回來後跟我匯報～", thread: "西蓝花" },
     ]},
-    { stage: 213, chat: "西蓝花", id: "bestie-love-mom-goodbye", label: "好啦，愛妳呦，媽媽～", nextStage: -1, lines: [
+    { stage: 214, chat: "西蓝花", id: "bestie-love-mom-goodbye-v2", label: "好啦，愛妳呦，媽媽～", nextStage: -1, lines: [
       { sender: "我", body: "好啦，愛妳呦，媽媽～", thread: "西蓝花" },
     ]},
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
