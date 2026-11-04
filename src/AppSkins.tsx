@@ -2848,7 +2848,7 @@ export function WeChatSkin(p: SkinProps) {
                     { id: "drunk-broccoli-monster-shock-v2b", sender: "西蓝花", body: "等一下？？？？", thread: "西蓝花" },
                     { id: "drunk-broccoli-monster-shock-v2c", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
                   ] },
-                  { trigger: "你是溫尚翊？？？", body: "嗯，她現在睡著了，剛剛喝了不少。", replyId: "drunk-big-g-reassure-broccoli-v2", replyLines: [
+                  { trigger: "你是溫尚翊？？？", body: "嗯，剛才有點不舒服，現在好多了，我會在這邊看著她。", replyId: "drunk-big-g-reassure-broccoli-v2", replyLines: [
                     { id: "drunk-broccoli-goodnight-v2a", sender: "西蓝花", body: "？？？？？？", thread: "西蓝花" },
                     { id: "drunk-broccoli-goodnight-v2b", sender: "西蓝花", body: "好……那麻煩你照顧她，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
                   ] },
