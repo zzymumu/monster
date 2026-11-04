@@ -2868,13 +2868,13 @@ export function WeChatSkin(p: SkinProps) {
                   }}>你不是对方的联系人，消息发送失败。点击重新添加好友</button>
                 </div>
               )}
-              {isBroccoliThread &&
-                threadItems.some((item) => item.sender === "西蓝花" && item.body.trim() === "妳怎麼不說話？？？") &&
+              {isMonsterThread &&
+                threadItems.some((item) => item.id === "drunk-big-g-last-warning-v2") &&
                 pendingCatLines.length === 0 &&
                 !drunkCallReady && (
-                <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
+                <div className="cat-rescue-choices" aria-label="醉酒后的乱码回复选项" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
                   <button onClick={() => {
-                    appendCatLines([{ sender: "我", body: "#@￥%@%……&&", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v5");
+                    appendCatLines([{ sender: "我", body: "#@￥%@%……&&", thread: "大G" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v6");
                     setReturnDinnerStage(266);
                     setDrunkCallCount(0);
                     setDrunkCallEnded(false);
