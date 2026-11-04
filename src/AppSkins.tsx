@@ -2816,18 +2816,7 @@ export function WeChatSkin(p: SkinProps) {
                       { id: "drunk-big-g-ellipsis-v9", sender: "大G", body: "…………", thread: "大G" },
                       { id: "drunk-big-g-wait-v11", sender: "大G", body: "妳等我。", thread: "大G" },
                     ] },
-                    { trigger: "開門。", body: "開什麼門？哪裡的門要開？", replyId: "drunk-big-g-door-question-v3", reply: "……我在妳房間外面，開門。" },
-                    { trigger: "……我在妳房間外面，開門。", body: "啊啊啊啊啊！！！", replyId: "drunk-big-g-scream-v3", reply: "？什麼聲音？妳摔倒了？" },
-                    { trigger: "？什麼聲音？妳摔倒了？", body: "我才沒有摔……是地板自己跑過來……", replyId: "drunk-big-g-floor-v3", reply: "好，妳先站穩，然後扶著牆，慢慢走到門邊，給我開門好不好？我看看妳有沒有事。" },
-                    { trigger: "好，妳先站穩，然後扶著牆，慢慢走到門邊，給我開門好不好？我看看妳有沒有事。", body: "你答應我一個要求我就開門！", replyId: "drunk-big-g-condition-v3", reply: "什麼？" },
-                    { trigger: "什麼？", body: "你猜。", replyId: "drunk-big-g-guess-v3", reply: "妳開門我就猜。" },
-                    { trigger: "妳開門我就猜。", body: "你不猜我就不開門。", replyId: "drunk-big-g-no-guess-v3", reply: "我拜託妳先開門好不好？我現在站在走廊跟妳猜謎是不是……" },
-                    { trigger: "我拜託妳先開門好不好？我現在站在走廊跟妳猜謎是不是……", body: "不行！你先猜！猜錯了也不行！", replyId: "drunk-big-g-frustrated-v4", reply: "開門！" },
-                    { trigger: "開門！", body: "不開！", replyId: "drunk-big-g-open-no-v4", reply: "" },
-                    { trigger: "開門！", body: "不開！說不開就不開！", replyId: "drunk-big-g-open-no-again-v4", reply: "妳先把門打開好不好？我保證不會跑掉。" },
-                    { trigger: "妳先把門打開好不好？我保證不會跑掉。", body: "你快說好！說了我就開。", replyId: "drunk-big-g-say-yes-v4", reply: "……好啦。" },
-                    { trigger: "……好啦。", body: "嘻嘻，那你把頭像給換了！！", replyId: "drunk-big-g-avatar-demand-v4", reply: "？" },
-                    { trigger: "？", body: "你這頭像也太醜了！換掉！！", replyId: "drunk-big-g-avatar-ugly-v3", reply: "……好，妳等我一下。" },
+
                   ];
                   const transcript = threadItems.map((item) => item.body.trim());
                   const current = prompts.find((prompt) =>
