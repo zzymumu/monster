@@ -354,7 +354,10 @@ function PhoneRuntime({
         );
       } catch { currentQueue = []; }
       const line = currentQueue[0];
-      if (!line || line.id !== parsedQueue[0].id || line.body !== parsedQueue[0].body || line.thread !== parsedQueue[0].thread) return;
+      // A UI rerender can refresh the queue object while this timer is waiting.
+      // Match the head by its actual message payload rather than optional IDs or
+      // a stale thread alias, otherwise a valid reply can be silently stranded.
+      if (!line || line.sender !== parsedQueue[0].sender || line.body !== parsedQueue[0].body) return;
 
       let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
       try {
@@ -381,7 +384,10 @@ function PhoneRuntime({
       const nextWechatMessages = alreadyDelivered ? wechatMessages : [...wechatMessages, created];
       const nextNotifications = [...latest.notifications];
       const openThread = String(wx.openThread || "");
-      if (!alreadyDelivered && (currentAppRef.current !== "wechat" || openThread !== thread)) {
+      const sameContactThread = (openThread === thread) ||
+        ((openThread === "西蓝花" || openThread === "西兰花") && (thread === "西蓝花" || thread === "西兰花")) ||
+        ((openThread === "大G" || openThread === "温尚翊") && (thread === "大G" || thread === "温尚翊"));
+      if (!alreadyDelivered && (currentAppRef.current !== "wechat" || !sameContactThread)) {
         const notification = "微信：" + thread + "：" + line.body;
         if (!nextNotifications.includes(notification)) nextNotifications.push(notification);
       }
