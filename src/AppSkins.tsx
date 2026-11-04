@@ -1318,6 +1318,17 @@ export function WeChatSkin(p: SkinProps) {
   }, [pickupSceneRebuiltV1, allItems, pendingCatLinesRaw, returnDinnerStage, catRescueRaw]);
   const [bigGHomeSequenceQueuedV2, setBigGHomeSequenceQueuedV2] = useSkinState<boolean>(p, "wxBigGHomeSequenceQueuedV2", false);
   const [postMeetupDialogueMigratedV3, setPostMeetupDialogueMigratedV3] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV3", false);
+  const [drunkNightOpeningOrderMigratedV2, setDrunkNightOpeningOrderMigratedV2] = useSkinState<boolean>(p, "wxDrunkNightOpeningOrderMigratedV2", false);
+  useEffect(() => {
+    if (drunkNightOpeningOrderMigratedV2) return;
+    const cleaned = catRescue.messages.filter((item) =>
+      !String(item.id || "").startsWith("drunk-night-handoff-opening-v1-")
+    );
+    if (cleaned.length !== catRescue.messages.length) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: cleaned }));
+    }
+    setDrunkNightOpeningOrderMigratedV2(true);
+  }, [drunkNightOpeningOrderMigratedV2, catRescue.messages, catRescueRaw]);
   const [meetupQuestionSplitMigratedV1, setMeetupQuestionSplitMigratedV1] = useSkinState<boolean>(p, "wxMeetupQuestionSplitMigratedV1", false);
   // Existing saves may already contain the old single combined nose/skin
   // question. Rewrite that persisted bubble into four separate incoming
