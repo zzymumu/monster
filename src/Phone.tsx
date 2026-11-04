@@ -313,6 +313,22 @@ function PhoneRuntime({
     }, 1000);
     return () => clearInterval(interval);
   }, [creator, ready, work.id, work.updatedAt]);
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    if (wx.wxDrunkFinalCallStartedV7 === true || wx.wxDrunkFinalCallFinishedV7 === true) return;
+    const finalLine = (current.messages.wechat ?? []).some((item) =>
+      item.meta?.drunkCallAfterLine === "yes" && item.title === "大G"
+    );
+    if (!finalLine) return;
+    update({
+      ...current,
+      incomingCall: { caller: "大G", target: "大G", status: "ringing" },
+      ui: { ...current.ui, wechat: { ...wx, wxDrunkFinalCallStartedV7: true } },
+    });
+  }, [s.messages.wechat, s.incomingCall, s.ui?.wechat?.wxDrunkFinalCallStartedV7, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, ready, locked, creator]);
+
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
   };
@@ -1057,7 +1073,26 @@ function PhoneRuntime({
                         call.status === "ringing" ? "callDeclined" : "callEnded",
                         call.target || call.caller,
                       );
-                      update(next);
+                      const wx = current.ui?.wechat ?? {};
+                      const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
+                      if (isDrunkFinalCall) {
+                        let queued: Array<{ id?: string; sender: string; body: string; thread?: string }> = [];
+                        try {
+                          const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
+                          if (Array.isArray(parsed)) queued = parsed;
+                        } catch { queued = []; }
+                        queued.push({ id: "drunk-big-g-pick-up-v7", sender: "大G", body: "接電話。", thread: "大G" });
+                        update({
+                          ...next,
+                          ui: { ...next.ui, wechat: {
+                            ...(next.ui?.wechat ?? {}),
+                            wxDrunkFinalCallFinishedV7: true,
+                            wxCatPendingLines: JSON.stringify(queued),
+                          }},
+                        });
+                      } else {
+                        update(next);
+                      }
                     }
                   }}
                 >
