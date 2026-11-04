@@ -2439,7 +2439,7 @@ export function WeChatSkin(p: SkinProps) {
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
-  const [drunkCallReady, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
+  const [, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[] };
