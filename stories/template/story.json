@@ -3326,7 +3326,7 @@
           "target": "wx-broccoli-90"
         },
         {
-          "event": "read",
+          "event": "callEnded",
           "target": "story-validation-only"
         }
       ],
