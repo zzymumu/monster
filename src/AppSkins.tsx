@@ -1287,33 +1287,27 @@ export function WeChatSkin(p: SkinProps) {
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
   const [postPickupStoryMigrated, setPostPickupStoryMigrated] = useSkinState<boolean>(p, "wxPostPickupStoryMigratedV1", false);
   useEffect(() => { if (postPickupGoodbyeSent && returnDinnerStage < 111 && returnDinnerStage !== -2) setReturnDinnerStage(-2); }, [postPickupGoodbyeSent, returnDinnerStage]);
-  const [postMeetupDialogueMigratedV2, setPostMeetupDialogueMigratedV2] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV2", false);
   const [bigGHomeSequenceQueuedV2, setBigGHomeSequenceQueuedV2] = useSkinState<boolean>(p, "wxBigGHomeSequenceQueuedV2", false);
   const [postMeetupDialogueMigratedV3, setPostMeetupDialogueMigratedV3] = useSkinState<boolean>(p, "wxPostMeetupDialogueMigratedV3", false);
-  const hasLastOldBroccoliLine = allItems.some((item) => /這種近距離接觸的機會欸|这种近距离接触的机会欸/.test(item.body));
   const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
-  // IMPORTANT: do not fast-forward the meetup chat based on the presence of
-  // the old "近距離接觸" line or the numeric value 103. Those are valid
-  // intermediate beats in the current sequence; skipping to stage 200 removes
-  // the signature question, the apology choice, and the fan-confession banter.
-  // Keep existing progress exactly where the player left it.
+  // Do not infer story progress from a single old line or jump from stage 103
+  // to 200: stages 101-105 contain the nose/skin, physical-contact and
+  // signature exchanges and must remain playable in their original order.
   useEffect(() => {
-    if (hasNewBroccoliReply || returnDinnerStage >= 200 || returnDinnerStage === -2) {
-      if (!postMeetupDialogueMigratedV3) setPostMeetupDialogueMigratedV3(true);
+    if ((hasNewBroccoliReply || returnDinnerStage >= 200 || returnDinnerStage === -2) && !postMeetupDialogueMigratedV3) {
+      setPostMeetupDialogueMigratedV3(true);
     }
   }, [postMeetupDialogueMigratedV3, hasNewBroccoliReply, returnDinnerStage]);
-  // Repair saves affected by the old fast-forward bug. If the player has only
-  // just sent "我哪裡沒用了" and the signature exchange is absent, remove that
-  // premature turn and resume at the missing contact/signature question.
+  // Recover existing saves that were fast-forwarded by the previous build.
+  // Resume from the first missing beat without replaying the player's already
+  // sent "真人好帥" line. If the nose/skin question is missing, queue it;
+  // if it exists but the physical-contact question does not, show stage 102.
   useEffect(() => {
     if (returnDinnerStage < 200 || returnDinnerStage > 201 || postPickupGoodbyeSent) return;
-    const hasPrematureDefence = catRescue.messages.some((item) =>
-      item.sender === "我" && /我哪裡沒用了|我哪里没用了/.test(item.body)
-    );
-    const hasSignatureQuestion = catRescue.messages.some((item) =>
-      /行吧[，,]?就知道妳?慫.*有沒有幫我.*簽名/.test(item.body)
-    );
-    if (!hasPrematureDefence || hasSignatureQuestion) return;
+    const transcript = [...p.items, ...catRescue.messages];
+    const hasNoseQuestion = transcript.some((item) => /他鼻子挺不挺.*皮膚白不白|他鼻子挺不挺.*皮肤白不白/.test(item.body));
+    const hasPhysicalQuestion = transcript.some((item) => /有沒有肢體接觸.*有沒有碰到手|有没有肢体接触.*有没有碰到手/.test(item.body));
+    const hasHandsomeLine = transcript.some((item) => /真人比照片好看無數倍|真人比照片好看无数倍/.test(item.body));
     const repairedMessages = catRescue.messages.filter((item) =>
       !(/我哪裡沒用了|我哪里没用了/.test(item.body) ||
         item.body.trim() === "妳少來！我才不會咧！")
@@ -1324,8 +1318,18 @@ export function WeChatSkin(p: SkinProps) {
     setPendingCatLines((current) => current.filter((item) =>
       !(/妳少來！我才不會咧！/.test(item.body) || /我哪裡沒用了|我哪里没用了/.test(item.body))
     ));
-    setReturnDinnerStage(103);
-  }, [returnDinnerStage, postPickupGoodbyeSent, catRescue.messages]);
+    if (!hasNoseQuestion && hasHandsomeLine) {
+      setPendingCatLines((current) => [
+        ...current.filter((item) => !/他鼻子挺不挺/.test(item.body)),
+        { sender: "西蓝花", body: "等一下，先回答我！他鼻子挺不挺？皮膚白不白？本人是不是比照片還好看？", thread: "西蓝花", id: "meetup-nose-question-repair" },
+      ]);
+      setReturnDinnerStage(102);
+    } else if (!hasPhysicalQuestion) {
+      setReturnDinnerStage(102);
+    } else {
+      setReturnDinnerStage(103);
+    }
+  }, [returnDinnerStage, postPickupGoodbyeSent, catRescue.messages, p.items]);
   // After the final Broccoli line has arrived, start Big G's home update as
   // separate incoming chat messages. The phone-level queue creates the
   // notification because the player is still in Broccoli's conversation.
