@@ -2447,6 +2447,10 @@ export function WeChatSkin(p: SkinProps) {
   const [drunkCallReady, setDrunkCallReady] = useSkinState<boolean>(p, "wxDrunkCallReadyV1", false);
   const [, setDrunkCallEnded] = useSkinState<boolean>(p, "wxDrunkCallEndedV1", false);
   const [, setDrunkCallSeen] = useSkinState<boolean>(p, "wxDrunkCallSeenV1", false);
+  const [, setDrunkCallCount] = useSkinState<number>(p, "wxDrunkCallCountV2", 0);
+  const [, setBroccoliCallReady] = useSkinState<boolean>(p, "wxBroccoliCallReadyV2", false);
+  const [, setBroccoliCallEnded] = useSkinState<boolean>(p, "wxBroccoliCallEndedV2", false);
+  const [, setDoorMessageQueued] = useSkinState<boolean>(p, "wxDoorMessageQueuedV2", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[] };
@@ -2473,6 +2477,11 @@ export function WeChatSkin(p: SkinProps) {
       setDrunkCallReady(false);
       setDrunkCallEnded(false);
       setDrunkCallSeen(false);
+      setDrunkCallCount(0);
+      setBroccoliCallReady(false);
+      setBroccoliCallEnded(false);
+      setDoorMessageQueued(false);
+      setReturnDinnerStage(0);
       setPendingCatLines((current) => [
         ...current,
         { id: "drunk-moment-broccoli-1", sender: "西蓝花", body: "？", thread: "西蓝花" },
@@ -2484,6 +2493,7 @@ export function WeChatSkin(p: SkinProps) {
         { id: "drunk-moment-broccoli-call-2", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
         { id: "drunk-moment-broccoli-call-3", sender: "西蓝花", body: "已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
         { id: "drunk-moment-broccoli-6", sender: "西蓝花", body: "妳怎麼不說話？？？", thread: "西蓝花" },
+        { id: "drunk-moment-big-g-checkin-v2", sender: "大G", body: "喂！你怎么不说话！", thread: "大G" },
       ]);
     }
   };
@@ -2860,14 +2870,20 @@ export function WeChatSkin(p: SkinProps) {
               )}
               {isBroccoliThread &&
                 threadItems.some((item) => item.sender === "西蓝花" && item.body.trim() === "妳怎麼不說話？？？") &&
+                pendingCatLines.length === 0 &&
                 !drunkCallReady && (
                 <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
                   <button onClick={() => {
-                    appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v4");
+                    appendCatLines([{ sender: "我", body: "#@￥%@%……&&", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v5");
+                    setReturnDinnerStage(266);
+                    setDrunkCallCount(0);
                     setDrunkCallEnded(false);
                     setDrunkCallSeen(false);
+                    setBroccoliCallReady(false);
+                    setBroccoliCallEnded(false);
+                    setDoorMessageQueued(false);
                     setDrunkCallReady(true);
-                  }}>%……&*……（）……%（）*</button>
+                  }}>#@￥%@%……&&</button>
                   <div className="cat-rescue-option-hint">選擇回覆</div>
                 </div>
               )}
