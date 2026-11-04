@@ -337,7 +337,7 @@ function PhoneRuntime({
     try {
       const parsed = JSON.parse(pendingStoryQueueRaw);
       if (Array.isArray(parsed)) parsedQueue = parsed.filter((line) =>
-        line && typeof line.sender === "string" && typeof line.body === "string" && line.sender !== "我"
+        line && typeof line.sender === "string" && typeof line.body === "string"
       );
     } catch { parsedQueue = []; }
     if (!parsedQueue.length) return;
@@ -350,7 +350,7 @@ function PhoneRuntime({
         const raw = wx.wxCatPendingLines;
         const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
         if (Array.isArray(parsed)) currentQueue = parsed.filter((line) =>
-          line && typeof line.sender === "string" && typeof line.body === "string" && line.sender !== "我"
+          line && typeof line.sender === "string" && typeof line.body === "string"
         );
       } catch { currentQueue = []; }
       const line = currentQueue[0];
@@ -375,7 +375,7 @@ function PhoneRuntime({
         sender: line.sender,
         body: line.body,
         time: baseTime,
-        outgoing: false,
+        outgoing: line.sender === "我",
         kind: line.kind || "text",
         media: line.media || "",
         meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(orderAt) },
@@ -389,7 +389,7 @@ function PhoneRuntime({
       const sameContactThread = (openThread === thread) ||
         ((openThread === "西蓝花" || openThread === "西兰花") && (thread === "西蓝花" || thread === "西兰花")) ||
         ((openThread === "大G" || openThread === "温尚翊") && (thread === "大G" || thread === "温尚翊"));
-      if (!alreadyDelivered && (currentAppRef.current !== "wechat" || !sameContactThread)) {
+      if (!alreadyDelivered && line.sender !== "我" && (currentAppRef.current !== "wechat" || !sameContactThread)) {
         const notification = "微信：" + thread + "：" + line.body;
         if (!nextNotifications.includes(notification)) nextNotifications.push(notification);
       }
@@ -407,7 +407,21 @@ function PhoneRuntime({
               branch: typeof catState.branch === "string" ? catState.branch : "",
               messages: nextStoryMessages,
             }),
-            wxCatPendingLines: JSON.stringify(currentQueue.slice(1)),
+            wxCatPendingLines: JSON.stringify(
+              line.id === "drunk-moment-big-g-checkin-v2"
+                ? [
+                    ...currentQueue.slice(1),
+                    { id: "drunk-user-babble-1-v2", sender: "我", body: "窩債鎖花啊……", thread: "大G" },
+                    { id: "drunk-user-babble-2-v2", sender: "我", body: "泥們都系花花……", thread: "大G" },
+                    { id: "drunk-user-babble-3-v2", sender: "我", body: "我沒有醉我很清醒……", thread: "大G" },
+                    { id: "drunk-user-babble-4-v2", sender: "我", body: "花花在飛……窩也在飛……", thread: "大G" },
+                    { id: "drunk-big-g-how-much-v2", sender: "大G", body: "你是喝了多少！", thread: "大G" },
+                    { id: "drunk-big-g-stop-drinking-v2", sender: "大G", body: "我不是叫你別喝了！", thread: "大G" },
+                    { id: "drunk-big-g-vomit-v2", sender: "大G", body: "你吐過了？", thread: "大G" },
+                    { id: "drunk-big-g-last-warning-v2", sender: "大G", body: "前台跟我說敲門沒人開", thread: "大G" },
+                  ]
+                : currentQueue.slice(1)
+            ),
           },
         },
         notifications: nextNotifications.slice(-60),
