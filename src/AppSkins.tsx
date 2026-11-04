@@ -1379,12 +1379,12 @@ export function WeChatSkin(p: SkinProps) {
   // concert-screen and fan-identity conversation.
   // After the hotel goodnight is sent in DaG's chat, notify the player that Broccoli is waiting.
   useEffect(() => {
-    if (returnDinnerStage !== 218 || hotelBroccoliFollowupQueued || pendingCatLines.length > 0) return;
+    if (returnDinnerStage !== 226 || hotelBroccoliFollowupQueued || pendingCatLines.length > 0) return;
     setHotelBroccoliFollowupQueued(true);
     setPendingCatLines((current) => [...current,
       { id: "hotel-night-broccoli-checkin", sender: "西蓝花", body: "妳怎麼沒消息？吃飯怎麼樣？", thread: "西蓝花" },
     ]);
-    setReturnDinnerStage(219);
+    setReturnDinnerStage(227);
   }, [returnDinnerStage, hotelBroccoliFollowupQueued, pendingCatLines.length]);
   // After the final Broccoli line has arrived, start Big G's home update as
   // separate incoming chat messages. The phone-level queue creates the
@@ -1854,18 +1854,52 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "剛好那家酒店的早餐自助很好吃。", thread: "大G" },
       { sender: "大G", body: "明天我再過去找妳吃早餐，好不好？", thread: "大G" },
     ]},
-    { stage: 216, chat: "大G", id: "hotel-thanks-and-rest-v1", label: "真的謝謝你。你也累了一天，早點休息啦。", nextStage: 217, lines: [
-      { sender: "我", body: "真的謝謝你。你也累了一天，早點休息啦。", thread: "大G" },
-      { sender: "大G", body: "好，晚安。", thread: "大G" },
+    { stage: 216, chat: "大G", id: "hotel-breakfast-accept-v2", label: "好啊！", nextStage: 217, lines: [
+      { sender: "我", body: "好啊！", thread: "大G" },
     ]},
-    { stage: 217, chat: "大G", id: "hotel-goodnight-emoji-v1", label: "晚安🌙", nextStage: 218, lines: [
-      { sender: "我", body: "晚安🌙", thread: "大G" },
+    { stage: 217, chat: "大G", id: "hotel-breakfast-thanks-v2", label: "哎呀，真的很麻煩你！", nextStage: 218, lines: [
+      { sender: "我", body: "哎呀，真的很麻煩你！", thread: "大G" },
+      { sender: "大G", body: "不會啦！", thread: "大G" },
+      { sender: "大G", body: "都是朋友，這麼客氣幹什麼。", thread: "大G" },
     ]},
-    { stage: 219, chat: "西蓝花", id: "hotel-night-broccoli-reply-v1", label: "……我都不知道要怎麼跟妳說。", nextStage: 220, lines: [
+    { stage: 218, chat: "大G", id: "hotel-thanks-emoji-v2", label: "真的謝謝妳😭", nextStage: 219, lines: [
+      { sender: "我", body: "真的謝謝妳😭", thread: "大G" },
+      { sender: "大G", body: "哈哈！這個表情好可愛。", thread: "大G" },
+    ]},
+    { stage: 219, chat: "大G", id: "hotel-cute-emoji-reply-v2", label: "對吧對吧！我可喜歡了！", nextStage: 220, lines: [
+      { sender: "我", body: "對吧對吧！我可喜歡了！", thread: "大G" },
+      { sender: "大G", body: "晚上吃飯還好嗎？", thread: "大G" },
+      { sender: "大G", body: "不是說很能吃嗎？", thread: "大G" },
+      { sender: "大G", body: "但我看妳都沒有吃多少，是不合口味嗎？", thread: "大G" },
+    ]},
+    { stage: 220, chat: "大G", id: "hotel-dinner-answer-v2", label: "沒有啦！很好吃！", nextStage: 221, lines: [
+      { sender: "我", body: "沒有啦！很好吃！", thread: "大G" },
+    ]},
+    { stage: 221, chat: "大G", id: "hotel-daytime-food-reason-v2", label: "可能白天吃太多了……", nextStage: 222, lines: [
+      { sender: "我", body: "可能白天吃太多了……", thread: "大G" },
+      { sender: "大G", body: "吃飽了好睡覺。", thread: "大G" },
+    ]},
+    { stage: 222, chat: "大G", id: "hotel-sleepy-cat-photo-v2", label: "對啦，我現在就有點困了。", nextStage: 223, lines: [
+      { sender: "我", body: "對啦，我現在就有點困了。", thread: "大G" },
+      { sender: "大G", body: "那晚安～", thread: "大G" },
+      { sender: "大G", body: "玩玩都睡著了。", thread: "大G", kind: "image", media: "/assets/wannwan-sleeping-cat.jpg" },
+    ]},
+    { stage: 223, chat: "大G", id: "hotel-cat-is-cute-v2", label: "好可愛！", nextStage: 224, lines: [
+      { sender: "我", body: "好可愛！", thread: "大G" },
+    ]},
+    { stage: 224, chat: "大G", id: "hotel-pat-cat-goodnight-v2", label: "幫我摸摸！", nextStage: 225, lines: [
+      { sender: "我", body: "幫我摸摸！", thread: "大G" },
+      { sender: "大G", body: "好啦！", thread: "大G" },
+      { sender: "大G", body: "我替玩玩跟妳說晚安。", thread: "大G" },
+    ]},
+    { stage: 225, chat: "大G", id: "hotel-final-goodnight-v2", label: "嗯嗯，晚安！做個好夢！🌙", nextStage: 226, lines: [
+      { sender: "我", body: "嗯嗯，晚安！做個好夢！🌙", thread: "大G" },
+    ]},
+    { stage: 227, chat: "西蓝花", id: "hotel-night-broccoli-reply-v1", label: "……我都不知道要怎麼跟妳說。", nextStage: 228, lines: [
       { sender: "我", body: "……我都不知道要怎麼跟妳說。", thread: "西蓝花" },
       { sender: "西蓝花", body: "怎麼了？", thread: "西蓝花" },
     ]},
-    { stage: 220, chat: "西蓝花", id: "hotel-night-misunderstanding-v1", label: "……我現在在酒店。", nextStage: 221, lines: [
+    { stage: 228, chat: "西蓝花", id: "hotel-night-misunderstanding-v1", label: "……我現在在酒店。", nextStage: 229, lines: [
       { sender: "我", body: "……我現在在酒店。", thread: "西蓝花" },
       { sender: "西蓝花", body: "？？？", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳們進展這麼快？", thread: "西蓝花" },
@@ -1873,28 +1907,28 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "活好嗎？", thread: "西蓝花" },
       { sender: "西蓝花", body: "舒服嗎？", thread: "西蓝花" },
     ]},
-    { stage: 221, chat: "西蓝花", id: "hotel-key-explanation-v1", label: "什麼啊！！是我出門忘記帶鑰匙了，回不了家！！！", nextStage: 222, lines: [
+    { stage: 229, chat: "西蓝花", id: "hotel-key-explanation-v1", label: "什麼啊！！是我出門忘記帶鑰匙了，回不了家！！！", nextStage: 230, lines: [
       { sender: "我", body: "什麼啊！！是我出門忘記帶鑰匙了，回不了家！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "……白激動了。", thread: "西蓝花" },
     ]},
-    { stage: 222, chat: "西蓝花", id: "hotel-yellow-thoughts-v1", label: "妳腦子裝的都是什麼啊！黃色廢料！！", nextStage: 223, lines: [
+    { stage: 230, chat: "西蓝花", id: "hotel-yellow-thoughts-v1", label: "妳腦子裝的都是什麼啊！黃色廢料！！", nextStage: 231, lines: [
       { sender: "我", body: "妳腦子裝的都是什麼啊！黃色廢料！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳自己說的在酒店啊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳們前面剛吃完飯，現在就在酒店，讓人很難不多想啊🥺", thread: "西蓝花" },
     ]},
-    { stage: 223, chat: "西蓝花", id: "hotel-first-meeting-worry-v1", label: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", nextStage: 224, lines: [
+    { stage: 231, chat: "西蓝花", id: "hotel-first-meeting-worry-v1", label: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", nextStage: 232, lines: [
       { sender: "我", body: "……（無語）唉，怎麼辦啊？第一次見面就鬧成這樣，他不會以為我故意不帶鑰匙，想騙他去酒店吧？", thread: "西蓝花" },
       { sender: "西蓝花", body: "嗯……他現在對妳的態度怎麼樣？", thread: "西蓝花" },
     ]},
-    { stage: 224, chat: "西蓝花", id: "hotel-breakfast-invitation-v1", label: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", nextStage: 225, lines: [
+    { stage: 232, chat: "西蓝花", id: "hotel-breakfast-invitation-v1", label: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", nextStage: 233, lines: [
       { sender: "我", body: "還好吧，沒什麼變化。前面還問我酒店住得習不習慣。哦對，他說明早要來找我吃早飯。", thread: "西蓝花" },
       { sender: "西蓝花", body: "他這是在約妳？", thread: "西蓝花" },
     ]},
-    { stage: 225, chat: "西蓝花", id: "hotel-breakfast-excuse-v1", label: "啊？不是啦，他說這家酒店的早餐自助很好吃。", nextStage: 226, lines: [
+    { stage: 233, chat: "西蓝花", id: "hotel-breakfast-excuse-v1", label: "啊？不是啦，他說這家酒店的早餐自助很好吃。", nextStage: 234, lines: [
       { sender: "我", body: "啊？不是啦，他說這家酒店的早餐自助很好吃。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這他媽是他的藉口吧，他就是想跟妳繼續接觸。", thread: "西蓝花" },
     ]},
-    { stage: 226, chat: "西蓝花", id: "hotel-mom-interview-defense-v1", label: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。", nextStage: 227, lines: [
+    { stage: 234, chat: "西蓝花", id: "hotel-mom-interview-defense-v1", label: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。", nextStage: 235, lines: [
       { sender: "我", body: "妳亂說什麼啊……我有什麼好接觸的，他就是單純人好。妳沒考古之前的採訪嗎？都說怪獸像媽媽，他就是單純關心我而已。", thread: "西蓝花" },
       { sender: "西蓝花", body: "我話放這了，他要是沒看上妳，我跟妳姓！", thread: "西蓝花" },
     ]},

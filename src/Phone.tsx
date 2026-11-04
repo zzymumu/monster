@@ -376,6 +376,8 @@ function PhoneRuntime({
         body: line.body,
         time: baseTime,
         outgoing: false,
+        kind: line.kind || "text",
+        media: line.media || "",
         meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(orderAt) },
       });
       const alreadyDelivered = storyMessages.some((item) => item.id === created.id) ||
