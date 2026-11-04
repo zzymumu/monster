@@ -2469,6 +2469,10 @@ export function WeChatSkin(p: SkinProps) {
     setMomentComposer(false);
     if (isDrunkLovePost && !drunkMomentSequenceStarted) {
       setDrunkMomentSequenceStarted(true);
+      // Reset legacy call flags so an earlier test save cannot hide the reply.
+      setDrunkCallReady(false);
+      setDrunkCallEnded(false);
+      setDrunkCallSeen(false);
       setPendingCatLines((current) => [
         ...current,
         { id: "drunk-moment-broccoli-1", sender: "西蓝花", body: "？", thread: "西蓝花" },
@@ -2854,12 +2858,13 @@ export function WeChatSkin(p: SkinProps) {
                   }}>你不是对方的联系人，消息发送失败。点击重新添加好友</button>
                 </div>
               )}
-              {isBroccoliThread && drunkMomentSequenceStarted &&
-                threadItems.some((item) => item.id === "drunk-moment-broccoli-call-1") &&
-                threadItems.some((item) => item.id === "drunk-moment-broccoli-call-2") &&
-                threadItems.some((item) => item.id === "drunk-moment-broccoli-call-3") &&
-                !threadItems.some((item) => item.sender === "我" && item.body.includes("%……&*……（）……%（）*")) &&
-                !drunkCallReady && (
+              {isBroccoliThread &&
+                threadItems.filter((item) =>
+                  item.sender === "西蓝花" &&
+                  item.kind === "call" &&
+                  item.body.trim() === "已取消"
+                ).length >= 3 &&
+                !threadItems.some((item) => item.sender === "我" && item.body.includes("%……&*……（）……%（）*")) && (
                 <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项">
                   <button onClick={() => {
                     appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v2");
@@ -2873,14 +2878,7 @@ export function WeChatSkin(p: SkinProps) {
               <Compose
                 creator={p.creator}
                 onAdd={p.onAdd}
-                onSend={isBroccoliThread && returnDinnerStage === 266 && drunkMomentSequenceStarted ? (value) => {
-                  const reply = value.trim();
-                  if (!reply) return;
-                  appendCatLines([{ sender: "我", body: reply, thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v1");
-                  setDrunkCallEnded(false);
-                  setDrunkCallSeen(false);
-                  setDrunkCallReady(true);
-                } : isMonsterThread && monsterRemoved && catRescue.stage === 13 ? (value) => {
+                onSend={isMonsterThread && monsterRemoved && catRescue.stage === 13 ? (value) => {
                   const [hour, minute] = (p.virtualTime || "14:24").split(":").map(Number);
                   const total = (Number.isFinite(hour) ? hour : 14) * 60 + (Number.isFinite(minute) ? minute : 24);
                   const time = "2026-11-02 " + String(Math.floor(total / 60) % 24).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
