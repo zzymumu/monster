@@ -332,7 +332,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -2042,6 +2042,27 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "好啦好啦，先不要生氣。", thread: "大G" },
       { sender: "大G", body: "我幫妳想辦法，先看看房間裡有沒有瓶裝水，或是打電話請櫃檯送上去。", thread: "大G" },
       { sender: "大G", body: "妳先坐著，慢慢來，不要再喝酒了，好不好？", thread: "大G" },
+    ]},
+    { stage: 261, chat: "大G", id: "drunk-night-no-reply-before-bilibili-v1", label: "（先不回覆，退出聊天）", nextStage: 262, lines: []},
+    { stage: 262, chat: "大G", id: "drunk-night-bilibili-ping-v1", label: "你彈琴好帥啊溫尚翊...........", nextStage: 263, lines: [
+      { sender: "我", body: "你彈琴好帥啊溫尚翊...........", thread: "大G" },
+      { sender: "大G", body: "？", thread: "大G" },
+      { sender: "大G", body: "是啦是啦，我很帥。", thread: "大G" },
+      { sender: "大G", body: "現在放下手機睡覺好不好？", thread: "大G" },
+    ]},
+    { stage: 263, chat: "大G", id: "drunk-night-want-bilibili-v1", label: "不要！我不困！我要去B站刷視頻！", nextStage: 264, lines: [
+      { sender: "我", body: "不要！我不困！", thread: "大G" },
+      { sender: "我", body: "我要去B站刷視頻！", thread: "大G" },
+      { sender: "大G", body: "視頻明天也可以看，對不對？", thread: "大G" },
+      { sender: "大G", body: "現在很晚了，該睡了。", thread: "大G" },
+    ]},
+    { stage: 264, chat: "大G", id: "drunk-night-stay-awake-v1", label: "不要！", nextStage: 265, lines: [
+      { sender: "我", body: "不要！", thread: "大G" },
+      { sender: "大G", body: "好啦，聽話，先休息一下。", thread: "大G" },
+    ]},
+    { stage: 265, chat: "大G", id: "drunk-night-nausea-v1", label: "不行，一會再跟你說，我想吐了！", nextStage: 266, lines: [
+      { sender: "我", body: "不行，一會再跟你說，我想吐了！", thread: "大G" },
+      { sender: "大G", body: "妳先別動，我現在打給妳。", thread: "大G" },
     ]},
 
     { stage: 106, chat: "西蓝花", id: "bestie-interrogation", label: "我真的快晕了……你不要再说了！！", nextStage: 107, lines: [
