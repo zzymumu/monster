@@ -2854,7 +2854,11 @@ export function WeChatSkin(p: SkinProps) {
                   }}>你不是对方的联系人，消息发送失败。点击重新添加好友</button>
                 </div>
               )}
-              {isBroccoliThread && returnDinnerStage === 266 && drunkMomentSequenceStarted && pendingCatLines.length === 0 && !drunkCallReady && (
+              {isBroccoliThread && drunkMomentSequenceStarted &&
+                threadItems.some((item) => item.sender === "西蓝花" && item.body.trim() === "妳怎麼不說話？？？") &&
+                threadItems.filter((item) => item.body.trim() === "已取消").length >= 3 &&
+                !threadItems.some((item) => item.sender === "我" && item.body.includes("%……&*……（）……%（）*")) &&
+                !drunkCallReady && (
                 <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项">
                   <button onClick={() => {
                     appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v2");
