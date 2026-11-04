@@ -1519,9 +1519,12 @@ export function WeChatSkin(p: SkinProps) {
   // Keep both contact transcripts readable for the entire story, including
   // after the handoff. Hiding the Broccoli story view at later stages made
   // delivered replies appear in notifications but disappear when opened.
+  const hasDrunkStoryInMonsterChat = isMonsterThread && [...allItems, ...pendingCatLines].some((item) =>
+    item.title === "大G" && item.body.trim() === "喂！你怎么不说话！"
+  );
   const catRescueActive =
     isBroccoliThread ||
-    (isMonsterThread && (monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53 || vavaPlayActive));
+    (isMonsterThread && (monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53 || vavaPlayActive || hasDrunkStoryInMonsterChat));
   const _catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
@@ -2779,6 +2782,31 @@ export function WeChatSkin(p: SkinProps) {
           {catRescueActive ? (
             <div className="cat-rescue-thread">
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
+              {isMonsterThread &&
+                (() => {
+                  const prompts = [
+                    { trigger: "喂！你怎么不说话！", body: "我跟你說喔……那個燈一直在跟我講話……", replyId: "drunk-big-g-how-much-v4", reply: "你是喝了多少！" },
+                    { trigger: "你是喝了多少！", body: "等一下……我的鞋子是不是不見了……", replyId: "drunk-big-g-stop-drinking-v4", reply: "我不是叫你別喝了！" },
+                    { trigger: "我不是叫你別喝了！", body: "我明明有兩個手機……怎麼只有一個……", replyId: "drunk-big-g-vomit-v4", reply: "你吐過了？" },
+                    { trigger: "你吐過了？", body: "你不要轉喔……房間在晃……", replyId: "drunk-big-g-last-warning-v4", reply: "前台跟我說敲門沒人開" },
+                  ];
+                  const transcript = threadItems.map((item) => item.body.trim());
+                  const current = prompts.find((prompt) =>
+                    transcript.includes(prompt.trigger) &&
+                    !transcript.includes(prompt.body) &&
+                    !transcript.includes(prompt.reply)
+                  );
+                  if (!current) return null;
+                  return (
+                    <div className="cat-rescue-choices" aria-label="醉酒后的手动回复" style={{ position: "sticky", bottom: 0, zIndex: 20, display: "flex", flexDirection: "column", gap: 8, padding: "10px 12px", background: "rgba(255,255,255,.96)", borderTop: "1px solid #e5e5e5" }}>
+                      <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
+                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], catRescue.stage, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
+                        setPendingCatLines([{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }]);
+                      }}>{current.body}</button>
+                      <div className="cat-rescue-option-hint">點擊選項後才會發送</div>
+                    </div>
+                  );
+                })()}
               {isBroccoliThread && catRescue.stage === 8 && !idCopied && pendingCatLines.length === 0 && <div className="cat-rescue-choices"><button onClick={() => setAddIdModal(true)}>查看对方的微信号</button></div>}
               {vavaPlayActive && isMonsterThread && vavaPlayStage >= 0 && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G关于Vava和玩玩的回复选项">
@@ -2853,31 +2881,6 @@ export function WeChatSkin(p: SkinProps) {
                   }}>你不是对方的联系人，消息发送失败。点击重新添加好友</button>
                 </div>
               )}
-              {isMonsterThread &&
-                (() => {
-                  const prompts = [
-                    { trigger: "喂！你怎么不说话！", body: "我跟你說喔……那個燈一直在跟我講話……", replyId: "drunk-big-g-how-much-v4", reply: "你是喝了多少！" },
-                    { trigger: "你是喝了多少！", body: "等一下……我的鞋子是不是不見了……", replyId: "drunk-big-g-stop-drinking-v4", reply: "我不是叫你別喝了！" },
-                    { trigger: "我不是叫你別喝了！", body: "我明明有兩個手機……怎麼只有一個……", replyId: "drunk-big-g-vomit-v4", reply: "你吐過了？" },
-                    { trigger: "你吐過了？", body: "你不要轉喔……房間在晃……", replyId: "drunk-big-g-last-warning-v4", reply: "前台跟我說敲門沒人開" },
-                  ];
-                  const transcript = threadItems.map((item) => item.body.trim());
-                  const current = prompts.find((prompt) =>
-                    transcript.includes(prompt.trigger) &&
-                    !transcript.includes(prompt.body) &&
-                    !transcript.includes(prompt.reply)
-                  );
-                  if (!current) return null;
-                  return (
-                    <div className="cat-rescue-choices" aria-label="醉酒后的手动回复" style={{ position: "sticky", bottom: 0, zIndex: 20, display: "flex", flexDirection: "column", gap: 8, padding: "10px 12px", background: "rgba(255,255,255,.96)", borderTop: "1px solid #e5e5e5" }}>
-                      <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
-                        appendCatLines([{ sender: "我", body: current.body, thread: "大G" }], catRescue.stage, catRescue.branch, "drunk-manual-user-line-v5-" + current.replyId);
-                        setPendingCatLines([{ id: current.replyId, sender: "大G", body: current.reply, thread: "大G" }]);
-                      }}>{current.body}</button>
-                      <div className="cat-rescue-option-hint">點擊選項後才會發送</div>
-                    </div>
-                  );
-                })()}
               <Compose
                 creator={p.creator}
                 onAdd={p.onAdd}
