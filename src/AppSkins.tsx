@@ -2859,20 +2859,16 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               {isBroccoliThread &&
-                threadItems.filter((item) =>
-                  item.sender === "西蓝花" &&
-                  item.kind === "call" &&
-                  item.body.trim() === "已取消"
-                ).length >= 3 &&
+                threadItems.filter((item) => item.body.trim() === "已取消").length >= 3 &&
                 !threadItems.some((item) => item.sender === "我" && item.body.includes("%……&*……（）……%（）*")) && (
-                <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项">
+                <div className="cat-rescue-choices" aria-label="西蓝花醉酒后的回复选项" style={{ position: "sticky", bottom: 0, zIndex: 5 }}>
                   <button onClick={() => {
-                    appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v2");
+                    appendCatLines([{ sender: "我", body: "%……&*……（）……%（）*", thread: "西蓝花" }], 266, catRescue.branch, "drunk-broccoli-player-reply-v3");
                     setDrunkCallEnded(false);
                     setDrunkCallSeen(false);
                     setDrunkCallReady(true);
                   }}>%……&*……（）……%（）*</button>
-                  <div className="cat-rescue-option-hint">选择一条回复发送</div>
+                  <div className="cat-rescue-option-hint">三条未接来电已结束，选择回复</div>
                 </div>
               )}
               <Compose
