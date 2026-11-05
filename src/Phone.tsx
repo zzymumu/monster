@@ -417,7 +417,9 @@ function PhoneRuntime({
           (thread === "西蓝花" || thread === "西兰花")
         ) {
           changed = true;
-          const { systemNotice: _legacyNotice, ...meta } = item.meta;
+          const meta = Object.fromEntries(
+            Object.entries(item.meta).filter(([key]) => key !== "systemNotice")
+          );
           return {
             ...item,
             title: "西蓝花",
