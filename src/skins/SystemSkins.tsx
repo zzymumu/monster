@@ -955,7 +955,7 @@ export function ClockSkin(p: Props) {
                   </label>)}
                 </div>
                 <label className="clock-timer-label">标签<input value={timerLabel} onChange={(e)=>setTimerLabel(e.target.value)} /></label>
-                <button className="clock-ringtone" onClick={() => window.alert("计时器铃声：雷达（模拟设置）")}>铃声 <span>雷达　›</span></button>
+                <button className="clock-ringtone" onClick={() => window.alert("计时器铃声：雷达（模拟设置）")}>铃声 <span>雷达 ›</span></button>
                 <div className="clock-timer-controls"><button className="secondary-round" onClick={resetTimer}><X size={24}/></button><button className="primary-round" onClick={() => startTimer(timerHours*3600+timerMinutes*60+timerSeconds)}><Play size={26} fill="currentColor"/></button></div>
               </>
             )}
