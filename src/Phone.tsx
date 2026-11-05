@@ -385,6 +385,57 @@ function PhoneRuntime({
   const pendingStoryQueueRaw = s.ui?.wechat?.wxCatPendingLines;
   const currentAppRef = useRef(app);
   currentAppRef.current = app;
+  // Repair messages already stored by older builds: DaG's borrowed-phone
+  // replies in Broccoli's thread were saved as incoming DaG messages.
+  useEffect(() => {
+    if (creator || !ready) return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    let catState: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
+    try {
+      if (typeof wx.catRescueState === "string") catState = JSON.parse(wx.catRescueState);
+    } catch { catState = {}; }
+    const normalize = (items: Item[]) => {
+      let changed = false;
+      const next = items.map((item) => {
+        const thread = item.meta?.storyThread || item.title;
+        if (
+          item.meta?.storyId === "cat-rescue" &&
+          (thread === "西蓝花" || thread === "西兰花") &&
+          (item.sender === "大G" || item.sender === "温尚翊")
+        ) {
+          changed = true;
+          return {
+            ...item,
+            sender: "我",
+            outgoing: true,
+            meta: { ...item.meta, impersonatedBy: item.sender },
+          };
+        }
+        return item;
+      });
+      return { items: next, changed };
+    };
+    const catMessages = normalize(Array.isArray(catState.messages) ? catState.messages : []);
+    const chatMessages = normalize(current.messages.wechat ?? []);
+    if (!catMessages.changed && !chatMessages.changed) return;
+    update({
+      ...current,
+      messages: {
+        ...current.messages,
+        ...(chatMessages.changed ? { wechat: chatMessages.items } : {}),
+      },
+      ui: {
+        ...current.ui,
+        wechat: {
+          ...wx,
+          ...(catMessages.changed
+            ? { catRescueState: JSON.stringify({ ...catState, messages: catMessages.items }) }
+            : {}),
+        },
+      },
+    });
+  }, [ready, creator, s.messages.wechat, s.ui?.wechat?.catRescueState, work.id]);
   useEffect(() => {
     if (creator || !ready || typeof pendingStoryQueueRaw !== "string" || !pendingStoryQueueRaw || pendingStoryQueueRaw === "[]") return;
     let parsedQueue: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; meta?: Record<string, string> }> = [];
