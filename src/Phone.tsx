@@ -584,7 +584,7 @@ function PhoneRuntime({
         sender: isBroccoliCancelledCall ? "西蓝花" : messageSender,
         body: isBroccoliCancelledCall ? "对方已取消" : line.body,
         time: baseTime,
-        avatar: line.avatar || ((thread === "大G" || thread === "温尚翊") && typeof wx.wxDaGAvatarV2 === "string" ? wx.wxDaGAvatarV2 : ""),
+        avatar: (thread === "大G" || thread === "温尚翊") && typeof wx.wxDaGAvatarV2 === "string" ? wx.wxDaGAvatarV2 : "",
         outgoing: isBroccoliCancelledCall ? false : messageSender === "我",
         kind: isBroccoliCancelledCall ? "call" : line.kind || "text",
         media: line.media || "",
