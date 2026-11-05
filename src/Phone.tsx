@@ -361,7 +361,7 @@ function PhoneRuntime({
       const wx = current.ui?.wechat ?? {};
       if (!active || active.caller !== "西蓝花" || active.status !== "ringing" || wx.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
       const next = dispatch(work, { ...current, incomingCall: null }, "callDeclined", active.target || active.caller);
-      const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; meta?: Record<string, string> }> = [
+      const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [
         { id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled", switchThread: "西蓝花" } },
         { id: "drunk-door-bigg-intro-v1", sender: "大G", body: "你好我是溫尚翊，你朋友喝多了。", thread: "西蓝花" },
         { id: "drunk-door-broccoli-pause-v1", sender: "西蓝花", body: "………………", thread: "西蓝花" },
@@ -731,7 +731,7 @@ function PhoneRuntime({
       const current = runtimeRef.current;
       const wx = current.ui?.wechat ?? {};
       if (Number(wx.wxReturnDinnerStage) !== 261 || wx.wxDrunkBilibiliPingV1 === true) return;
-      let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
+      let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
       try {
         const raw = wx.wxCatPendingLines;
         const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
@@ -769,7 +769,7 @@ function PhoneRuntime({
         item.sender === "我" && /好啦，愛妳呦，媽媽/.test(item.body?.trim() || "")
       );
       if (!goodbyeExists) return;
-      let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
+      let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
       try {
         const raw = wx.wxCatPendingLines;
         const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
@@ -1249,7 +1249,7 @@ function PhoneRuntime({
                       const wx = current.ui?.wechat ?? {};
                       const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
-      const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; meta?: Record<string, string> }> = [
+      const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [
           { id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled", switchThread: "西蓝花" } },
           { id: "drunk-door-bigg-intro-v1", sender: "大G", body: "你好我是溫尚翊，你朋友喝多了。", thread: "西蓝花" },
           { id: "drunk-door-broccoli-pause-v1", sender: "西蓝花", body: "………………", thread: "西蓝花" },
@@ -1263,7 +1263,7 @@ function PhoneRuntime({
       ];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
-                        const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; meta?: Record<string, string> }> = [
+                        const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [
                           // The answered call ended after nine seconds. This is
                           // the owner's outgoing call-history bubble, shown
                           // between the typing ellipsis and Broccoli's next line.
@@ -1276,7 +1276,7 @@ function PhoneRuntime({
                         ];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (isDrunkFinalCall && wx.wxBroccoliFinalGCallV1 === true) {
-                        let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
+                        let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
                         try {
                           const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
                           if (Array.isArray(parsed)) queued = parsed;
@@ -1284,7 +1284,7 @@ function PhoneRuntime({
                         queued.push({ id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" }, { id: "drunk-big-g-door-voice-v1", sender: "我", body: "開門，我在外面。", thread: "大G", kind: "audio", media: "./assets/dag-door-voice.mp3", outgoing: true, meta: { voiceDuration: "2", voiceTranscript: "開門，我在外面。" } });
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (isDrunkFinalCall) {
-                        let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
+                        let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
                         try {
                           const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
                           if (Array.isArray(parsed)) queued = parsed;
