@@ -2844,14 +2844,15 @@ export function WeChatSkin(p: SkinProps) {
                 })()}
               {isBroccoliThread && (() => {
                 const broccoliPrompts: Array<{ trigger: string; body: string; replyId: string; replyLines?: CatLine[]; callAfterSend?: boolean }> = [
-                  { trigger: "☎️ 已取消", body: "你好我是溫尚翊，你朋友喝多了，不用擔心，我會照顧好她。", replyId: "drunk-broccoli-monster-intro-v2", replyLines: [
-                    { id: "drunk-broccoli-monster-shock-v2a", sender: "西蓝花", body: "………………", thread: "西蓝花" },
-                    { id: "drunk-broccoli-monster-shock-v2b", sender: "西蓝花", body: "等一下？？？？", thread: "西蓝花" },
-                    { id: "drunk-broccoli-monster-shock-v2c", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
+                  { trigger: "☎️ 已取消", body: "你好我是溫尚翊，你朋友喝多了，不用擔心，我會照顧好她。", replyId: "drunk-broccoli-monster-intro-v3", replyLines: [
+                    { id: "drunk-broccoli-monster-shock-v3a", sender: "西蓝花", body: "………………", thread: "西蓝花" },
+                    { id: "drunk-broccoli-monster-shock-v3b", sender: "西蓝花", body: "等一下？？？？", thread: "西蓝花" },
+                    { id: "drunk-broccoli-monster-shock-v3c", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
+                    { id: "drunk-broccoli-monster-question-v3", sender: "西蓝花", body: "她在幹嘛，能接電話嗎？", thread: "西蓝花" },
                   ] },
-                  { trigger: "你是溫尚翊？？？", body: "嗯，剛才有點不舒服，現在好多了，我會在這邊看著她。", replyId: "drunk-big-g-reassure-broccoli-v2", replyLines: [
-                    { id: "drunk-broccoli-goodnight-v2a", sender: "西蓝花", body: "？？？？？？", thread: "西蓝花" },
-                    { id: "drunk-broccoli-goodnight-v2b", sender: "西蓝花", body: "好……那麻煩你照顧她，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
+                  { trigger: "她在幹嘛，能接電話嗎？", body: "嗯，她剛剛喝了不少，現在已經睡著了。", replyId: "drunk-big-g-reassure-broccoli-v3", replyLines: [
+                    { id: "drunk-broccoli-goodnight-v3a", sender: "西蓝花", body: "好吧.....我就知道......", thread: "西蓝花" },
+                    { id: "drunk-broccoli-goodnight-v3b", sender: "西蓝花", body: "……那麻煩你照顧她，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
                   ] },
                   { trigger: ".......你今晚吃的熱炒是有毒嗎？", body: "對啊我中了名叫溫尚翊的毒。", replyId: "drunk-broccoli-poison-reply-v1", replyLines: [{ id: "drunk-broccoli-brain-v1", sender: "西蓝花", body: "。。。。。。不是，你腦子真壞了？", thread: "西蓝花" }] },
                   { trigger: "。。。。。。不是，你腦子真壞了？", body: "嘻嘻你說溫尚翊會喜歡我嗎？會喜歡我嗎？我這麼可愛！", replyId: "drunk-broccoli-crush-v1", replyLines: [{ id: "drunk-broccoli-dont-know-v1", sender: "西蓝花", body: "......我真不知道您是怎麼了。", thread: "西蓝花" }] },
