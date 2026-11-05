@@ -1504,7 +1504,6 @@ export function WeChatSkin(p: SkinProps) {
     { sender: "大G", body: "喔？刚刚不是说还行吗？" },
     { sender: "我", body: "…………" },
     { sender: "大G", body: "哈哈哈哈哈。" },
-    { sender: "大G", body: "怎么，突然不说话了？" },
     { sender: "我", body: "那个……" },
     { sender: "我", body: "我昨晚……" },
     { sender: "我", body: "没干什么吧？" },
