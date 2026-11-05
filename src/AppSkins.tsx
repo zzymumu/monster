@@ -88,6 +88,37 @@ function Avatar({
     </span>
   );
 }
+function VoiceMessage({ item, onRead }: { item: Item; onRead: (id: string) => void }) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [read, setRead] = useState(item.read);
+  const duration = item.meta?.voiceDuration || "2";
+  const transcript = item.meta?.voiceTranscript || item.body;
+  const play = () => {
+    setRead(true);
+    onRead(item.id);
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.ended) audio.currentTime = 0;
+    void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  };
+  return (
+    <div style={{ width: 166, maxWidth: "100%" }}>
+      <button type="button" onClick={play} style={{ width: "100%", border: 0, background: "transparent", color: "inherit", padding: "2px 0", display: "flex", alignItems: "center", gap: 9, cursor: "pointer", textAlign: "left" }}>
+        <span aria-hidden="true" style={{ fontSize: 19, lineHeight: 1 }}>◖))</span>
+        <strong style={{ fontSize: 15, fontWeight: 500 }}>{duration}″</strong>
+        {!read && <i style={{ marginLeft: "auto", width: 7, height: 7, borderRadius: "50%", background: "#f04438", flexShrink: 0 }} />}
+        {playing && <span style={{ fontSize: 10, opacity: .6 }}>播放中</span>}
+      </button>
+      <audio ref={audioRef} src={safeMedia(item.media)} preload="metadata" onEnded={() => setPlaying(false)} onPause={() => setPlaying(false)} />
+      <button type="button" onClick={(event) => { event.stopPropagation(); setShowTranscript((value) => !value); onRead(item.id); setRead(true); }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 11, padding: "5px 0 0", cursor: "pointer" }}>
+        {showTranscript ? "收起文字" : "转文字"}
+      </button>
+      {showTranscript && <div style={{ fontSize: 12, lineHeight: 1.5, paddingTop: 5, whiteSpace: "normal" }}>{transcript}</div>}
+    </div>
+  );
+}
 function ItemMedia({ item }: { item: Item }) {
   const src = safeMedia(item.media);
   return src ? (
@@ -182,7 +213,7 @@ function MessageList({
                 <Phone size={15} style={{ transform: "rotate(135deg)" }} />
                 {body}
               </span>
-            ) : ["image", "audio", "video"].includes(i.kind) ? (
+            ) : i.kind === "audio" && i.meta?.voiceTranscript ? (\n              <VoiceMessage item={i} onRead={onRead} />\n            ) : ["image", "audio", "video"].includes(i.kind) ? (
               <ItemMedia item={i} />
             ) : i.kind === "transfer" ? (
               <div className="skin-transfer">
