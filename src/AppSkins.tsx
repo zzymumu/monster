@@ -1614,8 +1614,8 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     if (morningVoiceReplyStep >= 16) addFifthDaGText("dag-morning-voice-05-text-01-v1", "不知道啊，是谁🤔");
     if (morningVoiceReplyStep >= 17) addFifthDaGText("dag-morning-voice-05-text-02-v1", "好像是某个现在在跟我说话的人吧🤔");
-    if (morningVoiceReplyStep >= 20) addFifthDaGText("dag-morning-voice-05-text-03-v1", "我又没说是你");
-    if (morningVoiceReplyStep >= 22) {
+    if (morningVoiceReplyStep >= 21) addFifthDaGText("dag-morning-voice-05-text-03-v1", "我又没说是你");
+    if (morningVoiceReplyStep >= 23) {
       addFifthDaGText("dag-morning-voice-05-text-04-v1", "唉，昨晚真的好惨");
       addFifthDaGText("dag-morning-voice-05-text-05-v1", "好心来照顾醉鬼结果还不给进门，差点就要露宿街头");
     }
@@ -3136,14 +3136,14 @@ export function WeChatSkin(p: SkinProps) {
                   const isThirdReply = morningVoiceReplyStep >= 8 && morningVoiceReplyStep < 11;
                   const isFourthReply = morningVoiceReplyStep >= 11 && morningVoiceReplyStep < 13;
                   const isFinalReply = morningVoiceReplyStep === 13;
-                  const isFifthReply = morningVoiceReplyStep >= 14 && morningVoiceReplyStep < 16 || morningVoiceReplyStep === 17 || morningVoiceReplyStep >= 18 && morningVoiceReplyStep < 20 || morningVoiceReplyStep === 21;
-                  const replyIndex = isFinalReply ? 0 : morningVoiceReplyStep < 14 ? isFirstReply ? morningVoiceReplyStep : isSecondReply ? morningVoiceReplyStep - 3 : isThirdReply ? morningVoiceReplyStep - 8 : morningVoiceReplyStep - 11 : morningVoiceReplyStep === 17 ? 2 : morningVoiceReplyStep >= 18 && morningVoiceReplyStep < 20 ? morningVoiceReplyStep - 14 : morningVoiceReplyStep === 21 ? 6 : morningVoiceReplyStep - 14;
+                  const isFifthReply = (morningVoiceReplyStep >= 14 && morningVoiceReplyStep < 16) || morningVoiceReplyStep === 17 || (morningVoiceReplyStep >= 18 && morningVoiceReplyStep < 21) || morningVoiceReplyStep === 22;
+                  const replyIndex = isFinalReply ? 0 : morningVoiceReplyStep < 14 ? isFirstReply ? morningVoiceReplyStep : isSecondReply ? morningVoiceReplyStep - 3 : isThirdReply ? morningVoiceReplyStep - 8 : morningVoiceReplyStep - 11 : morningVoiceReplyStep === 17 ? 2 : morningVoiceReplyStep >= 18 && morningVoiceReplyStep < 21 ? morningVoiceReplyStep - 15 : 6;
                   const secondVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-02-v1");
                   const thirdVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-03-v1");
                   const fourthVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-04-v1");
                   const fourthTextReady = threadItems.some((item) => item.id === "dag-morning-voice-04-text-v1");
                   const fifthVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-05-v1");
-                  const fifthReplyReady = morningVoiceReplyStep >= 14 && fifthVoiceReady && (morningVoiceReplyStep !== 16 && morningVoiceReplyStep !== 20 && morningVoiceReplyStep !== 22);
+                  const fifthReplyReady = morningVoiceReplyStep >= 14 && fifthVoiceReady && (morningVoiceReplyStep !== 16 && morningVoiceReplyStep !== 21 && morningVoiceReplyStep !== 23);
                   const canReply = morningVoiceReplyStep < 14
                     ? isFirstReply ? threadItems.some((item) => item.id === "dag-morning-voice-01-v1") : isSecondReply ? secondVoiceReady : isThirdReply ? thirdVoiceReady : isFourthReply ? fourthVoiceReady : isFinalReply && fourthTextReady
                     : fifthReplyReady;
