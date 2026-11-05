@@ -151,7 +151,14 @@ function MessageList({
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
         const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
-        if ((i.meta?.systemNotice === "yes" && !(i.kind === "call" && i.meta?.callStatus === "cancelled")) || i.id === "drunk-big-g-call-declined-v9" || i.body.trim() === "对方已拒绝") {
+        // Legacy builds also appended a separate centred "已取消☎️" notice.
+        // The proper left-side "对方已取消" call bubble now replaces it.
+        if (
+          (wechat && i.meta?.systemNotice === "yes" && !(i.kind === "call" && i.meta?.callStatus === "cancelled") && /已取消/.test(i.body)) ||
+          (i.meta?.systemNotice === "yes" && !(i.kind === "call" && i.meta?.callStatus === "cancelled")) ||
+          i.id === "drunk-big-g-call-declined-v9" ||
+          i.body.trim() === "对方已拒绝"
+        ) {
           const noticeText = i.body.trim() || "对方已拒绝";
           return <div key={i.id} className="wx-call-system-notice" style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", boxSizing: "border-box", padding: "8px 12px", color: "#f1f1f1", fontSize: 12, textAlign: "center" }}>
             <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.32)" }}>{noticeText}</span>
