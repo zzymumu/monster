@@ -947,7 +947,7 @@ export function ClockSkin(p: Props) {
                 <div className={"clock-world-row" + (revealed ? " revealed" : "")}
                   onTouchStart={(event) => { worldTouchStart.current = event.touches[0]?.clientX ?? null; }}
                   onTouchEnd={(event) => { const start = worldTouchStart.current; const end = event.changedTouches[0]?.clientX; if (start !== null && end !== undefined && start - end > 35) setSwipedCity(city.city); else if (start !== null && end !== undefined && end - start > 30) setSwipedCity(null); worldTouchStart.current = null; }}
-                  onClick={() => { if (swipedCity && swipedCity !== city.zone) setSwipedCity(null); }}>
+                  onClick={() => { if (swipedCity && swipedCity !== city.city) setSwipedCity(null); }}>
                   <div><small>{value.day} {value.offset}</small><strong>{city.city}</strong></div>
                   <time>{value.time}</time>
                 </div>
@@ -1030,7 +1030,7 @@ export function ClockSkin(p: Props) {
                   setCitiesRaw(JSON.stringify([...cities, { city: city.city, zone: city.zone }]));
                   setCitySearch(""); setTab("世界时钟");
                 }}><span>{city.city}<small>{city.zone.replaceAll("_", " ")}</small></span><Plus size={21} /></button>)}
-              {clockCities.filter((city) => !cities.some((current) => current.zone === city.zone))
+              {clockCities.filter((city) => !cities.some((current) => current.city === city.city))
                 .filter((city) => !citySearch.trim() || (city.city + " " + city.aliases + " " + city.zone).toLocaleLowerCase().includes(citySearch.trim().toLocaleLowerCase())).length === 0 && <p className="clock-city-empty">没有找到城市</p>}
             </div>
           </div>
