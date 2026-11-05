@@ -1659,14 +1659,23 @@ export function WeChatSkin(p: SkinProps) {
   // Append these two notification-triggered bubbles after legacy/story filters.
   // They must remain visible even when an older save's prank-history filter
   // or timestamp ordering would otherwise discard them.
-  const threadItems = [
+  // Build the open conversation from the same canonical transcript used by
+  // the contact preview. Some notification-triggered messages are stored in
+  // runtime.messages while older story lines live in catRescueState; relying
+  // only on the branch-specific baseThreadItems filters could leave a preview
+  // visible in the list but absent from the opened chat.
+  const activeThreadOwner = isBroccoliThread ? "西蓝花" : isMonsterThread ? "大G" : p.thread;
+  const belongsToActiveThread = (item: Item) => {
+    const owner = item.meta?.storyThread || item.title;
+    return (owner === "温尚翊" ? "大G" : owner) === activeThreadOwner;
+  };
+  const threadItems = orderCatRescueThreadItems([
     ...baseThreadItems,
-    ...notificationStoryItems.filter((item) =>
-      (isBroccoliThread && item.title === "西蓝花") ||
-      (isMonsterThread && item.title === "大G")
-    ).filter((item, index, all) => !baseThreadItems.some((existing) => existing.id === item.id) &&
-      all.findIndex((candidate) => candidate.id === item.id) === index),
-  ];
+    ...allItems.filter(belongsToActiveThread).filter((item) =>
+      !isMonsterThread || keepPrankHistoryClean(item)
+    ),
+    ...notificationStoryItems.filter(belongsToActiveThread),
+  ]);
   // Never expose the next interaction branch while any scripted line is
   // still waiting to arrive. The stage advances when the player chooses, but
   // the next choice belongs after the complete incoming exchange, not before it.
