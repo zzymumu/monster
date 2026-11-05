@@ -151,7 +151,7 @@ function MessageList({
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
         const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
-        if (i.meta?.systemNotice === "yes" || i.id === "drunk-big-g-call-declined-v9" || i.body.trim() === "对方已拒绝") {
+        if ((i.meta?.systemNotice === "yes" && !(i.kind === "call" && i.meta?.callStatus === "cancelled")) || i.id === "drunk-big-g-call-declined-v9" || i.body.trim() === "对方已拒绝") {
           const noticeText = i.body.trim() || "对方已拒绝";
           return <div key={i.id} className="wx-call-system-notice" style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", boxSizing: "border-box", padding: "8px 12px", color: "#f1f1f1", fontSize: 12, textAlign: "center" }}>
             <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.32)" }}>{noticeText}</span>
@@ -2844,7 +2844,7 @@ export function WeChatSkin(p: SkinProps) {
                 })()}
               {isBroccoliThread && (() => {
                 const broccoliPrompts: Array<{ trigger: string; body: string; replyId: string; replyLines?: CatLine[]; callAfterSend?: boolean }> = [
-                  { trigger: "☎️ 已取消", body: "你好我是溫尚翊，你朋友喝多了。", replyId: "drunk-broccoli-monster-intro-v4", replyLines: [
+                  { trigger: "已取消", body: "你好我是溫尚翊，你朋友喝多了。", replyId: "drunk-broccoli-monster-intro-v4", replyLines: [
                     { id: "drunk-broccoli-monster-shock-v4a", sender: "西蓝花", body: "………………", thread: "西蓝花" },
                     { id: "drunk-broccoli-monster-shock-v4b", sender: "西蓝花", body: "啊？？？", thread: "西蓝花" },
                     { id: "drunk-broccoli-monster-shock-v4c", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
