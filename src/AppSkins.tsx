@@ -1345,6 +1345,39 @@ export function WeChatSkin(p: SkinProps) {
     ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
     : { ...parsedCatRescue, messages: correctedPickupMessages };
   const allItems = [...p.items, ...catRescue.messages];
+  // The morning-after voice is delivered once the previous door voice has
+  // reached the DaG transcript. Keep the real uploaded MP3 and transcript in
+  // the same persisted story stream so it survives reopening the chat.
+  useEffect(() => {
+    const doorVoiceArrived = allItems.some((item) => item.id === "drunk-big-g-door-voice-v1");
+    const morningVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
+    if (!doorVoiceArrived || morningVoiceExists) return;
+    const orderAt = Date.now();
+    const morningVoice: Item = {
+      id: "dag-morning-voice-01-v1",
+      title: "大G",
+      sender: "大G",
+      body: "你醒了吗？我出门给你买早饭，蜂蜜水在床头，醒了记得喝。",
+      time: "2026-11-06 08:00",
+      outgoing: false,
+      avatar: "",
+      kind: "audio",
+      media: "./assets/dag-voicevoice-01.mp3",
+      read: false,
+      meta: {
+        storyId: "cat-rescue",
+        storyThread: "大G",
+        storyOrderAt: String(orderAt),
+        voiceDuration: "7",
+        voiceTranscript: "你醒了吗？我出门给你买早饭，蜂蜜水在床头，醒了记得喝。",
+      },
+    };
+    setCatRescueRaw(JSON.stringify({
+      ...catRescue,
+      version: 2,
+      messages: [...catRescue.messages, morningVoice],
+    }));
+  }, [allItems, catRescueRaw]);
   const postPickupGoodbyeSent = allItems.some((item) => item.sender === "我" && /好啦，愛妳呦，媽媽/.test(item.body.trim()));
   // One-time Vava/玩玩 Moments event. Its transcript is stored with the
   // existing DaG story messages so it survives app switches and reloads.
@@ -2897,6 +2930,21 @@ export function WeChatSkin(p: SkinProps) {
           {catRescueActive ? (
             <div className="cat-rescue-thread">
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
+              {isMonsterThread &&
+                threadItems.some((item) => item.id === "dag-morning-voice-01-v1") &&
+                !threadItems.some((item) => item.id === "dag-morning-voice-01-reply-v1") && (
+                  <div className="cat-rescue-choices" aria-label="大G早晨语音回复选项">
+                    <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
+                      appendCatLines([{
+                        id: "dag-morning-voice-01-reply-v1",
+                        sender: "我",
+                        body: "......你突然发语音干嘛？",
+                        thread: "大G",
+                      }], catRescue.stage, catRescue.branch, "dag-morning-voice-01-reply-v1");
+                    }}>......你突然发语音干嘛？</button>
+                    <div className="cat-rescue-option-hint">点击选项后才会发送</div>
+                  </div>
+                )}
               {isMonsterThread &&
                 (() => {
                   const prompts: Array<{ trigger: string; body: string; replyId: string; reply: string; callAfterSend?: boolean; replyLines?: CatLine[] }> = [
