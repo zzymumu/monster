@@ -164,7 +164,7 @@ function MessageList({
   // without changing its length (for example when an old save is repaired).
   const displayItems = items.map((item) =>
     item.id === "drunk-big-g-door-voice-v1"
-      ? { ...item, sender: "大G", outgoing: false, avatar: "", title: "大G", kind: "audio" as const, media: "./assets/dag-door-voice.mp3", body: "開門，我在外面。", meta: { ...item.meta, voiceDuration: "2", voiceTranscript: "開門，我在外面。" } }
+      ? { ...item, sender: "大G", outgoing: false, avatar: "", title: "大G", read: false, kind: "audio" as const, media: "./assets/dag-door-voice.mp3", body: "開門，我在外面。", meta: { ...item.meta, voiceDuration: "2", voiceTranscript: "開門，我在外面。" } }
       : item
   );
   const messageContentKey = displayItems.map((item) => item.id + ":" + item.body).join("\u001f");
