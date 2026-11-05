@@ -1349,12 +1349,14 @@ export function WeChatSkin(p: SkinProps) {
   // reached the DaG transcript. Keep the real uploaded MP3 and transcript in
   // the same persisted story stream so it survives reopening the chat.
   useEffect(() => {
-    const doorVoiceArrived = allItems.some((item) =>
-      item.id === "drunk-big-g-door-voice-v1" ||
-      (item.sender === "大G" && /開門，我在外面。|开门，我在外面。/.test(item.body.trim()))
-    );
+    // This morning voice belongs immediately after the two notification
+    // messages: Broccoli's "祖宗，你是死了吗？", then DaG's "。".
+    // It must not wait for the later door/phone scene.
+    const precedingMessagesDelivered =
+      p.ui?.wxPostDrunkBroccoliCheckInV1 === true &&
+      p.ui?.wxPostDrunkGDotDeliveredV1 === true;
     const morningVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
-    if (!doorVoiceArrived || morningVoiceExists) return;
+    if (!precedingMessagesDelivered || morningVoiceExists) return;
     const orderAt = Date.now();
     const morningVoice = makeItem({
       id: "dag-morning-voice-01-v1",
@@ -1380,7 +1382,7 @@ export function WeChatSkin(p: SkinProps) {
       version: 2,
       messages: [...catRescue.messages, morningVoice],
     }));
-  }, [allItems, catRescueRaw]);
+  }, [allItems, catRescueRaw, p.ui?.wxPostDrunkBroccoliCheckInV1, p.ui?.wxPostDrunkGDotDeliveredV1]);
   const postPickupGoodbyeSent = allItems.some((item) => item.sender === "我" && /好啦，愛妳呦，媽媽/.test(item.body.trim()));
   // One-time Vava/玩玩 Moments event. Its transcript is stored with the
   // existing DaG story messages so it survives app switches and reloads.
