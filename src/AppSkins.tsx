@@ -112,7 +112,7 @@ function VoiceMessage({ item, onRead }: { item: Item; onRead: (id: string) => vo
         {playing && <span style={{ fontSize: 10, opacity: .6 }}>播放中</span>}
       </button>
       <audio ref={audioRef} src={safeMedia(item.media)} preload="metadata" onEnded={() => setPlaying(false)} onPause={() => setPlaying(false)} />
-      <button type="button" onClick={(event) => { event.stopPropagation(); setShowTranscript((value) => !value); onRead(item.id); setRead(true); }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 11, padding: "5px 0 0", cursor: "pointer" }}>
+      <button type="button" onClick={(event) => { event.stopPropagation(); setShowTranscript((value) => !value); }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 11, padding: "5px 0 0", cursor: "pointer" }}>
         {showTranscript ? "收起文字" : "转文字"}
       </button>
       {showTranscript && <div style={{ fontSize: 12, lineHeight: 1.5, paddingTop: 5, whiteSpace: "normal" }}>{transcript}</div>}
