@@ -1349,7 +1349,10 @@ export function WeChatSkin(p: SkinProps) {
   // reached the DaG transcript. Keep the real uploaded MP3 and transcript in
   // the same persisted story stream so it survives reopening the chat.
   useEffect(() => {
-    const doorVoiceArrived = allItems.some((item) => item.id === "drunk-big-g-door-voice-v1");
+    const doorVoiceArrived = allItems.some((item) =>
+      item.id === "drunk-big-g-door-voice-v1" ||
+      (item.sender === "大G" && /開門，我在外面。|开门，我在外面。/.test(item.body.trim()))
+    );
     const morningVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
     if (!doorVoiceArrived || morningVoiceExists) return;
     const orderAt = Date.now();
