@@ -442,15 +442,28 @@ function PhoneRuntime({
       const storyMessages = Array.isArray(story.messages) ? story.messages : [];
       const exists = messages.some((item) => item.id === message.id) || storyMessages.some((item) => item.id === message.id);
       const nextMessage = exists ? [] : [message];
+      // Persist the new DaG portrait from the first standalone dot onward.
+      // Both the chat transcript and the inbox preview are derived from these
+      // message records, so update both stores at the same boundary.
+      const isDaGIncoming = (item: Item) =>
+        !item.outgoing && (item.title === "大G" || item.title === "温尚翊" || item.sender === "大G" || item.sender === "温尚翊");
+      const afterDotBoundary = (item: Item) =>
+        item.id === message.id ||
+        item.meta?.avatarFromMessage === "yes" ||
+        (typeof item.time === "string" && item.time >= time);
+      const updateDaGAvatar = (item: Item) =>
+        isDaGIncoming(item) && afterDotBoundary(item) ? { ...item, avatar } : item;
+      const updatedWechat = [...messages.map(updateDaGAvatar), ...nextMessage];
+      const updatedStoryMessages = [...storyMessages.map(updateDaGAvatar), ...nextMessage];
       update({
         ...current,
-        messages: { ...current.messages, wechat: [...messages, ...nextMessage] },
+        messages: { ...current.messages, wechat: updatedWechat },
         notifications: [...current.notifications, "微信：大G：。"].slice(-60),
         ui: { ...current.ui, wechat: {
           ...latestWx,
           wxDaGAvatarV2: avatar,
           wxPostDrunkGDotDeliveredV1: true,
-          catRescueState: JSON.stringify({ ...story, messages: [...storyMessages, ...nextMessage] }),
+          catRescueState: JSON.stringify({ ...story, messages: updatedStoryMessages }),
         } },
       });
     }, 2200);
