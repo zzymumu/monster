@@ -940,8 +940,8 @@ export function ClockSkin(p: Props) {
             {cities.map((city) => {
               const value = worldTime(city.zone);
               const revealed = worldEditMode || swipedCity === city.city;
-              return <div className="clock-world-swipe-wrap" key={city.zone}>
-                <button className="clock-world-delete" aria-label={"删除" + city.city} onClick={() => { setCitiesRaw(JSON.stringify(cities.filter((item) => item.zone !== city.zone))); setSwipedCity(null); }}>
+              return <div className="clock-world-swipe-wrap" key={city.city + city.zone}>
+                <button className="clock-world-delete" aria-label={"删除" + city.city} onClick={() => { setCitiesRaw(JSON.stringify(cities.filter((item) => item.city !== city.city))); setSwipedCity(null); }}>
                   <Trash2 size={20}/>
                 </button>
                 <div className={"clock-world-row" + (revealed ? " revealed" : "")}
