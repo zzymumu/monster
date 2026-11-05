@@ -5436,6 +5436,9 @@
 .clock-world-swipe-wrap .clock-world-row { border:0; position:relative; z-index:1; background:#000; transition:transform .2s ease; touch-action:pan-y; }
 .clock-world-swipe-wrap .clock-world-row.revealed { transform:translateX(-76px); }
 .clock-world-delete { position:absolute; z-index:0; top:0; right:0; bottom:0; width:76px; display:flex; align-items:center; justify-content:center; color:#fff; background:#ff453a; }
+
+.native-clock-full .clock-top-actions button.clock-timer-edit { width:auto!important; min-width:64px!important; height:38px!important; padding:0 18px!important; font-size:14px!important; border-radius:22px!important; white-space:nowrap; }
+
 .native-clock-full .clock-top-actions button.clock-edit-done { background:#ff9f0a; color:#fff; border-radius:50%; width:38px; height:38px; font-size:24px; padding:0; }
 .native-clock-full .clock-tabs { background:rgba(38,38,40,.94)!important; color:#f5f5f7!important; }
 .native-clock-full .clock-tabs button { background:transparent!important; color:#f5f5f7!important; }
@@ -5475,11 +5478,14 @@
 .clock-laps time { color:#f5f5f7; font-variant-numeric:tabular-nums; }
 .clock-timer-view { min-height:100%; display:flex; flex-direction:column; padding-top:0; }
 .clock-timer-view h1 { margin-top:12px!important; }
-.clock-timer-picker { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; height:190px; align-items:center; margin:35px 0 12px; }
-.clock-timer-picker select { appearance:none; border:0; outline:0; box-shadow:none; color:#f5f5f7; background:transparent; text-align:center; text-align-last:center; font-size:18px; padding:10px 0; height:54px; }
-.clock-timer-picker option { background:#242426; color:#fff; }
-.clock-timer-label,.clock-ringtone { display:flex; justify-content:space-between; align-items:center; border-radius:12px; background:#242426; padding:13px 15px; color:#aaa; font-size:13px; }
-.clock-timer-label input { width:55%; border:0; background:transparent; color:#eee; text-align:right; padding:0; }
+.clock-timer-picker { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; height:190px; align-items:center; margin:35px 0 12px; position:relative; }
+.clock-wheel { height:168px; min-width:0; overflow:hidden; display:flex; flex-direction:column; align-items:stretch; justify-content:center; position:relative; touch-action:pan-y; user-select:none; }
+.clock-wheel::before { content:""; position:absolute; z-index:0; left:0; right:0; top:calc(50% - 22px); height:44px; border-radius:9px; background:#242426; pointer-events:none; }
+.clock-wheel button { position:relative; z-index:1; flex:0 0 34px; width:100%; color:#66666b; background:transparent; font-size:16px; text-align:center; }
+.clock-wheel button.selected { flex-basis:44px; color:#f5f5f7; font-size:19px; }
+.clock-wheel button small { display:inline; margin-left:3px; color:#f5f5f7; font-size:13px; }
+.clock-timer-label,.clock-ringtone { display:flex; flex-direction:row; justify-content:space-between; align-items:center; gap:12px; width:100%; box-sizing:border-box; white-space:nowrap; border-radius:12px; background:#242426; padding:13px 15px; color:#aaa; font-size:13px; }
+.clock-timer-label input { display:block; flex:1 1 auto; min-width:0; width:auto; border:0; outline:0; background:transparent; color:#eee; text-align:right; padding:0; font-size:14px; }
 .clock-ringtone { width:100%; margin-top:1px; border-top:1px solid #444; border-radius:0 0 12px 12px; }
 .clock-ringtone span { color:#777; }
 .clock-timer-view .clock-timer-controls { margin-top:60px; }
