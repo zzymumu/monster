@@ -1711,12 +1711,14 @@ function AppContent({
 }) {
   const [detail, setDetail] = useState<Item | null>(null);
   const [thread, setThread] = useState(() => String(state.ui?.[app.id]?.openThread ?? ""));
-  // Notification taps can target a new contact while WeChat is already
-  // mounted. Keep the visible conversation synchronized with that deep link.
+  // Notification deep-links are the source of truth for the rendered chat.
+  // Derive the target synchronously so tapping a push cannot leave WeChat on
+  // the conversation list while a local-state effect is still pending.
+  const requestedThread = state.ui?.[app.id]?.openThread;
+  const activeThread = typeof requestedThread === "string" ? requestedThread : thread;
   useEffect(() => {
-    const requestedThread = String(state.ui?.[app.id]?.openThread ?? "");
-    if (requestedThread && requestedThread !== thread) setThread(requestedThread);
-  }, [app.id, state.ui?.[app.id]?.openThread, thread]);
+    if (activeThread !== thread) setThread(activeThread);
+  }, [activeThread, thread]);
   const [tab, setTab] = useState(app.tabs[0]);
   const [q, setQ] = useState("");
   const [pw, setPw] = useState("");
@@ -1745,7 +1747,7 @@ function AppContent({
   const chats = [...new Set(shown.map((i) => i.title))];
   const back = () => {
     if (detail) setDetail(null);
-    else if (thread) {
+    else if (activeThread) {
       setThread("");
       if (app.id === "wechat") onUi?.("openThread", "");
     } else onBack();
@@ -1835,7 +1837,7 @@ function AppContent({
               onItem={read}
               onAdd={onAdd}
               onBack={onBack}
-              thread={thread}
+              thread={activeThread}
               hasSave={saveInfo.hasSave}
               savedAt={saveInfo.savedAt}
               saveReady={saveReady}
@@ -1887,9 +1889,9 @@ function AppContent({
       <div className="app-nav">
         <button onClick={back} aria-label="返回">
           <ChevronLeft size={23} />
-          {detail || thread ? "返回" : ""}
+          {detail || activeThread ? "返回" : ""}
         </button>
-        <strong>{thread || name}</strong>
+        <strong>{activeThread || name}</strong>
         <button
           onClick={
             creator
@@ -1923,11 +1925,11 @@ function AppContent({
         />
       ) : detail ? (
         detailView
-      ) : app.engine === "messaging" && thread ? (
+      ) : app.engine === "messaging" && activeThread ? (
         <div className="chat-content">
           <div className="chat-time">2026 年 9 月 1 日</div>
           {shown
-            .filter((i) => i.title === thread)
+            .filter((i) => i.title === activeThread)
             .map((i) => (
               <button
                 key={i.id}
