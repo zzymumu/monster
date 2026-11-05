@@ -151,10 +151,12 @@ function MessageList({
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
         const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
-        // Legacy builds also appended a separate centred "已取消☎️" notice.
-        // The proper left-side "对方已取消" call bubble now replaces it.
+        // Legacy builds appended a duplicate centred "已取消☎️" notice.
+        // Suppress only that obsolete notice; keep the proper call-status bubble.
+        if (wechat && i.meta?.systemNotice === "yes" && /已取消/.test(i.body) && !(i.kind === "call" && i.meta?.callStatus === "cancelled")) {
+          return null;
+        }
         if (
-          (wechat && i.meta?.systemNotice === "yes" && !(i.kind === "call" && i.meta?.callStatus === "cancelled") && /已取消/.test(i.body)) ||
           (i.meta?.systemNotice === "yes" && !(i.kind === "call" && i.meta?.callStatus === "cancelled")) ||
           i.id === "drunk-big-g-call-declined-v9" ||
           i.body.trim() === "对方已拒绝"
