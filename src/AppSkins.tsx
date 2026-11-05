@@ -1602,6 +1602,30 @@ export function WeChatSkin(p: SkinProps) {
   );
   const keepPrankHistoryClean = (item: Item) =>
     shouldShowPrankHistoryLine(item, catRescue.branch, hasPrankPath);
+  const notificationStoryItems: Item[] = [];
+  if (p.ui?.wxPostDrunkBroccoliCheckInV1 === true) {
+    notificationStoryItems.push(makeItem({
+      id: "drunk-post-door-broccoli-checkin-v1",
+      title: "西蓝花",
+      sender: "西蓝花",
+      body: "祖宗，你是死了吗？",
+      time: p.virtualDate + " " + p.virtualTime,
+      outgoing: false,
+      meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
+    }));
+  }
+  if (p.ui?.wxPostDrunkGDotDeliveredV1 === true) {
+    notificationStoryItems.push(makeItem({
+      id: "drunk-post-door-g-dot-v1",
+      title: "大G",
+      sender: "大G",
+      body: "。",
+      time: p.virtualDate + " " + p.virtualTime,
+      outgoing: false,
+      avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "",
+      meta: { storyId: "cat-rescue", storyThread: "大G" },
+    }));
+  }
   const threadItems = isMonsterThread
     ? filterPrankHistoryLines(orderCatRescueThreadItems([
         ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
@@ -1609,6 +1633,7 @@ export function WeChatSkin(p: SkinProps) {
           (item.meta?.storyThread === "大G" || item.meta?.storyThread === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
           keepPrankHistoryClean(item)
         ),
+        ...notificationStoryItems.filter((item) => item.title === "大G"),
       ]), hasPrankPath)
     : isBroccoliThread
       ? orderCatRescueThreadItems([
@@ -1618,14 +1643,13 @@ export function WeChatSkin(p: SkinProps) {
             item.sender === "西蓝花" &&
             item.body.trim() === "？？？"
           ),
-          // Include every canonical story line plus legacy player-authored
-          // replies, then order the merged transcript by its saved timestamp.
           ...catRescue.messages.filter((item) =>
             item.meta?.storyThread === "西蓝花" ||
             item.meta?.storyThread === "西兰花" ||
             item.title === "西蓝花" ||
             item.title === "西兰花"
           ).filter((item) => item.body.trim() !== "我知道啊，可是它这么小一只，身边也没有猫妈妈，我真的走不开。"),
+          ...notificationStoryItems.filter((item) => item.title === "西蓝花"),
         ])
       : allItems.filter((item) => item.title === p.thread);
   // Never expose the next interaction branch while any scripted line is
