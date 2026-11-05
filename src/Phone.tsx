@@ -361,7 +361,7 @@ function PhoneRuntime({
       const wx = current.ui?.wechat ?? {};
       if (!active || active.caller !== "西蓝花" || active.status !== "ringing" || wx.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
       const next = dispatch(work, { ...current, incomingCall: null }, "callDeclined", active.target || active.caller);
-      const queued = [{ id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "☎️ 已取消", thread: "西蓝花", meta: { systemNotice: "yes" } }];
+      const queued = [{ id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "已取消☎️", thread: "西蓝花", meta: { systemNotice: "yes" } }];
       update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
     }, 10000);
     return () => window.clearTimeout(timer);
@@ -1121,7 +1121,7 @@ function PhoneRuntime({
                       const wx = current.ui?.wechat ?? {};
                       const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
-                        const queued = [{ id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "☎️ 已取消", thread: "西蓝花", meta: { systemNotice: "yes" } }];
+                        const queued = [{ id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "已取消☎️", thread: "西蓝花", meta: { systemNotice: "yes" } }];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
                         const queued: Array<{ id: string; sender: string; body: string; thread: string; meta?: Record<string, string> }> = [
