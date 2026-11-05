@@ -5654,3 +5654,104 @@
   box-sizing: border-box;
   border-right: 0 !important;
 }
+
+
+/* iOS Clock — searchable city picker */
+.native-clock-full .clock-add-city {
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+  padding:0 2px 28px;
+}
+.native-clock-full .clock-add-city-header {
+  display:grid;
+  grid-template-columns:64px 1fr 64px;
+  align-items:center;
+  min-height:48px;
+  margin:0 -2px 12px;
+}
+.native-clock-full .clock-add-city-header h2 {
+  margin:0;
+  text-align:center;
+  color:#f5f5f7;
+  font-size:17px;
+  font-weight:600;
+}
+.native-clock-full .clock-add-city-header button {
+  color:#ff9f0a;
+  background:none;
+  border:0;
+  padding:8px 0;
+  font-size:16px;
+  text-align:left;
+}
+.native-clock-full .clock-city-search {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:40px;
+  box-sizing:border-box;
+  padding:0 11px;
+  margin:0 0 13px;
+  border-radius:11px;
+  background:#242426;
+  color:#8e8e93;
+}
+.native-clock-full .clock-city-search input {
+  flex:1;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#f5f5f7;
+  font-size:15px;
+}
+.native-clock-full .clock-city-search input::placeholder { color:#8e8e93; }
+.native-clock-full .clock-city-search button {
+  border:0;
+  border-radius:50%;
+  width:21px;
+  height:21px;
+  padding:0;
+  color:#111;
+  background:#8e8e93;
+  font-size:17px;
+  line-height:19px;
+}
+.native-clock-full .clock-city-results {
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  scrollbar-width:none;
+}
+.native-clock-full .clock-city-results::-webkit-scrollbar { display:none; }
+.native-clock-full .clock-city-results > button {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  min-height:62px;
+  padding:10px 3px;
+  border:0;
+  border-bottom:1px solid #29292b;
+  background:transparent;
+  color:#f5f5f7;
+  text-align:left;
+  font-size:18px;
+}
+.native-clock-full .clock-city-results > button > span {
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.native-clock-full .clock-city-results > button small {
+  color:#8e8e93;
+  font-size:11px;
+}
+.native-clock-full .clock-city-results > button > svg { color:#ff9f0a; }
+.native-clock-full .clock-city-empty {
+  padding:28px 8px;
+  color:#8e8e93;
+  text-align:center;
+  font-size:14px;
+}
