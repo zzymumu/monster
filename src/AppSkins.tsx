@@ -1353,7 +1353,7 @@ export function WeChatSkin(p: SkinProps) {
     const morningVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
     if (!doorVoiceArrived || morningVoiceExists) return;
     const orderAt = Date.now();
-    const morningVoice: Item = {
+    const morningVoice = makeItem({
       id: "dag-morning-voice-01-v1",
       title: "大G",
       sender: "大G",
@@ -1371,7 +1371,7 @@ export function WeChatSkin(p: SkinProps) {
         voiceDuration: "7",
         voiceTranscript: "你醒了吗？我出门给你买早饭，蜂蜜水在床头，醒了记得喝。",
       },
-    };
+    });
     setCatRescueRaw(JSON.stringify({
       ...catRescue,
       version: 2,
@@ -1467,6 +1467,7 @@ export function WeChatSkin(p: SkinProps) {
     setMeetupQuestionSplitMigratedV1(true);
   }, [meetupQuestionSplitMigratedV1, catRescueRaw, pendingCatLinesRaw]);
 
+  const [morningVoiceReplyStep, setMorningVoiceReplyStep] = useSkinState<number>(p, "wxMorningVoiceReplyStepV1", 0);
   const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
   // Do not infer story progress from a single old line or jump from stage 103
   // to 200: stages 101-105 contain the nose/skin, physical-contact and
@@ -2932,17 +2933,28 @@ export function WeChatSkin(p: SkinProps) {
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
               {isMonsterThread &&
                 threadItems.some((item) => item.id === "dag-morning-voice-01-v1") &&
-                !threadItems.some((item) => item.id === "dag-morning-voice-01-reply-v1") && (
+                morningVoiceReplyStep < 3 && (
                   <div className="cat-rescue-choices" aria-label="大G早晨语音回复选项">
                     <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
+                      const replies = [
+                        ".....醒..醒了。",
+                        "噢.....蜂蜜水看到了。",
+                        "....你突然发语音干嘛？",
+                      ];
+                      const step = morningVoiceReplyStep;
                       appendCatLines([{
-                        id: "dag-morning-voice-01-reply-v1",
+                        id: "dag-morning-voice-01-reply-v" + (step + 1),
                         sender: "我",
-                        body: "......你突然发语音干嘛？",
+                        body: replies[step],
                         thread: "大G",
-                      }], catRescue.stage, catRescue.branch, "dag-morning-voice-01-reply-v1");
-                    }}>......你突然发语音干嘛？</button>
-                    <div className="cat-rescue-option-hint">点击选项后才会发送</div>
+                      }], catRescue.stage, catRescue.branch, "dag-morning-voice-01-reply-v" + (step + 1));
+                      setMorningVoiceReplyStep(step + 1);
+                    }}>{[
+                      ".....醒..醒了。",
+                      "噢.....蜂蜜水看到了。",
+                      "....你突然发语音干嘛？",
+                    ][morningVoiceReplyStep]}</button>
+                    <div className="cat-rescue-option-hint">一条一条发送，点击后再出现下一句</div>
                   </div>
                 )}
               {isMonsterThread &&
