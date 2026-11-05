@@ -1551,7 +1551,10 @@ export function WeChatSkin(p: SkinProps) {
   const saveContactRemark = () => {
     const next = remarkDraft.trim();
     if (!next || !remarkEditorContact) return;
-    setContactRemarksRaw(JSON.stringify({ ...contactRemarks, [remarkEditorContact]: next }));
+    const updatedRemarks = { ...contactRemarks, [remarkEditorContact]: next };
+    const serializedRemarks = JSON.stringify(updatedRemarks);
+    setContactRemarksRaw(serializedRemarks);
+    p.onUi?.("wxContactRemarks", serializedRemarks);
     setRemarkEditorContact("");
   };
   const resolveContactName = (visible: string) =>
