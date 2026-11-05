@@ -1345,6 +1345,48 @@ export function WeChatSkin(p: SkinProps) {
     ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
     : { ...parsedCatRescue, messages: correctedPickupMessages };
   useEffect(() => {
+    const messages = catRescue.messages;
+    const onlyOneIndex = messages.findIndex((item, index) =>
+      item.sender === "大G" && item.body.trim() === "只有一点喔？" &&
+      messages.slice(index + 1, index + 4).some((next) =>
+        next.sender === "我" && next.body.trim() === "你不要想了！！！"
+      )
+    );
+    if (onlyOneIndex < 0) return;
+    const nextPromptIndex = messages.findIndex((item, index) =>
+      index > onlyOneIndex && item.sender === "我" && item.body.trim() === "你不要想了！！！"
+    );
+    if (nextPromptIndex < 0) return;
+    const between = messages.slice(onlyOneIndex + 1, nextPromptIndex);
+    const hasMyReply = between.some((item) => item.sender === "我" && item.body.trim() === "……不然呢！");
+    const hasHisThinking = between.some((item) => item.sender === "大G" && item.body.trim() === "嗯……让我想想。");
+    if (hasMyReply && hasHisThinking) return;
+    const sourceDaG = messages[onlyOneIndex];
+    const sourceMe = messages[nextPromptIndex];
+    const baseOrder = Number(sourceDaG.meta?.storyOrderAt);
+    const additions: Item[] = [];
+    if (!hasMyReply) additions.push({
+      ...sourceMe,
+      id: "morning-after-voice-repair-my-not-really",
+      sender: "我",
+      title: "我",
+      body: "……不然呢！",
+      outgoing: true,
+      meta: { ...sourceMe.meta, storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(Number.isFinite(baseOrder) ? baseOrder + 0.001 : Date.now()) },
+    });
+    if (!hasHisThinking) additions.push({
+      ...sourceDaG,
+      id: "morning-after-voice-repair-dag-thinking",
+      sender: "大G",
+      title: "大G",
+      body: "嗯……让我想想。",
+      outgoing: false,
+      meta: { ...sourceDaG.meta, storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(Number.isFinite(baseOrder) ? baseOrder + 0.002 : Date.now() + 1) },
+    });
+    const repaired = [...messages.slice(0, nextPromptIndex), ...additions, ...messages.slice(nextPromptIndex)];
+    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repaired }));
+  }, [catRescueRaw]);
+  useEffect(() => {
     const oldMessages = catRescue.messages;
     const cleanMessages = oldMessages.filter((message, index) => {
       const previous = oldMessages[index - 1];
