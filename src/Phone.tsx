@@ -892,6 +892,17 @@ function PhoneRuntime({
     }
     noticesSeen.current = count;
   }, [s.notifications.length, locked, work.phone.notifications]);
+  const contactRemarksForNotifications = (() => {
+    const raw = s.ui?.wechat?.wxContactRemarks;
+    if (typeof raw !== "string") return {} as Record<string, string>;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        return Object.fromEntries(Object.entries(parsed).filter((entry): entry is [string, string] => typeof entry[1] === "string"));
+      }
+    } catch { /* Ignore malformed saved remarks. */ }
+    return {} as Record<string, string>;
+  })();
   const notificationItems = (() => {
     let storyMessages: Item[] = [];
     const raw = s.ui?.wechat?.catRescueState;
@@ -1059,6 +1070,7 @@ function PhoneRuntime({
                 time={displayTime}
                 notices={s.notifications}
                 notificationItems={notificationItems}
+                notificationRemarks={contactRemarksForNotifications}
                 onDismiss={dismissNotice}
                 onNotificationOpen={openNotification}
                 pinOpen={pinOpen}
@@ -1217,6 +1229,7 @@ function PhoneRuntime({
                       notices={s.notifications}
                       apps={work.apps}
                       items={notificationItems}
+                      remarks={contactRemarksForNotifications}
                       onOpen={openNotification}
                       onDismiss={dismissNotice}
                     />
@@ -1392,7 +1405,7 @@ function PhoneRuntime({
             </div>
           )}
           {banner && !locked && (() => {
-            const notice = notificationContent(banner, work.apps, notificationItems);
+            const notice = notificationContent(banner, work.apps, notificationItems, contactRemarksForNotifications);
             return (
               <button
                 className="device-banner"
