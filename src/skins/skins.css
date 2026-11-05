@@ -5601,3 +5601,56 @@
 .clock-repeat button.selected { background:#ff9f0a; color:#111; }
 .clock-add-city { padding:20px 0; color:#aaa; }
 .clock-add-city button { color:#ff9f0a; margin-top:15px; }
+
+
+/* Clock app: remove the app-window separator and the stray right-edge rail. */
+.phone-shell .phone-screen:has(.native-clock) .status-bar {
+  background: #000 !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+.phone-shell .phone-screen:has(.native-clock) .app-screen {
+  background: #000 !important;
+  border: 0 !important;
+  border-top: 0 !important;
+  box-shadow: none !important;
+}
+.phone-shell .phone-screen:has(.native-clock) .app-screen::before,
+.phone-shell .phone-screen:has(.native-clock) .app-screen::after,
+.native-clock-full::before,
+.native-clock-full::after,
+.native-clock-full .clock-topbar::before,
+.native-clock-full .clock-topbar::after {
+  content: none !important;
+  display: none !important;
+}
+.native-clock-full,
+.native-clock-full .clock-topbar,
+.native-clock-full .clock-content,
+.native-clock-full .clock-world-swipe-wrap,
+.native-clock-full .clock-world-row,
+.native-clock-full .clock-world-row time {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+.native-clock-full .clock-content {
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  border-right: 0 !important;
+}
+.native-clock-full .clock-content::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  background: transparent !important;
+}
+.native-clock-full .clock-world-swipe-wrap {
+  width: 100%;
+  box-sizing: border-box;
+  border-right: 0 !important;
+}
+.native-clock-full .clock-world-row {
+  width: 100%;
+  box-sizing: border-box;
+  border-right: 0 !important;
+}
