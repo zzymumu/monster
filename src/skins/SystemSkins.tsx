@@ -766,6 +766,10 @@ const clockCities = [
   { city: "伦敦", zone: "Europe/London" },
   { city: "拉斯维加斯", zone: "America/Los_Angeles" },
   { city: "温哥华", zone: "America/Vancouver" },
+  { city: "东京", zone: "Asia/Tokyo" },
+  { city: "纽约", zone: "America/New_York" },
+  { city: "巴黎", zone: "Europe/Paris" },
+  { city: "悉尼", zone: "Australia/Sydney" },
 ];
 const clockParts = (date: Date, zone: string) => {
   const parts = new Intl.DateTimeFormat("zh-CN", { timeZone: zone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(date);
@@ -773,14 +777,22 @@ const clockParts = (date: Date, zone: string) => {
 };
 const clockDayOffset = (date: Date, zone: string) => {
   const target = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
-  const local = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+  const base = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
   const a = new Date(target + "T12:00:00Z").getTime();
-  const b = new Date(local + "T12:00:00Z").getTime();
+  const b = new Date(base + "T12:00:00Z").getTime();
   return Math.round((a - b) / 86400000);
+};
+const clockZoneOffset = (date: Date, zone: string) => {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const asUtc = Date.UTC(Number(values.year), Number(values.month) - 1, Number(values.day), Number(values.hour), Number(values.minute), Number(values.second));
+  return Math.round((asUtc - date.getTime()) / 60000);
 };
 export function ClockSkin(p: Props) {
   const [tab, setTab] = useState("世界时钟");
   const [now, setNow] = useState(() => new Date());
+  const [citiesRaw, setCitiesRaw] = useSkinState<string>(p, "clockWorldCitiesV1", JSON.stringify(clockCities.slice(0, 4)));
+  const cities = (() => { try { const value = JSON.parse(citiesRaw); return Array.isArray(value) ? value as Array<{city:string;zone:string}> : clockCities.slice(0,4); } catch { return clockCities.slice(0,4); } })();
   const [alarmsRaw, setAlarmsRaw] = useSkinState<string>(p, "clockAlarmsV2", JSON.stringify(defaultClockAlarms));
   const alarms = (() => { try { const value = JSON.parse(alarmsRaw); return Array.isArray(value) ? value as ClockAlarm[] : defaultClockAlarms; } catch { return defaultClockAlarms; } })();
   const [editingAlarm, setEditingAlarm] = useState<ClockAlarm | null>(null);
@@ -876,28 +888,27 @@ export function ClockSkin(p: Props) {
   };
   const worldTime = (zone: string) => {
     const value = clockParts(now, zone);
-    const offset = clockDayOffset(now, zone);
-    return { time: value.hour + ":" + value.minute, day: offset === 0 ? "今天" : offset > 0 ? "明天" : "昨天", offset: (offset > 0 ? "+" : "") + offset + "小时" };
+    const dayOffset = clockDayOffset(now, zone);
+    const hours = Math.round((clockZoneOffset(now, zone) - clockZoneOffset(now, "Asia/Taipei")) / 60);
+    return { time: value.hour + ":" + value.minute, day: dayOffset === 0 ? "今天" : dayOffset > 0 ? "明天" : "昨天", offset: (hours > 0 ? "+" : "") + hours + "小时" };
   };
   const dayNames = ["周一","周二","周三","周四","周五","周六","周日"];
   const elapsed = formatStopwatch(stopwatchElapsed);
   return (
     <div className="catalog-skin native-clock native-clock-full">
       <header className="clock-topbar">
-        {tab === "秒表" || tab === "计时器" ? (
-          <button className="clock-back" aria-label="返回" onClick={p.onBack}><ChevronLeft size={23} /></button>
-        ) : <span />}
-        {tab !== "世界时钟" && tab !== "闹钟" && <strong>{tab}</strong>}
+        {tab === "秒表" || tab === "计时器" ? <span /> : <span />}
+        {tab === "秒表" || tab === "计时器" || tab === "添加城市" ? <strong>{tab === "添加城市" ? "" : tab}</strong> : null}
         <div className="clock-top-actions">
           {tab === "世界时钟" || tab === "闹钟" ? <button onClick={() => tab === "闹钟" ? setAlarmEditMode(!alarmEditMode) : setAlarmEditMode(false)}>{tab === "闹钟" ? (alarmEditMode ? "完成" : "编辑") : ""}</button> : null}
-          {tab === "世界时钟" ? <button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : null}
+          {tab === "世界时钟" ? <button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : tab === "秒表" || tab === "计时器" ? <button aria-label="编辑" onClick={() => tab === "秒表" ? resetStopwatch() : resetTimer()}>编辑</button> : null}
         </div>
       </header>
       <div className="clock-content">
         {tab === "世界时钟" ? (
           <>
             <h1>世界时钟</h1>
-            {clockCities.map((city) => {
+            {cities.map((city) => {
               const value = worldTime(city.zone);
               return <div className="clock-world-row" key={city.zone}>
                 <div><small>{value.day} {value.offset}</small><strong>{city.city}</strong></div>
@@ -956,7 +967,7 @@ export function ClockSkin(p: Props) {
             {recentTimers.length > 0 && <div className="clock-recent"><h3>最近使用</h3>{recentTimers.map((v) => <button key={v} onClick={() => startTimer(Number(v))}><span>{formatTimer(Number(v)*1000)}</span><small>{Number(v)>=60 ? Math.floor(Number(v)/60)+"分钟" : v+"秒"}</small><Play size={21} fill="currentColor"/></button>)}</div>}
           </div>
         ) : (
-          <div className="clock-add-city"><h2>世界时钟</h2><p>已显示北京、伦敦、拉斯维加斯和温哥华。</p><button onClick={() => setTab("世界时钟")}>完成</button></div>
+          <div className="clock-add-city"><h2>添加城市</h2>{clockCities.filter((city) => !cities.some((current) => current.zone === city.zone)).map((city) => <button key={city.zone} onClick={() => { setCitiesRaw(JSON.stringify([...cities, city])); setTab("世界时钟"); }}>{city.city}<span>＋</span></button>)}<button onClick={() => setTab("世界时钟")}>完成</button></div>
         )}
       </div>
       {alarmEditorOpen && <div className="clock-modal-backdrop"><div className="clock-alarm-editor">
@@ -965,7 +976,7 @@ export function ClockSkin(p: Props) {
         <label>标签<input value={alarmLabel} onChange={(e)=>setAlarmLabel(e.target.value)} /></label>
         <h4>重复</h4><div className="clock-repeat">{dayNames.map((day)=><button key={day} className={alarmRepeat.includes(day)?"selected":""} onClick={()=>setAlarmRepeat((v)=>v.includes(day)?v.filter((x)=>x!==day):[...v,day])}>{day}</button>)}</div>
       </div></div>}
-      {tab !== "计时器" && <nav className="catalog-tabs clock-tabs">
+      {tab !== "添加城市" && <nav className="catalog-tabs clock-tabs">
         {[
           {label:"世界时钟",icon:<Globe/>},
           {label:"闹钟",icon:<AlarmClock/>},
