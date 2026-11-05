@@ -1582,7 +1582,11 @@ export function WeChatSkin(p: SkinProps) {
   );
   const catRescueActive =
     isBroccoliThread ||
-    (isMonsterThread && (monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53 || vavaPlayActive || hasDrunkStoryInMonsterChat));
+    (isMonsterThread && (
+      monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53 ||
+      vavaPlayActive || hasDrunkStoryInMonsterChat ||
+      p.ui?.wxPostDrunkGDotDeliveredV1 === true
+    ));
   const _catAvatar = GLOOMY_AVATAR;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
@@ -1626,7 +1630,7 @@ export function WeChatSkin(p: SkinProps) {
       meta: { storyId: "cat-rescue", storyThread: "大G" },
     }));
   }
-  const threadItems = isMonsterThread
+  const baseThreadItems = isMonsterThread
     ? filterPrankHistoryLines(orderCatRescueThreadItems([
         ...p.items.filter((item) => (item.title === "大G" || item.title === "温尚翊") && keepPrankHistoryClean(item)),
         ...catRescue.messages.filter((item) =>
@@ -1652,6 +1656,17 @@ export function WeChatSkin(p: SkinProps) {
           ...notificationStoryItems.filter((item) => item.title === "西蓝花"),
         ])
       : allItems.filter((item) => item.title === p.thread);
+  // Append these two notification-triggered bubbles after legacy/story filters.
+  // They must remain visible even when an older save's prank-history filter
+  // or timestamp ordering would otherwise discard them.
+  const threadItems = [
+    ...baseThreadItems,
+    ...notificationStoryItems.filter((item) =>
+      (isBroccoliThread && item.title === "西蓝花") ||
+      (isMonsterThread && item.title === "大G")
+    ).filter((item, index, all) => !baseThreadItems.some((existing) => existing.id === item.id) &&
+      all.findIndex((candidate) => candidate.id === item.id) === index),
+  ];
   // Never expose the next interaction branch while any scripted line is
   // still waiting to arrive. The stage advances when the player chooses, but
   // the next choice belongs after the complete incoming exchange, not before it.
