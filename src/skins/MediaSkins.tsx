@@ -149,94 +149,123 @@ export function SpotifySkin(p: Props) {
   );
 }
 export function NeteaseSkin(p: Props) {
-  const { tab, setTab, q, setQ, items } = useContent(p, "发现");
-  const [folder, setFolder] = useState(""),
-    [track, setTrack] = useTrack(p, items);
-  const list = folder
-    ? items.filter((i) => (i.folder || "我的歌单") === folder)
-    : items;
+  const { q, setQ, items } = useContent(p, "发现");
+  const [tab, setTab] = useSkinState<string>(p, "netease-tab-v1", "发现");
+  const [subPage, setSubPage] = useSkinState<string>(p, "netease-page-v1", "");
+  const [queryMode, setQueryMode] = useSkinState<boolean>(p, "netease-search-open-v1", false);
+  const [favorites, setFavorites] = useSkinState<string[]>(p, "netease-favorites-v1", []);
+  const [recent, setRecent] = useSkinState<string[]>(p, "netease-recent-v1", []);
+  const [playingId, setPlayingId] = useSkinState<string>(p, "netease-playing-v1", "");
+  const [playerOpen, setPlayerOpen] = useSkinState<boolean>(p, "netease-player-open-v1", false);
+  const [playMode, setPlayMode] = useSkinState<string>(p, "netease-play-mode-v1", "列表循环");
+  const [track, setTrack] = useTrack(p, items);
+  const playable = items.filter(i => i.kind === "audio" && safeMedia(i.media));
+  const library = items.filter(i => i.kind === "audio" || i.folder || i.meta?.album);
+  const filtered = items.filter(i => (i.title + " " + i.sender + " " + i.body + " " + meta(i, "album")).toLowerCase().includes(q.toLowerCase()));
+  const current = items.find(i => i.id === playingId) || track || playable[0];
+  const pick = (item: Item) => {
+    setPlayingId(item.id);
+    setTrack(item);
+    setRecent(old => [item.id, ...old.filter(id => id !== item.id)].slice(0, 30));
+    setPlayerOpen(true);
+  };
+  const next = (direction: number) => {
+    if (!items.length) return;
+    const index = Math.max(0, items.findIndex(i => i.id === current?.id));
+    const target = items[(index + direction + items.length) % items.length];
+    pick(target);
+  };
+  const toggleFavorite = (id: string) => setFavorites(old => old.includes(id) ? old.filter(x => x !== id) : [...old, id]);
+  const card = (title: string, subtitle: string, symbol: string, action: () => void, color = "#e8b9b5") => (
+    <button key={title} onClick={action} style={{ minWidth: 0, textAlign: "left", border: 0, padding: 0, background: "transparent", color: "#252525" }}>
+      <span style={{ display: "grid", placeItems: "center", width: "100%", aspectRatio: "1", borderRadius: 10, background: color, color: "#fff", fontSize: 27, fontWeight: 700 }}>{symbol}</span>
+      <strong style={{ display: "block", fontSize: 11, lineHeight: 1.35, marginTop: 6 }}>{title}</strong>
+      <small style={{ display: "block", color: "#999", fontSize: 9, marginTop: 3 }}>{subtitle}</small>
+    </button>
+  );
+  const row = (item: Item, index: number) => (
+    <div key={item.id} style={{ display: "flex", alignItems: "center", gap: 9, padding: "9px 14px", borderBottom: "1px solid #f2f2f2" }}>
+      <button onClick={() => pick(item)} style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0, border: 0, background: "transparent", color: "#222", textAlign: "left" }}>
+        <span style={{ color: "#aaa", width: 16, fontSize: 11 }}>{String(index + 1).padStart(2, "0")}</span>
+        <span style={{ width: 42, height: 42, borderRadius: 5, background: "#f1e3e1", display: "grid", placeItems: "center", color: "#d64b48", flexShrink: 0 }}><Music size={19}/></span>
+        <span style={{ minWidth: 0, flex: 1 }}><strong style={{ display: "block", fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.title}</strong><small style={{ display: "block", color: "#999", fontSize: 10, marginTop: 4 }}>{item.sender}{meta(item, "album") ? " · " + meta(item, "album") : ""}</small></span>
+      </button>
+      <button aria-label="收藏歌曲" onClick={() => toggleFavorite(item.id)} style={{ border: 0, background: "transparent", color: favorites.includes(item.id) ? "#d94b48" : "#aaa", padding: 5 }}><Heart size={17} fill={favorites.includes(item.id) ? "currentColor" : "none"}/></button>
+      <button aria-label="歌曲详情" onClick={() => p.onItem(item)} style={{ border: 0, background: "transparent", color: "#999", padding: 5 }}>···</button>
+    </div>
+  );
+  const sectionTitle = (title: string, action?: () => void) => <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "17px 14px 10px" }}><strong style={{ fontSize: 16 }}>{title}</strong>{action && <button onClick={action} style={{ border: 0, background: "transparent", color: "#999", fontSize: 11 }}>更多 ›</button>}</div>;
   return (
-    <div className="catalog-skin netease-ui">
-      <Header p={p} />
-      <div className="catalog-scroll">
-        <SearchBox value={q} set={setQ} />
-        {tab === "发现" ? (
-          <>
-            <div className="netease-feature">
-              <Music size={44} />
-              <h2>推荐歌单</h2>
-            </div>
-            <div className="netease-shelves">
-              {groupItems(items, "我的歌单").map((g) => (
-                <button
-                  key={g}
-                  onClick={() => {
-                    setFolder(g);
-                    setTab("我的");
-                  }}
-                >
-                  <Music size={33} />
-                  <strong>{g}</strong>
-                </button>
-              ))}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="netease-profile">
-              <Avatar name={p.owner ?? "我"} />
-              <h2>{p.owner ?? "我的音乐"}</h2>
-            </div>
-            <h3>{folder || "我的歌单"}</h3>
-          </>
-        )}
-        {list.map((i, n) => (
-          <div className="netease-track" key={i.id}>
-            <button
-              onClick={() => {
-                setTrack(i);
-              }}
-            >
-              <span>{n + 1}</span>
-              <div>
-                <strong>{i.title}</strong>
-                <small>
-                  {i.sender} · {meta(i, "album")}
-                </small>
-              </div>
-            </button>
-            <button
-              aria-label={`歌曲详情${i.title}`}
-              onClick={() => p.onItem(i)}
-            >
-              <MessageCircle size={18} />
-            </button>
-          </div>
-        ))}
-        <Empty items={list} />
+    <div className="catalog-skin netease-ui" style={{ background: "#fff", color: "#222", position: "relative", fontFamily: "-apple-system,BlinkMacSystemFont,'Microsoft YaHei',sans-serif" }}>
+      <div style={{ height: 48, display: "flex", alignItems: "center", gap: 10, padding: "0 13px", borderBottom: "1px solid #f3f3f3", flexShrink: 0 }}>
+        {subPage ? <button onClick={() => setSubPage("")} style={{ border: 0, background: "transparent", fontSize: 22 }}>‹</button> : <button onClick={() => setQueryMode(!queryMode)} style={{ border: 0, background: "transparent", color: "#555" }}><Search size={21}/></button>}
+        {queryMode ? <div style={{ flex: 1 }}><SearchBox value={q} set={setQ} placeholder="搜索歌曲、歌手、专辑"/></div> : <strong style={{ flex: 1, textAlign: "center", fontSize: 16 }}>{subPage || "网易云音乐"}</strong>}
+        <button onClick={() => setSubPage("消息")} style={{ border: 0, background: "transparent", color: "#555" }}><MessageCircle size={20}/></button>
       </div>
-      {track && (
-        <TrackPlayer
-          item={track}
-          p={p}
-          onNext={() =>
-            setTrack(
-              items[
-                (items.findIndex((i) => i.id === track.id) + 1) % items.length
-              ],
-            )
-          }
-        />
-      )}
-      <Tabs
-        tabs={["发现", "我的"]}
-        value={tab}
-        set={(t) => {
-          setTab(t);
-          setFolder("");
-        }}
-        icons={[<Compass />, <Music />]}
-      />
+      <div className="catalog-scroll" style={{ background: "#fff" }}>
+        {subPage === "" && tab === "发现" && !queryMode && <>
+          <div style={{ padding: "13px 14px 8px", display: "flex", gap: 10, overflowX: "auto" }}>
+            {["个性推荐","专属订制","歌单","排行榜","有声书","数字专辑"].map((x,i)=><button key={x} onClick={() => setSubPage(x)} style={{ flexShrink: 0, border: 0, background: "transparent", color: i===0?"#d94b48":"#777", fontWeight: i===0?700:400, fontSize: 12 }}>{x}</button>)}
+          </div>
+          <div style={{ margin: "8px 13px 14px", padding: "17px 16px", borderRadius: 12, color: "#fff", background: "linear-gradient(115deg,#c94b4b,#ed9c91)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div><small style={{ opacity: .85 }}>每日为你精选</small><strong style={{ display: "block", fontSize: 21, marginTop: 6 }}>每日推荐</strong><small style={{ display: "block", marginTop: 4 }}>根据你的音乐口味生成</small></div><button onClick={() => setSubPage("每日推荐")} style={{ border: "1px solid #ffffffaa", borderRadius: 20, color: "#fff", background: "transparent", padding: "7px 13px" }}>查看 ›</button>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 10, padding: "0 13px 8px" }}>
+            {card("私人 FM","随心聆听","♫",()=>setSubPage("私人 FM"),"#d85c5a")}
+            {card("每日推荐","每日更新","日",()=>setSubPage("每日推荐"),"#e7a08e")}
+            {card("排行榜","热门榜单","榜",()=>setSubPage("排行榜"),"#d98c84")}
+            {card("歌单广场","发现好音乐","单",()=>setSubPage("歌单广场"),"#c77c79")}
+          </div>
+          {sectionTitle("推荐歌单",()=>setSubPage("歌单广场"))}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: 10, padding: "0 13px" }}>
+            {["今日精选","华语流行","深夜听歌"].map((x,i)=>card(x,"根据你的喜好推荐",["♫","♪","☾"][i],()=>setSubPage(x),["#d8aaa5","#b8a9a4","#8f8995"][i]))}
+          </div>
+          {sectionTitle("歌曲推荐",()=>setSubPage("全部歌曲"))}
+          {items.slice(0,8).map(row)}
+          {!items.length && <div style={{ padding: "10px 16px 25px", color: "#999", fontSize: 11, lineHeight: 1.7 }}>这里会展示你的推荐歌曲。接入官方授权数据后，将显示真实推荐内容；目前可以先体验界面和本地音乐库。</div>}
+        </>}
+        {subPage !== "" && subPage !== "消息" && <>
+          <div style={{ margin: 14, padding: 15, borderRadius: 12, background: "linear-gradient(120deg,#d45b58,#f0b5a9)", color: "white" }}><strong style={{ fontSize: 20 }}>{subPage}</strong><p style={{ fontSize: 11, opacity: .9 }}>发现喜欢的音乐，让每一次播放都有惊喜</p></div>
+          {(subPage === "我的喜欢" ? items.filter(i => favorites.includes(i.id)) : subPage === "最近播放" ? recent.map(id=>items.find(i=>i.id===id)).filter(Boolean) as Item[] : subPage === "全部歌曲" || subPage === "每日推荐" || subPage === "私人 FM" || subPage === "排行榜" || subPage === "歌单广场" ? items : items.filter(i => (i.folder || "").includes(subPage))).map(row)}
+          {!items.length && <p style={{ textAlign: "center", color: "#999", padding: 30, fontSize: 12 }}>暂无歌曲。官方音乐数据授权接入后将在这里显示。</p>}
+        </>}
+        {subPage === "消息" && <div style={{ padding: 30, textAlign: "center", color: "#999" }}>暂时没有新消息</div>}
+        {queryMode && <>{sectionTitle(q ? "搜索结果" : "热门搜索")}{(q ? filtered : items.slice(0,8)).map(row)}{!items.length && <div style={{ padding: 25, color: "#999", textAlign: "center", fontSize: 12 }}>搜索结果将在接入官方音乐数据后显示</div>}</>}
+        {tab === "我的" && subPage === "" && !queryMode && <>
+          <div style={{ margin: 14, padding: 17, borderRadius: 12, background: "#f7eeee", display: "flex", alignItems: "center", gap: 12 }}><Avatar name={p.owner || "我"}/><div><strong style={{ fontSize: 16 }}>{p.owner || "我的音乐"}</strong><small style={{ display: "block", color: "#999", marginTop: 5 }}>听见好音乐</small></div></div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8, padding: "0 14px 12px" }}>
+            {card("我的喜欢",favorites.length+" 首歌曲","♥",()=>setSubPage("我的喜欢"),"#d65c5a")}
+            {card("最近播放",recent.length+" 首歌曲","◷",()=>setSubPage("最近播放"),"#bd8b83")}
+            {card("本地音乐",library.length+" 首歌曲","♫",()=>setSubPage("本地音乐"),"#a78b89")}
+          </div>
+          {sectionTitle("我的歌单")}
+          {groupItems(library,"我的音乐").map(g=><button key={g} onClick={()=>setSubPage(g)} style={{ display:"block", width:"100%", padding:"13px 15px", textAlign:"left", border:0, borderBottom:"1px solid #f2f2f2", background:"white", color:"#333" }}>♫　{g}　›</button>)}
+          {sectionTitle("收藏的歌曲")}
+          {items.filter(i=>favorites.includes(i.id)).map(row)}
+        </>}
+      </div>
+      {current && <button onClick={() => setPlayerOpen(true)} style={{ display:"flex", alignItems:"center", gap:9, minHeight:53, padding:"5px 12px", borderTop:"1px solid #eee", background:"#fff", textAlign:"left", color:"#222", flexShrink:0 }}>
+        <span style={{ width:38,height:38,borderRadius:6,background:"#f0d8d5",display:"grid",placeItems:"center",color:"#d34d4a" }}><Music size={18}/></span>
+        <span style={{ flex:1,minWidth:0 }}><strong style={{ display:"block",fontSize:11,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{current.title}</strong><small style={{ color:"#999",fontSize:9 }}>{current.sender}</small></span>
+        <button onClick={e=>{e.stopPropagation(); if(current.kind==="audio") setTrack(current); else setPlayerOpen(true);}} style={{ border:0,background:"transparent",color:"#d44c49" }}><Play size={20}/></button>
+      </button>}
+      <Tabs tabs={["发现","我的"]} value={tab} set={t=>{setTab(t);setSubPage("");setQueryMode(false);}} icons={[<Compass/>,<User/>]}/>
+      {playerOpen && current && <div role="dialog" aria-modal="true" style={{ position:"absolute",inset:0,zIndex:30,background:"linear-gradient(160deg,#f5e9e7,#fff 65%)",display:"flex",flexDirection:"column",padding:"12px 18px",boxSizing:"border-box" }}>
+        <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",height:35 }}><button onClick={()=>setPlayerOpen(false)} style={{border:0,background:"transparent",fontSize:22}}>⌄</button><strong style={{fontSize:12}}>正在播放</strong><button onClick={()=>toggleFavorite(current.id)} style={{border:0,background:"transparent",color:favorites.includes(current.id)?"#d34d4a":"#777"}}><Heart fill={favorites.includes(current.id)?"currentColor":"none"}/></button></div>
+        <div style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:0 }}>
+          <div style={{ width:"min(72vw,260px)",aspectRatio:"1",borderRadius:12,background:"linear-gradient(145deg,#c85b57,#e6b1a8)",display:"grid",placeItems:"center",color:"white",boxShadow:"0 12px 30px #b85a5540" }}><Music size={70}/></div>
+          <h2 style={{fontSize:19,margin:"22px 0 6px",textAlign:"center"}}>{current.title}</h2><p style={{color:"#888",fontSize:12,margin:0}}>{current.sender} · {meta(current,"album")}</p>
+          <div style={{marginTop:30,color:"#888",fontSize:12,textAlign:"center",lineHeight:2}}>♪　歌词将在授权歌词数据接入后同步显示　♪</div>
+        </div>
+        {current.kind==="audio" && safeMedia(current.media) ? <AudioPlayer p={p} item={current}/> : <div style={{fontSize:10,color:"#999",textAlign:"center",padding:8}}>此歌曲尚无可播放的授权音频</div>}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-around",padding:"16px 0 28px",color:"#333"}}>
+          <button onClick={()=>setPlayMode(playMode==="列表循环"?"随机播放":playMode==="随机播放"?"单曲循环":"列表循环")} style={{border:0,background:"transparent",fontSize:10,color:"#888"}}>{playMode}</button>
+          <button onClick={()=>next(-1)} style={{border:0,background:"transparent"}}><SkipForward size={23} style={{transform:"rotate(180deg)"}}/></button>
+          <button onClick={()=>current.kind==="audio"&&safeMedia(current.media)?setTrack(current):setPlayerOpen(false)} style={{border:0,background:"#d84e4b",color:"white",width:52,height:52,borderRadius:"50%",display:"grid",placeItems:"center"}}><Play size={23}/></button>
+          <button onClick={()=>next(1)} style={{border:0,background:"transparent"}}><SkipForward size={23}/></button>
+          <button onClick={()=>setSubPage("播放列表")} style={{border:0,background:"transparent"}}>☷</button>
+        </div>
+      </div>}
     </div>
   );
 }
