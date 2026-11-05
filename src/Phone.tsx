@@ -396,10 +396,33 @@ function PhoneRuntime({
       wx.wxDrunkFinalCallFinishedV7 !== true || pending.length > 0 ||
       wx.wxPostDrunkBroccoliCheckInV1 === true
     ) return;
+    const time = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
+    const message = makeItem({
+      id: "drunk-post-door-broccoli-checkin-v1",
+      title: "西蓝花",
+      sender: "西蓝花",
+      body: "祖宗，你是死了吗？",
+      time,
+      outgoing: false,
+      avatar: "",
+      meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
+    });
+    const stored = current.messages.wechat ?? [];
+    const storyRaw = wx.catRescueState;
+    let story: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
+    try { if (typeof storyRaw === "string") story = JSON.parse(storyRaw); } catch { story = {}; }
+    const storyMessages = Array.isArray(story.messages) ? story.messages : [];
+    const alreadyStored = stored.some((item) => item.id === message.id) || storyMessages.some((item) => item.id === message.id);
+    const nextMessage = alreadyStored ? [] : [message];
     update({
       ...current,
+      messages: { ...current.messages, wechat: [...stored, ...nextMessage] },
       notifications: [...current.notifications, "微信：西蓝花：祖宗，你是死了吗？"].slice(-60),
-      ui: { ...current.ui, wechat: { ...wx, wxPostDrunkBroccoliCheckInV1: true } },
+      ui: { ...current.ui, wechat: {
+        ...wx,
+        wxPostDrunkBroccoliCheckInV1: true,
+        catRescueState: JSON.stringify({ ...story, messages: [...storyMessages, ...nextMessage] }),
+      } },
     });
   }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, s.ui?.wechat?.wxCatPendingLines, ready, locked, creator]);
 
@@ -414,12 +437,21 @@ function PhoneRuntime({
       const time = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
       const message = makeItem({ id: "drunk-post-door-g-dot-v1", title: "大G", sender: "大G", body: "。", time, outgoing: false, avatar, meta: { storyId: "cat-rescue", storyThread: "大G", avatarFromMessage: "yes" } });
       const messages = current.messages.wechat ?? [];
-      const exists = messages.some((item) => item.id === message.id);
+      let story: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
+      try { if (typeof latestWx.catRescueState === "string") story = JSON.parse(latestWx.catRescueState); } catch { story = {}; }
+      const storyMessages = Array.isArray(story.messages) ? story.messages : [];
+      const exists = messages.some((item) => item.id === message.id) || storyMessages.some((item) => item.id === message.id);
+      const nextMessage = exists ? [] : [message];
       update({
         ...current,
-        messages: { ...current.messages, wechat: exists ? messages : [...messages, message] },
+        messages: { ...current.messages, wechat: [...messages, ...nextMessage] },
         notifications: [...current.notifications, "微信：大G：。"].slice(-60),
-        ui: { ...current.ui, wechat: { ...latestWx, wxDaGAvatarV2: avatar, wxPostDrunkGDotDeliveredV1: true } },
+        ui: { ...current.ui, wechat: {
+          ...latestWx,
+          wxDaGAvatarV2: avatar,
+          wxPostDrunkGDotDeliveredV1: true,
+          catRescueState: JSON.stringify({ ...story, messages: [...storyMessages, ...nextMessage] }),
+        } },
       });
     }, 2200);
     return () => window.clearTimeout(timer);
