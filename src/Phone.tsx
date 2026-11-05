@@ -378,6 +378,53 @@ function PhoneRuntime({
     return () => window.clearTimeout(timer);
   }, [s.incomingCall, s.ui?.wechat?.wxBroccoliAfterDoorCallV1, s.ui?.wechat?.wxBroccoliAfterDoorCallDeclinedV1, ready, creator, work.id]);
 
+  const postDrunkThreadRef = useRef(String(s.ui?.wechat?.openThread ?? ""));
+  useEffect(() => {
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    const opened = String(wx.openThread ?? "");
+    const previous = postDrunkThreadRef.current;
+    postDrunkThreadRef.current = opened;
+    const leftBroccoli = (previous === "西蓝花" || previous === "西兰花") && opened === "";
+    let pending: unknown[] = [];
+    try {
+      const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
+      if (Array.isArray(parsed)) pending = parsed;
+    } catch { pending = []; }
+    if (
+      creator || !ready || locked || !leftBroccoli ||
+      wx.wxDrunkFinalCallFinishedV7 !== true || pending.length > 0 ||
+      wx.wxPostDrunkBroccoliCheckInV1 === true
+    ) return;
+    update({
+      ...current,
+      notifications: [...current.notifications, "微信：西蓝花：祖宗，你是死了吗？"].slice(-60),
+      ui: { ...current.ui, wechat: { ...wx, wxPostDrunkBroccoliCheckInV1: true, wxDaGAvatarV2: "./assets/dag-new-avatar.jpg" } },
+    });
+  }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, s.ui?.wechat?.wxCatPendingLines, ready, locked, creator]);
+
+  useEffect(() => {
+    const wx = s.ui?.wechat ?? {};
+    if (creator || !ready || locked || wx.wxPostDrunkBroccoliCheckInV1 !== true || wx.wxPostDrunkGDotDeliveredV1 === true) return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      const latestWx = current.ui?.wechat ?? {};
+      if (latestWx.wxPostDrunkGDotDeliveredV1 === true) return;
+      const avatar = "./assets/dag-new-avatar.jpg";
+      const time = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
+      const message = makeItem({ id: "drunk-post-door-g-dot-v1", title: "大G", sender: "大G", body: "。", time, outgoing: false, avatar, meta: { storyId: "cat-rescue", storyThread: "大G", avatarFromMessage: "yes" } });
+      const messages = current.messages.wechat ?? [];
+      const exists = messages.some((item) => item.id === message.id);
+      update({
+        ...current,
+        messages: { ...current.messages, wechat: exists ? messages : [...messages, message] },
+        notifications: [...current.notifications, "微信：大G：。"].slice(-60),
+        ui: { ...current.ui, wechat: { ...latestWx, wxDaGAvatarV2: avatar, wxPostDrunkGDotDeliveredV1: true } },
+      });
+    }, 2200);
+    return () => window.clearTimeout(timer);
+  }, [s.ui?.wechat?.wxPostDrunkBroccoliCheckInV1, s.ui?.wechat?.wxPostDrunkGDotDeliveredV1, ready, locked, creator, work.id]);
+
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
   };
@@ -537,6 +584,7 @@ function PhoneRuntime({
         sender: isBroccoliCancelledCall ? "西蓝花" : messageSender,
         body: isBroccoliCancelledCall ? "对方已取消" : line.body,
         time: baseTime,
+        avatar: line.avatar || ((thread === "大G" || thread === "温尚翊") && typeof wx.wxDaGAvatarV2 === "string" ? wx.wxDaGAvatarV2 : ""),
         outgoing: isBroccoliCancelledCall ? false : messageSender === "我",
         kind: isBroccoliCancelledCall ? "call" : line.kind || "text",
         media: line.media || "",
@@ -1626,8 +1674,10 @@ function AppContent({
   const chats = [...new Set(shown.map((i) => i.title))];
   const back = () => {
     if (detail) setDetail(null);
-    else if (thread) setThread("");
-    else onBack();
+    else if (thread) {
+      setThread("");
+      if (app.id === "wechat") onUi?.("openThread", "");
+    } else onBack();
   };
   const Skin =
     app.id === "wechat"
