@@ -1725,11 +1725,27 @@ function AppContent({
   const [unlocks, setUnlocks] = useState<string[]>([]);
   const [pwError, setPwError] = useState("");
   const [likes, setLikes] = useState<string[]>([]);
-  const shown = items
-    .filter((i) => creator || visible(i, state))
-    .filter((i) =>
-      (i.title + i.body + i.sender).toLowerCase().includes(q.toLowerCase()),
-    );
+  const notificationTranscriptItems: Item[] = app.id === "wechat" ? [
+    ...(state.ui?.wechat?.wxPostDrunkBroccoliCheckInV1 === true ? [makeItem({
+      id: "drunk-post-door-broccoli-checkin-v1",
+      title: "西蓝花", sender: "西蓝花", body: "祖宗，你是死了吗？",
+      time: virtualDate + " " + virtualTime, outgoing: false,
+      meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
+    })] : []),
+    ...(state.ui?.wechat?.wxPostDrunkGDotDeliveredV1 === true ? [makeItem({
+      id: "drunk-post-door-g-dot-v1",
+      title: "大G", sender: "大G", body: "。",
+      time: virtualDate + " " + virtualTime, outgoing: false,
+      avatar: typeof state.ui?.wechat?.wxDaGAvatarV2 === "string" ? state.ui.wechat.wxDaGAvatarV2 : "",
+      meta: { storyId: "cat-rescue", storyThread: "大G" },
+    })] : []),
+  ] : [];
+  const shown = [
+    ...items.filter((i) => creator || visible(i, state)),
+    ...notificationTranscriptItems.filter((eventItem) => !items.some((item) => item.id === eventItem.id)),
+  ].filter((i) =>
+    (i.title + i.body + i.sender).toLowerCase().includes(q.toLowerCase()),
+  );
   const filtered =
     tab === "收藏"
       ? shown.filter((i) => i.favorite)
