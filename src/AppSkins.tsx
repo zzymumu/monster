@@ -1473,6 +1473,116 @@ export function WeChatSkin(p: SkinProps) {
   }, [meetupQuestionSplitMigratedV1, catRescueRaw, pendingCatLinesRaw]);
 
   const [morningVoiceReplyStep, setMorningVoiceReplyStep] = useSkinState<number>(p, "wxMorningVoiceReplyStepV1", 0);
+  const [morningAfterVoiceIndex, setMorningAfterVoiceIndex] = useSkinState<number>(p, "wxMorningAfterVoiceIndexV1", 0);
+  const morningAfterVoiceDialogue: Array<{ sender: string; body: string }> = [
+    { sender: "我", body: "………………" },
+    { sender: "我", body: "那谁让你不早点换头像！" },
+    { sender: "大G", body: "蛤？所以还是我的错喔？" },
+    { sender: "我", body: "本来就是！" },
+    { sender: "大G", body: "大小姐说什么都对。" },
+    { sender: "我", body: "你这个语气是什么意思？" },
+    { sender: "大G", body: "没有啊，哪敢有意见。" },
+    { sender: "我", body: "……你明明就有！" },
+    { sender: "大G", body: "好啦，不逗妳了。" },
+    { sender: "大G", body: "不过妳昨晚嫌弃我头像的时候，倒是挺有精神的欸。" },
+    { sender: "我", body: "……你还记得啊？" },
+    { sender: "大G", body: "怎么可能不记得，嫌弃得那么认真。" },
+    { sender: "我", body: "…………" },
+    { sender: "大G", body: "怎么，突然不说话了？" },
+    { sender: "我", body: "那个……" },
+    { sender: "我", body: "我昨晚……" },
+    { sender: "我", body: "没干什么吧？" },
+    { sender: "大G", body: "喔？妳终于想起来要关心这个了？" },
+    { sender: "我", body: "？？？？" },
+    { sender: "大G", body: "我还以为妳完全不记得了呢。" },
+    { sender: "我", body: "我、我就是有点断片……" },
+    { sender: "大G", body: "只有一点喔？" },
+    { sender: "我", body: "……不然呢！" },
+    { sender: "大G", body: "嗯……让我想想。" },
+    { sender: "我", body: "你不要想了！！！" },
+    { sender: "大G", body: "哈哈哈哈哈，干嘛啦，我还没说呢。" },
+    { sender: "我", body: "所以我到底做什么了？" },
+    { sender: "大G", body: "嗯...妳有一直扒我衣服。" },
+    { sender: "我", body: "？？？？？？？？？？" },
+    { sender: "我", body: "我？？？扒你衣服？？？" },
+    { sender: "我", body: "你不要乱讲！！！" },
+    { sender: "大G", body: "哈哈哈哈哈哈哈哈哈！" },
+    { sender: "大G", body: "干！妳怎么反应这么大啦！" },
+    { sender: "我", body: "你还笑！！！" },
+    { sender: "大G", body: "是外套啦！妳把饮料弄到袖子上了，一直说黏黏的。" },
+    { sender: "大G", body: "我问妳要不要把外套脱下来，妳才一直扯啊。" },
+    { sender: "我", body: "………………" },
+    { sender: "我", body: "吓死我了。" },
+    { sender: "大G", body: "哈哈哈哈哈，放心啦，我又没对妳怎么样。" },
+    { sender: "大G", body: "妳现在脑袋里到底在想什么？" },
+    { sender: "我", body: "我没有！！！" },
+    { sender: "大G", body: "好好好，没有没有。" },
+    { sender: "我", body: "我不跟你说话了！" },
+    { sender: "大G", body: "好啦好啦，不闹妳了。" },
+    { sender: "大G", body: "不过妳昨天真的喝了不少，以后不要这样喝了。" },
+    { sender: "我", body: "……知道了。" },
+    { sender: "大G", body: "乖。" },
+    { sender: "我", body: "等一下。" },
+    { sender: "我", body: "你没骗我吧？" },
+    { sender: "大G", body: "又怎么啦？" },
+    { sender: "我", body: "我真的没干什么奇怪的事吗？" },
+    { sender: "大G", body: "妳觉得什么叫奇怪的事？" },
+    { sender: "我", body: "就是……" },
+    { sender: "我", body: "有没有说什么奇怪的话？" },
+    { sender: "大G", body: "有啊。" },
+    { sender: "大G", body: "你叫我不要走。" },
+    { sender: "我", body: "？？？？？" },
+    { sender: "我", body: "什么？？？" },
+    { sender: "我", body: "真的假的？" },
+    { sender: "大G", body: "骗妳的啦。" },
+    { sender: "我", body: "温尚翊！！！" },
+    { sender: "大G", body: "哈哈哈哈哈哈，妳真的很好逗。" },
+    { sender: "我", body: "所以我说什么了！！" },
+    { sender: "大G", body: "妳确定要听？" },
+    { sender: "我", body: "你快说！！！" },
+    { sender: "大G", body: "一直叫我温尚翊。" },
+    { sender: "我", body: "…………" },
+    { sender: "我", body: "这有什么奇怪的？" },
+    { sender: "大G", body: "没什么啊，我只是觉得妳叫得挺顺口的。" },
+    { sender: "我", body: "温尚翊！！！" },
+    { sender: "大G", body: "哈哈哈哈哈哈。" },
+    { sender: "我", body: "你认真一点！！" },
+    { sender: "大G", body: "好啦好啦，认真说。" },
+    { sender: "大G", body: "除了嫌弃我头像、扯我外套，拉着我讲话，还一直问东问西。" },
+    { sender: "大G", body: "妳昨天问题真的很多欸。" },
+    { sender: "我", body: "啊？我问什么了？" },
+    { sender: "大G", body: "问我为什么这么晚还不睡。" },
+    { sender: "我", body: "…………" },
+    { sender: "大G", body: "我说我在照顾妳啊。" },
+    { sender: "我", body: "然后呢？" },
+    { sender: "大G", body: "然后妳说，喔，那你人还怪好的。" },
+    { sender: "我", body: "………………" },
+    { sender: "我", body: "我真的这样说了？" },
+    { sender: "大G", body: "嗯，还挺诚恳的。" },
+    { sender: "我", body: "救命……" },
+    { sender: "大G", body: "干嘛啦，这不是挺可爱的吗？" },
+    { sender: "我", body: "你不要再说了！！！" },
+    { sender: "大G", body: "好，不说了。" },
+    { sender: "大G", body: "不过妳放心，没什么大事。" },
+    { sender: "我", body: "真的？" },
+    { sender: "大G", body: "真的啦，妳就是喝多了，后来睡着了。" },
+    { sender: "我", body: "那就好……" },
+    { sender: "大G", body: "所以今天记得好好吃早餐，不要又只喝蜂蜜水。" },
+    { sender: "大G", body: "我马上到楼下了。" },
+    { sender: "我", body: "啊？这么快？" },
+    { sender: "大G", body: "是啊，谁知道还会不会被关在门外，早点到早点等。" },
+    { sender: "我", body: "温尚翊！！！" },
+    { sender: "大G", body: "哈哈哈哈哈哈，开玩笑的啦。" },
+    { sender: "我", body: "你怎么这么记仇啊！" },
+    { sender: "大G", body: "没办法啊，昨晚被关在门外的人可是我欸。" },
+    { sender: "我", body: "你还说！我都说了我喝多了！" },
+    { sender: "大G", body: "好好好，醉鬼最大。" },
+    { sender: "我", body: "…………你才醉鬼！" },
+    { sender: "大G", body: "我可没喝醉，还记得某人昨晚干了什么呢。" },
+    { sender: "我", body: "温尚翊！！！不准再提了！！！" },
+    { sender: "大G", body: "哈哈哈哈哈，好，不说了。" },
+    { sender: "大G", body: "我到门口了，开门吧。" },
+  ];
   useEffect(() => {
     const firstVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
     const secondVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-02-v1");
@@ -3180,6 +3290,22 @@ export function WeChatSkin(p: SkinProps) {
                     </div>
                   );
                 })()
+              )}
+              {isMonsterThread && morningVoiceReplyStep >= 21 && morningAfterVoiceIndex < morningAfterVoiceDialogue.length && morningAfterVoiceDialogue[morningAfterVoiceIndex]?.sender === "我" && (
+                <div className="cat-rescue-choices" aria-label="后续剧情回复选项">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
+                    const current = morningAfterVoiceDialogue[morningAfterVoiceIndex];
+                    const lines: CatLine[] = [{ sender: "我", body: current.body, thread: "大G" }];
+                    let nextIndex = morningAfterVoiceIndex + 1;
+                    while (nextIndex < morningAfterVoiceDialogue.length && morningAfterVoiceDialogue[nextIndex].sender !== "我") {
+                      lines.push({ sender: "大G", body: morningAfterVoiceDialogue[nextIndex].body, thread: "大G" });
+                      nextIndex += 1;
+                    }
+                    appendCatLines(lines, catRescue.stage, catRescue.branch, "morning-after-voice-" + morningAfterVoiceIndex);
+                    setMorningAfterVoiceIndex(nextIndex);
+                  }}>{morningAfterVoiceDialogue[morningAfterVoiceIndex].body}</button>
+                  <div className="cat-rescue-option-hint">一条一条发送，点击后再出现大G的回复</div>
+                </div>
               )}
               {isMonsterThread &&
                 (() => {
