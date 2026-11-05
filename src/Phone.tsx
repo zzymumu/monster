@@ -1041,7 +1041,14 @@ function PhoneRuntime({
                   virtualDate={systemDate}
                   onRead={(id) => {
                     event("read", id);
-                    if (app === "wechat") markWeChatThreadRead(id);
+                    if (app === "wechat") {
+                      markWeChatThreadRead(id);
+                      if (id === "drunk-big-g-door-voice-v1") {
+                        const current = runtimeRef.current;
+                        const wx = current.ui?.wechat ?? {};
+                        update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxBroccoliAfterDoorCallV1: true } } });
+                      }
+                    }
                   }}
                   onEdit={(item) => onEdit?.(app, item)}
                   onAdd={() => onAdd?.(app)}
@@ -1274,7 +1281,7 @@ function PhoneRuntime({
                           const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
                           if (Array.isArray(parsed)) queued = parsed;
                         } catch { queued = []; }
-                        queued.push({ id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" }, { id: "drunk-big-g-door-voice-v1", sender: "我", body: "開門，我在外面。", thread: "大G", kind: "audio", media: "./assets/dag-door-voice.mp3", outgoing: true, meta: { voiceDuration: "2", voiceTranscript: "開門，我在外面。", startBroccoliAfterDoor: "yes" } });
+                        queued.push({ id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" }, { id: "drunk-big-g-door-voice-v1", sender: "我", body: "開門，我在外面。", thread: "大G", kind: "audio", media: "./assets/dag-door-voice.mp3", outgoing: true, meta: { voiceDuration: "2", voiceTranscript: "開門，我在外面。" } });
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (isDrunkFinalCall) {
                         let queued: Array<{ id?: string; sender: string; body: string; thread?: string; meta?: Record<string, string> }> = [];
