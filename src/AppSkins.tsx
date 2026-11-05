@@ -162,7 +162,12 @@ function MessageList({
   const messagesRef = useRef<HTMLDivElement>(null);
   // Include the final message identity and body: a transcript can be updated
   // without changing its length (for example when an old save is repaired).
-  const messageContentKey = items.map((item) => item.id + ":" + item.body).join("\u001f");
+  const displayItems = items.map((item) =>
+    item.id === "drunk-big-g-door-voice-v1"
+      ? { ...item, sender: "大G", outgoing: false, avatar: "", title: "大G", kind: "audio" as const, media: "./assets/dag-door-voice.mp3", body: "開門，我在外面。", meta: { ...item.meta, voiceDuration: "2", voiceTranscript: "開門，我在外面。" } }
+      : item
+  );
+  const messageContentKey = displayItems.map((item) => item.id + ":" + item.body).join("\u001f");
   useEffect(() => {
     const container = messagesRef.current;
     if (!container) return;
@@ -180,7 +185,7 @@ function MessageList({
   return (
     <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""} ${wechat && wallpaper ? "wx-photo-wallpaper" : ""}`} style={wechat && wallpaper ? { backgroundImage: `url("${wallpaper}")`, backgroundSize: "cover", backgroundPosition: "center center" } : undefined}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
-      {items.map((i) => {
+      {displayItems.map((i) => {
         const monsterMessage = wechat && !i.outgoing && (i.sender === "大G" || i.sender === "温尚翊");
         const simplifiedMessage = wechat && (i.outgoing || i.sender === "我" || i.sender === "西蓝花");
         const body = monsterMessage ? toTraditionalChinese(i.body) : simplifiedMessage ? toSimplifiedChinese(i.body) : i.body;
