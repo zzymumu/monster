@@ -1504,9 +1504,7 @@ export function WeChatSkin(p: SkinProps) {
     { sender: "大G", body: "喔？刚刚不是说还行吗？" },
     { sender: "我", body: "…………" },
     { sender: "大G", body: "哈哈哈哈哈。" },
-    { sender: "我", body: "那个……" },
-    { sender: "我", body: "我昨晚……" },
-    { sender: "我", body: "没干什么吧？" },
+    { sender: "大G", body: "怎么，突然不说话了？" },
     { sender: "我", body: "那个……" },
     { sender: "我", body: "我昨晚……" },
     { sender: "我", body: "没干什么吧？" },
@@ -1601,6 +1599,27 @@ export function WeChatSkin(p: SkinProps) {
     { sender: "大G", body: "哈哈哈哈哈，好，不说了。" },
     { sender: "大G", body: "我到门口了，开门吧。" },
   ];
+  useEffect(() => {
+    // Repair the exact duplicated three-bubble sequence created by the previous
+    // dialogue revision. Keep the first occurrence and remove only the repeated
+    // adjacent copy in this morning-after exchange.
+    const target = ["那个……", "我昨晚……", "没干什么吧？"];
+    const messages = catRescue.messages;
+    let duplicateStart = -1;
+    for (let i = messages.length - 6; i >= 0; i -= 1) {
+      const six = messages.slice(i, i + 6);
+      if (six.every((item) => item.sender === "我" && item.meta?.storyId === "cat-rescue") &&
+          six.slice(0, 3).every((item, index) => item.body === target[index]) &&
+          six.slice(3, 6).every((item, index) => item.body === target[index])) {
+        duplicateStart = i + 3;
+        break;
+      }
+    }
+    if (duplicateStart >= 0) {
+      const repaired = [...messages.slice(0, duplicateStart), ...messages.slice(duplicateStart + 3)];
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repaired }));
+    }
+  }, [catRescue, catRescueRaw]);
   useEffect(() => {
     const firstVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
     const secondVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-02-v1");
