@@ -1365,7 +1365,7 @@ export function WeChatSkin(p: SkinProps) {
       body: "你醒了吗？我出门给你买早饭，蜂蜜水在床头，醒了记得喝。",
       time: "2026-11-06 08:00",
       outgoing: false,
-      avatar: "",
+      avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "",
       kind: "audio",
       media: "./assets/dag-voicevoice-01.mp3",
       read: false,
@@ -1720,10 +1720,33 @@ export function WeChatSkin(p: SkinProps) {
   // chat looked as if the notification had vanished. Keep delivered notices
   // after the ordered transcript, deduplicated by their stable IDs.
   const notificationIds = new Set(notificationStoryItems.filter(belongsToActiveThread).map((item) => item.id));
-  const threadItems = [
+  let threadItems = [
     ...orderedThreadItems.filter((item) => !notificationIds.has(item.id)),
     ...notificationStoryItems.filter(belongsToActiveThread),
   ];
+  // The delivered DaG dot is the anchor for the morning voice exchange.
+  // Legacy notification bubbles were appended after saved chat messages,
+  // which incorrectly placed the dot below the voice and player replies.
+  if (isMonsterThread) {
+    const dotIndex = threadItems.findIndex((item) => item.id === "drunk-post-door-g-dot-v1");
+    const morningVoiceIndex = threadItems.findIndex((item) => item.id === "dag-morning-voice-01-v1");
+    if (dotIndex >= 0 && morningVoiceIndex >= 0 && dotIndex > morningVoiceIndex) {
+      const [dotMessage] = threadItems.splice(dotIndex, 1);
+      const nextVoiceIndex = threadItems.findIndex((item) => item.id === "dag-morning-voice-01-v1");
+      threadItems.splice(nextVoiceIndex, 0, dotMessage);
+    }
+    // From the dot onward, all incoming DaG messages use the newly selected
+    // avatar. Never fall back to the old guitar placeholder for this segment.
+    const dotAt = threadItems.findIndex((item) => item.id === "drunk-post-door-g-dot-v1");
+    if (dotAt >= 0) {
+      const currentDaGAvatar = typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "";
+      threadItems = threadItems.map((item, index) =>
+        index >= dotAt && !item.outgoing && (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊")
+          ? { ...item, avatar: currentDaGAvatar }
+          : item
+      );
+    }
+  }
   // Never expose the next interaction branch while any scripted line is
   // still waiting to arrive. The stage advances when the player chooses, but
   // the next choice belongs after the complete incoming exchange, not before it.
