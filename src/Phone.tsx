@@ -521,8 +521,13 @@ function PhoneRuntime({
       const messageSender = isOwnerImpersonation ? "我" : line.sender;
       const orderAt = Date.now();
       const baseTime = (latest.date || work.phone.date) + " " + (latest.time || work.phone.time);
-      const storyMessages = Array.isArray(catState.messages) ? catState.messages : [];
-      const wechatMessages = latest.messages.wechat ?? [];
+      const normalizeDoorVoice = (items: Item[]) => items.map((item) =>
+        item.id === "drunk-big-g-door-voice-v1"
+          ? { ...item, sender: "大G", outgoing: false, avatar: "", title: "大G", kind: "audio" as const, media: "./assets/dag-door-voice.mp3", body: "開門，我在外面。", meta: { ...item.meta, voiceDuration: "2", voiceTranscript: "開門，我在外面。" } }
+          : item
+      );
+      const storyMessages = normalizeDoorVoice(Array.isArray(catState.messages) ? catState.messages : []);
+      const wechatMessages = normalizeDoorVoice(latest.messages.wechat ?? []);
       const isBroccoliCancelledCall =
         (thread === "西蓝花" || thread === "西兰花") &&
         (line.id === "drunk-broccoli-missed-after-door-v1" || line.id === "drunk-broccoli-missed-after-door-v2" || line.meta?.callStatus === "cancelled");
