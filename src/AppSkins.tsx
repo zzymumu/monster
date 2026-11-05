@@ -1474,7 +1474,7 @@ export function WeChatSkin(p: SkinProps) {
 
   const [morningVoiceReplyStep, setMorningVoiceReplyStep] = useSkinState<number>(p, "wxMorningVoiceReplyStepV1", 0);
   const [morningAfterVoiceIndex, setMorningAfterVoiceIndex] = useSkinState<number>(p, "wxMorningAfterVoiceIndexV1", 0);
-  const morningAfterVoiceDialogue: Array<{ sender: string; body: string }> = [
+  const morningAfterVoiceDialogue: Array<{ sender: "我" | "大G"; body: string }> = [
     { sender: "我", body: "………………" },
     { sender: "我", body: "那谁让你不早点换头像！" },
     { sender: "大G", body: "蛤？所以还是我的错喔？" },
