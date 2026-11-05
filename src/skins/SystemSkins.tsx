@@ -759,14 +759,42 @@ const defaultClockAlarms: ClockAlarm[] = [
   { id: "alarm-1154", time: "11:54", label: "闹钟", enabled: false, repeat: [] },
 ];
 const clockCities = [
-  { city: "北京", zone: "Asia/Shanghai" },
-  { city: "伦敦", zone: "Europe/London" },
-  { city: "拉斯维加斯", zone: "America/Los_Angeles" },
-  { city: "温哥华", zone: "America/Vancouver" },
-  { city: "东京", zone: "Asia/Tokyo" },
-  { city: "纽约", zone: "America/New_York" },
-  { city: "巴黎", zone: "Europe/Paris" },
-  { city: "悉尼", zone: "Australia/Sydney" },
+  { city: "北京", zone: "Asia/Shanghai", aliases: "Beijing 北京市 中国" },
+  { city: "上海", zone: "Asia/Shanghai", aliases: "Shanghai 中国" },
+  { city: "台北", zone: "Asia/Taipei", aliases: "Taipei 台湾 臺北" },
+  { city: "香港", zone: "Asia/Hong_Kong", aliases: "Hong Kong 香港特别行政区" },
+  { city: "东京", zone: "Asia/Tokyo", aliases: "Tokyo Japan 日本" },
+  { city: "大阪", zone: "Asia/Tokyo", aliases: "Osaka Japan 日本" },
+  { city: "首尔", zone: "Asia/Seoul", aliases: "Seoul Korea 韩国" },
+  { city: "新加坡", zone: "Asia/Singapore", aliases: "Singapore" },
+  { city: "曼谷", zone: "Asia/Bangkok", aliases: "Bangkok Thailand 泰国" },
+  { city: "吉隆坡", zone: "Asia/Kuala_Lumpur", aliases: "Kuala Lumpur Malaysia 马来西亚" },
+  { city: "马尼拉", zone: "Asia/Manila", aliases: "Manila Philippines 菲律宾" },
+  { city: "雅加达", zone: "Asia/Jakarta", aliases: "Jakarta Indonesia 印尼" },
+  { city: "孟买", zone: "Asia/Kolkata", aliases: "Mumbai Bombay India 印度" },
+  { city: "迪拜", zone: "Asia/Dubai", aliases: "Dubai UAE 阿联酋" },
+  { city: "莫斯科", zone: "Europe/Moscow", aliases: "Moscow Russia 俄罗斯" },
+  { city: "伦敦", zone: "Europe/London", aliases: "London UK 英国" },
+  { city: "巴黎", zone: "Europe/Paris", aliases: "Paris France 法国" },
+  { city: "柏林", zone: "Europe/Berlin", aliases: "Berlin Germany 德国" },
+  { city: "罗马", zone: "Europe/Rome", aliases: "Rome Italy 意大利" },
+  { city: "马德里", zone: "Europe/Madrid", aliases: "Madrid Spain 西班牙" },
+  { city: "阿姆斯特丹", zone: "Europe/Amsterdam", aliases: "Amsterdam Netherlands 荷兰" },
+  { city: "纽约", zone: "America/New_York", aliases: "New York NYC 美国" },
+  { city: "洛杉矶", zone: "America/Los_Angeles", aliases: "Los Angeles LA 美国" },
+  { city: "旧金山", zone: "America/Los_Angeles", aliases: "San Francisco SF 美国" },
+  { city: "拉斯维加斯", zone: "America/Los_Angeles", aliases: "Las Vegas 美国" },
+  { city: "西雅图", zone: "America/Los_Angeles", aliases: "Seattle 美国" },
+  { city: "温哥华", zone: "America/Vancouver", aliases: "Vancouver Canada 加拿大" },
+  { city: "多伦多", zone: "America/Toronto", aliases: "Toronto Canada 加拿大" },
+  { city: "芝加哥", zone: "America/Chicago", aliases: "Chicago 美国" },
+  { city: "丹佛", zone: "America/Denver", aliases: "Denver 美国" },
+  { city: "墨西哥城", zone: "America/Mexico_City", aliases: "Mexico City 墨西哥" },
+  { city: "圣保罗", zone: "America/Sao_Paulo", aliases: "Sao Paulo Brazil 巴西" },
+  { city: "悉尼", zone: "Australia/Sydney", aliases: "Sydney Australia 澳大利亚" },
+  { city: "墨尔本", zone: "Australia/Melbourne", aliases: "Melbourne Australia 澳大利亚" },
+  { city: "奥克兰", zone: "Pacific/Auckland", aliases: "Auckland New Zealand 新西兰" },
+  { city: "檀香山", zone: "Pacific/Honolulu", aliases: "Honolulu Hawaii 夏威夷" },
 ];
 const clockParts = (date: Date, zone: string) => {
   const parts = new Intl.DateTimeFormat("zh-CN", { timeZone: zone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(date);
@@ -788,6 +816,7 @@ const clockZoneOffset = (date: Date, zone: string) => {
 export function ClockSkin(p: Props) {
   const [tab, setTab] = useState("世界时钟");
   const [worldEditMode, setWorldEditMode] = useState(false);
+  const [citySearch, setCitySearch] = useState("");
   const [swipedCity, setSwipedCity] = useState<string | null>(null);
   const worldTouchStart = useRef<number | null>(null);
   const [now, setNow] = useState(() => new Date());
@@ -984,7 +1013,27 @@ export function ClockSkin(p: Props) {
             {recentTimers.length > 0 && <div className="clock-recent"><h3>最近使用</h3>{recentTimers.map((v) => <button key={v} onClick={() => startTimer(Number(v))}><span>{formatTimer(Number(v)*1000)}</span><small>{Number(v)>=60 ? Math.floor(Number(v)/60)+"分钟" : v+"秒"}</small><Play size={21} fill="currentColor"/></button>)}</div>}
           </div>
         ) : (
-          <div className="clock-add-city"><h2>添加城市</h2>{clockCities.filter((city) => !cities.some((current) => current.zone === city.zone)).map((city) => <button key={city.zone} onClick={() => { setCitiesRaw(JSON.stringify([...cities, city])); setTab("世界时钟"); }}>{city.city}<span>＋</span></button>)}<button onClick={() => setTab("世界时钟")}>完成</button></div>
+          <div className="clock-add-city">
+            <header className="clock-add-city-header">
+              <button type="button" onClick={() => { setCitySearch(""); setTab("世界时钟"); }}>取消</button>
+              <h2>添加城市</h2><span />
+            </header>
+            <label className="clock-city-search">
+              <Search size={17} />
+              <input autoFocus value={citySearch} onChange={(event) => setCitySearch(event.target.value)} placeholder="搜索城市" aria-label="搜索城市" />
+              {citySearch && <button type="button" aria-label="清除搜索" onClick={() => setCitySearch("")}>×</button>}
+            </label>
+            <div className="clock-city-results">
+              {clockCities.filter((city) => !cities.some((current) => current.zone === city.zone))
+                .filter((city) => !citySearch.trim() || (city.city + " " + city.aliases + " " + city.zone).toLocaleLowerCase().includes(citySearch.trim().toLocaleLowerCase()))
+                .map((city) => <button type="button" key={city.city + city.zone} onClick={() => {
+                  setCitiesRaw(JSON.stringify([...cities, { city: city.city, zone: city.zone }]));
+                  setCitySearch(""); setTab("世界时钟");
+                }}><span>{city.city}<small>{city.zone.replaceAll("_", " ")}</small></span><Plus size={21} /></button>)}
+              {clockCities.filter((city) => !cities.some((current) => current.zone === city.zone))
+                .filter((city) => !citySearch.trim() || (city.city + " " + city.aliases + " " + city.zone).toLocaleLowerCase().includes(citySearch.trim().toLocaleLowerCase())).length === 0 && <p className="clock-city-empty">没有找到城市</p>}
+            </div>
+          </div>
         )}
       </div>
       {alarmEditorOpen && <div className="clock-modal-backdrop"><div className="clock-alarm-editor">
