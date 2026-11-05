@@ -939,14 +939,14 @@ export function ClockSkin(p: Props) {
             <h1>世界时钟</h1>
             {cities.map((city) => {
               const value = worldTime(city.zone);
-              const revealed = worldEditMode || swipedCity === city.zone;
+              const revealed = worldEditMode || swipedCity === city.city;
               return <div className="clock-world-swipe-wrap" key={city.zone}>
                 <button className="clock-world-delete" aria-label={"删除" + city.city} onClick={() => { setCitiesRaw(JSON.stringify(cities.filter((item) => item.zone !== city.zone))); setSwipedCity(null); }}>
                   <Trash2 size={20}/>
                 </button>
                 <div className={"clock-world-row" + (revealed ? " revealed" : "")}
                   onTouchStart={(event) => { worldTouchStart.current = event.touches[0]?.clientX ?? null; }}
-                  onTouchEnd={(event) => { const start = worldTouchStart.current; const end = event.changedTouches[0]?.clientX; if (start !== null && end !== undefined && start - end > 35) setSwipedCity(city.zone); else if (start !== null && end !== undefined && end - start > 30) setSwipedCity(null); worldTouchStart.current = null; }}
+                  onTouchEnd={(event) => { const start = worldTouchStart.current; const end = event.changedTouches[0]?.clientX; if (start !== null && end !== undefined && start - end > 35) setSwipedCity(city.city); else if (start !== null && end !== undefined && end - start > 30) setSwipedCity(null); worldTouchStart.current = null; }}
                   onClick={() => { if (swipedCity && swipedCity !== city.zone) setSwipedCity(null); }}>
                   <div><small>{value.day} {value.offset}</small><strong>{city.city}</strong></div>
                   <time>{value.time}</time>
@@ -1024,7 +1024,7 @@ export function ClockSkin(p: Props) {
               {citySearch && <button type="button" aria-label="清除搜索" onClick={() => setCitySearch("")}>×</button>}
             </label>
             <div className="clock-city-results">
-              {clockCities.filter((city) => !cities.some((current) => current.zone === city.zone))
+              {clockCities.filter((city) => !cities.some((current) => current.city === city.city))
                 .filter((city) => !citySearch.trim() || (city.city + " " + city.aliases + " " + city.zone).toLocaleLowerCase().includes(citySearch.trim().toLocaleLowerCase()))
                 .map((city) => <button type="button" key={city.city + city.zone} onClick={() => {
                   setCitiesRaw(JSON.stringify([...cities, { city: city.city, zone: city.zone }]));
