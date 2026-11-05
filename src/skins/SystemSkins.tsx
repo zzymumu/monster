@@ -787,6 +787,9 @@ const clockZoneOffset = (date: Date, zone: string) => {
 };
 export function ClockSkin(p: Props) {
   const [tab, setTab] = useState("世界时钟");
+  const [worldEditMode, setWorldEditMode] = useState(false);
+  const [swipedCity, setSwipedCity] = useState<string | null>(null);
+  const worldTouchStart = useRef<number | null>(null);
   const [now, setNow] = useState(() => new Date());
   const [citiesRaw, setCitiesRaw] = useSkinState<string>(p, "clockWorldCitiesV1", JSON.stringify(clockCities.slice(0, 4)));
   const cities = (() => { try { const value = JSON.parse(citiesRaw); return Array.isArray(value) ? value as Array<{city:string;zone:string}> : clockCities.slice(0,4); } catch { return clockCities.slice(0,4); } })();
@@ -898,7 +901,7 @@ export function ClockSkin(p: Props) {
         {tab === "秒表" || tab === "计时器" || tab === "闹钟" ? <strong>{tab}</strong> : null}
         <div className="clock-top-actions">
           {tab === "闹钟" ? <button onClick={() => setAlarmEditMode(!alarmEditMode)}>{alarmEditMode ? "完成" : "编辑"}</button> : null}
-          {tab === "世界时钟" ? <button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : tab === "秒表" || tab === "计时器" ? <button aria-label="编辑" onClick={() => tab === "秒表" ? resetStopwatch() : resetTimer()}>编辑</button> : null}
+          {tab === "世界时钟" ? <><button aria-label={worldEditMode ? "完成编辑" : "编辑"} className={worldEditMode ? "clock-edit-done" : ""} onClick={() => { setWorldEditMode(!worldEditMode); setSwipedCity(null); }}>{worldEditMode ? "✓" : "编辑"}</button><button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button></> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : tab === "秒表" || tab === "计时器" ? <button aria-label="编辑" onClick={() => tab === "秒表" ? resetStopwatch() : resetTimer()}>编辑</button> : null}
         </div>
       </header>
       <div className="clock-content">
@@ -907,9 +910,18 @@ export function ClockSkin(p: Props) {
             <h1>世界时钟</h1>
             {cities.map((city) => {
               const value = worldTime(city.zone);
-              return <div className="clock-world-row" key={city.zone}>
-                <div><small>{value.day} {value.offset}</small><strong>{city.city}</strong></div>
-                <time>{value.time}</time>
+              const revealed = worldEditMode || swipedCity === city.zone;
+              return <div className="clock-world-swipe-wrap" key={city.zone}>
+                <button className="clock-world-delete" aria-label={"删除" + city.city} onClick={() => { setCitiesRaw(JSON.stringify(cities.filter((item) => item.zone !== city.zone))); setSwipedCity(null); }}>
+                  <Trash2 size={20}/>
+                </button>
+                <div className={"clock-world-row" + (revealed ? " revealed" : "")}
+                  onTouchStart={(event) => { worldTouchStart.current = event.touches[0]?.clientX ?? null; }}
+                  onTouchEnd={(event) => { const start = worldTouchStart.current; const end = event.changedTouches[0]?.clientX; if (start !== null && end !== undefined && start - end > 35) setSwipedCity(city.zone); else if (start !== null && end !== undefined && end - start > 30) setSwipedCity(null); worldTouchStart.current = null; }}
+                  onClick={() => { if (swipedCity && swipedCity !== city.zone) setSwipedCity(null); }}>
+                  <div><small>{value.day} {value.offset}</small><strong>{city.city}</strong></div>
+                  <time>{value.time}</time>
+                </div>
               </div>;
             })}
           </>
