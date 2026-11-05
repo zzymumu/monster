@@ -1669,13 +1669,22 @@ export function WeChatSkin(p: SkinProps) {
     const owner = item.meta?.storyThread || item.title;
     return (owner === "温尚翊" ? "大G" : owner) === activeThreadOwner;
   };
-  const threadItems = orderCatRescueThreadItems([
+  const orderedThreadItems = orderCatRescueThreadItems([
     ...baseThreadItems,
     ...allItems.filter(belongsToActiveThread).filter((item) =>
       !isMonsterThread || keepPrankHistoryClean(item)
     ),
-    ...notificationStoryItems.filter(belongsToActiveThread),
   ]);
+  // Notification bubbles are generated at delivery time, but legacy story
+  // transcripts can carry later clock values. Sorting them together by time
+  // moved the fresh notification above the old final bubbles, so opening the
+  // chat looked as if the notification had vanished. Keep delivered notices
+  // after the ordered transcript, deduplicated by their stable IDs.
+  const notificationIds = new Set(notificationStoryItems.filter(belongsToActiveThread).map((item) => item.id));
+  const threadItems = [
+    ...orderedThreadItems.filter((item) => !notificationIds.has(item.id)),
+    ...notificationStoryItems.filter(belongsToActiveThread),
+  ];
   // Never expose the next interaction branch while any scripted line is
   // still waiting to arrive. The stage advances when the player chooses, but
   // the next choice belongs after the complete incoming exchange, not before it.
