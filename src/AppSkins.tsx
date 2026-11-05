@@ -96,12 +96,14 @@ function VoiceMessage({ item, onRead }: { item: Item; onRead: (id: string) => vo
   const duration = item.meta?.voiceDuration || "2";
   const transcript = item.meta?.voiceTranscript || item.body;
   const play = () => {
-    setRead(true);
-    onRead(item.id);
     const audio = audioRef.current;
     if (!audio) return;
     if (audio.ended) audio.currentTime = 0;
-    void audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    void audio.play().then(() => {
+      setPlaying(true);
+      setRead(true);
+      onRead(item.id);
+    }).catch(() => setPlaying(false));
   };
   return (
     <div style={{ width: 166, maxWidth: "100%" }}>
