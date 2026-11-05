@@ -3291,20 +3291,23 @@ export function WeChatSkin(p: SkinProps) {
                   );
                 })()
               )}
-              {isMonsterThread && morningVoiceReplyStep >= 21 && morningAfterVoiceIndex < morningAfterVoiceDialogue.length && morningAfterVoiceDialogue[morningAfterVoiceIndex]?.sender === "我" && (
-                <div className="cat-rescue-choices" aria-label="后续剧情回复选项">
-                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
-                    const current = morningAfterVoiceDialogue[morningAfterVoiceIndex];
-                    const lines: CatLine[] = [{ sender: "我", body: current.body, thread: "大G" }];
-                    let nextIndex = morningAfterVoiceIndex + 1;
-                    while (nextIndex < morningAfterVoiceDialogue.length && morningAfterVoiceDialogue[nextIndex].sender !== "我") {
-                      lines.push({ sender: "大G", body: morningAfterVoiceDialogue[nextIndex].body, thread: "大G" });
-                      nextIndex += 1;
-                    }
-                    appendCatLines(lines, catRescue.stage, catRescue.branch, "morning-after-voice-" + morningAfterVoiceIndex);
-                    setMorningAfterVoiceIndex(nextIndex);
-                  }}>{morningAfterVoiceDialogue[morningAfterVoiceIndex].body}</button>
-                  <div className="cat-rescue-option-hint">一条一条发送，点击后再出现大G的回复</div>
+              {isMonsterThread && morningVoiceReplyStep >= 21 && morningAfterVoiceIndex < morningAfterVoiceDialogue.length && (
+                <div className="cat-rescue-choices" aria-label="后续剧情逐条推进">
+                  {(() => {
+                    const nextLine = morningAfterVoiceDialogue[morningAfterVoiceIndex];
+                    const isPlayerLine = nextLine.sender === "我";
+                    return (
+                      <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: isPlayerLine ? "#07c160" : "#f4f4f4", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                        appendCatLines([{
+                          sender: nextLine.sender,
+                          body: nextLine.body,
+                          thread: "大G",
+                        }], catRescue.stage, catRescue.branch, "morning-after-voice-" + morningAfterVoiceIndex);
+                        setMorningAfterVoiceIndex((current) => current + 1);
+                      }}>{isPlayerLine ? nextLine.body : "大G：" + nextLine.body}</button>
+                    );
+                  })()}
+                  <div className="cat-rescue-option-hint">每次只显示一条，点击后再继续下一条</div>
                 </div>
               )}
               {isMonsterThread &&
