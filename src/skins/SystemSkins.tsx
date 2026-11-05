@@ -898,10 +898,10 @@ export function ClockSkin(p: Props) {
     <div className="catalog-skin native-clock native-clock-full">
       <header className="clock-topbar">
         {tab === "秒表" || tab === "计时器" ? <span /> : <span />}
-        {tab === "秒表" || tab === "计时器" || tab === "闹钟" ? <strong>{tab}</strong> : null}
+        {tab === "秒表" || tab === "闹钟" ? <strong>{tab}</strong> : null}
         <div className="clock-top-actions">
           {tab === "闹钟" ? <button onClick={() => setAlarmEditMode(!alarmEditMode)}>{alarmEditMode ? "完成" : "编辑"}</button> : null}
-          {tab === "世界时钟" ? <><button aria-label={worldEditMode ? "完成编辑" : "编辑"} className={worldEditMode ? "clock-edit-done" : ""} onClick={() => { setWorldEditMode(!worldEditMode); setSwipedCity(null); }}>{worldEditMode ? "✓" : "编辑"}</button><button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button></> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : tab === "计时器" ? <button aria-label="编辑" onClick={resetTimer}>编辑</button> : null}
+          {tab === "世界时钟" ? <><button aria-label={worldEditMode ? "完成编辑" : "编辑"} className={worldEditMode ? "clock-edit-done" : ""} onClick={() => { setWorldEditMode(!worldEditMode); setSwipedCity(null); }}>{worldEditMode ? "✓" : "编辑"}</button><button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button></> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : tab === "计时器" ? <button className="clock-timer-edit" aria-label="编辑计时器" onClick={resetTimer}>编辑</button> : null}
         </div>
       </header>
       <div className="clock-content">
@@ -962,11 +962,20 @@ export function ClockSkin(p: Props) {
             ) : (
               <>
                 <div className="clock-timer-picker">
-                  {[{value:timerHours,set:setTimerHours,max:23,label:"小时"},{value:timerMinutes,set:setTimerMinutes,max:59,label:"分钟"},{value:timerSeconds,set:setTimerSeconds,max:59,label:"秒"}].map((part) => <label key={part.label}>
-                    <select aria-label={part.label} value={part.value} onChange={(e) => part.set(Number(e.target.value))}>{Array.from({length:part.max+1},(_,n)=><option value={n} key={n}>{n} {part.label}</option>)}</select>
-                  </label>)}
+                  {[{value:timerHours,set:setTimerHours,max:23,label:"小时"},{value:timerMinutes,set:setTimerMinutes,max:59,label:"分钟"},{value:timerSeconds,set:setTimerSeconds,max:59,label:"秒"}].map((part) => {
+                    const change = (step:number) => part.set((part.value + step + part.max + 1) % (part.max + 1));
+                    return <div className="clock-wheel" key={part.label} role="spinbutton" aria-label={part.label} aria-valuenow={part.value} tabIndex={0}
+                      onWheel={(e) => { e.preventDefault(); change(e.deltaY > 0 ? 1 : -1); }}
+                      onTouchStart={(e) => { e.currentTarget.dataset.touchY = String(e.touches[0].clientY); }}
+                      onTouchEnd={(e) => { const start = Number(e.currentTarget.dataset.touchY || 0); const delta = start - e.changedTouches[0].clientY; if (Math.abs(delta) > 12) change(Math.max(-5, Math.min(5, Math.round(delta / 28))); }}>
+                      {[-2,-1,0,1,2].map((offset) => {
+                        const value = (part.value + offset + (part.max + 1) * 2) % (part.max + 1);
+                        return <button type="button" key={offset} className={offset === 0 ? "selected" : ""} onClick={() => part.set(value)}>{value}{offset === 0 ? <small>{part.label}</small> : null}</button>;
+                      })}
+                    </div>;
+                  })}
                 </div>
-                <label className="clock-timer-label">标签<input value={timerLabel} onChange={(e)=>setTimerLabel(e.target.value)} /></label>
+                <label className="clock-timer-label"><span>标签</span><input aria-label="计时器标签" value={timerLabel} onChange={(e)=>setTimerLabel(e.target.value)} /></label>
                 <button className="clock-ringtone" onClick={() => window.alert("计时器铃声：雷达（模拟设置）")}>铃声 <span>雷达 ›</span></button>
                 <div className="clock-timer-controls"><button className="secondary-round" onClick={resetTimer}><X size={24}/></button><button className="primary-round" onClick={() => startTimer(timerHours*3600+timerMinutes*60+timerSeconds)}><Play size={26} fill="currentColor"/></button></div>
               </>
