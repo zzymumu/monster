@@ -1473,6 +1473,36 @@ export function WeChatSkin(p: SkinProps) {
   }, [meetupQuestionSplitMigratedV1, catRescueRaw, pendingCatLinesRaw]);
 
   const [morningVoiceReplyStep, setMorningVoiceReplyStep] = useSkinState<number>(p, "wxMorningVoiceReplyStepV1", 0);
+  useEffect(() => {
+    const firstVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
+    const secondVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-02-v1");
+    if (!firstVoiceExists || morningVoiceReplyStep < 3 || secondVoiceExists) return;
+    const orderAt = Date.now();
+    const secondVoice = makeItem({
+      id: "dag-morning-voice-02-v1",
+      title: "大G",
+      sender: "大G",
+      body: "我手上提滿了東西欸，大小姐。",
+      time: "2026-11-06 08:01",
+      outgoing: false,
+      avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "",
+      kind: "audio",
+      media: "./assets/dag-voice-02.mp3",
+      read: false,
+      meta: {
+        storyId: "cat-rescue",
+        storyThread: "大G",
+        storyOrderAt: String(orderAt),
+        voiceDuration: "5",
+        voiceTranscript: "我手上提滿了東西欸，大小姐。",
+      },
+    });
+    setCatRescueRaw(JSON.stringify({
+      ...catRescue,
+      version: 2,
+      messages: [...catRescue.messages, secondVoice],
+    }));
+  }, [allItems, catRescueRaw, morningVoiceReplyStep, p.ui?.wxDaGAvatarV2]);
   const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
   // Do not infer story progress from a single old line or jump from stage 103
   // to 200: stages 101-105 contain the nose/skin, physical-contact and
@@ -2959,32 +2989,47 @@ export function WeChatSkin(p: SkinProps) {
           {catRescueActive ? (
             <div className="cat-rescue-thread">
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
-              {isMonsterThread &&
-                threadItems.some((item) => item.id === "dag-morning-voice-01-v1") &&
-                morningVoiceReplyStep < 3 && (
-                  <div className="cat-rescue-choices" aria-label="大G早晨语音回复选项">
-                    <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
-                      const replies = [
-                        ".....醒..醒了。",
-                        "噢.....蜂蜜水看到了。",
-                        "....你突然发语音干嘛？",
-                      ];
-                      const step = morningVoiceReplyStep;
-                      appendCatLines([{
-                        id: "dag-morning-voice-01-reply-v" + (step + 1),
-                        sender: "我",
-                        body: replies[step],
-                        thread: "大G",
-                      }], catRescue.stage, catRescue.branch, "dag-morning-voice-01-reply-v" + (step + 1));
-                      setMorningVoiceReplyStep(step + 1);
-                    }}>{[
-                      ".....醒..醒了。",
-                      "噢.....蜂蜜水看到了。",
-                      "....你突然发语音干嘛？",
-                    ][morningVoiceReplyStep]}</button>
-                    <div className="cat-rescue-option-hint">一条一条发送，点击后再出现下一句</div>
-                  </div>
-                )}
+              {isMonsterThread && (
+                (() => {
+                  const firstReplies = [
+                    ".....醒..醒了。",
+                    "噢.....蜂蜜水看到了。",
+                    "....你突然发语音干嘛？",
+                  ];
+                  const secondReplies = [
+                    "ooooo",
+                    "那那那那谢谢你！！！",
+                    "我其实吃不了太多啦！！！",
+                    "少买点就好！！！！",
+                    "我我我喝蜂蜜水喝的挺饱哈哈哈哈哈哈",
+                  ];
+                  const isFirstReply = morningVoiceReplyStep < 3;
+                  const replyIndex = isFirstReply ? morningVoiceReplyStep : morningVoiceReplyStep - 3;
+                  const secondVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-02-v1");
+                  const canReply = isFirstReply
+                    ? threadItems.some((item) => item.id === "dag-morning-voice-01-v1")
+                    : secondVoiceReady && morningVoiceReplyStep < 8;
+                  const replies = isFirstReply ? firstReplies : secondReplies;
+                  if (!canReply || replyIndex >= replies.length) return null;
+                  return (
+                    <div className="cat-rescue-choices" aria-label="大G语音回复选项">
+                      <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
+                        const reply = replies[replyIndex];
+                        const nextStep = morningVoiceReplyStep + 1;
+                        const replyId = (isFirstReply ? "dag-morning-voice-01-reply-v" : "dag-morning-voice-02-reply-v") + nextStep;
+                        appendCatLines([{
+                          id: replyId,
+                          sender: "我",
+                          body: reply,
+                          thread: "大G",
+                        }], catRescue.stage, catRescue.branch, replyId);
+                        setMorningVoiceReplyStep(nextStep);
+                      }}>{replies[replyIndex]}</button>
+                      <div className="cat-rescue-option-hint">一条一条发送，点击后再出现下一句</div>
+                    </div>
+                  );
+                })()
+              )}
               {isMonsterThread &&
                 (() => {
                   const prompts: Array<{ trigger: string; body: string; replyId: string; reply: string; callAfterSend?: boolean; replyLines?: CatLine[] }> = [
