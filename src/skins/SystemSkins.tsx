@@ -4,6 +4,15 @@ import { useSkinState } from "../skinState";
 import {
   Calendar,
   Camera,
+  AlarmClock,
+  Timer,
+  Play,
+  Pause,
+  RotateCcw,
+  Flag,
+  Trash2,
+  X,
+  Check,
   CheckCircle,
   ChevronLeft,
   ChevronRight,
@@ -28,7 +37,7 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { openStreetMapEmbed, openStreetMapLink } from "../deviceLocation";
 import { download } from "../io";
 import { safeMedia, type Item } from "../schema";
@@ -742,79 +751,228 @@ export function MailSkin(p: Props) {
     </div>
   );
 }
+type ClockAlarm = { id: string; time: string; label: string; enabled: boolean; repeat: string[] };
+const defaultClockAlarms: ClockAlarm[] = [
+  { id: "alarm-0748", time: "07:48", label: "闹钟", enabled: false, repeat: [] },
+  { id: "alarm-0830", time: "08:30", label: "起床", enabled: false, repeat: ["周一","周二","周三","周四","周五"] },
+  { id: "alarm-0906", time: "09:06", label: "起床", enabled: false, repeat: [] },
+  { id: "alarm-0945", time: "09:45", label: "起床", enabled: false, repeat: [] },
+  { id: "alarm-0955", time: "09:55", label: "起床", enabled: false, repeat: [] },
+  { id: "alarm-1010", time: "10:10", label: "起床", enabled: false, repeat: [] },
+  { id: "alarm-1154", time: "11:54", label: "闹钟", enabled: false, repeat: [] },
+];
+const clockCities = [
+  { city: "北京", zone: "Asia/Shanghai" },
+  { city: "伦敦", zone: "Europe/London" },
+  { city: "拉斯维加斯", zone: "America/Los_Angeles" },
+  { city: "温哥华", zone: "America/Vancouver" },
+];
+const clockParts = (date: Date, zone: string) => {
+  const parts = new Intl.DateTimeFormat("zh-CN", { timeZone: zone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(date);
+  return { hour: parts.find((p) => p.type === "hour")?.value || "00", minute: parts.find((p) => p.type === "minute")?.value || "00" };
+};
+const clockDayOffset = (date: Date, zone: string) => {
+  const target = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+  const local = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+  const a = new Date(target + "T12:00:00Z").getTime();
+  const b = new Date(local + "T12:00:00Z").getTime();
+  return Math.round((a - b) / 86400000);
+};
 export function ClockSkin(p: Props) {
-  const { tab, setTab, items } = useContent(p, "闹钟");
-  const [enabled, setEnabled] = useSkinState<string[]>(p, "alarms", []),
-    [seconds, setSeconds] = useState(0),
-    [running, setRunning] = useState(false);
+  const [tab, setTab] = useState("世界时钟");
+  const [now, setNow] = useState(() => new Date());
+  const [alarmsRaw, setAlarmsRaw] = useSkinState<string>(p, "clockAlarmsV2", JSON.stringify(defaultClockAlarms));
+  const alarms = (() => { try { const value = JSON.parse(alarmsRaw); return Array.isArray(value) ? value as ClockAlarm[] : defaultClockAlarms; } catch { return defaultClockAlarms; } })();
+  const [editingAlarm, setEditingAlarm] = useState<ClockAlarm | null>(null);
+  const [alarmTime, setAlarmTime] = useState("07:30");
+  const [alarmLabel, setAlarmLabel] = useState("闹钟");
+  const [alarmRepeat, setAlarmRepeat] = useState<string[]>([]);
+  const [alarmEditorOpen, setAlarmEditorOpen] = useState(false);
+  const [alarmEditMode, setAlarmEditMode] = useState(false);
+  const [stopwatchRaw, setStopwatchRaw] = useSkinState<string>(p, "clockStopwatchV1", JSON.stringify({ elapsed: 0, startedAt: 0, laps: [] as number[] }));
+  const stopwatch = (() => { try { return JSON.parse(stopwatchRaw) as { elapsed: number; startedAt: number; laps: number[] }; } catch { return { elapsed: 0, startedAt: 0, laps: [] }; } })();
+  const stopwatchRunning = stopwatch.startedAt > 0;
+  const stopwatchElapsed = stopwatch.elapsed + (stopwatchRunning ? Math.max(0, now.getTime() - stopwatch.startedAt) : 0);
+  const [timerHours, setTimerHours] = useState(0);
+  const [timerMinutes, setTimerMinutes] = useState(5);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [timerLabel, setTimerLabel] = useState("计时器");
+  const [timerDeadlineRaw, setTimerDeadlineRaw] = useSkinState<string>(p, "clockTimerDeadlineV1", "");
+  const [timerRemainingRaw, setTimerRemainingRaw] = useSkinState<string>(p, "clockTimerRemainingV1", "0");
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerNow, setTimerNow] = useState(Date.now());
+  const [recentTimers, setRecentTimers] = useSkinState<string[]>(p, "clockRecentTimersV1", ["300", "480"]);
+  const timerDeadline = Number(timerDeadlineRaw) || 0;
+  const timerRemaining = timerRunning && timerDeadline ? Math.max(0, timerDeadline - timerNow) : Math.max(0, Number(timerRemainingRaw) || 0);
+  const [timerFinished, setTimerFinished] = useState(false);
+  const timerInterval = useRef<number | undefined>(undefined);
+
   useEffect(() => {
-    if (!running) return;
-    const timer = setInterval(() => setSeconds((s) => s + 1), 1000);
-    return () => clearInterval(timer);
-  }, [running]);
+    const id = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+  useEffect(() => {
+    if (!timerRunning) return;
+    const id = window.setInterval(() => setTimerNow(Date.now()), 100);
+    timerInterval.current = id;
+    return () => window.clearInterval(id);
+  }, [timerRunning]);
+  useEffect(() => {
+    if (!timerRunning || !timerDeadline || timerNow < timerDeadline) return;
+    setTimerRunning(false);
+    setTimerDeadlineRaw("");
+    setTimerRemainingRaw("0");
+    setTimerFinished(true);
+  }, [timerNow, timerRunning, timerDeadline]);
+  const updateAlarms = (next: ClockAlarm[]) => setAlarmsRaw(JSON.stringify(next));
+  const openNewAlarm = () => {
+    setEditingAlarm(null); setAlarmTime("07:30"); setAlarmLabel("闹钟"); setAlarmRepeat([]); setAlarmEditorOpen(true);
+  };
+  const openExistingAlarm = (alarm: ClockAlarm) => {
+    setEditingAlarm(alarm); setAlarmTime(alarm.time); setAlarmLabel(alarm.label); setAlarmRepeat(alarm.repeat || []); setAlarmEditorOpen(true);
+  };
+  const saveAlarm = () => {
+    const next: ClockAlarm = { id: editingAlarm?.id || "alarm-" + Date.now(), time: alarmTime, label: alarmLabel.trim() || "闹钟", enabled: editingAlarm?.enabled ?? false, repeat: alarmRepeat };
+    updateAlarms(editingAlarm ? alarms.map((a) => a.id === editingAlarm.id ? next : a) : [...alarms, next].sort((a,b) => a.time.localeCompare(b.time)));
+    setAlarmEditorOpen(false);
+  };
+  const toggleAlarm = (id: string) => updateAlarms(alarms.map((a) => a.id === id ? { ...a, enabled: !a.enabled } : a));
+  const formatStopwatch = (ms: number) => {
+    const centiseconds = Math.floor(ms / 10) % 100;
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / 60000);
+    return { main: String(minutes).padStart(2,"0") + ":" + String(seconds).padStart(2,"0"), fraction: "." + String(centiseconds).padStart(2,"0") };
+  };
+  const startStopwatch = () => setStopwatchRaw(JSON.stringify({ ...stopwatch, startedAt: Date.now() }));
+  const pauseStopwatch = () => setStopwatchRaw(JSON.stringify({ ...stopwatch, elapsed: stopwatchElapsed, startedAt: 0 }));
+  const resetStopwatch = () => setStopwatchRaw(JSON.stringify({ elapsed: 0, startedAt: 0, laps: [] }));
+  const addLap = () => setStopwatchRaw(JSON.stringify({ ...stopwatch, laps: [stopwatchElapsed, ...stopwatch.laps] }));
+  const formatTimer = (ms: number) => {
+    const total = Math.ceil(ms / 1000);
+    return [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60].map((n) => String(n).padStart(2,"0")).join(":");
+  };
+  const startTimer = (seconds: number) => {
+    if (seconds <= 0) return;
+    setTimerFinished(false);
+    setTimerRemainingRaw(String(seconds * 1000));
+    setTimerDeadlineRaw(String(Date.now() + seconds * 1000));
+    setTimerNow(Date.now());
+    setTimerRunning(true);
+    setRecentTimers((current) => [String(seconds), ...current.filter((v) => v !== String(seconds))].slice(0, 5));
+  };
+  const pauseTimer = () => {
+    setTimerRemainingRaw(String(timerRemaining));
+    setTimerDeadlineRaw("");
+    setTimerRunning(false);
+  };
+  const resumeTimer = () => {
+    if (timerRemaining <= 0) return;
+    setTimerDeadlineRaw(String(Date.now() + timerRemaining));
+    setTimerNow(Date.now());
+    setTimerRunning(true);
+  };
+  const resetTimer = () => {
+    setTimerRunning(false); setTimerDeadlineRaw(""); setTimerRemainingRaw("0"); setTimerFinished(false);
+  };
+  const worldTime = (zone: string) => {
+    const value = clockParts(now, zone);
+    const offset = clockDayOffset(now, zone);
+    return { time: value.hour + ":" + value.minute, day: offset === 0 ? "今天" : offset > 0 ? "明天" : "昨天", offset: (offset > 0 ? "+" : "") + offset + "小时" };
+  };
+  const dayNames = ["周一","周二","周三","周四","周五","周六","周日"];
+  const elapsed = formatStopwatch(stopwatchElapsed);
   return (
-    <div className="catalog-skin native-clock">
-      <Header p={p} />
-      <div className="catalog-scroll">
-        <h1>{tab}</h1>
-        {tab === "秒表" ? (
-          <div className="stopwatch">
-            <output>
-              {String(Math.floor(seconds / 60)).padStart(2, "0")}:
-              {String(seconds % 60).padStart(2, "0")}
-            </output>
-            <div>
-              <button
-                onClick={() => {
-                  setSeconds(0);
-                  setRunning(false);
-                }}
-              >
-                复位
-              </button>
-              <button onClick={() => setRunning(!running)}>
-                {running ? "暂停" : "开始"}
-              </button>
+    <div className="catalog-skin native-clock native-clock-full">
+      <header className="clock-topbar">
+        {tab === "秒表" || tab === "计时器" ? (
+          <button className="clock-back" aria-label="返回" onClick={p.onBack}><ChevronLeft size={23} /></button>
+        ) : <span />}
+        {tab !== "世界时钟" && tab !== "闹钟" && <strong>{tab}</strong>}
+        <div className="clock-top-actions">
+          {tab === "世界时钟" || tab === "闹钟" ? <button onClick={() => tab === "闹钟" ? setAlarmEditMode(!alarmEditMode) : setAlarmEditMode(false)}>{tab === "闹钟" ? (alarmEditMode ? "完成" : "编辑") : ""}</button> : null}
+          {tab === "世界时钟" ? <button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : null}
+        </div>
+      </header>
+      <div className="clock-content">
+        {tab === "世界时钟" ? (
+          <>
+            <h1>世界时钟</h1>
+            {clockCities.map((city) => {
+              const value = worldTime(city.zone);
+              return <div className="clock-world-row" key={city.zone}>
+                <div><small>{value.day} {value.offset}</small><strong>{city.city}</strong></div>
+                <time>{value.time}</time>
+              </div>;
+            })}
+          </>
+        ) : tab === "闹钟" ? (
+          <>
+            <h1 className="clock-alarm-heading">闹钟</h1>
+            <div className="clock-alarm-section"><h3>其他</h3>
+              {alarms.map((alarm) => <div className="clock-alarm-row" key={alarm.id}>
+                <button className="clock-alarm-detail" onClick={() => openExistingAlarm(alarm)}>
+                  <time>{alarm.time}</time><small>{alarm.repeat.length ? alarm.repeat.join(" ") : alarm.label}</small>
+                </button>
+                <button role="switch" aria-checked={alarm.enabled} aria-label={alarm.time + " " + alarm.label} className={"clock-switch " + (alarm.enabled ? "on" : "")} onClick={() => toggleAlarm(alarm.id)}><span /></button>
+                {alarmEditMode && <button className="clock-delete-alarm" aria-label="删除闹钟" onClick={() => updateAlarms(alarms.filter((a) => a.id !== alarm.id))}><Trash2 size={16}/></button>}
+              </div>)}
+            </div>
+          </>
+        ) : tab === "秒表" ? (
+          <div className="clock-stopwatch-view">
+            <output><span>{elapsed.main}</span><small>{elapsed.fraction}</small></output>
+            <div className="clock-stopwatch-controls">
+              <button className="secondary-round" onClick={stopwatchRunning ? addLap : resetStopwatch}>{stopwatchRunning ? "分段" : "复位"}</button>
+              <button className={"primary-round " + (stopwatchRunning ? "pause" : "")} onClick={stopwatchRunning ? pauseStopwatch : startStopwatch}>{stopwatchRunning ? <Pause size={26}/> : <Play size={26} fill="currentColor"/>}</button>
+            </div>
+            <div className="clock-laps">
+              {stopwatch.laps.map((lap, index) => <div key={index}><span>分段 {stopwatch.laps.length - index}</span><time>{formatStopwatch(lap).main}{formatStopwatch(lap).fraction}</time></div>)}
             </div>
           </div>
+        ) : tab === "计时器" ? (
+          <div className="clock-timer-view">
+            <h1>计时器</h1>
+            {timerRemaining > 0 || timerRunning ? (
+              <div className="clock-timer-countdown">
+                <output>{formatTimer(timerRemaining)}</output>
+                <div className="clock-timer-controls">
+                  <button className="secondary-round" onClick={resetTimer}><X size={24}/></button>
+                  <button className="primary-round" onClick={timerRunning ? pauseTimer : resumeTimer}>{timerRunning ? <Pause size={26}/> : <Play size={26} fill="currentColor"/>}</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="clock-timer-picker">
+                  {[{value:timerHours,set:setTimerHours,max:23,label:"小时"},{value:timerMinutes,set:setTimerMinutes,max:59,label:"分钟"},{value:timerSeconds,set:setTimerSeconds,max:59,label:"秒"}].map((part) => <label key={part.label}>
+                    <select aria-label={part.label} value={part.value} onChange={(e) => part.set(Number(e.target.value))}>{Array.from({length:part.max+1},(_,n)=><option value={n} key={n}>{n} {part.label}</option>)}</select>
+                  </label>)}
+                </div>
+                <label className="clock-timer-label">标签<input value={timerLabel} onChange={(e)=>setTimerLabel(e.target.value)} /></label>
+                <button className="clock-ringtone" onClick={() => window.alert("计时器铃声：雷达（模拟设置）")}>铃声 <span>雷达　›</span></button>
+                <div className="clock-timer-controls"><button className="secondary-round" onClick={resetTimer}><X size={24}/></button><button className="primary-round" onClick={() => startTimer(timerHours*3600+timerMinutes*60+timerSeconds)}><Play size={26} fill="currentColor"/></button></div>
+              </>
+            )}
+            {timerFinished && <div className="clock-timer-finished" role="status"><strong>计时结束</strong><button onClick={resetTimer}>停止</button></div>}
+            {recentTimers.length > 0 && <div className="clock-recent"><h3>最近使用</h3>{recentTimers.map((v) => <button key={v} onClick={() => startTimer(Number(v))}><span>{formatTimer(Number(v)*1000)}</span><small>{Number(v)>=60 ? Math.floor(Number(v)/60)+"分钟" : v+"秒"}</small><Play size={21} fill="currentColor"/></button>)}</div>}
+          </div>
         ) : (
-          items.map((i) => (
-            <div className="alarm-row" key={i.id}>
-              <button onClick={() => p.onItem(i)}>
-                <time>{meta(i, "clock", i.time.slice(-5))}</time>
-                <small>
-                  {tab === "世界时钟" ? meta(i, "city", i.title) : i.title}
-                </small>
-              </button>
-              {tab === "闹钟" ? (
-                <button
-                  role="switch"
-                  aria-label={`闹钟${i.title}`}
-                  aria-checked={enabled.includes(i.id)}
-                  className={`native-switch ${enabled.includes(i.id) ? "on" : ""}`}
-                  onClick={() =>
-                    setEnabled(
-                      enabled.includes(i.id)
-                        ? enabled.filter((x) => x !== i.id)
-                        : [...enabled, i.id],
-                    )
-                  }
-                >
-                  <span />
-                </button>
-              ) : (
-                <Clock size={35} />
-              )}
-            </div>
-          ))
+          <div className="clock-add-city"><h2>世界时钟</h2><p>已显示北京、伦敦、拉斯维加斯和温哥华。</p><button onClick={() => setTab("世界时钟")}>完成</button></div>
         )}
       </div>
-      <Tabs
-        tabs={["世界时钟", "闹钟", "秒表"]}
-        value={tab}
-        set={setTab}
-        icons={[<Globe />, <Clock />, <Clock />]}
-      />
+      {alarmEditorOpen && <div className="clock-modal-backdrop"><div className="clock-alarm-editor">
+        <div><button aria-label="取消" onClick={() => setAlarmEditorOpen(false)}>取消</button><strong>{editingAlarm ? "编辑闹钟" : "添加闹钟"}</strong><button onClick={saveAlarm}>存储</button></div>
+        <input type="time" value={alarmTime} onChange={(e)=>setAlarmTime(e.target.value)} />
+        <label>标签<input value={alarmLabel} onChange={(e)=>setAlarmLabel(e.target.value)} /></label>
+        <h4>重复</h4><div className="clock-repeat">{dayNames.map((day)=><button key={day} className={alarmRepeat.includes(day)?"selected":""} onClick={()=>setAlarmRepeat((v)=>v.includes(day)?v.filter((x)=>x!==day):[...v,day])}>{day}</button>)}</div>
+      </div></div>}
+      {tab !== "计时器" && <nav className="catalog-tabs clock-tabs">
+        {[
+          {label:"世界时钟",icon:<Globe/>},
+          {label:"闹钟",icon:<AlarmClock/>},
+          {label:"秒表",icon:<Clock/>},
+          {label:"计时器",icon:<Timer/>},
+        ].map((item)=><button key={item.label} className={tab===item.label?"selected":""} onClick={()=>setTab(item.label)}>{item.icon}<span>{item.label}</span></button>)}
+      </nav>}
     </div>
   );
 }
