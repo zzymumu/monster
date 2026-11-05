@@ -361,7 +361,18 @@ function PhoneRuntime({
       const wx = current.ui?.wechat ?? {};
       if (!active || active.caller !== "西蓝花" || active.status !== "ringing" || wx.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
       const next = dispatch(work, { ...current, incomingCall: null }, "callDeclined", active.target || active.caller);
-      const queued = [{ id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call" as const, meta: { callStatus: "cancelled" } }];
+      const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; meta?: Record<string, string> }> = [
+        { id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
+        { id: "drunk-door-bigg-intro-v1", sender: "大G", body: "你好我是溫尚翊，你朋友喝多了。", thread: "西蓝花", meta: { switchThread: "西蓝花" } },
+        { id: "drunk-door-broccoli-pause-v1", sender: "西蓝花", body: "………………", thread: "西蓝花" },
+        { id: "drunk-door-broccoli-gasp-v1", sender: "西蓝花", body: "啊？？？", thread: "西蓝花" },
+        { id: "drunk-door-broccoli-confirm-v1", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
+        { id: "drunk-door-broccoli-question-v1", sender: "西蓝花", body: "她在干嘛，能接电话吗？", thread: "西蓝花" },
+        { id: "drunk-door-bigg-explain-v1", sender: "大G", body: "嗯，她刚刚喝了不少，现在已经睡着了。", thread: "西蓝花" },
+        { id: "drunk-door-bigg-reassure-v1", sender: "大G", body: "不用擔心，我會照顧好她。", thread: "西蓝花" },
+        { id: "drunk-door-broccoli-relief-v1", sender: "西蓝花", body: "好吧……我就知道……", thread: "西蓝花" },
+        { id: "drunk-door-broccoli-request-v1", sender: "西蓝花", body: "……那真的麻煩你了，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
+      ];
       update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
     }, 10000);
     return () => window.clearTimeout(timer);
@@ -1231,7 +1242,18 @@ function PhoneRuntime({
                       const wx = current.ui?.wechat ?? {};
                       const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
-                        const queued = [{ id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call" as const, meta: { callStatus: "cancelled" } }];
+                        const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; meta?: Record<string, string> }> = [
+                          { id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled" } },
+                          { id: "drunk-door-bigg-intro-v1", sender: "大G", body: "你好我是溫尚翊，你朋友喝多了。", thread: "西蓝花", meta: { switchThread: "西蓝花" } },
+                          { id: "drunk-door-broccoli-pause-v1", sender: "西蓝花", body: "………………", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-gasp-v1", sender: "西蓝花", body: "啊？？？", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-confirm-v1", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-question-v1", sender: "西蓝花", body: "她在干嘛，能接电话吗？", thread: "西蓝花" },
+                          { id: "drunk-door-bigg-explain-v1", sender: "大G", body: "嗯，她刚刚喝了不少，现在已经睡着了。", thread: "西蓝花" },
+                          { id: "drunk-door-bigg-reassure-v1", sender: "大G", body: "不用擔心，我會照顧好她。", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-relief-v1", sender: "西蓝花", body: "好吧……我就知道……", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-request-v1", sender: "西蓝花", body: "……那真的麻煩你了，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
+                        ];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
                         const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; meta?: Record<string, string> }> = [
