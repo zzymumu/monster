@@ -1111,7 +1111,33 @@ function PhoneRuntime({
                       if (id === "drunk-big-g-door-voice-v1") {
                         const current = runtimeRef.current;
                         const wx = current.ui?.wechat ?? {};
-                        update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxBroccoliAfterDoorCallV1: true } } });
+                        if (wx.wxDoorVoiceFollowupQueuedV1 !== true) {
+                          const queued = [
+                            { id: "drunk-door-bigg-intro-v1", sender: "大G", body: "你好我是溫尚翊，你朋友喝多了。", thread: "西蓝花" },
+                            { id: "drunk-door-broccoli-pause-v1", sender: "西蓝花", body: "………………", thread: "西蓝花" },
+                            { id: "drunk-door-broccoli-gasp-v1", sender: "西蓝花", body: "啊？？？", thread: "西蓝花" },
+                            { id: "drunk-door-broccoli-confirm-v1", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
+                            { id: "drunk-door-broccoli-question-v1", sender: "西蓝花", body: "她在干嘛，能接电话吗？", thread: "西蓝花" },
+                            { id: "drunk-door-bigg-explain-v1", sender: "大G", body: "嗯，她刚刚喝了不少，现在已经睡着了。", thread: "西蓝花" },
+                            { id: "drunk-door-bigg-reassure-v1", sender: "大G", body: "不用擔心，我會照顧好她。", thread: "西蓝花" },
+                            { id: "drunk-door-broccoli-relief-v1", sender: "西蓝花", body: "好吧.....我就知道......", thread: "西蓝花" },
+                            { id: "drunk-door-broccoli-request-v1", sender: "西蓝花", body: "……那真的麻煩你了，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
+                          ];
+                          update({
+                            ...current,
+                            ui: {
+                              ...current.ui,
+                              wechat: {
+                                ...wx,
+                                wxDoorVoiceFollowupQueuedV1: true,
+                                wxBroccoliAfterDoorCallV1: false,
+                                wxBroccoliAfterDoorCallStartedV2: true,
+                                openThread: "西蓝花",
+                                wxCatPendingLines: JSON.stringify(queued),
+                              },
+                            },
+                          });
+                        }
                       }
                     }
                   }}
