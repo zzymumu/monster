@@ -3312,7 +3312,12 @@ export function WeChatSkin(p: SkinProps) {
                       p.onRead(name);
                     }}>
                       <span className="wx-chat-avatar">
-                        <Avatar name={name} src={last.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} />
+                        <Avatar
+                          name={name}
+                          src={isMonsterName(name) && p.ui?.wxPostDrunkGDotDeliveredV1 === true
+                            ? (typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "./assets/dag-new-avatar.jpg")
+                            : last.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")}
+                        />
                         {unread && <b className="wx-unread">{list.filter((i) => !i.read).length || ""}</b>}
                       </span>
                       <div className="wx-chat-copy"><strong>{displayName(name)}</strong><p>{last.body}</p></div>
