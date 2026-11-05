@@ -1601,25 +1601,35 @@ export function WeChatSkin(p: SkinProps) {
     });
     setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, fifthVoice] }));
   }, [allItems, catRescueRaw, morningVoiceReplyStep, p.ui?.wxDaGAvatarV2]);
-  const addFifthDaGText = (id: string, body: string) => {
-    if (allItems.some((item) => item.id === id)) return;
-    const line = makeItem({
-      id, title: "大G", sender: "大G", body, time: "2026-11-06 08:06",
-      outgoing: false,
-      avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "./assets/dag-new-avatar.jpg",
-      meta: { storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(Date.now()) },
-    });
-    setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, line] }));
-  };
   useEffect(() => {
-    if (morningVoiceReplyStep >= 16) addFifthDaGText("dag-morning-voice-05-text-01-v1", "不知道啊，是谁🤔");
-    if (morningVoiceReplyStep >= 17) addFifthDaGText("dag-morning-voice-05-text-02-v1", "好像是某个现在在跟我说话的人吧🤔");
-    if (morningVoiceReplyStep >= 21) addFifthDaGText("dag-morning-voice-05-text-03-v1", "我又没说是你");
-    if (morningVoiceReplyStep >= 23) {
-      addFifthDaGText("dag-morning-voice-05-text-04-v1", "唉，昨晚真的好惨");
-      addFifthDaGText("dag-morning-voice-05-text-05-v1", "好心来照顾醉鬼结果还不给进门，差点就要露宿街头");
+    const corrected = catRescue.messages.map((item) =>
+      item.id === "dag-morning-voice-05-reply-v16" && item.body !== "是谁"
+        ? { ...item, body: "是谁" }
+        : item
+    );
+    const desired: Array<[number, string, string]> = [];
+    if (morningVoiceReplyStep >= 16) desired.push([16, "dag-morning-voice-05-text-01-v1", "不知道啊，是谁🤔"]);
+    if (morningVoiceReplyStep >= 17) desired.push([17, "dag-morning-voice-05-text-02-v1", "好像是某个现在在跟我说话的人吧🤔"]);
+    if (morningVoiceReplyStep >= 20) desired.push([20, "dag-morning-voice-05-text-03-v1", "我又没说是你"]);
+    if (morningVoiceReplyStep >= 21) {
+      desired.push([21, "dag-morning-voice-05-text-04-v1", "唉，昨晚真的好惨"]);
+      desired.push([21, "dag-morning-voice-05-text-05-v1", "好心来照顾醉鬼结果还不给进门，差点就要露宿街头"]);
     }
-  }, [allItems, catRescueRaw, morningVoiceReplyStep, p.ui?.wxDaGAvatarV2]);
+    const nextMessages = [...corrected];
+    for (const [step, id, body] of desired) {
+      if (nextMessages.some((item) => item.id === id)) continue;
+      nextMessages.push(makeItem({
+        id, title: "大G", sender: "大G", body, time: "2026-11-06 08:06",
+        outgoing: false,
+        avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "./assets/dag-new-avatar.jpg",
+        meta: { storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(Date.now() + step) },
+      }));
+    }
+    if (nextMessages.length !== catRescue.messages.length ||
+        nextMessages.some((item, index) => item !== catRescue.messages[index])) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: nextMessages }));
+    }
+  }, [catRescue, catRescueRaw, morningVoiceReplyStep, p.ui?.wxDaGAvatarV2]);
   const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
   // Do not infer story progress from a single old line or jump from stage 103
   // to 200: stages 101-105 contain the nose/skin, physical-contact and
@@ -3136,13 +3146,16 @@ export function WeChatSkin(p: SkinProps) {
                   const isThirdReply = morningVoiceReplyStep >= 8 && morningVoiceReplyStep < 11;
                   const isFourthReply = morningVoiceReplyStep >= 11 && morningVoiceReplyStep < 13;
                   const isFinalReply = morningVoiceReplyStep === 13;
-                  const replyIndex = isFinalReply ? 0 : morningVoiceReplyStep < 14 ? isFirstReply ? morningVoiceReplyStep : isSecondReply ? morningVoiceReplyStep - 3 : isThirdReply ? morningVoiceReplyStep - 8 : morningVoiceReplyStep - 11 : morningVoiceReplyStep === 17 ? 2 : morningVoiceReplyStep >= 18 && morningVoiceReplyStep < 21 ? morningVoiceReplyStep - 15 : 6;
+                  const replyIndex = isFinalReply ? 0 : morningVoiceReplyStep < 14 ? isFirstReply ? morningVoiceReplyStep : isSecondReply ? morningVoiceReplyStep - 3 : isThirdReply ? morningVoiceReplyStep - 8 : morningVoiceReplyStep - 11 : Math.min(6, morningVoiceReplyStep - 14);
                   const secondVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-02-v1");
                   const thirdVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-03-v1");
                   const fourthVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-04-v1");
                   const fourthTextReady = threadItems.some((item) => item.id === "dag-morning-voice-04-text-v1");
                   const fifthVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-05-v1");
-                  const fifthReplyReady = morningVoiceReplyStep >= 14 && fifthVoiceReady && (morningVoiceReplyStep !== 16 && morningVoiceReplyStep !== 21 && morningVoiceReplyStep !== 23);
+                  const fifthReplyReady = morningVoiceReplyStep >= 14 && morningVoiceReplyStep <= 20 && fifthVoiceReady &&
+                    (morningVoiceReplyStep < 16 || threadItems.some((item) => item.id === "dag-morning-voice-05-text-01-v1")) &&
+                    (morningVoiceReplyStep < 17 || threadItems.some((item) => item.id === "dag-morning-voice-05-text-02-v1")) &&
+                    (morningVoiceReplyStep < 20 || threadItems.some((item) => item.id === "dag-morning-voice-05-text-03-v1"));
                   const canReply = morningVoiceReplyStep < 14
                     ? isFirstReply ? threadItems.some((item) => item.id === "dag-morning-voice-01-v1") : isSecondReply ? secondVoiceReady : isThirdReply ? thirdVoiceReady : isFourthReply ? fourthVoiceReady : isFinalReply && fourthTextReady
                     : fifthReplyReady;
