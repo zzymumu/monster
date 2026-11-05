@@ -397,7 +397,7 @@ function PhoneRuntime({
     } catch { catState = {}; }
     const normalize = (items: Item[]) => {
       let changed = false;
-      const next = items.map((item) => {
+      let next = items.map((item) => {
         const thread = item.meta?.storyThread || item.title;
         if (
           item.meta?.storyId === "cat-rescue" &&
@@ -412,8 +412,37 @@ function PhoneRuntime({
             meta: { ...item.meta, impersonatedBy: item.sender },
           };
         }
+        if (
+          (item.id === "drunk-broccoli-missed-after-door-v1" || item.id === "drunk-broccoli-missed-after-door-v2") &&
+          (thread === "西蓝花" || thread === "西兰花")
+        ) {
+          changed = true;
+          const { systemNotice: _legacyNotice, ...meta } = item.meta;
+          return {
+            ...item,
+            title: "西蓝花",
+            sender: "西蓝花",
+            body: "对方已取消",
+            outgoing: false,
+            kind: "call" as const,
+            meta: { ...meta, callStatus: "cancelled", storyThread: "西蓝花" },
+          };
+        }
         return item;
       });
+      const cancelledIndex = next.findIndex((item) =>
+        item.id === "drunk-broccoli-missed-after-door-v1" || item.id === "drunk-broccoli-missed-after-door-v2"
+      );
+      const replyIndex = next.findIndex((item) =>
+        item.id === "drunk-broccoli-call-ended-v2" ||
+        item.body.includes("你在說什麼我聽不清") ||
+        item.body.includes("你在说什么我听不清")
+      );
+      if (cancelledIndex >= 0 && replyIndex >= 0 && cancelledIndex > replyIndex) {
+        const [cancelled] = next.splice(cancelledIndex, 1);
+        next.splice(replyIndex, 0, cancelled);
+        changed = true;
+      }
       return { items: next, changed };
     };
     const catMessages = normalize(Array.isArray(catState.messages) ? catState.messages : []);
