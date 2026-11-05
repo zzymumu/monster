@@ -967,7 +967,7 @@ export function ClockSkin(p: Props) {
                     return <div className="clock-wheel" key={part.label} role="spinbutton" aria-label={part.label} aria-valuenow={part.value} tabIndex={0}
                       onWheel={(e) => { e.preventDefault(); change(e.deltaY > 0 ? 1 : -1); }}
                       onTouchStart={(e) => { e.currentTarget.dataset.touchY = String(e.touches[0].clientY); }}
-                      onTouchEnd={(e) => { const start = Number(e.currentTarget.dataset.touchY || 0); const delta = start - e.changedTouches[0].clientY; if (Math.abs(delta) > 12) change(Math.max(-5, Math.min(5, Math.round(delta / 28))); }}>
+                      onTouchEnd={(e) => { const start = Number(e.currentTarget.dataset.touchY || 0); const delta = start - e.changedTouches[0].clientY; if (Math.abs(delta) > 12) change(Math.max(-5, Math.min(5, Math.round(delta / 28)))); }}>
                       {[-2,-1,0,1,2].map((offset) => {
                         const value = (part.value + offset + (part.max + 1) * 2) % (part.max + 1);
                         return <button type="button" key={offset} className={offset === 0 ? "selected" : ""} onClick={() => part.set(value)}>{value}{offset === 0 ? <small>{part.label}</small> : null}</button>;
