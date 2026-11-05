@@ -239,7 +239,7 @@ export function NeteaseSkin(p: Props) {
             {card("本地音乐",library.length+" 首歌曲","♫",()=>setSubPage("本地音乐"),"#a78b89")}
           </div>
           {sectionTitle("我的歌单")}
-          {groupItems(library,"我的音乐").map(g=><button key={g} onClick={()=>setSubPage(g)} style={{ display:"block", width:"100%", padding:"13px 15px", textAlign:"left", border:0, borderBottom:"1px solid #f2f2f2", background:"white", color:"#333" }}>♫　{g}　›</button>)}
+          {groupItems(library,"我的音乐").map(g=><button key={g} onClick={()=>setSubPage(g)} style={{ display:"block", width:"100%", padding:"13px 15px", textAlign:"left", border:0, borderBottom:"1px solid #f2f2f2", background:"white", color:"#333" }}>♫ {g} ›</button>)}
           {sectionTitle("收藏的歌曲")}
           {items.filter(i=>favorites.includes(i.id)).map(row)}
         </>}
@@ -255,7 +255,7 @@ export function NeteaseSkin(p: Props) {
         <div style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:0 }}>
           <div style={{ width:"min(72vw,260px)",aspectRatio:"1",borderRadius:12,background:"linear-gradient(145deg,#c85b57,#e6b1a8)",display:"grid",placeItems:"center",color:"white",boxShadow:"0 12px 30px #b85a5540" }}><Music size={70}/></div>
           <h2 style={{fontSize:19,margin:"22px 0 6px",textAlign:"center"}}>{current.title}</h2><p style={{color:"#888",fontSize:12,margin:0}}>{current.sender} · {meta(current,"album")}</p>
-          <div style={{marginTop:30,color:"#888",fontSize:12,textAlign:"center",lineHeight:2}}>♪　歌词将在授权歌词数据接入后同步显示　♪</div>
+          <div style={{marginTop:30,color:"#888",fontSize:12,textAlign:"center",lineHeight:2}}>♪ 歌词将在授权歌词数据接入后同步显示 ♪</div>
         </div>
         {current.kind==="audio" && safeMedia(current.media) ? <AudioPlayer p={p} item={current}/> : <div style={{fontSize:10,color:"#999",textAlign:"center",padding:8}}>此歌曲尚无可播放的授权音频</div>}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-around",padding:"16px 0 28px",color:"#333"}}>
