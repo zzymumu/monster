@@ -1344,6 +1344,24 @@ export function WeChatSkin(p: SkinProps) {
   const catRescue = legacyPrankReaddPending
     ? { ...parsedCatRescue, messages: correctedPickupMessages, stage: 16, branch: "monster-prank" }
     : { ...parsedCatRescue, messages: correctedPickupMessages };
+  useEffect(() => {
+    const oldMessages = catRescue.messages;
+    const cleanMessages = oldMessages.filter((message, index) => {
+      const previous = oldMessages[index - 1];
+      const next = oldMessages[index + 1];
+      return !(
+        message.sender === "大G" &&
+        message.body.trim() === "怎么，突然不说话了？" &&
+        previous?.sender === "大G" &&
+        previous.body.trim() === "哈哈哈哈哈。" &&
+        next?.sender === "我" &&
+        next.body.trim() === "那个……"
+      );
+    });
+    if (cleanMessages.length !== oldMessages.length) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: cleanMessages }));
+    }
+  }, [catRescueRaw]);
   const allItems = [...p.items, ...catRescue.messages];
   // The morning-after voice is delivered once the previous door voice has
   // reached the DaG transcript. Keep the real uploaded MP3 and transcript in
