@@ -399,7 +399,7 @@ function PhoneRuntime({
     update({
       ...current,
       notifications: [...current.notifications, "微信：西蓝花：祖宗，你是死了吗？"].slice(-60),
-      ui: { ...current.ui, wechat: { ...wx, wxPostDrunkBroccoliCheckInV1: true, wxDaGAvatarV2: "./assets/dag-new-avatar.jpg" } },
+      ui: { ...current.ui, wechat: { ...wx, wxPostDrunkBroccoliCheckInV1: true } },
     });
   }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, s.ui?.wechat?.wxCatPendingLines, ready, locked, creator]);
 
