@@ -397,7 +397,7 @@ function PhoneRuntime({
     } catch { catState = {}; }
     const normalize = (items: Item[]) => {
       let changed = false;
-      let next = items.map((item) => {
+      const next = items.map((item) => {
         const thread = item.meta?.storyThread || item.title;
         if (
           item.meta?.storyId === "cat-rescue" &&
