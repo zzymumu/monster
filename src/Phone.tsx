@@ -419,6 +419,13 @@ function PhoneRuntime({
         if (typeof raw === "string") catState = JSON.parse(raw);
       } catch { catState = {}; }
       const thread = line.thread || getCatRescueThreadForStage(Number(catState.stage) || 0);
+      // In the drunk-phone scene, DaG is borrowing the owner's phone to reply
+      // inside Broccoli's chat. Those lines must render as the owner's outgoing
+      // messages (right side + owner's avatar), not as incoming DaG messages.
+      const isOwnerImpersonation =
+        (thread === "西蓝花" || thread === "西兰花") &&
+        (line.sender === "大G" || line.sender === "温尚翊");
+      const messageSender = isOwnerImpersonation ? "我" : line.sender;
       const orderAt = Date.now();
       const baseTime = (latest.date || work.phone.date) + " " + (latest.time || work.phone.time);
       const storyMessages = Array.isArray(catState.messages) ? catState.messages : [];
@@ -426,13 +433,13 @@ function PhoneRuntime({
       const created = makeItem({
         id: line.id || "cat-rescue-stage-" + (Number(catState.stage) || 0) + "-reply-" + thread + "-" + line.sender + "-" + orderAt,
         title: thread,
-        sender: line.sender,
+        sender: messageSender,
         body: line.body,
         time: baseTime,
-        outgoing: line.sender === "我",
+        outgoing: messageSender === "我",
         kind: line.kind || "text",
         media: line.media || "",
-        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(orderAt), ...(line.meta || {}) },
+        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(orderAt), ...(isOwnerImpersonation ? { impersonatedBy: line.sender } : {}), ...(line.meta || {}) },
       });
       const alreadyDelivered = storyMessages.some((item) => item.id === created.id) ||
         wechatMessages.some((item) => item.id === created.id);
@@ -443,7 +450,7 @@ function PhoneRuntime({
       const sameContactThread = (openThread === thread) ||
         ((openThread === "西蓝花" || openThread === "西兰花") && (thread === "西蓝花" || thread === "西兰花")) ||
         ((openThread === "大G" || openThread === "温尚翊") && (thread === "大G" || thread === "温尚翊"));
-      if (!alreadyDelivered && line.sender !== "我" && (currentAppRef.current !== "wechat" || !sameContactThread)) {
+      if (!alreadyDelivered && messageSender !== "我" && (currentAppRef.current !== "wechat" || !sameContactThread)) {
         const notification = "微信：" + thread + "：" + line.body;
         if (!nextNotifications.includes(notification)) nextNotifications.push(notification);
       }
