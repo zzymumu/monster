@@ -4,18 +4,18 @@ import { X } from "lucide-react";
 import { AppArtwork } from "./AppArtwork";
 import { GLOOMY_AVATAR } from "./gloomyAvatar";
 import type { Item, Work } from "./schema";
-export function notificationContent(text: string, apps: Work["apps"], items: Item[] = []) {
+export function notificationContent(text: string, apps: Work["apps"], items: Item[] = [], remarks: Record<string, string> = {}) {
   const wechat = text.match(/^(?:微信(?:消息)?[：:]\s*)?([^：:]+)[：:]\s*(.*)$/);
   const broccoliNotice = /西蓝花|西兰花/.test(text);
   if (wechat && (/西蓝花|西兰花/.test(wechat[1]) || text.startsWith("微信"))) {
     const contact = /西蓝花|西兰花/.test(wechat[1]) ? "西蓝花" : wechat[1].trim();
     const message = items.find((item) => item.title === contact || item.sender === contact);
     const contactAvatar = contact === "西蓝花" ? GLOOMY_AVATAR : message?.avatar || "";
-    return { title: contact, body: wechat[2], appId: "wechat", avatar: contactAvatar, contact };
+    return { title: remarks[contact]?.trim() || contact, body: wechat[2], appId: "wechat", avatar: contactAvatar, contact };
   }
   if (broccoliNotice) {
     const body = text.replace(/.*?(?:西蓝花|西兰花)[：:]?\s*/, "").trim() || "？？？";
-    return { title: "西蓝花", body, appId: "wechat", avatar: GLOOMY_AVATAR, contact: "西蓝花" };
+    return { title: remarks["西蓝花"]?.trim() || remarks["西兰花"]?.trim() || "西蓝花", body, appId: "wechat", avatar: GLOOMY_AVATAR, contact: "西蓝花" };
   }
   const separator = text.search(/[:：]/);
   const sender = separator > 0 ? text.slice(0, separator) : "信息";
@@ -32,6 +32,7 @@ export function SystemNotifications({
   notices,
   apps,
   items = [],
+  remarks = {},
   onOpen,
   onDismiss,
   compact = false,
@@ -39,6 +40,7 @@ export function SystemNotifications({
   notices: string[];
   apps: Work["apps"];
   items?: Item[];
+  remarks?: Record<string, string>;
   onOpen: (notice: ReturnType<typeof notificationContent>) => void;
   onDismiss: (index: number) => void;
   compact?: boolean;
@@ -55,7 +57,7 @@ export function SystemNotifications({
     >
       <div className="notice-cards">
         {shown.map(({ text, index }) => {
-          const n = notificationContent(text, apps, items);
+          const n = notificationContent(text, apps, items, remarks);
           return (
             <motion.div
               layout
