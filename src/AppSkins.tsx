@@ -3136,7 +3136,6 @@ export function WeChatSkin(p: SkinProps) {
                   const isThirdReply = morningVoiceReplyStep >= 8 && morningVoiceReplyStep < 11;
                   const isFourthReply = morningVoiceReplyStep >= 11 && morningVoiceReplyStep < 13;
                   const isFinalReply = morningVoiceReplyStep === 13;
-                  const isFifthReply = (morningVoiceReplyStep >= 14 && morningVoiceReplyStep < 16) || morningVoiceReplyStep === 17 || (morningVoiceReplyStep >= 18 && morningVoiceReplyStep < 21) || morningVoiceReplyStep === 22;
                   const replyIndex = isFinalReply ? 0 : morningVoiceReplyStep < 14 ? isFirstReply ? morningVoiceReplyStep : isSecondReply ? morningVoiceReplyStep - 3 : isThirdReply ? morningVoiceReplyStep - 8 : morningVoiceReplyStep - 11 : morningVoiceReplyStep === 17 ? 2 : morningVoiceReplyStep >= 18 && morningVoiceReplyStep < 21 ? morningVoiceReplyStep - 15 : 6;
                   const secondVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-02-v1");
                   const thirdVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-03-v1");
