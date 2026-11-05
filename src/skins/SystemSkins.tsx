@@ -808,7 +808,7 @@ export function ClockSkin(p: Props) {
   const [timerLabel, setTimerLabel] = useState("计时器");
   const [timerDeadlineRaw, setTimerDeadlineRaw] = useSkinState<string>(p, "clockTimerDeadlineV1", "");
   const [timerRemainingRaw, setTimerRemainingRaw] = useSkinState<string>(p, "clockTimerRemainingV1", "0");
-  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerRunning, setTimerRunning] = useState(() => Number(timerDeadlineRaw) > Date.now());
   const [timerNow, setTimerNow] = useState(Date.now());
   const [recentTimers, setRecentTimers] = useSkinState<string[]>(p, "clockRecentTimersV1", ["300", "480"]);
   const timerDeadline = Number(timerDeadlineRaw) || 0;
@@ -915,7 +915,6 @@ export function ClockSkin(p: Props) {
           </>
         ) : tab === "闹钟" ? (
           <>
-            <h1 className="clock-alarm-heading">闹钟</h1>
             <div className="clock-alarm-section"><h3>其他</h3>
               {alarms.map((alarm) => <div className="clock-alarm-row" key={alarm.id}>
                 <button className="clock-alarm-detail" onClick={() => openExistingAlarm(alarm)}>
