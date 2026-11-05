@@ -1533,6 +1533,55 @@ export function WeChatSkin(p: SkinProps) {
       messages: [...catRescue.messages, thirdVoice],
     }));
   }, [allItems, catRescueRaw, morningVoiceReplyStep, p.ui?.wxDaGAvatarV2]);
+  useEffect(() => {
+    const thirdVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-03-v1");
+    const fourthVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-04-v1");
+    if (!thirdVoiceExists || morningVoiceReplyStep < 11 || fourthVoiceExists) return;
+    const fourthVoice = makeItem({
+      id: "dag-morning-voice-04-v1",
+      title: "大G",
+      sender: "大G",
+      body: "ok啦~搞定！你等我一会回去。",
+      time: "2026-11-06 08:03",
+      outgoing: false,
+      avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "./assets/dag-new-avatar.jpg",
+      kind: "audio",
+      media: "./assets/dag-voice-04.mp3",
+      read: false,
+      meta: {
+        storyId: "cat-rescue",
+        storyThread: "大G",
+        storyOrderAt: String(Date.now()),
+        voiceDuration: "4",
+        voiceTranscript: "ok啦~搞定！你等我一会回去。",
+      },
+    });
+    setCatRescueRaw(JSON.stringify({
+      ...catRescue,
+      version: 2,
+      messages: [...catRescue.messages, fourthVoice],
+    }));
+  }, [allItems, catRescueRaw, morningVoiceReplyStep, p.ui?.wxDaGAvatarV2]);
+  useEffect(() => {
+    const fourthVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-04-v1");
+    const textReplyExists = allItems.some((item) => item.id === "dag-morning-voice-04-text-v1");
+    if (!fourthVoiceExists || morningVoiceReplyStep < 13 || textReplyExists) return;
+    const textReply = makeItem({
+      id: "dag-morning-voice-04-text-v1",
+      title: "大G",
+      sender: "大G",
+      body: "不会啦。",
+      time: "2026-11-06 08:04",
+      outgoing: false,
+      avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "./assets/dag-new-avatar.jpg",
+      meta: { storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(Date.now()) },
+    });
+    setCatRescueRaw(JSON.stringify({
+      ...catRescue,
+      version: 2,
+      messages: [...catRescue.messages, textReply],
+    }));
+  }, [allItems, catRescueRaw, morningVoiceReplyStep, p.ui?.wxDaGAvatarV2]);
   const hasNewBroccoliReply = allItems.some((item) => /我哪裡沒用了|我哪里没用了/.test(item.body));
   // Do not infer story progress from a single old line or jump from stage 103
   // to 200: stages 101-105 contain the nose/skin, physical-contact and
@@ -3038,24 +3087,39 @@ export function WeChatSkin(p: SkinProps) {
                     "。",
                     "啊不是！我意思是，如果不麻烦的话可以加一点......",
                   ];
+                  const fourthReplies = [
+                    "好~谢谢你噢！",
+                    "一大早就让你跑来跑去......",
+                  ];
+                  const finalReply = "欸，你怎么换头像了？";
                   const isFirstReply = morningVoiceReplyStep < 3;
                   const isSecondReply = morningVoiceReplyStep >= 3 && morningVoiceReplyStep < 8;
-                  const replyIndex = isFirstReply ? morningVoiceReplyStep : isSecondReply ? morningVoiceReplyStep - 3 : morningVoiceReplyStep - 8;
+                  const isThirdReply = morningVoiceReplyStep >= 8 && morningVoiceReplyStep < 11;
+                  const isFourthReply = morningVoiceReplyStep >= 11 && morningVoiceReplyStep < 13;
+                  const isFinalReply = morningVoiceReplyStep === 13;
+                  const replyIndex = isFirstReply ? morningVoiceReplyStep : isSecondReply ? morningVoiceReplyStep - 3 : isThirdReply ? morningVoiceReplyStep - 8 : morningVoiceReplyStep - 11;
                   const secondVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-02-v1");
                   const thirdVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-03-v1");
+                  const fourthVoiceReady = threadItems.some((item) => item.id === "dag-morning-voice-04-v1");
+                  const fourthTextReady = threadItems.some((item) => item.id === "dag-morning-voice-04-text-v1");
                   const canReply = isFirstReply
                     ? threadItems.some((item) => item.id === "dag-morning-voice-01-v1")
                     : isSecondReply
                       ? secondVoiceReady
-                      : thirdVoiceReady && morningVoiceReplyStep < 11;
-                  const replies = isFirstReply ? firstReplies : isSecondReply ? secondReplies : thirdReplies;
+                      : isThirdReply
+                        ? thirdVoiceReady
+                        : isFourthReply
+                          ? fourthVoiceReady
+                          : isFinalReply && fourthTextReady;
+                  const replies = isFirstReply ? firstReplies : isSecondReply ? secondReplies : isThirdReply ? thirdReplies : isFourthReply ? fourthReplies : [finalReply];
                   if (!canReply || replyIndex >= replies.length) return null;
                   return (
                     <div className="cat-rescue-choices" aria-label="大G语音回复选项">
                       <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
                         const reply = replies[replyIndex];
                         const nextStep = morningVoiceReplyStep + 1;
-                        const replyId = (isFirstReply ? "dag-morning-voice-01-reply-v" : "dag-morning-voice-02-reply-v") + nextStep;
+                        const replyPrefix = isFirstReply ? "dag-morning-voice-01-reply-v" : isSecondReply ? "dag-morning-voice-02-reply-v" : isThirdReply ? "dag-morning-voice-03-reply-v" : isFourthReply ? "dag-morning-voice-04-reply-v" : "dag-morning-voice-04-final-reply-v";
+                        const replyId = replyPrefix + nextStep;
                         appendCatLines([{
                           id: replyId,
                           sender: "我",
