@@ -361,7 +361,7 @@ function PhoneRuntime({
       const wx = current.ui?.wechat ?? {};
       if (!active || active.caller !== "西蓝花" || active.status !== "ringing" || wx.wxBroccoliAfterDoorCallDeclinedV1 === true) return;
       const next = dispatch(work, { ...current, incomingCall: null }, "callDeclined", active.target || active.caller);
-      const queued = [{ id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "已取消☎️", thread: "西蓝花", meta: { systemNotice: "yes" } }];
+      const queued = [{ id: "drunk-broccoli-missed-after-door-v2", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call" as const, meta: { callStatus: "cancelled" } }];
       update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
     }, 10000);
     return () => window.clearTimeout(timer);
@@ -481,21 +481,42 @@ function PhoneRuntime({
       const baseTime = (latest.date || work.phone.date) + " " + (latest.time || work.phone.time);
       const storyMessages = Array.isArray(catState.messages) ? catState.messages : [];
       const wechatMessages = latest.messages.wechat ?? [];
+      const isBroccoliCancelledCall =
+        (thread === "西蓝花" || thread === "西兰花") &&
+        (line.id === "drunk-broccoli-missed-after-door-v1" || line.id === "drunk-broccoli-missed-after-door-v2" || line.meta?.callStatus === "cancelled");
       const created = makeItem({
         id: line.id || "cat-rescue-stage-" + (Number(catState.stage) || 0) + "-reply-" + thread + "-" + line.sender + "-" + orderAt,
         title: thread,
-        sender: messageSender,
-        body: line.body,
+        sender: isBroccoliCancelledCall ? "西蓝花" : messageSender,
+        body: isBroccoliCancelledCall ? "对方已取消" : line.body,
         time: baseTime,
-        outgoing: messageSender === "我",
-        kind: line.kind || "text",
+        outgoing: isBroccoliCancelledCall ? false : messageSender === "我",
+        kind: isBroccoliCancelledCall ? "call" : line.kind || "text",
         media: line.media || "",
-        meta: { storyId: "cat-rescue", storyThread: thread, storyOrderAt: String(orderAt), ...(isOwnerImpersonation ? { impersonatedBy: line.sender } : {}), ...(line.meta || {}) },
+        meta: {
+          storyId: "cat-rescue",
+          storyThread: thread,
+          storyOrderAt: String(orderAt),
+          ...(isOwnerImpersonation ? { impersonatedBy: line.sender } : {}),
+          ...(isBroccoliCancelledCall ? { callStatus: "cancelled" } : {}),
+          ...Object.fromEntries(Object.entries(line.meta || {}).filter(([key]) => key !== "systemNotice")),
+        },
       });
       const alreadyDelivered = storyMessages.some((item) => item.id === created.id) ||
         wechatMessages.some((item) => item.id === created.id);
-      const nextStoryMessages = alreadyDelivered ? storyMessages : [...storyMessages, created];
-      const nextWechatMessages = alreadyDelivered ? wechatMessages : [...wechatMessages, created];
+      const insertCancelledCallBeforeReply = (items: Item[]) => {
+        if (alreadyDelivered) return items;
+        if (!isBroccoliCancelledCall) return [...items, created];
+        const replyIndex = items.findIndex((item) =>
+          item.id === "drunk-broccoli-call-ended-v2" ||
+          item.body.includes("你在說什麼我聽不清") ||
+          item.body.includes("你在说什么我听不清")
+        );
+        if (replyIndex < 0) return [...items, created];
+        return [...items.slice(0, replyIndex), created, ...items.slice(replyIndex)];
+      };
+      const nextStoryMessages = insertCancelledCallBeforeReply(storyMessages);
+      const nextWechatMessages = insertCancelledCallBeforeReply(wechatMessages);
       const nextNotifications = [...latest.notifications];
       const openThread = String(wx.openThread || "");
       const sameContactThread = (openThread === thread) ||
@@ -1179,7 +1200,7 @@ function PhoneRuntime({
                       const wx = current.ui?.wechat ?? {};
                       const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
-                        const queued = [{ id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "已取消☎️", thread: "西蓝花", meta: { systemNotice: "yes" } }];
+                        const queued = [{ id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call" as const, meta: { callStatus: "cancelled" } }];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
                         const queued: Array<{ id: string; sender: string; body: string; thread: string; meta?: Record<string, string> }> = [
