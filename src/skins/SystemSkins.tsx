@@ -8,11 +8,8 @@ import {
   Timer,
   Play,
   Pause,
-  RotateCcw,
-  Flag,
   Trash2,
   X,
-  Check,
   CheckCircle,
   ChevronLeft,
   ChevronRight,
@@ -898,9 +895,9 @@ export function ClockSkin(p: Props) {
     <div className="catalog-skin native-clock native-clock-full">
       <header className="clock-topbar">
         {tab === "秒表" || tab === "计时器" ? <span /> : <span />}
-        {tab === "秒表" || tab === "计时器" || tab === "添加城市" ? <strong>{tab === "添加城市" ? "" : tab}</strong> : null}
+        {tab === "秒表" || tab === "计时器" || tab === "闹钟" ? <strong>{tab}</strong> : null}
         <div className="clock-top-actions">
-          {tab === "世界时钟" || tab === "闹钟" ? <button onClick={() => tab === "闹钟" ? setAlarmEditMode(!alarmEditMode) : setAlarmEditMode(false)}>{tab === "闹钟" ? (alarmEditMode ? "完成" : "编辑") : ""}</button> : null}
+          {tab === "闹钟" ? <button onClick={() => setAlarmEditMode(!alarmEditMode)}>{alarmEditMode ? "完成" : "编辑"}</button> : null}
           {tab === "世界时钟" ? <button aria-label="添加城市" onClick={() => setTab("添加城市")}>＋</button> : tab === "闹钟" ? <button aria-label="添加闹钟" onClick={openNewAlarm}>＋</button> : tab === "秒表" || tab === "计时器" ? <button aria-label="编辑" onClick={() => tab === "秒表" ? resetStopwatch() : resetTimer()}>编辑</button> : null}
         </div>
       </header>
