@@ -213,7 +213,9 @@ function MessageList({
                 <Phone size={15} style={{ transform: "rotate(135deg)" }} />
                 {body}
               </span>
-            ) : i.kind === "audio" && i.meta?.voiceTranscript ? (\n              <VoiceMessage item={i} onRead={onRead} />\n            ) : ["image", "audio", "video"].includes(i.kind) ? (
+            ) : i.kind === "audio" && i.meta?.voiceTranscript ? (
+              <VoiceMessage item={i} onRead={onRead} />
+            ) : ["image", "audio", "video"].includes(i.kind) ? (
               <ItemMedia item={i} />
             ) : i.kind === "transfer" ? (
               <div className="skin-transfer">
