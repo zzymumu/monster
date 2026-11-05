@@ -1234,7 +1234,11 @@ function PhoneRuntime({
                         const queued = [{ id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call" as const, meta: { callStatus: "cancelled" } }];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
-                        const queued: Array<{ id: string; sender: string; body: string; thread: string; meta?: Record<string, string> }> = [
+                        const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; meta?: Record<string, string> }> = [
+                          // The answered call ended after nine seconds. This is
+                          // the owner's outgoing call-history bubble, shown
+                          // between the typing ellipsis and Broccoli's next line.
+                          { id: "drunk-broccoli-call-duration-v1", sender: "我", body: "聊天时长 00:09", thread: "西蓝花", kind: "call" },
                           { id: "drunk-broccoli-call-ended-v2", sender: "西蓝花", body: "你在說什麼我聽不清！！", thread: "西蓝花" },
                           { id: "drunk-broccoli-where-v2", sender: "西蓝花", body: "妳現在到底在幹嘛？", thread: "西蓝花" },
                           { id: "drunk-broccoli-answer-v2", sender: "西蓝花", body: "喂？有沒有在聽我說話？", thread: "西蓝花" },
