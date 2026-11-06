@@ -381,8 +381,8 @@ export function DeliverySkin(p: Props) {
       {id:"r5m3",name:"葱油拌面",desc:"葱香浓郁，经典上海风味",price:9.99,image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=360&q=80"}]},
     {id:"r6",name:"珍珠研究所",category:"奶茶甜品",desc:"手摇饮品 · 珍珠奶茶 · 水果茶",rating:"4.9",time:"15–25 分钟",fee:"$0.99 起",price:"$5 起",tag:"人气饮品",image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=640&q=85",menu:[
       {id:"r6m1",name:"黑糖珍珠鲜奶",desc:"Q弹黑糖珍珠，浓醇鲜奶",price:6.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
-      {id:"r6m2",name:"芝士奶盖乌龙",desc:"清香乌龙搭配绵密奶盖",price:6.49,image:"https://images.unsplash.com/photo-1544787219-7f47	timeout=0"},
-      {id:"r6m3",name:"满杯鲜橙绿茶",desc:"鲜果茶香，清爽解腻",price:6.99,image:"https://images.unsplash.com/photo-1513558161293-c	handler=0"}]},
+      {id:"r6m2",name:"芝士奶盖乌龙",desc:"清香乌龙搭配绵密奶盖",price:6.49,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
+      {id:"r6m3",name:"满杯鲜橙绿茶",desc:"鲜果茶香，清爽解腻",price:6.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"}]},
     {id:"r7",name:"茶日子手摇茶",category:"奶茶甜品",desc:"台式奶茶 · 芋圆 · 鲜果茶",rating:"4.7",time:"15–25 分钟",fee:"$0.99 起",price:"$4 起",tag:"第二杯优惠",image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=640&q=85",menu:[
       {id:"r7m1",name:"经典珍珠奶茶",desc:"台式红茶与浓醇奶香",price:5.49,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
       {id:"r7m2",name:"芋泥波波鲜奶",desc:"绵密芋泥与Q弹波波",price:6.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
