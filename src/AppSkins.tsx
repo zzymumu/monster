@@ -152,6 +152,7 @@ function MessageList({
   wechat = false,
   wallpaper = "",
   selfAvatar = "",
+  monsterAvatar = "",
 }: {
   items: Item[];
   creator: boolean;
@@ -161,6 +162,7 @@ function MessageList({
   wechat?: boolean;
   wallpaper?: string;
   selfAvatar?: string;
+  monsterAvatar?: string;
 }) {
   const messagesRef = useRef<HTMLDivElement>(null);
   // Include the final message identity and body: a transcript can be updated
@@ -212,7 +214,7 @@ function MessageList({
           className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
         >
           {!whatsapp && !i.outgoing && (
-            <Avatar name={i.sender} src={i.outgoing ? selfAvatar : i.avatar} />
+            <Avatar name={i.sender} src={wechat && monsterMessage ? (monsterAvatar || i.avatar) : i.outgoing ? selfAvatar : i.avatar} />
           )}
           <button
             className="skin-bubble"
@@ -3408,7 +3410,7 @@ export function WeChatSkin(p: SkinProps) {
         <>
           {catRescueActive ? (
             <div className="cat-rescue-thread">
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
               {isMonsterThread && (
                 (() => {
                   const firstReplies = [
@@ -3652,7 +3654,7 @@ export function WeChatSkin(p: SkinProps) {
             </div>
           ) : (
             <>
-              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
               {isMonsterThread && monsterRemoved && catRescue.stage === 13 && monsterSendFailed && (
                 <div className="wx-send-failed" role="status" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", color: "#d93025", fontSize: 12 }}>
                   <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 16, height: 16, borderRadius: "50%", background: "#d93025", color: "#fff", fontWeight: 700 }}>!</span>
