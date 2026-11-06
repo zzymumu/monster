@@ -3031,7 +3031,7 @@ export function WeChatSkin(p: SkinProps) {
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
-      const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[] };
+      const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[]; likes?: string[] };
       return post.id && post.body ? [post] : [];
     } catch {
       return [];
@@ -3700,7 +3700,7 @@ export function WeChatSkin(p: SkinProps) {
           {posts.map((i) => (
             <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
               <Avatar name={i.sender} src={i.sender === ownerName || i.sender === "我" || i.sender === "机主" ? ownerAvatar : i.avatar} />
-              <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small>{Array.isArray(i.meta?.likes) && i.meta.likes.length > 0 && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>{i.meta.likes.join("、")}</div>}</div>
+              <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
             </button>
           ))}
           {!posts.length && !myMomentPosts.length && <p className="skin-empty">还没有动态，发布一条朋友圈吧</p>}
