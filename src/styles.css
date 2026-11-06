@@ -7077,3 +7077,26 @@ label {
   height: 100% !important;
   opacity: 0 !important;
 }
+
+
+/* Moments feed avatars: preserve the full uploaded portrait and avoid
+   exposing the fallback green tile through transparent image edges. */
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post > .skin-avatar,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post > .skin-avatar {
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post > .skin-avatar > img,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post > .skin-avatar > img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: transparent !important;
+}
