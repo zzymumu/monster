@@ -2778,7 +2778,7 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 43, chat: "大G", id: "get-ready-for-pickup", label: "好！那我先去收拾一下，准备带玩玩下楼～", nextStage: 44, lines: [
       { sender: "我", body: "好！那我先去收拾一下，準備帶玩玩下樓～", thread: "大G" },
       { sender: "大G", body: "好，不急，妳慢慢來。我到了附近再跟妳說。", thread: "大G" },
-    ]},,
+    ]},
 
     // New post-door conversation. The player must manually leave DaG's chat
     // and open Broccoli; the first choice sends the owner's "....哈喽。" opener.
