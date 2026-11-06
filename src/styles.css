@@ -6995,3 +6995,44 @@ label {
   transform: translateY(-50%) !important;
   margin: 0 !important;
 }
+
+
+/* Pin the chat-background label to the true vertical center of its row.
+   The label is positioned independently of the file input and chevron. */
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-bg-row {
+  position: relative !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  height: 78px !important;
+  min-height: 78px !important;
+  padding: 0 !important;
+  margin-top: 8px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-bg-row .wx-chat-bg-label {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  display: block !important;
+  width: max-content !important;
+  max-width: calc(100% - 100px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.4 !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  transform: translate(-50%, -50%) !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-bg-row > svg {
+  position: absolute !important;
+  top: 50% !important;
+  right: 17px !important;
+  margin: 0 !important;
+  transform: translateY(-50%) !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-bg-row input {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0 !important;
+}
