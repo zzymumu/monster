@@ -3366,7 +3366,7 @@ export function WeChatSkin(p: SkinProps) {
                 <header><button onClick={() => { setGroupPickerOpen(false); setSelectedGroupMembers([]); }}>取消</button><strong>选择联系人</strong><button disabled={!selectedGroupMembers.length} onClick={createGroupChat}>完成</button></header>
                 <p>选择要加入群聊的联系人</p>
                 <div className="wx-group-picker-list">
-                  {friendDirectory.filter((name) => !["我", "机主"].includes(name) && !(monsterRemoved && name === "大G")).map((name) => {
+                  {Array.from(new Set(friendDirectory.map(canonicalContactName))).filter((name) => !["我", "机主"].includes(name) && !(monsterRemoved && name === "大G")).map((name) => {
                     const checked = selectedGroupMembers.includes(name);
                     const related = allItems.filter((i) => i.sender === name || i.title === name).at(-1);
                     return <button type="button" key={name} onClick={() => setSelectedGroupMembers((current) => checked ? current.filter((item) => item !== name) : [...current, name])}>
