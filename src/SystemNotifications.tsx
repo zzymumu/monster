@@ -5,7 +5,7 @@ import { AppArtwork } from "./AppArtwork";
 import { GLOOMY_AVATAR } from "./gloomyAvatar";
 import type { Item, Work } from "./schema";
 export function notificationContent(text: string, apps: Work["apps"], items: Item[] = [], remarks: Record<string, string> = {}) {
-  const shopeeNotice = text.match(/^蝦皮購物[：:]\\s*(.*)$/);
+  const shopeeNotice = text.match(/^蝦皮購物[：:]\s*(.*)$/);
   if (shopeeNotice) return { title: "蝦皮購物", body: shopeeNotice[1], appId: "shopee", avatar: "", contact: "" };
   const wechat = text.match(/^(?:微信(?:消息)?[：:]\s*)?([^：:]+)[：:]\s*(.*)$/);
   const broccoliNotice = /西蓝花|西兰花/.test(text);
