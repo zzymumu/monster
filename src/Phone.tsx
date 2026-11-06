@@ -1254,6 +1254,14 @@ function PhoneRuntime({
                       ),
                     );
                   }}
+                  onAppUi={(targetApp, key, value) => {
+                    const current = runtimeRef.current;
+                    update(dispatch(work, {
+                      ...current,
+                      ui: { ...current.ui, [targetApp]: { ...current.ui?.[targetApp], [key]: value } },
+                    }, "variable", `ui:${targetApp}:${key}`));
+                  }}
+                  onOpenApp={open}
                   work={work}
                   saveInfo={saveInfo}
                   saveReady={ready && !creator && !external}
@@ -1732,6 +1740,8 @@ function AppContent({
   onBack,
   onSettings,
   onUi,
+  onAppUi,
+  onOpenApp,
   work,
   saveInfo,
   saveReady,
@@ -1757,6 +1767,8 @@ function AppContent({
   onBack: () => void;
   onSettings?: () => void;
   onUi?: (key: string, value: UiValue) => void;
+  onAppUi?: (appId: string, key: string, value: UiValue) => void;
+  onOpenApp?: (appId: string) => void;
   work: Work;
   saveInfo: { hasSave: boolean; savedAt: number | null; slots: Array<{ id: string; name: string; savedAt: number }>; activeSaveId: string };
   saveReady: boolean;
@@ -1905,7 +1917,10 @@ function AppContent({
               virtualTime={virtualTime}
               virtualDate={virtualDate}
               ui={state.ui?.[app.id]}
+              allUi={state.ui}
               onUi={creator ? undefined : onUi}
+              onAppUi={creator ? undefined : onAppUi}
+              onOpenApp={onOpenApp}
               name={name}
               items={shown}
               creator={creator}
