@@ -403,6 +403,9 @@ export function DeliverySkin(p: Props) {
   const remove = (id:string) => setCart(v=>({...v,[id]:Math.max(0,(v[id]||0)-1)}));
   const activeRestaurant = restaurants.find(r=>r.id===selected);
   const menu = activeRestaurant?.menu ?? [];
+  const restaurantCart = menu.filter(item=>(cart[item.id]||0)>0);
+  const restaurantCount = restaurantCart.reduce((n,item)=>n+(cart[item.id]||0),0);
+  const restaurantTotal = restaurantCart.reduce((n,item)=>n+item.price*(cart[item.id]||0),0);
   const visibleRestaurants = restaurants.filter(r=>
     (category==="全部" || r.category===category) &&
     (q.trim()==="" || (r.name+r.desc).toLowerCase().includes(q.toLowerCase()))
@@ -434,12 +437,20 @@ export function DeliverySkin(p: Props) {
               <h3>招牌推荐</h3>
               {menu.map(item=>(
                 <div className="hp-menu-row" key={item.id}>
-                  <img src={item.image} alt={item.name}/>
+                  <img src={item.image} alt={item.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=360&q=80"}}/>
                   <div className="hp-menu-copy"><b>{item.name}</b><small>{item.desc}</small><strong>$ {item.price.toFixed(2)}</strong></div>
                   <button className="hp-add" onClick={()=>add(item.id)}>＋</button>
                   {cart[item.id]>0 && <span className="hp-qty">{cart[item.id]}</span>}
                 </div>
               ))}
+              {restaurantCount>0 && <div className="hp-inline-cart">
+                <div className="hp-inline-cart-title"><b>🛒 购物车 · {restaurantCount} 件</b><button onClick={()=>menu.forEach(item=>{if(cart[item.id])setCart(v=>({...v,[item.id]:0}))})}>清空</button></div>
+                {restaurantCart.map(item=><div className="hp-inline-cart-row" key={item.id}>
+                  <span>{item.name}</span><strong>$ {(item.price*cart[item.id]).toFixed(2)}</strong>
+                  <button onClick={()=>remove(item.id)}>−</button><b>{cart[item.id]}</b><button onClick={()=>add(item.id)}>＋</button>
+                </div>)}
+                <div className="hp-inline-cart-total"><b>合计 $ {restaurantTotal.toFixed(2)}</b><button onClick={()=>{setCart(Object.fromEntries(allMenu.map(item=>[item.id,menu.some(m=>m.id===item.id)?(cart[item.id]||0):0])));setCheckoutOpen(true);setCheckoutDone(false)}}>去结算 ›</button></div>
+              </div>}
             </div>
           </div>
         ) : tab === "首页" ? (
@@ -463,7 +474,7 @@ export function DeliverySkin(p: Props) {
             <div className="hp-restaurant-list">
               {visibleRestaurants.map(r=>(
                 <button className="hp-restaurant-card" key={r.id} onClick={()=>setSelected(r.id)}>
-                  <div className="hp-restaurant-image"><img src={r.image} alt={r.name}/><span>{r.tag}</span></div>
+                  <div className="hp-restaurant-image"><img src={r.image} alt={r.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=640&q=85"}}/><span>{r.tag}</span></div>
                   <div className="hp-restaurant-info"><b>{r.name}</b><div className="hp-rating"><strong>★ {r.rating}</strong><span>{r.time}</span></div><small>{r.desc}</small><footer><span>{r.fee}</span><span>{r.price}</span></footer></div>
                 </button>
               ))}
