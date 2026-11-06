@@ -2140,9 +2140,11 @@ export function WeChatSkin(p: SkinProps) {
       );
     }
   }
+  const simplifyBroccoliText = (value: string) => value.replace(/[妳說對這個為麼嗎還沒與於來開門請飯別鴿歡樂聲愛話頭疼裡哪誰會樣認識時間長經過萬無應該發現錯東飲後實點報燒紙兩掛問題誇幹覺從讓簡體臺灣機場買帶給見親關係訊號碼獨處歲醬釀]/g, (c) => ({妳:"你",說:"说",對:"对",這:"这",個:"个",為:"为",麼:"么",嗎:"吗",還:"还",沒:"没",與:"与",於:"于",來:"来",開:"开",門:"门",請:"请",飯:"饭",別:"别",鴿:"鸽",歡:"欢",樂:"乐",聲:"声",愛:"爱",話:"话",頭:"头",疼:"疼",裡:"里",哪:"哪",誰:"谁",會:"会",樣:"样",認:"认",識:"识",時:"时",間:"间",長:"长",經:"经",過:"过",萬:"万",無:"无",應:"应",該:"该",發:"发",現:"现",錯:"错",東:"东",飲:"饮",後:"后",實:"实",點:"点",報:"报",燒:"烧",紙:"纸",兩:"两",掛:"挂",問:"问",題:"题",誇:"夸",幹:"干",覺:"觉",從:"从",讓:"让",簡:"简",體:"体",臺:"台",灣:"湾",機:"机",場:"场",買:"买",帶:"带",給:"给",見:"见",親:"亲",關:"关",係:"系",訊:"讯",號:"号",獨:"独",處:"处",歲:"岁",醬:"酱",釀:"酿"}[c] || c)).replace(/妳們/g,"你们").replace(/妳的/g,"你的").replace(/妳還/g,"你还").replace(/妳現在/g,"你现在").replace(/電話/g,"电话").replace(/認識/g,"认识").replace(/照顧/g,"照顾").replace(/應該/g,"应该").replace(/喜歡/g,"喜欢").replace(/可愛/g,"可爱").replace(/不簡單/g,"不简单").replace(/一見鍾情/g,"一见钟情").replace(/獸嫂/g,"兽嫂").replace(/閨蜜/g,"闺蜜").replace(/媽媽/g,"妈妈");
   // Never expose the next interaction branch while any scripted line is
   // still waiting to arrive. The stage advances when the player chooses, but
   // the next choice belongs after the complete incoming exchange, not before it.
+  if (isBroccoliThread) threadItems = threadItems.map((item) => ({ ...item, body: simplifyBroccoliText(item.body) }));
   const choiceThread = getCatRescueThreadForStage(catRescue.stage);
   // Choices belong only to the contact whose conversation is active for this
   // story stage. In particular, once the owner-add flow hands off to 大G,
@@ -3933,7 +3935,7 @@ export function WeChatSkin(p: SkinProps) {
                       setReturnDinnerStage(choice.nextStage);
                       // If the next stage belongs to another contact, keep the
                       // current chat open. The player switches contacts manually.
-                    }}>{choice.label}</button>
+                    }}>{isBroccoliThread ? simplifyBroccoliText(choice.label) : choice.label}</button>
                   ))}
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
