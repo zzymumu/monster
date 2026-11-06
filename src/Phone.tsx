@@ -1452,11 +1452,9 @@ function PhoneRuntime({
                   (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
                   typeof item.avatar === "string" && item.avatar.trim()
                 )?.avatar || "";
-                // The call screen must use the actual uploaded post-dot portrait.
-                // Do not let a stale avatar cached in an older save (including the old
-                // guitar placeholder) override the current asset. The version query also
-                // forces mobile browsers to refresh a previously cached image.
-                const changedDaGAvatar = `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg?v=2`;
+                const changedDaGAvatar = typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" && s.ui.wechat.wxDaGAvatarV2.trim()
+                  ? s.ui.wechat.wxDaGAvatarV2
+                  : "./assets/dag-new-avatar.jpg";
                 const avatarSrc = isBigG
                   ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar)
                   : GLOOMY_AVATAR;
@@ -1467,10 +1465,10 @@ function PhoneRuntime({
                       <img src={avatarSrc} alt="" onError={e => {
                         const holder = e.currentTarget.parentElement;
                         e.currentTarget.remove();
-                        if (holder) holder.textContent = isBigG ? "" : "🐻";
+                        if (holder) holder.textContent = isBigG ? "🎸" : "🐻";
                       }} />
                     ) : (
-                      <span className="incoming-avatar-fallback">{isBigG ? "" : "🐻"}</span>
+                      <span className="incoming-avatar-fallback">{isBigG ? "🎸" : "🐻"}</span>
                     )}
                   </div>
                   <h2>{displayName}</h2>
