@@ -6731,3 +6731,170 @@ label {
 .dark-phone .phone-screen:has(.wechat-ui.wx-reference-layout[data-moments="true"]) .status-bar .signals {
   color: #111 !important;
 }
+
+
+/* Chat details: restore the light WeChat settings page and prevent the member strip
+   from being clipped beneath the navigation bar. */
+.wechat-ui.wx-reference-layout:has(.wx-chat-detail-nav),
+.wechat-ui.wx-reference-layout .wx-utility:has(.wx-chat-info-page),
+.wechat-ui.wx-reference-layout .wx-chat-info-page {
+  background: #ededed !important;
+  color: #191919 !important;
+}
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 14px !important;
+  background: #f7f7f7 !important;
+  color: #171717 !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+}
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav > strong {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: max-content !important;
+  max-width: 55% !important;
+  margin: 0 !important;
+  color: #171717 !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  visibility: visible !important;
+  pointer-events: none;
+}
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav > button,
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav .wx-header-actions button {
+  position: relative;
+  z-index: 1;
+  color: #171717 !important;
+}
+.wechat-ui.wx-reference-layout .wx-utility:has(.wx-chat-info-page) {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  background: #ededed !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-page {
+  min-height: 100% !important;
+  padding: 0 0 24px !important;
+  background: #ededed !important;
+  color: #191919 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 14px !important;
+  min-height: 132px !important;
+  padding: 16px 18px 18px !important;
+  background: #fff !important;
+  border: 0 !important;
+  border-bottom: 9px solid #ededed !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div {
+  width: 62px !important;
+  flex: 0 0 62px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div .skin-avatar {
+  width: 50px !important;
+  height: 50px !important;
+  flex: 0 0 50px !important;
+  border-radius: 7px !important;
+  object-fit: cover;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div small {
+  max-width: 68px !important;
+  color: #777 !important;
+  font-size: 11px !important;
+  text-align: center !important;
+  overflow-wrap: anywhere;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members .wx-chat-add-member {
+  width: 50px !important;
+  height: 50px !important;
+  flex: 0 0 50px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px dashed #c9c9c9 !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #999 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 64px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 17px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #ededed !important;
+  background: #fff !important;
+  color: #191919 !important;
+  text-align: left !important;
+  font-size: 15px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row svg { color: #aaa !important; }
+.wechat-ui.wx-reference-layout .wx-chat-info-toggle .wx-switch {
+  flex: 0 0 48px !important;
+  background: #c8c8c8 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-toggle .wx-switch.is-on { background: #07c160 !important; }
+.wechat-ui.wx-reference-layout .wx-chat-bg-row {
+  min-height: 78px !important;
+  justify-content: center !important;
+  position: relative !important;
+  margin-top: 9px !important;
+  border: 0 !important;
+  background: #fff !important;
+  text-align: center !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-bg-row svg { position: absolute; right: 17px; }
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-reset-bg,
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-clear {
+  margin-top: 9px !important;
+  border: 0 !important;
+  background: #fff !important;
+  color: #191919 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-reset-bg { color: #888 !important; }
+.wechat-ui.wx-reference-layout .wx-group-picker {
+  background: #fff !important;
+  color: #191919 !important;
+  border-color: #ddd !important;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker header,
+.wechat-ui.wx-reference-layout .wx-group-picker-list button {
+  background: #fff !important;
+  color: #191919 !important;
+  border-color: #eee !important;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker header button { color: #555 !important; }
+.wechat-ui.wx-reference-layout .wx-group-picker header button:last-child { color: #07c160 !important; }
+
+/* Main WeChat tab titles are centered like the native app's top navigation. */
+.wechat-ui.wx-reference-layout:not([data-thread="true"]):not([data-moments="true"])[data-utility="false"] .wx-nav {
+  position: relative !important;
+  justify-content: space-between !important;
+}
+.wechat-ui.wx-reference-layout:not([data-thread="true"]):not([data-moments="true"])[data-utility="false"] .wx-nav > strong {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: max-content !important;
+  margin: 0 !important;
+  text-align: center !important;
+  pointer-events: none;
+}
