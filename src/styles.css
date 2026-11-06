@@ -6122,3 +6122,13 @@ label {
     letter-spacing: -4.5px;
   }
 }
+
+/* WeChat chat header call actions */
+.wx-header-actions{display:flex;align-items:center;gap:13px;margin-left:auto}
+.wx-header-actions>button{display:grid;place-items:center;width:28px;height:32px;color:inherit;background:transparent;border:0;padding:0}
+.incoming-call-screen:has(.wechat-call-topline) .incoming-avatar{margin-top:82px}
+.incoming-call-screen:has(.wechat-call-topline) .wechat-call-state{margin-top:13px}
+.incoming-call-screen:has(.wechat-call-topline) .incoming-actions{padding-bottom:38px}
+.incoming-call-screen:has(.wechat-call-topline) .accept-call>svg{background:#07c160}
+.incoming-call-screen:has(.wechat-call-topline) .decline-call>svg{background:#fa5151}
+.incoming-call-screen:has(.wechat-call-topline) .wechat-call-topline{font-size:14px;color:#f3f3f3}
