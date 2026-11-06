@@ -363,6 +363,14 @@ function PhoneRuntime({
   }, [creator, ready, work.id, work.updatedAt]);
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
+    const request = s.ui?.wechat?.wxOutgoingCallRequest;
+    if (request !== "audio" && request !== "video") return;
+    const target = s.ui?.wechat?.openThread;
+    if (typeof target !== "string" || !target) return;
+    update({ ...s, incomingCall: { caller: target, target, status: "ringing", direction: "outgoing", callType: request }, ui: { ...s.ui, wechat: { ...s.ui?.wechat, wxOutgoingCallRequest: "" } } });
+  }, [s.incomingCall, s.ui?.wechat?.wxOutgoingCallRequest, s.ui?.wechat?.openThread, ready, locked, creator]);
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
     const current = runtimeRef.current;
     const wx = current.ui?.wechat ?? {};
     if (wx.wxDrunkCallRequestedV8 !== true || wx.wxDrunkCallStartedV8 === true) return;
@@ -1414,12 +1422,12 @@ function PhoneRuntime({
                   contactRemarksForNotifications[isBigG ? "大G" : "西蓝花"] || caller;
                 const avatarSrc = isBigG ? "./assets/dag-new-avatar.jpg" : GLOOMY_AVATAR;
                 return <>
-                  <div className="wechat-call-topline">微信语音通话</div>
+                  <div className="wechat-call-topline">{s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>
                   <div className="incoming-avatar">
                     <img src={avatarSrc} alt="" onError={e => { e.currentTarget.style.display = "none"; }} />
                   </div>
                   <h2>{displayName}</h2>
-                  <p className="wechat-call-state">{s.incomingCall!.status === "ringing" ? "邀请你进行语音通话…" : "语音通话中"}</p>
+                  <p className="wechat-call-state">{s.incomingCall!.status === "ringing" ? (s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…") : (s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中")}</p>
                 </>;
               })()}
               {s.incomingCall.status === "answered" &&
@@ -1507,7 +1515,7 @@ function PhoneRuntime({
                 >
                   <PhoneIcon size={25} />
                   <span>
-                    {s.incomingCall.status === "ringing" ? "拒接" : "挂断"}
+                    {s.incomingCall.status === "ringing" ? (s.incomingCall.direction === "outgoing" ? "取消" : "拒接") : "挂断"}
                   </span>
                 </button>
                 {s.incomingCall.status === "ringing" && (
