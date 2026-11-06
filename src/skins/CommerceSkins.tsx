@@ -187,9 +187,14 @@ const shopeeProducts: ShopeeProduct[] = [
 {id:"cat-cans",name:"Fancy Feast 貓咪主食罐綜合口味",price:399,oldPrice:520,category:"寵物用品",emoji:"🐾",color:"#f6e6d5",image:"https://catjjang.co.kr/web/product/big/202308/43ed102cd4a77904fdbec8a02214a002.jpg",sold:"已售出 3,209",badge:"多口味"},
 {id:"gloomy",name:"GLOOMY 暴力熊 粉紅絨毛玩偶",price:890,oldPrice:1190,category:"居家生活",emoji:"🧸",color:"#f7dce8",image:"https://oshoppu.com/cdn/shop/files/ost-classic-gloomy-bear-plush-oshoppu-1167943061_1200x1200.jpg?v=1747674939",sold:"已售出 1,482",badge:"可愛收藏"},
 {id:"gibson",name:"Gibson Les Paul Standard 60s 電吉他",price:89900,oldPrice:99900,category:"娛樂收藏",emoji:"🎸",color:"#ead4b9",image:"https://cdn11.bigcommerce.com/s-dks6ju/images/stencil/1280x1280/products/27387/337762/d7af5d61-da96-5fc2-9c2d-fc5577d3d852__88272.1716059393.jpg?c=2",sold:"已售出 16",badge:"樂手夢想",variants:["Bourbon Burst","Ebony 黑色","Iced Tea"]},
-{id:"dating-book",name:"跟男人談戀愛的100種方法｜戀愛指南",price:299,oldPrice:399,category:"書籍文具",emoji:"📚",color:"#f0e0d8",image:"/monster/assets/shopee-dating-book.jpg",sold:"已售出 2,031",badge:"人氣讀物"}
+{id:"dating-book",name:"跟男人談戀愛的100種方法｜戀愛指南",price:299,oldPrice:399,category:"書籍文具",emoji:"📚",color:"#f0e0d8",image:"/monster/assets/shopee-dating-book.jpg",sold:"已售出 2,031",badge:"人氣讀物"},
+{id:"chanel-rouge-coco",name:"CHANEL ROUGE COCO 香奈兒晶亮潤色唇膏",price:1650,oldPrice:1800,category:"美妝香氛",emoji:"💄",color:"#f7e4e2",sold:"已售出 386",badge:"人氣彩妝",variants:["#104 Mademoiselle","#112 Paris 1er","#118 New York","#120 Gabrielle"]},
+{id:"ysl-loveshine",name:"YSL LOVESHINE 水光唇膏",price:1590,oldPrice:1750,category:"美妝香氛",emoji:"💋",color:"#f3dce5",sold:"已售出 528",badge:"熱賣色號",variants:["#44 Nude Lavallière","#12 Electric Love","#45 Coral Crush","#80 Glowing Lava"]},
+{id:"chanel-coco-mademoiselle",name:"CHANEL COCO MADEMOISELLE 香水 50ml",price:5200,oldPrice:5800,category:"美妝香氛",emoji:"🌸",color:"#f5e7df",sold:"已售出 214",badge:"經典香氛",variants:["35ml","50ml","100ml"]},
+{id:"ysl-libre",name:"YSL LIBRE 自由不羈淡香精 50ml",price:4650,oldPrice:5200,category:"美妝香氛",emoji:"🌼",color:"#f4e8d2",image:"https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw3ec7f2a1/Images2019/Libre%20Eau%20De%20Parfum/50mL/3614272648418.webp?q=85&sfrm=jpg&sh=320&sm=cut&sw=320",sold:"已售出 172",badge:"熱銷香水",variants:["30ml","50ml","90ml"]},
+{id:"chiate-pineapple",name:"佳德糕餅 原味鳳梨酥禮盒",price:456,oldPrice:500,category:"美食伴手禮",emoji:"🍍",color:"#f5e5c8",sold:"已售出 1,286",badge:"台灣人氣伴手禮",variants:["6入 NT$228","12入 NT$456","20入 NT$760"]}
 ];
-const shopeeCategories=["全部","3C數位","女裝配件","寵物用品","居家生活","娛樂收藏","書籍文具"];
+const shopeeCategories=["全部","3C數位","美妝香氛","美食伴手禮","女裝配件","寵物用品","居家生活","娛樂收藏","書籍文具"];
 type ShopeeCart=Record<string,number>;
 export function ShopeeSkin(p:Props){
  const [tab,setTab]=useState("首頁"),[query,setQuery]=useState(""),[category,setCategory]=useState("全部");
