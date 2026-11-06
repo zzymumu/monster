@@ -1456,7 +1456,7 @@ function PhoneRuntime({
                 // Older saves may contain the previous emoji placeholder. Only accept
                 // actual image sources; otherwise always resolve the uploaded portrait
                 // through Vite's deployment base path (works on /monster/ GitHub Pages).
-                const changedDaGAvatar = /^(data:image\\/|\\.\\/assets\\/|\\/assets\\/|https?:\\/\\/)/i.test(savedDaGAvatar)
+                const changedDaGAvatar = (savedDaGAvatar.startsWith("data:image/") || savedDaGAvatar.startsWith("./assets/") || savedDaGAvatar.startsWith("/assets/") || savedDaGAvatar.startsWith("https://") || savedDaGAvatar.startsWith("http://"))
                   ? savedDaGAvatar
                   : `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg`;
                 const avatarSrc = isBigG
