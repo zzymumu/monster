@@ -366,7 +366,7 @@ export function DeliverySkin(p: Props) {
     {id:"r2",name:"港式茶餐厅",category:"中餐",desc:"烧腊 · 港式奶茶 · 云吞面",rating:"4.7",time:"20–30 分钟",fee:"$0.99 起",price:"$12 起",tag:"免配送费",image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=640&q=85",menu:[
       {id:"r2m1",name:"鲜虾云吞面",desc:"弹牙鲜虾云吞，清爽汤底",price:14.99,image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=360&q=80"},
       {id:"r2m2",name:"蜜汁叉烧饭",desc:"港式蜜汁叉烧，配香软米饭",price:16.99,image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=360&q=80"},
-      {id:"r2m3",name:"港式冻奶茶",desc:"茶香浓郁，经典丝袜奶茶",price:5.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"}]},
+      {id:"r2m3",name:"港式冻奶茶",desc:"茶香浓郁，经典丝袜奶茶",price:5.99,image:"https://images.deliveryhero.io/image/fd-pk/LH/dxiq-listing.jpg"}]},
     {id:"r3",name:"日式食堂",category:"日韩料理",desc:"寿司 · 拉面 · 日式丼饭",rating:"4.9",time:"30–40 分钟",fee:"$1.49 起",price:"$18 起",tag:"精选商家",image:"https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=640&q=85",menu:[
       {id:"r3m1",name:"炙烧鲑鱼寿司",desc:"鲜切鲑鱼，现点现做",price:19.99,image:"https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=360&q=80"},
       {id:"r3m2",name:"豚骨拉面",desc:"浓厚豚骨汤头，叉烧入味",price:17.99,image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=360&q=80"},
@@ -379,14 +379,14 @@ export function DeliverySkin(p: Props) {
       {id:"r5m1",name:"招牌鲜肉小笼包",desc:"手工现包，皮薄汤汁足",price:12.99,image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=360&q=80"},
       {id:"r5m2",name:"上海生煎包",desc:"底部金黄酥脆，鲜肉馅",price:10.99,image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=360&q=80"},
       {id:"r5m3",name:"葱油拌面",desc:"葱香浓郁，经典上海风味",price:9.99,image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=360&q=80"}]},
-    {id:"r6",name:"珍珠研究所",category:"奶茶甜品",desc:"手摇饮品 · 珍珠奶茶 · 水果茶",rating:"4.9",time:"15–25 分钟",fee:"$0.99 起",price:"$5 起",tag:"人气饮品",image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=640&q=85",menu:[
-      {id:"r6m1",name:"黑糖珍珠鲜奶",desc:"Q弹黑糖珍珠，浓醇鲜奶",price:6.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
-      {id:"r6m2",name:"芝士奶盖乌龙",desc:"清香乌龙搭配绵密奶盖",price:6.49,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
-      {id:"r6m3",name:"满杯鲜橙绿茶",desc:"鲜果茶香，清爽解腻",price:6.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"}]},
-    {id:"r7",name:"茶日子手摇茶",category:"奶茶甜品",desc:"台式奶茶 · 芋圆 · 鲜果茶",rating:"4.7",time:"15–25 分钟",fee:"$0.99 起",price:"$4 起",tag:"第二杯优惠",image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=640&q=85",menu:[
-      {id:"r7m1",name:"经典珍珠奶茶",desc:"台式红茶与浓醇奶香",price:5.49,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
-      {id:"r7m2",name:"芋泥波波鲜奶",desc:"绵密芋泥与Q弹波波",price:6.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
-      {id:"r7m3",name:"柠檬冬瓜茶",desc:"酸甜清爽，解腻消暑",price:4.99,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"}]},
+    {id:"r6",name:"珍珠研究所",category:"奶茶甜品",desc:"手摇饮品 · 珍珠奶茶 · 水果茶",rating:"4.9",time:"15–25 分钟",fee:"$0.99 起",price:"$5 起",tag:"人气饮品",image:"https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267",menu:[
+      {id:"r6m1",name:"黑糖珍珠鲜奶",desc:"Q弹黑糖珍珠，浓醇鲜奶",price:6.99,image:"https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267"},
+      {id:"r6m2",name:"芝士奶盖乌龙",desc:"清香乌龙搭配绵密奶盖",price:6.49,image:"https://sushishop.com/wp-content/uploads/2021/05/2020_01_20-BBTS0806-1-1410x1763.jpg"},
+      {id:"r6m3",name:"满杯鲜橙绿茶",desc:"鲜果茶香，清爽解腻",price:6.99,image:"https://www.foodunfolded.com/media/images/in-article-bubbletea02.webp"}]},
+    {id:"r7",name:"茶日子手摇茶",category:"奶茶甜品",desc:"台式奶茶 · 芋圆 · 鲜果茶",rating:"4.7",time:"15–25 分钟",fee:"$0.99 起",price:"$4 起",tag:"第二杯优惠",image:"https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267",menu:[
+      {id:"r7m1",name:"经典珍珠奶茶",desc:"台式红茶与浓醇奶香",price:5.49,image:"https://sushishop.com/wp-content/uploads/2021/05/2020_01_20-BBTS0806-1-1410x1763.jpg"},
+      {id:"r7m2",name:"芋泥波波鲜奶",desc:"绵密芋泥与Q弹波波",price:6.99,image:"https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267"},
+      {id:"r7m3",name:"柠檬冬瓜茶",desc:"酸甜清爽，解腻消暑",price:4.99,image:"https://elcanotrade.com/cdn/shop/collections/Milk_Tea_1080x.jpg?v=1604572273"}]},
     {id:"r8",name:"阿嬷热炒",category:"热炒",desc:"台式热炒 · 炒蛤蜊 · 三杯鸡",rating:"4.8",time:"25–35 分钟",fee:"$1.49 起",price:"$18 起",tag:"台味人气",image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=640&q=85",menu:[
       {id:"r8m1",name:"阿嬷招牌三杯鸡",desc:"九层塔香气，酱香下饭",price:19.99,image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=360&q=80"},
       {id:"r8m2",name:"蒜蓉炒蛤蜊",desc:"蒜香浓郁，鲜甜多汁",price:16.99,image:"https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=360&q=80"},
@@ -437,16 +437,16 @@ export function DeliverySkin(p: Props) {
               <h3>招牌推荐</h3>
               {menu.map(item=>(
                 <div className="hp-menu-row" key={item.id}>
-                  <img src={item.image} alt={item.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=360&q=80"}}/>
+                  <img src={item.image} alt={item.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://images.deliveryhero.io/image/fd-pk/LH/dxiq-listing.jpg"}}/>
                   <div className="hp-menu-copy"><b>{item.name}</b><small>{item.desc}</small><strong>$ {item.price.toFixed(2)}</strong></div>
                   <button className="hp-add" onClick={()=>add(item.id)}>＋</button>
                   {cart[item.id]>0 && <span className="hp-qty">{cart[item.id]}</span>}
                 </div>
               ))}
               {restaurantCount>0 && <div className="hp-inline-cart">
-                <div className="hp-inline-cart-title"><b>🛒 购物车 · {restaurantCount} 件</b><button onClick={()=>menu.forEach(item=>{if(cart[item.id])setCart(v=>({...v,[item.id]:0}))})}>清空</button></div>
+                <div className="hp-inline-cart-title"><b>已加购商品 · {restaurantCount} 件</b><button onClick={()=>menu.forEach(item=>{if(cart[item.id])setCart(v=>({...v,[item.id]:0}))})}>清空</button></div>
                 {restaurantCart.map(item=><div className="hp-inline-cart-row" key={item.id}>
-                  <span>{item.name}</span><strong>$ {(item.price*cart[item.id]).toFixed(2)}</strong>
+                  <img src={item.image} alt={item.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://images.deliveryhero.io/image/fd-pk/LH/dxiq-listing.jpg"}}/><span><b>{item.name}</b><small>单价 $ {item.price.toFixed(2)} · 已加入购物车</small></span><strong>$ {(item.price*cart[item.id]).toFixed(2)}</strong>
                   <button onClick={()=>remove(item.id)}>−</button><b>{cart[item.id]}</b><button onClick={()=>add(item.id)}>＋</button>
                 </div>)}
                 <div className="hp-inline-cart-total"><b>合计 $ {restaurantTotal.toFixed(2)}</b><button onClick={()=>{setCart(Object.fromEntries(allMenu.map(item=>[item.id,menu.some(m=>m.id===item.id)?(cart[item.id]||0):0])));setCheckoutOpen(true);setCheckoutDone(false)}}>去结算 ›</button></div>
@@ -474,7 +474,7 @@ export function DeliverySkin(p: Props) {
             <div className="hp-restaurant-list">
               {visibleRestaurants.map(r=>(
                 <button className="hp-restaurant-card" key={r.id} onClick={()=>setSelected(r.id)}>
-                  <div className="hp-restaurant-image"><img src={r.image} alt={r.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=640&q=85"}}/><span>{r.tag}</span></div>
+                  <div className="hp-restaurant-image"><img src={r.image} alt={r.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267"}}/><span>{r.tag}</span></div>
                   <div className="hp-restaurant-info"><b>{r.name}</b><div className="hp-rating"><strong>★ {r.rating}</strong><span>{r.time}</span></div><small>{r.desc}</small><footer><span>{r.fee}</span><span>{r.price}</span></footer></div>
                 </button>
               ))}
