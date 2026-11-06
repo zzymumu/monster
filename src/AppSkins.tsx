@@ -3016,11 +3016,57 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "救命哈哈哈哈哈哈！", thread: "西蓝花" },
       { sender: "西蓝花", body: "行行行，妳好看，妳最可愛。", thread: "西蓝花" },
     ]},
-    { stage: 338, chat: "西蓝花", id: "post-door-phone-call-ended", label: "啊啊啊不说了，他电话挂了。拜拜拜拜！！", nextStage: 339, lines: [
-      { sender: "我", body: "啊啊啊不說了，他電話掛了。", thread: "西蓝花" },
-      { sender: "我", body: "拜拜拜拜！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "今晚出來陪我吃飯！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "不許放我鴿子！！！", thread: "西蓝花" },
+    { stage: 338, chat: "西蓝花", id: "post-door-not-suspicious", label: "不过也好，你现在说开了，也不用提心吊胆哪天暴露粉丝身份了。", nextStage: 339, lines: [
+      { sender: "西蓝花", body: "不過也好，妳現在說開了，也不用提心吊膽哪天暴露粉絲身份了。", thread: "西蓝花" },
+    ]},
+    { stage: 339, chat: "西蓝花", id: "post-door-fan-confession-normal", label: "就是嘛，而且粉丝告白很正常吧，哪有粉丝不喜欢正主的。", nextStage: 340, lines: [
+      { sender: "我", body: "就是嘛，而且粉絲告白很正常吧，哪有粉絲不喜歡正主的。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "唉……但我還是覺得不對勁。", thread: "西蓝花" },
+    ]},
+    { stage: 340, chat: "西蓝花", id: "post-door-realize-hung-up", label: "哪里不对劲啦……我靠！我昨晚掐掉了他两个电话！我竟然挂了我偶像的电话！！", nextStage: 341, lines: [
+      { sender: "我", body: "哪裡不對勁啦……", thread: "西蓝花" },
+      { sender: "我", body: "我靠！我昨晚掐掉了他兩個電話！", thread: "西蓝花" },
+      { sender: "我", body: "我竟然掛了我偶像的電話！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以是妳掛了電話後，他來找妳的？", thread: "西蓝花" },
+    ]},
+    { stage: 341, chat: "西蓝花", id: "post-door-yes-he-came", label: "嗯....看起来是这样。", nextStage: 342, lines: [
+      { sender: "我", body: "嗯……看起來是這樣。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以妳還覺得他是對所有人都這樣嗎？", thread: "西蓝花" },
+    ]},
+    { stage: 342, chat: "西蓝花", id: "post-door-what-else", label: "不然呢？", nextStage: 343, lines: [
+      { sender: "我", body: "不然呢？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳聽我說，首先，他不僅沒嫌棄妳酒後亂發瘋，還誇妳可愛、誇妳好看。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "其次，妳掛了電話後，他馬不停蹄地就來酒店照顧妳了，還照顧了妳一晚上。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "最後，他今早還去給妳買了早飯。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "誰能對一個剛認識不久的陌生人這樣啊！", thread: "西蓝花" },
+    ]},
+    { stage: 343, chat: "西蓝花", id: "post-door-he-is-mom", label: "所以说他人好啊，他是妈妈！妈妈就是特别会照顾人！", nextStage: 344, lines: [
+      { sender: "我", body: "所以說他人好啊，他是媽媽！", thread: "西蓝花" },
+      { sender: "我", body: "媽媽就是特別會照顧人！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳腦子喝酒喝壞了？妳想想這對嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他有什麼義務來照顧妳？他是妳媽嗎？", thread: "西蓝花" },
+    ]},
+    { stage: 344, chat: "西蓝花", id: "post-door-mom-not-your-mom", label: "他是妈妈型人格没错，但他是你妈吗？", nextStage: 345, lines: [
+      { sender: "西蓝花", body: "他照顧五月天，是因為他們認識得久，已經是好兄弟了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那妳呢？妳們才認識多久？他幹嘛要照顧妳？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳昨晚沒理我，我都沒有第一時間跑去找妳啊，雖然我也不知道酒店地址……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不要嘴硬，照我說，他就是喜歡妳！", thread: "西蓝花" },
+    ]},
+    { stage: 345, chat: "西蓝花", id: "post-door-why-like-me", label: "....大哥，你也说了我跟他刚认识才多久，为什么要喜欢我？", nextStage: 346, lines: [
+      { sender: "我", body: "……大哥，妳也說了我跟他剛認識才多久，為什麼要喜歡我？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "一見鍾情不懂嗎？我相信妳的魅力！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "喜歡哪來的那麼多為什麼啊！", thread: "西蓝花" },
+    ]},
+    { stage: 346, chat: "西蓝花", id: "post-door-veteran-wife-joke", label: "...我觉得是你想当兽嫂闺蜜想疯了。", nextStage: 347, lines: [
+      { sender: "我", body: "……我覺得是妳想當獸嫂閨蜜想瘋了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳等著瞧吧，我反正覺得這個男人不簡單。", thread: "西蓝花" },
+    ]},
+    { stage: 347, chat: "西蓝花", id: "post-door-wrap-up", label: "行了行了不说了，他电话挂了。白白白白白", nextStage: 348, lines: [
+      { sender: "我", body: "行了行了不說了，他電話掛了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "欸先別跑，今晚陪我吃飯，不准放鴿子啊！", thread: "西蓝花" },
+    ]},
+    { stage: 348, chat: "西蓝花", id: "post-door-bye", label: "知道啦知道啦！白白白白白", nextStage: 349, lines: [
+      { sender: "我", body: "知道啦知道啦！白白白白白", thread: "西蓝花" },
     ]},
 
   ];
