@@ -7117,3 +7117,44 @@ label {
   border-radius: 0 !important;
   background: #fff !important;
 }
+
+
+/* Dedicated WeChat Moments feed avatar: fixed square frame with edge-to-edge image. */
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-feed-avatar {
+  box-sizing: border-box !important;
+  display: block !important;
+  position: relative !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  max-width: 42px !important;
+  max-height: 42px !important;
+  flex: 0 0 42px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 5px !important;
+  background: transparent !important;
+  line-height: 0 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-feed-avatar > img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: scale(1.12) !important;
+  transform-origin: center !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
