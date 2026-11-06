@@ -1993,6 +1993,16 @@ export function WeChatSkin(p: SkinProps) {
       p.ui?.wxPostDrunkGDotDeliveredV1 === true
     ));
   const _catAvatar = GLOOMY_AVATAR;
+  // DaG's avatar is a story-state change: before the designated scene keep
+  // the original avatar; after it, every WeChat surface and historical bubble
+  // must consistently use the new avatar.
+  const dagAvatarChanged = p.ui?.wxPostDrunkGDotDeliveredV1 === true;
+  const dagCurrentAvatar = dagAvatarChanged
+    ? (typeof p.ui?.wxDaGAvatarV2 === "string" && p.ui.wxDaGAvatarV2
+        ? p.ui.wxDaGAvatarV2
+        : "./assets/dag-new-avatar.jpg")
+    : "";
+  const getDaGAvatar = (fallback = "") => dagAvatarChanged ? dagCurrentAvatar : fallback;
   const broccoliBaseItems = p.items.filter((item) =>
     (item.title === "西蓝花" || item.title === "西兰花") &&
     item.sender !== "大G" &&
@@ -2101,14 +2111,13 @@ export function WeChatSkin(p: SkinProps) {
       const nextVoiceIndex = threadItems.findIndex((item) => item.id === "dag-morning-voice-01-v1");
       threadItems.splice(nextVoiceIndex, 0, dotMessage);
     }
-    // From the dot onward, all incoming DaG messages use the newly selected
-    // avatar. Never fall back to the old guitar placeholder for this segment.
-    const dotAt = threadItems.findIndex((item) => item.id === "drunk-post-door-g-dot-v1");
-    if (dotAt >= 0) {
-      const currentDaGAvatar = typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "";
-      threadItems = threadItems.map((item, index) =>
-        index >= dotAt && !item.outgoing && (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊")
-          ? { ...item, avatar: currentDaGAvatar }
+    // Once the avatar-change scene has happened, update every DaG message,
+    // including earlier history, so reopening an old part of the conversation
+    // never shows a mixture of old and new portraits.
+    if (dagAvatarChanged) {
+      threadItems = threadItems.map((item) =>
+        !item.outgoing && (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊")
+          ? { ...item, avatar: dagCurrentAvatar }
           : item
       );
     }
@@ -3323,7 +3332,7 @@ export function WeChatSkin(p: SkinProps) {
                 const alreadyAdded = addedFriends.includes(isMonster ? "大G" : name);
                 return (
                   <div className="wx-add-result" key={visibleName}>
-                    <Avatar name={visibleName} src={related?.avatar} />
+                    <Avatar name={visibleName} src={isMonsterName(name) ? getDaGAvatar(related?.avatar || "") : related?.avatar} />
                     <span><strong>{visibleName}</strong><small>微信号：{isMonster ? "mo00oster111" : related?.meta.wechatId || related?.meta.account || name}</small></span>
                     <button disabled={alreadyAdded} onClick={() => isMonster ? setFriendRequestModal("confirm") : setAddedFriends((v) => v.includes(name) ? v : [...v, name])}>{alreadyAdded ? "已添加" : isMonster ? "添加到通讯录" : "添加"}</button>
                   </div>
@@ -3357,7 +3366,7 @@ export function WeChatSkin(p: SkinProps) {
               <div className="wx-chat-info-members">
                 {detailMemberNames.map((name) => {
                   const related = allItems.filter((i) => i.sender === name || i.title === name).at(-1);
-                  return <div key={name}><Avatar name={name} src={name === "西蓝花" ? GLOOMY_AVATAR : related?.avatar || ""} /><small>{displayName(name)}</small></div>;
+                  return <div key={name}><Avatar name={name} src={isMonsterName(name) ? getDaGAvatar(related?.avatar || "") : name === "西蓝花" ? GLOOMY_AVATAR : related?.avatar || ""} /><small>{displayName(name)}</small></div>;
                 })}
                 <button className="wx-chat-add-member" aria-label="发起群聊" title="发起群聊" onClick={() => { setSelectedGroupMembers(detailMemberNames); setGroupPickerOpen(true); }}>＋</button>
               </div>
@@ -3379,7 +3388,7 @@ export function WeChatSkin(p: SkinProps) {
                     const checked = selectedGroupMembers.includes(name);
                     const related = allItems.filter((i) => i.sender === name || i.title === name).at(-1);
                     return <button type="button" key={name} onClick={() => setSelectedGroupMembers((current) => checked ? current.filter((item) => item !== name) : [...current, name])}>
-                      <Avatar name={name} src={name === "西蓝花" ? GLOOMY_AVATAR : related?.avatar || ""}/>
+                      <Avatar name={name} src={isMonsterName(name) ? getDaGAvatar(related?.avatar || "") : name === "西蓝花" ? GLOOMY_AVATAR : related?.avatar || ""}/>
                       <span>{displayName(name)}</span><i className={checked ? "is-selected" : ""}>{checked ? "✓" : ""}</i>
                     </button>;
                   })}
@@ -3746,8 +3755,8 @@ export function WeChatSkin(p: SkinProps) {
                       <span className="wx-chat-avatar">
                         <Avatar
                           name={name}
-                          src={isMonsterName(name) && p.ui?.wxPostDrunkGDotDeliveredV1 === true
-                            ? (typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "./assets/dag-new-avatar.jpg")
+                          src={isMonsterName(name)
+                            ? getDaGAvatar(last.avatar || "")
                             : last.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")}
                         />
                         {unread && <b className="wx-unread">{list.filter((i) => !i.read).length || ""}</b>}
@@ -3781,13 +3790,8 @@ export function WeChatSkin(p: SkinProps) {
                   const avatarItem = [...allItems].reverse().find((i) =>
                     canonicalContactName(i.sender || "") === canonical || canonicalContactName(i.title || "") === canonical
                   );
-                  const dagAvatarChanged = p.ui?.wxPostDrunkGDotDeliveredV1 === true;
                   const contactAvatar = isMonsterName(canonical)
-                    ? (dagAvatarChanged
-                        ? (typeof p.ui?.wxDaGAvatarV2 === "string" && p.ui.wxDaGAvatarV2
-                            ? p.ui.wxDaGAvatarV2
-                            : "./assets/dag-new-avatar.jpg")
-                        : avatarItem?.avatar || "")
+                    ? getDaGAvatar(avatarItem?.avatar || "")
                     : canonical === "西蓝花" ? GLOOMY_AVATAR : avatarItem?.avatar || "";
                   return <button className="wx-contact-row" key={name} onClick={() => openContact(canonical)}>
                     <Avatar name={canonical} src={contactAvatar} /><span onClick={(event) => { event.stopPropagation(); openRemarkEditor(canonical); }} title="点击修改备注" style={{ cursor: "text" }}>{name}</span>
