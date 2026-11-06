@@ -441,6 +441,26 @@ function PhoneRuntime({
     const opened = String(wx.openThread ?? "");
     const previous = postDrunkThreadRef.current;
     postDrunkThreadRef.current = opened;
+
+    // Unlock the Broccoli opener only when the player manually returns from
+    // DaG's chat after the final door line has actually been delivered.
+    const returnedToBroccoliFromDaG =
+      (previous === "大G" || previous === "温尚翊") &&
+      (opened === "西蓝花" || opened === "西兰花");
+    if (returnedToBroccoliFromDaG && wx.wxPostDrunkGDotDeliveredV1 === true) {
+      const stored = current.messages.wechat ?? [];
+      let story: { messages?: Item[] } = {};
+      try { if (typeof wx.catRescueState === "string") story = JSON.parse(wx.catRescueState); } catch { story = {}; }
+      const transcript = [...stored, ...(Array.isArray(story.messages) ? story.messages : [])];
+      const doorLineDelivered = transcript.some((item) =>
+        (item.sender === "大G" || item.title === "大G") &&
+        item.body.trim() === "我到门口了，开门吧。"
+      );
+      if (doorLineDelivered && wx.wxPostDoorBroccoliOpenedAfterDoorV1 !== true) {
+        update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxPostDoorBroccoliOpenedAfterDoorV1: true } } });
+      }
+    }
+
     const leftBroccoli = (previous === "西蓝花" || previous === "西兰花") && opened === "";
     let pending: unknown[] = [];
     try {
