@@ -57,5 +57,6 @@ export const catalogSkins = {
   netflix: skin(media, "NetflixSkin"),
   alipay: skin(commerce, "AlipaySkin"),
   taobao: skin(commerce, "TaobaoSkin"),
+  shopee: skin(commerce, "ShopeeSkin"),
   delivery: skin(commerce, "DeliverySkin"),
 };
