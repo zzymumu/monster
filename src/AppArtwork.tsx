@@ -711,13 +711,13 @@ function DrawnArtwork({ id, date }: { id: string; date?: string }) {
       </text>
     );
   } else if (id === "jkopay") {
-    background = "#f5a623";
+    background = "#e60012";
     art = (
       <>
-        <circle cx="32" cy="32" r="25" fill="#fff" opacity=".18" />
-        <path d="M15 22h34v7H15zm0 13h34v7H15z" fill="#fff" opacity=".95" />
-        <path d="M23 15h18v34H23z" fill="#fff" opacity=".95" />
-        <path d="M29 21h6v22h-6z" fill="#f5a623" />
+        <rect x="7" y="17" width="16" height="17" rx="3" fill="none" stroke="#fff" strokeWidth="2.2" />
+        <text x="15" y="30" textAnchor="middle" fontSize="10" fontWeight="800" fill="#fff">街</text>
+        <text x="27" y="30" fontSize="13.5" fontWeight="800" letterSpacing="-.7" fill="#fff">口支付</text>
+        <text x="32" y="41" textAnchor="middle" fontSize="5.2" fontWeight="700" letterSpacing="1.3" fill="#fff">JKOPAY</text>
       </>
     );
   } else if (id === "taobao") {
