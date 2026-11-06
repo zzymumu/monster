@@ -3920,13 +3920,13 @@
   color: #aaa;
 }
 .delivery-ui {
-  --app-accent: #b79a30;
+  --app-accent: #2385c6;
   background: #f7f7f7;
 }
 .delivery-ui .catalog-nav {
-  background: #f4d56c;
-  border-color: #e7cc71;
-  color: #4d431f;
+  background: #2385c6;
+  border-color: #dceaf4;
+  color: #fff;
 }
 .delivery-location {
   display: flex;
@@ -3934,7 +3934,7 @@
   gap: 6px;
   padding: 13px 14px 4px;
   background: #f4d56c;
-  color: #5e5123;
+  color: #fff;
 }
 .delivery-location strong {
   font-size: 12px;
@@ -3948,7 +3948,7 @@
   background: #f4d56c;
   border-radius: 0;
   padding: 10px 14px 16px;
-  color: #887642;
+  color: #6e7d89;
 }
 .delivery-ui > .catalog-search > input {
   background: #fff9;
@@ -5958,3 +5958,10 @@
 .shopee-checkout-actions>.shopee-confirm{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;padding:14px 18px;border:0;border-radius:28px;background:#ee4d2d;color:#fff;font-size:16px;font-weight:700;box-sizing:border-box}
 .shopee-checkout-actions>.shopee-cancel-order{align-self:center;min-width:112px;padding:9px 18px;border:0!important;background:transparent!important;color:#888!important;border-radius:18px;font-size:12px}
 .shopee-checkout-standalone>.shopee-checkout-actions>.shopee-confirm{position:static}
+
+.panda-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;background:#2385c6;color:#fff}
+.panda-brand{display:flex;align-items:center;gap:9px}.panda-mark{display:grid;place-items:center;width:37px;height:37px;border-radius:11px;background:#fff;font-size:25px}
+.panda-brand b{display:block;font-size:15px;font-weight:800}.panda-brand small{display:block;font-size:9px;opacity:.9;margin-top:2px}
+.panda-topbar button{color:#fff;font-size:11px;border:1px solid #ffffff80;border-radius:16px;padding:6px 10px}
+.panda-promo{margin:10px 12px 2px;padding:13px 14px;border-radius:12px;background:linear-gradient(110deg,#e8f5ff,#f4faff);color:#225d88}
+.panda-promo b,.panda-promo span{display:block}.panda-promo b{font-size:15px}.panda-promo span{font-size:10px;margin-top:4px;color:#6b879b}
