@@ -1859,6 +1859,7 @@ function AppContent({
               virtualDate={virtualDate}
               ui={state.ui?.[app.id]}
               onUi={creator ? undefined : onUi}
+              onNotify={(message) => { const current = runtimeRef.current; update({ ...current, notifications: [...current.notifications, message].slice(-60) }); }}
               name={name}
               items={shown}
               creator={creator}
