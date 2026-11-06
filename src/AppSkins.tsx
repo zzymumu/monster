@@ -3149,8 +3149,16 @@ export function WeChatSkin(p: SkinProps) {
           return keys.includes(addQuery.trim().toLowerCase());
         })
     : [];
-  const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post").slice().reverse();
-  const latestMomentPosts = myMomentPosts.slice().reverse();
+  const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
+  const momentFeed = [
+    ...myMomentPosts.map((post, index) => ({ type: "mine" as const, id: post.id, time: post.time, post, order: index })),
+    ...posts.map((item, index) => ({ type: "friend" as const, id: item.id, time: item.time, item, order: myMomentPosts.length + index })),
+  ].sort((a, b) => {
+    const aTime = Date.parse(a.time);
+    const bTime = Date.parse(b.time);
+    if (Number.isFinite(aTime) && Number.isFinite(bTime) && aTime !== bTime) return bTime - aTime;
+    return b.order - a.order;
+  });
   const filteredConversations = conversations.filter((name) =>
     name.toLowerCase().includes(query.toLowerCase()) ||
     displayName(name).toLowerCase().includes(query.toLowerCase()) ||
@@ -3684,23 +3692,22 @@ export function WeChatSkin(p: SkinProps) {
               <Avatar name={ownerName} src={ownerAvatar} />
             </div>
           </div>
-          {latestMomentPosts.map((post) => (
-            <div key={post.id} className="wx-moment-post wx-moment-user-post">
+          {momentFeed.map((entry) => entry.type === "mine" ? (
+            <div key={entry.id} className="wx-moment-post wx-moment-user-post">
               <Avatar name={ownerName} src={ownerAvatar} />
               <div>
                 <strong>{ownerName}</strong>
-                <p>{post.body}</p>
-                <small>{post.time}</small>
-                {Array.isArray(post.likes) && post.likes.length > 0 && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>{post.likes.map(displayName).join("、")}</div>}
-                {post.id === "moment-vava-wanwan-play-fight" && !post.likes?.length && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>西蓝花、大G</div>}
-                {post.comments?.map((comment, index) => <div className="wx-moment-social-comment" key={index}>{comment}</div>)}
+                <p>{entry.post.body}</p>
+                <small>{entry.post.time}</small>
+                {Array.isArray(entry.post.likes) && entry.post.likes.length > 0 && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>{entry.post.likes.map(displayName).join("、")}</div>}
+                {entry.post.id === "moment-vava-wanwan-play-fight" && !entry.post.likes?.length && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>西蓝花、大G</div>}
+                {entry.post.comments?.map((comment, index) => <div className="wx-moment-social-comment" key={index}>{comment}</div>)}
               </div>
             </div>
-          ))}
-          {posts.map((i) => (
-            <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
-              <Avatar name={i.sender} src={i.sender === ownerName || i.sender === "我" || i.sender === "机主" ? ownerAvatar : i.avatar} />
-              <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
+          ) : (
+            <button key={entry.id} className="wx-moment-post" onClick={() => p.onItem(entry.item)}>
+              <Avatar name={entry.item.sender} src={entry.item.sender === ownerName || entry.item.sender === "我" || entry.item.sender === "机主" ? ownerAvatar : entry.item.avatar} />
+              <div><strong>{entry.item.sender}</strong><p>{entry.item.body}</p>{entry.item.media && <ItemMedia item={entry.item} />}<small>{entry.item.time}</small></div>
             </button>
           ))}
           {!posts.length && !myMomentPosts.length && <p className="skin-empty">还没有动态，发布一条朋友圈吧</p>}
