@@ -1420,8 +1420,7 @@ function PhoneRuntime({
                 const isBigG = caller === "大G" || caller === "温尚翊";
                 const displayName = contactRemarksForNotifications[caller] ||
                   contactRemarksForNotifications[isBigG ? "大G" : "西蓝花"] || caller;
-                const daGAvatarChanged = s.ui?.wechat?.wxPostDrunkGDotDeliveredV1 === true;
-                let savedStoryMessages: Array<{ sender?: string; title?: string; outgoing?: boolean; avatar?: string }> = [];
+                let savedStoryMessages: Array<{ id?: string; sender?: string; title?: string; body?: string; outgoing?: boolean; avatar?: string }> = [];
                 try {
                   const rawStory = s.ui?.wechat?.catRescueState;
                   if (typeof rawStory === "string") {
@@ -1439,6 +1438,15 @@ function PhoneRuntime({
                   ...(s.messages.wechat ?? []),
                   ...savedStoryMessages,
                 ];
+                // The dot message is the authoritative avatar-change moment.
+                // Older saves may contain that message while the UI flag is absent.
+                const daGAvatarChanged =
+                  s.ui?.wechat?.wxPostDrunkGDotDeliveredV1 === true ||
+                  avatarCandidates.some((item) =>
+                    !item.outgoing &&
+                    (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
+                    (item.id === "drunk-post-door-g-dot-v1" || item.body?.trim() === ".")
+                  );
                 const originalDaGAvatar = [...avatarCandidates].reverse().find((item) =>
                   !item.outgoing &&
                   (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
