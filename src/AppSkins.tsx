@@ -1457,6 +1457,8 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [postDoorBroccoliHandoffArmed, setPostDoorBroccoliHandoffArmed] = useSkinState<boolean>(p, "wxPostDoorBroccoliHandoffArmedV1", false);
+  const postDoorThreadRef = useRef(p.thread || "");
   const [pickupSceneRebuiltV1, setPickupSceneRebuiltV1] = useSkinState<boolean>(p, "wxPickupSceneRebuiltV1", false);
   const [hotelBroccoliFollowupQueued, setHotelBroccoliFollowupQueued] = useSkinState<boolean>(p, "wxHotelBroccoliFollowupQueuedV1", false);
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
@@ -3024,6 +3026,29 @@ export function WeChatSkin(p: SkinProps) {
     ]},
 
   ];
+
+  // Start the new Broccoli scene only after the player reads DaG's door message,
+  // manually leaves his chat, and then opens Broccoli.
+  useEffect(() => {
+    const previous = postDoorThreadRef.current;
+    const current = p.thread || "";
+    postDoorThreadRef.current = current;
+    const isDaG = (value: string) => value === "大G" || value === "温尚翊";
+    const isBroccoli = (value: string) => value === "西蓝花" || value === "西兰花";
+    const doorMessageExists = [...p.items, ...catRescue.messages].some((item) =>
+      !item.outgoing &&
+      (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
+      /(到門口了.*開門|到门口了.*开门|開門，我在外面|开门，我在外面)/.test(item.body.trim())
+    );
+    if (isDaG(previous) && current === "" && doorMessageExists && !postDoorBroccoliHandoffArmed && returnDinnerStage < 300) {
+      setPostDoorBroccoliHandoffArmed(true);
+      return;
+    }
+    if (postDoorBroccoliHandoffArmed && isBroccoli(current) && returnDinnerStage < 300) {
+      setPostDoorBroccoliHandoffArmed(false);
+      setReturnDinnerStage(300);
+    }
+  }, [p.thread, p.items, catRescue.messages, postDoorBroccoliHandoffArmed, returnDinnerStage]);
   // Contact handoffs are manual. When the player opens the destination
   // contact, activate that contact's waiting stage without navigating for them.
   useEffect(() => {
