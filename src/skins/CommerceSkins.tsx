@@ -1,16 +1,13 @@
 import {
   Home,
-  MapPin,
   Receipt,
   ShoppingBag,
   ShoppingCart,
   Tag,
   X,
   Users,
-  Star,
   Ticket,
   Truck,
-  Utensils,
   Wallet,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -404,12 +401,12 @@ export function DeliverySkin(p: Props) {
         ) : tab === "首页" ? (
           <>
             <div className="hp-header">
-              <div className="hp-location"><small>配送至</small><b>⌖ 选择配送地址　⌄</b></div>
+              <div className="hp-location"><small>配送至</small><b>⌖ 选择配送地址 ⌄</b></div>
               <button className="hp-support" onClick={()=>setTab("我的")}>客服</button>
             </div>
             <div className="hp-search-wrap"><SearchBox value={q} set={setQ} placeholder="搜索餐厅、美食或商品"/></div>
             <div className="hp-promo">
-              <div><small>WELCOME TO HUNGRYPANDA</small><h2>今天想吃点什么？</h2><p>新用户专享优惠 · 美食送到家</p><b>领优惠券　›</b></div>
+              <div><small>WELCOME TO HUNGRYPANDA</small><h2>今天想吃点什么？</h2><p>新用户专享优惠 · 美食送到家</p><b>领优惠券 ›</b></div>
               <div className="hp-promo-panda">🐼</div>
             </div>
             <div className="hp-quick-grid">
