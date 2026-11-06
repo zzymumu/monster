@@ -1452,13 +1452,11 @@ function PhoneRuntime({
                   (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
                   typeof item.avatar === "string" && item.avatar.trim()
                 )?.avatar || "";
-                const savedDaGAvatar = typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" ? s.ui.wechat.wxDaGAvatarV2.trim() : "";
-                // Older saves may contain the previous emoji placeholder. Only accept
-                // actual image sources; otherwise always resolve the uploaded portrait
-                // through Vite's deployment base path (works on /monster/ GitHub Pages).
-                const changedDaGAvatar = (savedDaGAvatar.startsWith("data:image/") || savedDaGAvatar.startsWith("./assets/") || savedDaGAvatar.startsWith("/assets/") || savedDaGAvatar.startsWith("https://") || savedDaGAvatar.startsWith("http://"))
-                  ? savedDaGAvatar
-                  : `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg`;
+                // The call screen must use the actual uploaded post-dot portrait.
+                // Do not let a stale avatar cached in an older save (including the old
+                // guitar placeholder) override the current asset. The version query also
+                // forces mobile browsers to refresh a previously cached image.
+                const changedDaGAvatar = `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg?v=2`;
                 const avatarSrc = isBigG
                   ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar)
                   : GLOOMY_AVATAR;
