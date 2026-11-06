@@ -13,7 +13,7 @@ import {
   Utensils,
   Wallet,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Empty,
   Header,
