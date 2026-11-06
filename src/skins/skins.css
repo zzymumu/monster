@@ -5928,3 +5928,7 @@
 .jko-payment-error{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:1px solid #f3c4c4;border-radius:10px;background:#fff1f1;color:#a83232;font-size:11px;line-height:1.5}
 .jko-payment-error b{font-size:12px}
 .jko-payment-error small{color:#a56a6a;font-size:10px}
+
+.shopee-pending-actions{display:flex;gap:8px;justify-content:flex-end;align-items:center;width:100%;margin-top:8px}
+.shopee-cancel-order{border:1px solid #bbb!important;background:#fff!important;color:#777!important;border-radius:16px;padding:7px 13px;font-size:10px}
+.shopee-pending-actions .shopee-track-button{margin:0}
