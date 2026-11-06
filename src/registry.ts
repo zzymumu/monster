@@ -118,7 +118,7 @@ const definitions: [
     ["商品", "订单", "物流"],
   ],
   ["netease", "网易云音乐", "media", "#cd5659", Headphones, ["发现", "歌单"]],
-  ["delivery", "外卖", "records", "#d4a83f", Utensils, ["商家", "订单"]],
+  ["delivery", "HungryPanda", "records", "#2385c6", Utensils, ["首页", "订单", "我的"]],
   ["shopee", "蝦皮購物", "records", "#ee4d2d", ShoppingBag, ["首頁", "分類", "購物車", "我的"]],
   ["forum", "论坛", "social", "#8b9776", Hash, ["帖子", "版块"]],
   [
