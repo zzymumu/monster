@@ -1429,7 +1429,16 @@ function PhoneRuntime({
                     if (Array.isArray(parsed?.messages)) savedStoryMessages = parsed.messages;
                   }
                 } catch { savedStoryMessages = []; }
-                const avatarCandidates = [...(s.messages.wechat ?? []), ...savedStoryMessages];
+                // Contact portraits may live in the authored work data rather than
+                // the live transcript (especially before the first DaG message is delivered).
+                // Resolve the pre-change portrait from every saved source, then let the
+                // explicit story flag switch all call surfaces to the new portrait.
+                const configuredAvatarCandidates = Object.values(work.data ?? {}).flat();
+                const avatarCandidates = [
+                  ...configuredAvatarCandidates,
+                  ...(s.messages.wechat ?? []),
+                  ...savedStoryMessages,
+                ];
                 const originalDaGAvatar = [...avatarCandidates].reverse().find((item) =>
                   !item.outgoing &&
                   (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
@@ -1444,7 +1453,15 @@ function PhoneRuntime({
                 return <>
                   <div className="wechat-call-topline">{s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>
                   <div className="incoming-avatar">
-                    <img src={avatarSrc} alt="" onError={e => { e.currentTarget.style.display = "none"; }} />
+                    {avatarSrc ? (
+                      <img src={avatarSrc} alt="" onError={e => {
+                        const holder = e.currentTarget.parentElement;
+                        e.currentTarget.remove();
+                        if (holder) holder.textContent = isBigG ? "🎸" : "🐻";
+                      }} />
+                    ) : (
+                      <span className="incoming-avatar-fallback">{isBigG ? "🎸" : "🐻"}</span>
+                    )}
                   </div>
                   <h2>{displayName}</h2>
                   <p className="wechat-call-state">{s.incomingCall!.status === "ringing" ? (s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…") : (s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中")}</p>
