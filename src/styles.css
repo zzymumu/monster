@@ -7077,3 +7077,43 @@ label {
   height: 100% !important;
   opacity: 0 !important;
 }
+
+
+/* Final Moments avatar rendering: remove the green fallback halo and crop
+   the uploaded avatar to fill the square. A slight image zoom trims any
+   colored matte/transparent edge embedded around the uploaded picture. */
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post > .skin-avatar,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post > .skin-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  max-width: 40px !important;
+  max-height: 40px !important;
+  flex: 0 0 40px !important;
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  background: #fff !important;
+  border-radius: 6px !important;
+  aspect-ratio: 1 / 1 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post > .skin-avatar > img,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post > .skin-avatar > img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: scale(1.07) !important;
+  transform-origin: center center !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+}
