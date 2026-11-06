@@ -2062,12 +2062,17 @@ function AppContent({
             .map((i) => (
               <button
                 key={i.id}
-                className={`message-row ${i.outgoing ? "outgoing" : ""}`}
+                className={`message-row ${i.outgoing ? "outgoing" : ""} ${i.kind === "call" ? "call-history" : ""}`}
                 onClick={() => (creator ? onEdit(i) : onRead(i.id))}
               >
                 <span className="avatar">{i.sender.slice(0, 1)}</span>
                 <span className="bubble">
-                  {i.kind === "image" ||
+                  {i.kind === "call" ? (
+                    <span className="call-history-content">
+                      <PhoneIcon size={23} strokeWidth={2.2} />
+                      <span>{i.meta?.callStatus === "declined" ? "已拒绝" : i.body}</span>
+                    </span>
+                  ) : i.kind === "image" ||
                   i.kind === "audio" ||
                   i.kind === "video" ? (
                     <Media item={i} />
