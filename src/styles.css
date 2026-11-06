@@ -6567,3 +6567,78 @@ label {
   border-bottom: 1px solid rgba(255,255,255,.045) !important;
   outline: 0 !important;
 }
+
+
+/* Chat details: compact member strip; do not stretch it into a blank panel. */
+.wechat-ui.wx-reference-layout .wx-chat-info-page {
+  min-height: 0 !important;
+  height: auto;
+  padding: 0 0 18px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members {
+  min-height: 0 !important;
+  height: auto !important;
+  flex: 0 0 auto !important;
+  align-items: flex-start !important;
+  align-content: flex-start;
+  gap: 14px !important;
+  padding: 10px 16px 14px !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+  border-bottom: 8px solid #191919 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div {
+  width: 62px !important;
+  min-width: 62px;
+  height: auto !important;
+  flex: 0 0 62px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div .skin-avatar {
+  display: block;
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  flex: 0 0 50px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  box-shadow: none !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div .skin-avatar img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: inherit !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div small {
+  display: block !important;
+  width: 62px;
+  max-width: 62px !important;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members .wx-chat-add-member {
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px;
+  flex: 0 0 50px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  align-self: flex-start;
+}
