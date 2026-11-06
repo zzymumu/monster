@@ -1507,7 +1507,11 @@ function PhoneRuntime({
                           const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
                           if (Array.isArray(parsed)) queued = parsed;
                         } catch { queued = []; }
-                        queued.push({ id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" }, { id: "drunk-big-g-door-voice-v1", sender: "大G", body: "開門，我在外面。", thread: "大G", kind: "audio", media: "./assets/dag-door-voice.mp3", outgoing: false, meta: { voiceDuration: "2", voiceTranscript: "開門，我在外面。" } });
+                        queued.push(
+                          { id: "drunk-big-g-call-declined-first-v1", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
+                          { id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" },
+                          { id: "drunk-big-g-door-voice-v1", sender: "大G", body: "開門，我在外面。", thread: "大G", kind: "audio", media: "./assets/dag-door-voice.mp3", outgoing: false, meta: { voiceDuration: "2", voiceTranscript: "開門，我在外面。" } },
+                        );
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (isDrunkFinalCall) {
                         let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
