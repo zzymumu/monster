@@ -811,18 +811,17 @@ function DrawnArtwork({ id, date }: { id: string; date?: string }) {
       />
     );
   } else if (id === "delivery") {
-    background = "#ffd100";
+    background = "#2385c6";
     art = (
-      <text
-        x="32"
-        y="44"
-        textAnchor="middle"
-        fontSize="31"
-        fontWeight="800"
-        fill="#181818"
-      >
-        外卖
-      </text>
+      <g>
+        <circle cx="32" cy="33" r="20" fill="#fff" />
+        <circle cx="18" cy="18" r="9" fill="#fff" />
+        <circle cx="46" cy="18" r="9" fill="#fff" />
+        <ellipse cx="25" cy="30" rx="3.3" ry="4.5" fill="#202b36" />
+        <ellipse cx="39" cy="30" rx="3.3" ry="4.5" fill="#202b36" />
+        <ellipse cx="32" cy="39" rx="6.5" ry="4.8" fill="#202b36" />
+        <path d="M29 38q3 3 6 0" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" />
+      </g>
     );
   } else if (id === "forum") {
     background = "#2d89e8";
