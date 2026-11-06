@@ -2874,17 +2874,9 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "但我說的不是這個意思！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "妳有沒有覺得他對妳特別好？", thread: "西蓝花" },
     ]},
-    { stage: 318, chat: "西蓝花", id: "post-door-special-treatment-maybe", label: "可能只是因为我喝醉了吧。", nextStage: 319, lines: [
+    { stage: 318, chat: "西蓝花", id: "post-door-special-treatment-all-replies", label: "可能只是因为我喝醉了吧。", nextStage: 319, lines: [
       { sender: "我", body: "可能只是因為我喝醉了吧。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好好好，我不亂想。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "那他現在在幹嘛？", thread: "西蓝花" },
-    ]},
-    { stage: 318, chat: "西蓝花", id: "post-door-special-treatment-shrug", label: "……不知道啦。", nextStage: 319, lines: [
       { sender: "我", body: "……不知道啦。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好好好，我不亂想。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "那他現在在幹嘛？", thread: "西蓝花" },
-    ]},
-    { stage: 318, chat: "西蓝花", id: "post-door-special-treatment-stop", label: "你不要乱想！", nextStage: 319, lines: [
       { sender: "我", body: "妳不要亂想！", thread: "西蓝花" },
       { sender: "西蓝花", body: "好好好，我不亂想。", thread: "西蓝花" },
       { sender: "西蓝花", body: "那他現在在幹嘛？", thread: "西蓝花" },
@@ -2915,15 +2907,9 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "妳先回答我一個問題！", thread: "西蓝花" },
       { sender: "西蓝花", body: "怪獸知道嗎？？？", thread: "西蓝花" },
     ]},
-    { stage: 323, chat: "西蓝花", id: "post-door-does-he-know-a", label: "我不知道啊啊啊！", nextStage: 324, lines: [
+    { stage: 323, chat: "西蓝花", id: "post-door-does-he-know-all-replies", label: "我不知道啊啊啊！", nextStage: 324, lines: [
       { sender: "我", body: "我不知道啊啊啊！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "但他有妳好友欸，很難不知道吧😄", thread: "西蓝花" },
-    ]},
-    { stage: 323, chat: "西蓝花", id: "post-door-does-he-know-b", label: "应该……不知道吧？", nextStage: 324, lines: [
       { sender: "我", body: "應該……不知道吧？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "但他有妳好友欸，很難不知道吧😄", thread: "西蓝花" },
-    ]},
-    { stage: 323, chat: "西蓝花", id: "post-door-does-he-know-c", label: "你不要提醒我！！！", nextStage: 324, lines: [
       { sender: "我", body: "妳不要提醒我！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "但他有妳好友欸，很難不知道吧😄", thread: "西蓝花" },
     ]},
