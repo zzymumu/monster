@@ -5783,3 +5783,5 @@
 .shopee-variant-picks { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 16px; }
 .shopee-variant-picks button { border:1px solid #ddd; border-radius:7px; background:#fff; color:#333; padding:9px 12px; font-size:13px; }
 .shopee-variant-picks button.selected { border:1px solid #ee4d2d; color:#ee4d2d; background:#fff8f5; }
+
+.shopee-checkout .shopee-coupon-deduction{margin-top:8px;color:#ee4d2d}.shopee-checkout .shopee-coupon-deduction b{color:#ee4d2d}.shopee-checkout .shopee-payable{padding-top:11px;border-top:1px solid #eee;font-size:14px;font-weight:700}.shopee-checkout .shopee-payable b{font-size:17px;color:#ee4d2d}.shopee-coupon .shopee-confirm:disabled{background:#b9b9b9;color:#fff;opacity:1;cursor:default}
