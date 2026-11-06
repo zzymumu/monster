@@ -87,7 +87,16 @@
     "netflix",
     "pinterest",
     "threads",
-    "kakao"
+    "kakao",
+    {
+      "id": "shopee",
+      "name": "蝦皮購物",
+      "installed": true,
+      "visible": true,
+      "dock": false,
+      "folder": "",
+      "icon": ""
+    }
   ],
   "contacts": [
     {
