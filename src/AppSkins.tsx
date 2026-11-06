@@ -3605,17 +3605,20 @@ export function WeChatSkin(p: SkinProps) {
         </>
       ) : moments ? (
         <div className="wx-moments">
-          <div className="wx-moment-cover" style={momentCover ? { backgroundImage: `linear-gradient(#0002,#0002), url("${momentCover}")` } : undefined}>
-            <span>朋友圈</span>
+          <div className="wx-moment-cover" style={momentCover ? { backgroundImage: `linear-gradient(180deg,#00000010 35%,#00000065), url("${momentCover}")` } : undefined}>
+            <div className="wx-moment-cover-top"><span>朋友圈</span></div>
+            <div className="wx-moment-cover-owner">
+              <strong>{ownerName}</strong>
+              <Avatar name={ownerName} src={ownerAvatar} />
+            </div>
             <label className="wx-moment-cover-edit" title="更换朋友圈背景">
-              <Camera size={17} />
-              <span>更换背景</span>
+              <Camera size={15} /><span>更换相册封面</span>
               <input type="file" accept="image/*" onChange={(e) => updateMomentCover(e.target.files?.[0])} />
             </label>
           </div>
           <div className="wx-moment-compose-row">
-            <Avatar name={ownerName} src={ownerAvatar} />
-            <button className="wx-moment-publish" onClick={() => setMomentComposer(true)}><Plus size={16} /> 发布朋友圈</button>
+            <div className="wx-moment-compose-hint">分享新鲜事…</div>
+            <button className="wx-moment-publish" onClick={() => setMomentComposer(true)}><Camera size={17} /> 发表</button>
           </div>
           {myMomentPosts.map((post) => (
             <div key={post.id} className="wx-moment-post wx-moment-user-post">
