@@ -83,7 +83,7 @@ export function AlipaySkin(p: Props) {
             </button>
           ),
         )}
-        <Empty items={list} />
+        {tab !== "我的" && <Empty items={list} />}
       </div>
       <Tabs
         tabs={["账单", "卡包"]}
@@ -365,7 +365,9 @@ export function DeliverySkin(p: Props) {
       <SearchBox value={q} set={setQ} placeholder="搜索美食、餐厅或商品" />
       <div className="panda-promo"><b>今天想吃点什么？</b><span>精选亚洲美食 · 送到你身边</span></div>
       <div className="catalog-scroll">
-        {tab === "首页"
+        {tab === "我的" ? (
+          <div className="panda-profile"><div className="panda-profile-face">🐼</div><h2>HungryPanda 会员</h2><p>欢迎回来，今天也要好好吃饭</p><button onClick={() => setTab("订单")}>我的订单</button><button onClick={() => setTab("首页")}>返回首页</button></div>
+        ) : tab === "首页"
           ? list.map((i) => (
               <button
                 className="delivery-merchant"
