@@ -6973,3 +6973,25 @@ label {
   width: 22px !important;
   height: 22px !important;
 }
+
+
+/* Vertically center the chat-background action label and its chevron. */
+.wechat-ui.wx-reference-layout .wx-chat-bg-row {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 78px !important;
+  min-height: 78px !important;
+  padding: 0 42px !important;
+  line-height: 1.4 !important;
+  text-align: center !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-bg-row svg {
+  position: absolute !important;
+  top: 50% !important;
+  right: 17px !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  margin: 0 !important;
+}
