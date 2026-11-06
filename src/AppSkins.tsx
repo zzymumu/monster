@@ -1999,10 +1999,13 @@ export function WeChatSkin(p: SkinProps) {
   // the original avatar; after it, every WeChat surface and historical bubble
   // must consistently use the new avatar.
   const dagAvatarChanged = p.ui?.wxPostDrunkGDotDeliveredV1 === true;
+  const savedDaGAvatar = typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2.trim() : "";
+  // Ignore stale emoji placeholders saved by earlier builds. The portrait must
+  // always be a real image URL and must resolve under the GitHub Pages base path.
   const dagCurrentAvatar = dagAvatarChanged
-    ? (typeof p.ui?.wxDaGAvatarV2 === "string" && p.ui.wxDaGAvatarV2
-        ? p.ui.wxDaGAvatarV2
-        : "./assets/dag-new-avatar.jpg")
+    ? (/^(data:image\\/|\\.\\/assets\\/|\\/assets\\/|https?:\\/\\/)/i.test(savedDaGAvatar)
+        ? savedDaGAvatar
+        : `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg`)
     : "";
   const getDaGAvatar = (fallback = "") => dagAvatarChanged ? dagCurrentAvatar : fallback;
   const broccoliBaseItems = p.items.filter((item) =>
