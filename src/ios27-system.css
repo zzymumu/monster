@@ -2179,3 +2179,17 @@
   }
 }
 
+
+
+/* Automatically adapt status-bar contrast to the active app surface. */
+.phone-shell.ios27 .phone-screen.in-app:not(.is-locked) > .status-bar > .status-time,
+.phone-shell.ios27 .phone-screen.in-app:not(.is-locked) > .status-bar > .signals {
+  color: #fff !important;
+  mix-blend-mode: difference;
+  text-shadow: none !important;
+}
+.phone-shell.ios27 .phone-screen.in-app:not(.is-locked) > .status-bar > .signals .ios-battery,
+.phone-shell.ios27 .phone-screen.in-app:not(.is-locked) > .status-bar > .signals .ios-battery > span,
+.phone-shell.ios27 .phone-screen.in-app:not(.is-locked) > .status-bar > .signals .ios-battery > b {
+  color: inherit;
+}
