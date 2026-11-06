@@ -3924,7 +3924,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && (returnDinnerStage !== 300 || p.ui?.wxPostDoorBroccoliOpenedAfterDoorV1 === true) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
