@@ -96,6 +96,15 @@
       "dock": false,
       "folder": "",
       "icon": ""
+    },
+    {
+      "id": "jkopay",
+      "name": "街口支付",
+      "installed": true,
+      "visible": true,
+      "dock": false,
+      "folder": "",
+      "icon": ""
     }
   ],
   "contacts": [
