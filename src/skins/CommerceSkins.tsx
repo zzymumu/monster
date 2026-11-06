@@ -307,8 +307,8 @@ export function JkoPaySkin(p:Props){
  const pending=(()=>{try{return JSON.parse(String(p.ui?.pendingShopeePayment||"null")) as JkoPendingPayment|null}catch{return null}})();
  const transactions=(()=>{try{return JSON.parse(String(p.ui?.transactions||"[]")) as JkoTransaction[]}catch{return[]}})();
  const balance=Number(p.ui?.balance??12680);
- const esunBalance=Number(p.ui?.esunBalance??38000);
- const cathayBalance=Number(p.ui?.cathayBalance??8500);
+ const esunBalance=Number(p.ui?.esunBalance??50000);
+ const cathayBalance=Number(p.ui?.cathayBalance??50000);
  const availableBalance=paySource==="街口帳戶餘額"?balance:paySource==="國泰世華 **** 6621"?cathayBalance:esunBalance;
  const confirmPayment=()=>{
   if(!pending||success)return;
