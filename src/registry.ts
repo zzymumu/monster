@@ -108,7 +108,7 @@ const definitions: [
   ["douyin", "抖音", "media", "#292c33", Video, ["推荐", "关注", "记录"]],
   ["bilibili", "哔哩哔哩", "media", "#d785a1", Tv, ["首页", "动态", "历史"]],
   ["alipay", "支付宝", "records", "#368dcc", Wallet, ["账单", "卡包"]],
-  ["jkopay", "街口支付", "records", "#f5a623", Wallet, ["首页", "付款码", "交易记录", "我的"]],
+  ["jkopay", "街口支付", "records", "#e60012", Wallet, ["首页", "付款码", "交易记录", "我的"]],
   [
     "taobao",
     "淘宝",
