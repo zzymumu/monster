@@ -33,6 +33,7 @@ const native = new Set([
   "douyin",
   "bilibili",
   "alipay",
+  "jkopay",
   "taobao",
   "netease",
   "delivery",
@@ -708,6 +709,16 @@ function DrawnArtwork({ id, date }: { id: string; date?: string }) {
       >
         支
       </text>
+    );
+  } else if (id === "jkopay") {
+    background = "#f5a623";
+    art = (
+      <>
+        <circle cx="32" cy="32" r="25" fill="#fff" opacity=".18" />
+        <path d="M15 22h34v7H15zm0 13h34v7H15z" fill="#fff" opacity=".95" />
+        <path d="M23 15h18v34H23z" fill="#fff" opacity=".95" />
+        <path d="M29 21h6v22h-6z" fill="#f5a623" />
+      </>
     );
   } else if (id === "taobao") {
     background = "#ff5900";
