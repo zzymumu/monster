@@ -13,7 +13,7 @@ import {
   Utensils,
   Wallet,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Empty,
   Header,
@@ -193,9 +193,10 @@ type ShopeeCart=Record<string,number>;
 export function ShopeeSkin(p:Props){
  const [tab,setTab]=useState("首頁"),[query,setQuery]=useState(""),[category,setCategory]=useState("全部");
  const [orderFilter,setOrderFilter]=useState("全部");
+ const [paymentMethod,setPaymentMethod]=useState("街口支付");
  const [product,setProduct]=useState<ShopeeProduct|null>(null),[variant,setVariant]=useState("");
  const [cart,setCart]=useState<ShopeeCart>(()=>{try{return JSON.parse(String(p.ui?.shopeeCart||"{}"))}catch{return{}}});
- const [orders,setOrders]=useState<Array<{id:string;name:string;price:number;qty:number;status:string;date:string;discountedTotal?:number;shippingStep?:number;trackingNo?:string;carrier?:string;nextUpdateAt?:number;arrivalNotified?:boolean}>>(()=>{try{return JSON.parse(String(p.ui?.shopeeOrders||"[]"))}catch{return[]}});
+ const [orders,setOrders]=useState<Array<{id:string;name:string;price:number;qty:number;status:string;date:string;discountedTotal?:number;shippingStep?:number;trackingNo?:string;carrier?:string;nextUpdateAt?:number;arrivalNotified?:boolean;paymentId?:string}>>(()=>{try{return JSON.parse(String(p.ui?.shopeeOrders||"[]"))}catch{return[]}});
  const [modal,setModal]=useState<"checkout"|"coupon"|"tracking"|null>(null),[pickup,setPickup]=useState("7-ELEVEN"),[address,setAddress]=useState("台北市信義區（示意地址）");
  const [trackingOrder,setTrackingOrder]=useState<string|null>(null);
  const [couponClaimed,setCouponClaimed]=useState(()=>String(p.ui?.shopeeCouponClaimed||"false")==="true"),[couponSuccess,setCouponSuccess]=useState(false);
@@ -220,7 +221,37 @@ export function ShopeeSkin(p:Props){
  const currentTrackingOrder=orders.find(v=>v.id===trackingOrder);
   const confirmPickup=()=>{if(!trackingOrder)return;const target=orders.find(v=>v.id===trackingOrder);if(!target||(target.shippingStep??1)<4)return;const nextOrders=orders.map(v=>v.id===trackingOrder?{...v,shippingStep:5,status:shippingStages[5],nextUpdateAt:undefined}:v);saveOrders(nextOrders)};
 
- const placeOrder=()=>{const items=shopeeProducts.filter(v=>cart[v.id]);const subtotal=items.reduce((n,v)=>n+v.price*cart[v.id],0);let remainingDiscount=couponDiscount;const newOrders=items.map((v,index)=>{const lineTotal=v.price*cart[v.id];const share=index===items.length-1?remainingDiscount:Math.min(remainingDiscount,Math.round(couponDiscount*lineTotal/Math.max(1,subtotal)));remainingDiscount-=share;return{id:"SP"+Date.now()+v.id,name:v.name,price:v.price,qty:cart[v.id],status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:lineTotal-share,shippingStep:1,nextUpdateAt:Date.now()+30000,arrivalNotified:false,trackingNo:"SP"+Date.now().toString().slice(-8)+String(index+1),carrier:pickup}});saveOrders([...orders,...newOrders]);saveCart({});setModal(null);setProduct(null);setTab("我的")};
+ const placeOrder=()=>{
+  const items=shopeeProducts.filter(v=>cart[v.id]);
+  const subtotal=items.reduce((n,v)=>n+v.price*cart[v.id],0);
+  let remainingDiscount=couponDiscount;
+  const paymentId="JK"+Date.now().toString();
+  const checkoutItems=items.map((v,index)=>{
+   const lineTotal=v.price*cart[v.id];
+   const share=index===items.length-1?remainingDiscount:Math.min(remainingDiscount,Math.round(couponDiscount*lineTotal/Math.max(1,subtotal)));
+   remainingDiscount-=share;
+   return {id:v.id,name:v.name,price:v.price,qty:cart[v.id],discountedTotal:lineTotal-share};
+  });
+  if(paymentMethod==="街口支付"){
+   p.onAppUi?.("jkopay","pendingShopeePayment",JSON.stringify({paymentId,total:payable,subtotal,couponDiscount,items:checkoutItems,pickup,address,createdAt:Date.now()}));
+   setModal(null);
+   p.onOpenApp?.("jkopay");
+   return;
+  }
+  const newOrders=checkoutItems.map((v,index)=>({id:"SP"+paymentId+v.id,name:v.name,price:v.price,qty:v.qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:v.discountedTotal,shippingStep:1,nextUpdateAt:Date.now()+30000,arrivalNotified:false,trackingNo:"SP"+Date.now().toString().slice(-8)+String(index+1),carrier:pickup,paymentId}));
+  saveOrders([...orders,...newOrders]);saveCart({});setModal(null);setProduct(null);setTab("我的");
+ };
+ useEffect(()=>{
+  const raw=String(p.ui?.shopeePaymentResult||"");
+  if(!raw)return;
+  try{
+   const result=JSON.parse(raw) as {status?:string;paymentId?:string;items?:Array<{id:string;name:string;price:number;qty:number;discountedTotal:number}>;pickup?:string;address?:string};
+   if(result.status!=="paid"||!result.paymentId||orders.some(order=>order.paymentId===result.paymentId))return;
+   const newOrders=(result.items||[]).map((item,index)=>({id:"SP"+result.paymentId+item.id,name:item.name,price:item.price,qty:item.qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:item.discountedTotal,shippingStep:1,nextUpdateAt:Date.now()+30000,arrivalNotified:false,trackingNo:"SP"+Date.now().toString().slice(-8)+String(index+1),carrier:result.pickup||"7-ELEVEN",paymentId:result.paymentId}));
+   if(newOrders.length){saveOrders([...orders,...newOrders]);saveCart({});setTab("我的");}
+   p.onUi?.("shopeePaymentResult","");
+  }catch{p.onUi?.("shopeePaymentResult","");}
+ },[p.ui?.shopeePaymentResult]);
  return <div className="catalog-skin shopee-ui">
   <header className="shopee-header"><div className="shopee-brand"><span className="shopee-mark">S</span><strong>蝦皮購物</strong><small>台灣</small></div><button type="button" className="shopee-cart-trigger" onClick={(event)=>{event.preventDefault();event.stopPropagation();setTab("購物車");setProduct(null)}} aria-label="開啟購物車"><ShoppingCart size={23}/>{count>0&&<i>{count}</i>}</button></header>
   <div className="shopee-search-wrap"><SearchBox value={query} set={setQuery} placeholder="搜尋商品、品牌或賣場"/><button onClick={()=>setTab("分類")}>搜尋</button></div>
@@ -232,10 +263,49 @@ export function ShopeeSkin(p:Props){
    :tab==="我的"?<div className="shopee-account"><div className="shopee-profile"><span>🐱</span><div><strong>蝦皮購物會員</strong><small>嗨，今天想買點什麼？</small></div></div><div className="shopee-order-shortcuts">{["待付款","待出貨","待收貨","已完成"].map(v=><button key={v} onClick={()=>{setOrderFilter(v);setTab("訂單")}}>📦<small>{v}</small></button>)}</div><h3>我的訂單</h3>{orders.map(v=><div className="shopee-order-line" key={v.id}><span>{v.name} × {v.qty}</span><b>NT$ {(v.discountedTotal??v.price*v.qty).toLocaleString("zh-TW")}</b><small>{v.status} · {v.date}</small><button className="shopee-track-button" onClick={()=>{setTrackingOrder(v.id);setModal("tracking")}}>查看物流 ›</button></div>)}<button className="shopee-outline" onClick={()=>setModal("coupon")}>🎟️ 我的優惠券</button></div>
    :<div className="shopee-orders"><div className="shopee-orders-heading"><h2>我的訂單</h2><button type="button" onClick={()=>setOrderFilter("全部")}>全部</button></div><div className="shopee-order-filters">{["全部","待付款","待出貨","待收貨","已完成"].map(v=><button type="button" className={orderFilter===v?"selected":""} key={v} onClick={()=>setOrderFilter(v)}>{v}</button>)}</div>{visibleOrders.map(v=><div className="shopee-order-line" key={v.id}><span>{v.name} × {v.qty}</span><b>NT$ {(v.discountedTotal??v.price*v.qty).toLocaleString("zh-TW")}</b><small>{v.status} · {v.date}</small><button className="shopee-track-button" onClick={()=>{setTrackingOrder(v.id);setModal("tracking")}}>查看物流 ›</button></div>)}{!visibleOrders.length&&<p className="shopee-empty">{orderFilter==="全部"?"目前沒有訂單":`目前沒有「${orderFilter}」訂單`}</p>}</div>}
   </div>
-  {modal==="checkout"&&<div className="shopee-modal-shade"><div className="shopee-checkout"><button className="shopee-modal-close" onClick={()=>setModal(null)}><X size={18}/></button><h2>確認訂單</h2><p>配送方式</p><select value={pickup} onChange={e=>setPickup(e.target.value)}><option>7-ELEVEN</option><option>全家 FamilyMart</option><option>蝦皮店到店</option></select><p>取貨門市／收件地址</p><input value={address} onChange={e=>setAddress(e.target.value)}/><div className="shopee-checkout-total"><span>商品總額</span><b>NT$ {total.toLocaleString("zh-TW")}</b></div><div className="shopee-checkout-total shopee-coupon-deduction"><span>🎟️ 優惠券折抵{couponClaimed&&total<599?"（未達 NT$ 599 門檻）":""}</span><b>− NT$ {couponDiscount.toLocaleString("zh-TW")}</b></div><div className="shopee-checkout-total shopee-payable"><span>應付金額</span><b>NT$ {payable.toLocaleString("zh-TW")}</b></div><small>遊戲內模擬結帳，不會產生真實付款或配送。</small><button className="shopee-confirm" onClick={placeOrder}>確認下單</button></div></div>}
+  {modal==="checkout"&&<div className="shopee-modal-shade"><div className="shopee-checkout"><button className="shopee-modal-close" onClick={()=>setModal(null)}><X size={18}/></button><h2>確認訂單</h2><p>配送方式</p><select value={pickup} onChange={e=>setPickup(e.target.value)}><option>7-ELEVEN</option><option>全家 FamilyMart</option><option>蝦皮店到店</option></select><p>取貨門市／收件地址</p><input value={address} onChange={e=>setAddress(e.target.value)}/><p>付款方式</p><select value={paymentMethod} onChange={e=>setPaymentMethod(e.target.value)}><option value="街口支付">街口支付（跳轉付款）</option><option value="貨到付款">貨到付款</option></select><div className="shopee-checkout-total"><span>商品總額</span><b>NT$ {total.toLocaleString("zh-TW")}</b></div><div className="shopee-checkout-total shopee-coupon-deduction"><span>🎟️ 優惠券折抵{couponClaimed&&total<599?"（未達 NT$ 599 門檻）":""}</span><b>− NT$ {couponDiscount.toLocaleString("zh-TW")}</b></div><div className="shopee-checkout-total shopee-payable"><span>應付金額</span><b>NT$ {payable.toLocaleString("zh-TW")}</b></div><small>遊戲內模擬結帳，不會產生真實付款或配送。</small><button className="shopee-confirm" onClick={placeOrder}>{paymentMethod==="街口支付"?"前往街口支付付款":"確認下單"}</button></div></div>}
   {modal==="coupon"&&<div className="shopee-modal-shade" onClick={()=>setModal(null)}><div className="shopee-coupon" onClick={e=>e.stopPropagation()}><button onClick={()=>setModal(null)}>✕</button><h2>🎟️ 優惠券</h2><strong>滿 NT$ 599 折 NT$ 50</strong><p>{couponSuccess?"🎉 領取成功！優惠券已放入你的帳戶。":couponClaimed?"這張優惠券已經領取，可以在結帳時自動折抵。":"新會員限定優惠（模擬）"}</p><button className="shopee-confirm" disabled={couponClaimed} onClick={()=>{setCouponClaimed(true);p.onUi?.("shopeeCouponClaimed","true");setCouponSuccess(true)}}>{couponClaimed?"已領取 ✓":"立即領取"}</button></div></div>}
   {modal==="tracking"&&currentTrackingOrder&&<div className="shopee-modal-shade" onClick={()=>setModal(null)}><div className="shopee-tracking" onClick={e=>e.stopPropagation()}><button className="shopee-modal-close" onClick={()=>setModal(null)}><X size={18}/></button><div className="shopee-tracking-head"><Truck size={28}/><div><h2>物流追蹤</h2><p>{currentTrackingOrder.status}</p></div></div><div className="shopee-tracking-meta"><span>物流方式</span><b>{currentTrackingOrder.carrier||pickup}</b><span>物流單號</span><b>{currentTrackingOrder.trackingNo||currentTrackingOrder.id}</b><span>訂單商品</span><b>{currentTrackingOrder.name} × {currentTrackingOrder.qty}</b></div><div className="shopee-tracking-timeline">{shippingStages.map((stage,index)=><div className={"shopee-tracking-step "+(index<=(currentTrackingOrder.shippingStep??1)?"done":"")} key={stage}><i /><div><b>{stage}</b><small>{index===0?currentTrackingOrder.date:index<=(currentTrackingOrder.shippingStep??1)?"已完成":"等待物流更新"}</small></div></div>)}</div><small className="shopee-simulation-note">物流每 30 秒自動更新一次，網頁重新開啟時會接續進度。此為遊戲內模擬物流資訊，不連接真實物流商。</small><button className="shopee-confirm" disabled={(currentTrackingOrder.shippingStep??1)<4||(currentTrackingOrder.shippingStep??1)>=shippingStages.length-1} onClick={confirmPickup}>{(currentTrackingOrder.shippingStep??1)>=shippingStages.length-1?"已完成取貨":(currentTrackingOrder.shippingStep??1)<4?"尚未送達，暫不可取貨":"我已取貨"}</button></div></div>}
   <Tabs tabs={["首頁","分類","購物車","我的"]} value={tab} set={setTab} icons={[<Home/>,<Tag/>,<ShoppingCart/>,<Users/>]}/>
+ </div>;
+}
+
+
+type JkoPendingPayment={paymentId:string;total:number;subtotal:number;couponDiscount:number;items:Array<{id:string;name:string;price:number;qty:number;discountedTotal:number}>;pickup:string;address:string;createdAt:number};
+type JkoTransaction={id:string;merchant:string;amount:number;date:string;note:string;status:string};
+export function JkoPaySkin(p:Props){
+ const [tab,setTab]=useState("首頁");
+ const [success,setSuccess]=useState(false);
+ const [paySource,setPaySource]=useState("玉山銀行 **** 3188");
+ const pending=(()=>{try{return JSON.parse(String(p.ui?.pendingShopeePayment||"null")) as JkoPendingPayment|null}catch{return null}})();
+ const transactions=(()=>{try{return JSON.parse(String(p.ui?.transactions||"[]")) as JkoTransaction[]}catch{return[]}})();
+ const balance=Number(p.ui?.balance??12680);
+ const confirmPayment=()=>{
+  if(!pending||success)return;
+  const tx:JkoTransaction={id:pending.paymentId,merchant:"蝦皮購物",amount:pending.total,date:new Date().toLocaleString("zh-TW"),note:pending.items.map(v=>v.name+" × "+v.qty).join("、"),status:"付款成功"};
+  p.onUi?.("transactions",JSON.stringify([tx,...transactions]));
+  p.onUi?.("balance",String(balance));
+  p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));
+  p.onUi?.("pendingShopeePayment","");
+  setSuccess(true);
+  window.setTimeout(()=>p.onOpenApp?.("shopee"),1100);
+ };
+ return <div className="catalog-skin jkopay-ui">
+  <header className="jko-header"><button onClick={p.onBack} aria-label="返回">‹</button><strong>街口支付</strong><button onClick={()=>setTab("我的")}>⋯</button></header>
+  {pending&&!success?<div className="jko-payment-page">
+   <div className="jko-payment-brand"><span>街口支付</span><small>安全付款確認</small></div>
+   <div className="jko-pay-card"><small>付款商店</small><h2>蝦皮購物</h2><small>訂單商品</small><p>{pending.items.map(v=>v.name+" × "+v.qty).join("、")}</p><div className="jko-amount"><small>本次應付金額</small><strong>NT$ {pending.total.toLocaleString("zh-TW")}</strong></div><div className="jko-pay-row"><span>付款方式</span><select value={paySource} onChange={e=>setPaySource(e.target.value)}><option>玉山銀行 **** 3188</option><option>街口帳戶餘額</option><option>國泰世華 **** 6621</option></select></div><div className="jko-pay-row"><span>配送方式</span><b>{pending.pickup}</b></div></div>
+   <p className="jko-safe-note">🔒 此為遊戲內模擬付款，不會連接銀行或扣款</p>
+   <button className="jko-pay-confirm" onClick={confirmPayment}>確認付款 NT$ {pending.total.toLocaleString("zh-TW")}</button>
+   <button className="jko-pay-cancel" onClick={()=>{p.onUi?.("pendingShopeePayment","");p.onOpenApp?.("shopee")}}>取消付款，返回蝦皮</button>
+  </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給蝦皮購物</p><strong>NT$ {pending?.total.toLocaleString("zh-TW")}</strong><small>正在返回蝦皮購物…</small><button onClick={()=>p.onOpenApp?.("shopee")}>立即返回</button></div>:<>
+   <div className="jko-home-scroll">
+    <div className="jko-balance"><small>街口帳戶餘額</small><strong>NT$ {balance.toLocaleString("zh-TW")}</strong><span>街口支付・讓生活更方便</span></div>
+    <div className="jko-quick-actions"><button onClick={()=>setTab("付款碼")}><span>▦</span>付款碼</button><button onClick={()=>setTab("付款碼")}><span>⌗</span>掃碼付款</button><button onClick={()=>setTab("交易記錄")}><span>↗</span>轉帳</button><button onClick={()=>setTab("我的")}><span>＋</span>生活繳費</button></div>
+    {tab==="首頁"? <><div className="jko-section-head"><strong>最近交易</strong><button onClick={()=>setTab("交易記錄")}>全部 ›</button></div>{transactions.slice(0,4).map(tx=><div className="jko-transaction" key={tx.id}><span>🛍️</span><div><b>{tx.merchant}</b><small>{tx.date}</small></div><strong>− NT$ {tx.amount.toLocaleString("zh-TW")}</strong></div>)}{!transactions.length&&<p className="jko-empty">目前還沒有交易紀錄</p>}</>:tab==="付款碼"?<div className="jko-code-page"><h2>我的付款碼</h2><div className="jko-qr" aria-label="模擬付款碼">{Array.from({length:121},(_,i)=><i key={i} style={{opacity:((i*17+i%7*13)%11)>4?1:.08}}/>)}</div><b>模擬付款碼</b><small>此付款碼僅供遊戲介面展示</small></div>:tab==="交易記錄"?<><div className="jko-section-head"><strong>交易記錄</strong></div>{transactions.map(tx=><div className="jko-transaction" key={tx.id}><span>🛍️</span><div><b>{tx.merchant}</b><small>{tx.date} · {tx.status}</small><small>{tx.note}</small></div><strong>− NT$ {tx.amount.toLocaleString("zh-TW")}</strong></div>)}{!transactions.length&&<p className="jko-empty">目前還沒有交易紀錄</p>}</>:<div className="jko-profile"><div>👤</div><h2>街口支付會員</h2><p>已綁定付款方式</p><b>玉山銀行 **** 3188</b><button onClick={()=>setTab("交易記錄")}>交易紀錄</button><button onClick={()=>setTab("首頁")}>返回首頁</button></div>}
+   </div>
+   <nav className="jko-tabs">{["首頁","付款碼","交易記錄","我的"].map((v,i)=><button className={tab===v?"selected":""} key={v} onClick={()=>setTab(v)}><span>{["⌂","▦","↻","♙"][i]}</span>{v}</button>)}</nav>
+  </>}
  </div>;
 }
 
