@@ -35,6 +35,7 @@ import "./ios/reference.css";
 import "./ios/status-bar.css";
 import "./ios27-system.css";
 import { WeChatSkin, WhatsAppSkin, getCatRescueThreadForStage } from "./AppSkins";
+import { GLOOMY_AVATAR } from "./gloomyAvatar";
 import { RichText } from "./RichText";
 import {
   useEffect,
@@ -1411,7 +1412,7 @@ function PhoneRuntime({
                 const isBigG = caller === "大G" || caller === "温尚翊";
                 const displayName = contactRemarksForNotifications[caller] ||
                   contactRemarksForNotifications[isBigG ? "大G" : "西蓝花"] || caller;
-                const avatarSrc = isBigG ? "./assets/dag-new-avatar.jpg" : "./assets/gloomy-avatar.png";
+                const avatarSrc = isBigG ? "./assets/dag-new-avatar.jpg" : GLOOMY_AVATAR;
                 return <>
                   <div className="wechat-call-topline">微信语音通话</div>
                   <div className="incoming-avatar">
