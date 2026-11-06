@@ -351,76 +351,97 @@ export function JkoPaySkin(p:Props){
 }
 
 export function DeliverySkin(p: Props) {
-  const { tab, setTab, q, setQ, items } = useContent(p, "首页");
-  const list = items.filter((i) =>
-    tab === "订单" ? i.folder === "订单" : i.folder !== "订单",
+  const { tab, setTab, q, setQ } = useContent(p, "首页");
+  const [category, setCategory] = useState("全部");
+  const [selected, setSelected] = useState<string | null>(null);
+  const [cart, setCart] = useState<Record<string, number>>({});
+  const [cartOpen, setCartOpen] = useState(false);
+  const restaurants = [
+    {id:"r1",name:"川味小馆",desc:"川菜 · 麻辣香锅 · 水煮鱼",rating:"4.8",time:"25–35 分钟",fee:"$1.99 起",price:"$15 起",tag:"人气热卖",image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=640&q=85"},
+    {id:"r2",name:"港式茶餐厅",desc:"烧腊 · 港式奶茶 · 云吞面",rating:"4.7",time:"20–30 分钟",fee:"$0.99 起",price:"$12 起",tag:"免配送费",image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=640&q=85"},
+    {id:"r3",name:"日式食堂",desc:"寿司 · 拉面 · 日式丼饭",rating:"4.9",time:"30–40 分钟",fee:"$1.49 起",price:"$18 起",tag:"精选商家",image:"https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=640&q=85"},
+    {id:"r4",name:"韩式炸鸡研究所",desc:"韩式炸鸡 · 年糕 · 炸物",rating:"4.6",time:"25–40 分钟",fee:"$1.99 起",price:"$16 起",tag:"限时优惠",image:"https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=640&q=85"},
+    {id:"r5",name:"小笼包与面",desc:"小笼包 · 生煎 · 汤面",rating:"4.8",time:"20–30 分钟",fee:"$0.99 起",price:"$12 起",tag:"附近好店",image:"https://images.unsplash.com/photo-1563245372-7d7d3d4a1b5a?w=640&q=85"},
+  ];
+  const menu = [
+    {id:"m1",name:"招牌红烧牛肉面",desc:"慢炖牛腱肉，浓郁汤底",price:15.99,image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=360&q=80"},
+    {id:"m2",name:"麻辣水煮鱼",desc:"鲜嫩鱼片，麻辣鲜香",price:22.99,image:"https://images.unsplash.com/photo-1547592180-85f173990554?w=360&q=80"},
+    {id:"m3",name:"虾仁炒饭",desc:"粒粒分明，锅气十足",price:13.99,image:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=360&q=80"},
+  ];
+  const count = Object.values(cart).reduce((a,b)=>a+b,0);
+  const total = menu.reduce((sum,item)=>sum+item.price*(cart[item.id]||0),0);
+  const add = (id:string) => setCart(v=>({...v,[id]:(v[id]||0)+1}));
+  const remove = (id:string) => setCart(v=>({...v,[id]:Math.max(0,(v[id]||0)-1)}));
+  const activeRestaurant = restaurants.find(r=>r.id===selected);
+  const visibleRestaurants = restaurants.filter(r=>
+    (category==="全部" || (category==="中餐" && /川|港|小笼/.test(r.name)) || (category==="日韩料理" && /日式|韩式/.test(r.name))) &&
+    (q.trim()==="" || (r.name+r.desc).toLowerCase().includes(q.toLowerCase()))
   );
   return (
     <div className="catalog-skin delivery-ui">
-      <div className="panda-topbar"><div className="panda-brand"><span className="panda-mark">🐼</span><div><b>HungryPanda</b><small>熊猫外卖</small></div></div><button onClick={() => setTab("订单")}>我的订单</button></div>
-      <div className="delivery-location">
-        <MapPin size={18} />
-        <strong>{meta(items[0], "address", "作品配送地址")}</strong>
-      </div>
-      <SearchBox value={q} set={setQ} placeholder="搜索美食、餐厅或商品" />
-      <div className="panda-promo"><b>今天想吃点什么？</b><span>精选亚洲美食 · 送到你身边</span></div>
-      <div className="catalog-scroll">
-        {tab === "我的" ? (
-          <div className="panda-profile"><div className="panda-profile-face">🐼</div><h2>HungryPanda 会员</h2><p>欢迎回来，今天也要好好吃饭</p><button onClick={() => setTab("订单")}>我的订单</button><button onClick={() => setTab("首页")}>返回首页</button></div>
-        ) : tab === "首页"
-          ? list.map((i) => (
-              <button
-                className="delivery-merchant"
-                key={i.id}
-                onClick={() => p.onItem(i)}
-              >
-                <Media item={i} />
-                <div>
-                  <h3>{i.title}</h3>
-                  <p>
-                    <Star size={12} />
-                    {meta(i, "rating", "—")}
-                    <span>{meta(i, "duration")}</span>
-                  </p>
-                  <small>{i.body.split("\n")[0]}</small>
-                  <strong>¥ {meta(i, "price", "—")}</strong>
+      <div className="hp-home-scroll">
+        {selected && activeRestaurant ? (
+          <div className="hp-detail-page">
+            <div className="hp-detail-hero" style={{backgroundImage:"url("+activeRestaurant.image+")"}}>
+              <button className="hp-back" onClick={()=>setSelected(null)}>‹</button>
+              <button className="hp-heart" onClick={()=>{}}>♡</button>
+            </div>
+            <div className="hp-detail-info">
+              <h2>{activeRestaurant.name}</h2><p>{activeRestaurant.desc}</p>
+              <div className="hp-meta"><b>★ {activeRestaurant.rating}</b><span>{activeRestaurant.time}</span><span>{activeRestaurant.fee}</span></div>
+              <div className="hp-deal-strip">🎉 新用户优惠 · 满额立减优惠券可用</div>
+              <h3>招牌推荐</h3>
+              {menu.map(item=>(
+                <div className="hp-menu-row" key={item.id}>
+                  <img src={item.image} alt={item.name}/>
+                  <div className="hp-menu-copy"><b>{item.name}</b><small>{item.desc}</small><strong>$ {item.price.toFixed(2)}</strong></div>
+                  <button className="hp-add" onClick={()=>add(item.id)}>＋</button>
+                  {cart[item.id]>0 && <span className="hp-qty">{cart[item.id]}</span>}
                 </div>
-              </button>
-            ))
-          : list.map((i) => (
-              <button
-                className="delivery-order"
-                key={i.id}
-                onClick={() => p.onItem(i)}
-              >
-                <header>
-                  <Utensils size={18} />
-                  <strong>{i.sender}</strong>
-                  <span>{meta(i, "status", "配送记录")}</span>
-                </header>
-                <section>
-                  <Media item={i} />
-                  <div>
-                    <strong>{i.title}</strong>
-                    <p>{i.body}</p>
-                    <small>{i.time}</small>
-                  </div>
-                  <b>¥ {meta(i, "price", "—")}</b>
-                </section>
-                <footer>
-                  <MapPin size={13} />
-                  {meta(i, "address")}
-                </footer>
-              </button>
-            ))}
-        <Empty items={list} />
+              ))}
+            </div>
+          </div>
+        ) : tab === "首页" ? (
+          <>
+            <div className="hp-header">
+              <div className="hp-location"><small>配送至</small><b>⌖ 选择配送地址　⌄</b></div>
+              <button className="hp-support" onClick={()=>setTab("我的")}>客服</button>
+            </div>
+            <div className="hp-search-wrap"><SearchBox value={q} set={setQ} placeholder="搜索餐厅、美食或商品"/></div>
+            <div className="hp-promo">
+              <div><small>WELCOME TO HUNGRYPANDA</small><h2>今天想吃点什么？</h2><p>新用户专享优惠 · 美食送到家</p><b>领优惠券　›</b></div>
+              <div className="hp-promo-panda">🐼</div>
+            </div>
+            <div className="hp-quick-grid">
+              {["外卖","自取","超市","优惠券"].map((v,i)=><button key={v} onClick={()=>setCategory(i===2?"超市":"全部")}><span>{["🍱","🥡","🛒","🎟️"][i]}</span><b>{v}</b></button>)}
+            </div>
+            <div className="hp-categories">
+              {["全部","中餐","日韩料理","奶茶甜品","火锅烧烤"].map((v,i)=><button className={category===v?"active":""} key={v} onClick={()=>setCategory(v)}><span>{["🍜","🥢","🍣","🧋","🍲"][i]}</span>{v}</button>)}
+            </div>
+            <div className="hp-section-title"><div><h3>附近热门餐厅</h3><small>发现你附近的亚洲美食</small></div><button onClick={()=>setCategory("全部")}>查看全部 ›</button></div>
+            <div className="hp-restaurant-list">
+              {visibleRestaurants.map(r=>(
+                <button className="hp-restaurant-card" key={r.id} onClick={()=>setSelected(r.id)}>
+                  <div className="hp-restaurant-image"><img src={r.image} alt={r.name}/><span>{r.tag}</span></div>
+                  <div className="hp-restaurant-info"><b>{r.name}</b><div className="hp-rating"><strong>★ {r.rating}</strong><span>{r.time}</span></div><small>{r.desc}</small><footer><span>{r.fee}</span><span>{r.price}</span></footer></div>
+                </button>
+              ))}
+              {visibleRestaurants.length===0 && <div className="hp-empty">没有找到相关餐厅，试试其他关键词吧</div>}
+            </div>
+          </>
+        ) : tab === "订单" ? (
+          <div className="hp-orders"><h2>我的订单</h2><div className="hp-order-empty"><span>🧾</span><b>还没有订单</b><small>下单后，订单状态和配送进度会显示在这里</small><button onClick={()=>setTab("首页")}>去逛逛</button></div></div>
+        ) : (
+          <div className="hp-profile"><div className="hp-profile-top"><span>🐼</span><div><b>欢迎来到 HungryPanda</b><small>登录后享受更多会员权益</small></div><button>登录 / 注册</button></div>{["我的优惠券","收货地址","收藏餐厅","客服与帮助","设置"].map((v,i)=><button className="hp-profile-row" key={v}><span>{["🎟️","📍","♡","🎧","⚙️"][i]}</span>{v}<b>›</b></button>)}</div>
+        )}
       </div>
-      <Tabs
-        tabs={["首页", "订单", "我的"]}
-        value={tab}
-        set={setTab}
-        icons={[<Home />, <Receipt />, <Users />]}
-      />
+      {cartOpen && <div className="hp-cart-sheet"><div className="hp-cart-head"><b>购物车</b><button onClick={()=>setCartOpen(false)}>×</button></div>{menu.filter(m=>cart[m.id]>0).map(m=><div className="hp-cart-row" key={m.id}><span>{m.name}</span><b>$ {(m.price*cart[m.id]).toFixed(2)}</b><button onClick={()=>remove(m.id)}>−</button><strong>{cart[m.id]}</strong><button onClick={()=>add(m.id)}>＋</button></div>)}<div className="hp-cart-foot"><b>合计 $ {total.toFixed(2)}</b><button onClick={()=>{setCartOpen(false);setTab("订单")}}>去结算</button></div></div>}
+      <div className="hp-bottom">
+        <button className={tab==="首页"?"active":""} onClick={()=>{setSelected(null);setTab("首页")}}><span>⌂</span>首页</button>
+        <button className={tab==="订单"?"active":""} onClick={()=>{setSelected(null);setTab("订单")}}><span>▤</span>订单</button>
+        <button onClick={()=>setCartOpen(true)} className="hp-cart-tab"><span>🛒{count>0&&<i>{count}</i>}</span>购物车</button>
+        <button className={tab==="我的"?"active":""} onClick={()=>{setSelected(null);setTab("我的")}}><span>♙</span>我的</button>
+      </div>
     </div>
   );
 }
