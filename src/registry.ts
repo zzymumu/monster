@@ -21,7 +21,6 @@ import {
   Settings,
   Video,
   ShoppingBag,
-  ShoppingCart,
   Utensils,
   Radio,
   Play,
