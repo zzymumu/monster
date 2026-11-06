@@ -1406,14 +1406,21 @@ function PhoneRuntime({
           )}
           {!creator && s.incomingCall && (
             <div className="incoming-call-screen">
-              <small>
-                {s.incomingCall.status === "ringing" ? "来电" : "通话中"} ·
-                作品内模拟
-              </small>
-              <div className="incoming-avatar">
-                {s.incomingCall.caller.slice(0, 1)}
-              </div>
-              <h2>{s.incomingCall.caller}</h2>
+              {(() => {
+                const caller = s.incomingCall!.caller;
+                const isBigG = caller === "大G" || caller === "温尚翊";
+                const displayName = contactRemarksForNotifications[caller] ||
+                  contactRemarksForNotifications[isBigG ? "大G" : "西蓝花"] || caller;
+                const avatarSrc = isBigG ? "./assets/dag-new-avatar.jpg" : "./assets/gloomy-avatar.png";
+                return <>
+                  <div className="wechat-call-topline">微信语音通话</div>
+                  <div className="incoming-avatar">
+                    <img src={avatarSrc} alt="" onError={e => { e.currentTarget.style.display = "none"; }} />
+                  </div>
+                  <h2>{displayName}</h2>
+                  <p className="wechat-call-state">{s.incomingCall!.status === "ringing" ? "邀请你进行语音通话…" : "语音通话中"}</p>
+                </>;
+              })()}
               {s.incomingCall.status === "answered" &&
                 (() => {
                   const record = work.data.phone?.find(
@@ -1421,9 +1428,7 @@ function PhoneRuntime({
                   );
                   return record?.kind === "audio" && safeMedia(record.media) ? (
                     <audio controls src={safeMedia(record.media)} />
-                  ) : (
-                    <p>这是一通虚构来电。</p>
-                  );
+                  ) : null;
                 })()}
               <div className="incoming-actions">
                 <button
