@@ -261,7 +261,7 @@ export function ShopeeSkin(p:Props){
    const result=JSON.parse(raw) as {status?:string;paymentId?:string;items?:Array<{id:string;name:string;price:number;qty:number;discountedTotal:number}>;pickup?:string;address?:string};
    if(result.status!=="paid"||!result.paymentId||orders.some(order=>order.paymentId===result.paymentId))return;
    const paidOrders=orders.map(order=>order.paymentId===result.paymentId?{...order,status:"賣家備貨中",shippingStep:1,nextUpdateAt:Date.now()+30000}:order);
-   if(paidOrders.some((order,index)=>order!==orders[index])){saveOrders(paidOrders);saveCart({});setTab("我的");}
+   if(paidOrders.some((order,index)=>order!==orders[index])){saveOrders(paidOrders);if(checkoutReturnTab==="購物車")saveCart({});setCheckoutCart({});setTab("我的");}
    p.onUi?.("shopeePaymentResult","");
   }catch{p.onUi?.("shopeePaymentResult","");}
  },[p.ui?.shopeePaymentResult]);
