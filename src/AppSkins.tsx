@@ -3781,10 +3781,13 @@ export function WeChatSkin(p: SkinProps) {
                   const avatarItem = [...allItems].reverse().find((i) =>
                     canonicalContactName(i.sender || "") === canonical || canonicalContactName(i.title || "") === canonical
                   );
+                  const dagAvatarChanged = p.ui?.wxPostDrunkGDotDeliveredV1 === true;
                   const contactAvatar = isMonsterName(canonical)
-                    ? (typeof p.ui?.wxDaGAvatarV2 === "string" && p.ui.wxDaGAvatarV2
-                        ? p.ui.wxDaGAvatarV2
-                        : avatarItem?.avatar || "./assets/dag-new-avatar.jpg")
+                    ? (dagAvatarChanged
+                        ? (typeof p.ui?.wxDaGAvatarV2 === "string" && p.ui.wxDaGAvatarV2
+                            ? p.ui.wxDaGAvatarV2
+                            : "./assets/dag-new-avatar.jpg")
+                        : avatarItem?.avatar || "")
                     : canonical === "西蓝花" ? GLOOMY_AVATAR : avatarItem?.avatar || "";
                   return <button className="wx-contact-row" key={name} onClick={() => openContact(canonical)}>
                     <Avatar name={canonical} src={contactAvatar} /><span onClick={(event) => { event.stopPropagation(); openRemarkEditor(canonical); }} title="点击修改备注" style={{ cursor: "text" }}>{name}</span>
