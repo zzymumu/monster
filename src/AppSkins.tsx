@@ -3149,7 +3149,8 @@ export function WeChatSkin(p: SkinProps) {
           return keys.includes(addQuery.trim().toLowerCase());
         })
     : [];
-  const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
+  const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post").slice().reverse();
+  const latestMomentPosts = myMomentPosts.slice().reverse();
   const filteredConversations = conversations.filter((name) =>
     name.toLowerCase().includes(query.toLowerCase()) ||
     displayName(name).toLowerCase().includes(query.toLowerCase()) ||
@@ -3683,16 +3684,23 @@ export function WeChatSkin(p: SkinProps) {
               <Avatar name={ownerName} src={ownerAvatar} />
             </div>
           </div>
-          {myMomentPosts.map((post) => (
+          {latestMomentPosts.map((post) => (
             <div key={post.id} className="wx-moment-post wx-moment-user-post">
               <Avatar name={ownerName} src={ownerAvatar} />
-              <div><strong>{ownerName}</strong><p>{post.body}</p><small>{post.time}</small>{post.id === "moment-vava-wanwan-play-fight" && <div className="wx-moment-social-likes">♡ 西蓝花、大G 赞了这条朋友圈</div>}{post.comments?.map((comment, index) => <div className="wx-moment-social-likes" key={index}>{comment}</div>)}</div>
+              <div>
+                <strong>{ownerName}</strong>
+                <p>{post.body}</p>
+                <small>{post.time}</small>
+                {Array.isArray(post.likes) && post.likes.length > 0 && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>{post.likes.map(displayName).join("、")}</div>}
+                {post.id === "moment-vava-wanwan-play-fight" && !post.likes?.length && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>西蓝花、大G</div>}
+                {post.comments?.map((comment, index) => <div className="wx-moment-social-comment" key={index}>{comment}</div>)}
+              </div>
             </div>
           ))}
           {posts.map((i) => (
             <button key={i.id} className="wx-moment-post" onClick={() => p.onItem(i)}>
               <Avatar name={i.sender} src={i.sender === ownerName || i.sender === "我" || i.sender === "机主" ? ownerAvatar : i.avatar} />
-              <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small></div>
+              <div><strong>{i.sender}</strong><p>{i.body}</p>{i.media && <ItemMedia item={i} />}<small>{i.time}</small>{Array.isArray(i.meta?.likes) && i.meta.likes.length > 0 && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>{i.meta.likes.join("、")}</div>}</div>
             </button>
           ))}
           {!posts.length && !myMomentPosts.length && <p className="skin-empty">还没有动态，发布一条朋友圈吧</p>}
