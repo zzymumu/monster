@@ -3900,7 +3900,7 @@ export function WeChatSkin(p: SkinProps) {
 
                 ];
                 const transcript = threadItems.map((item) => item.body.trim());
-                const current = broccoliPrompts.find((prompt) => transcript.includes(prompt.trigger) && !transcript.includes(prompt.body));
+                const current = broccoliPrompts.find((prompt) => transcript.includes(simplifyBroccoliText(prompt.trigger)) && !transcript.includes(simplifyBroccoliText(prompt.body)));
                 if (!current || pendingCatLines.length > 0) return null;
                 return <div className="cat-rescue-choices" aria-label="西蓝花醉酒对话回复" style={{ position: "sticky", bottom: 0, zIndex: 20, display: "flex", flexDirection: "column", gap: 8, padding: "10px 12px", background: "rgba(255,255,255,.96)", borderTop: "1px solid #e5e5e5" }}>
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal" }} onClick={() => {
