@@ -6642,3 +6642,92 @@ label {
   padding: 0 !important;
   align-self: flex-start;
 }
+
+
+/* WeChat Moments final light theme: white feed and native-style social strip. */
+.wechat-ui.wx-reference-layout[data-moments="true"] {
+  background: #fff !important;
+  color: #222 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-nav {
+  background: #f7f7f7 !important;
+  color: #171717 !important;
+  border-bottom: 1px solid #ededed !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-nav button,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-header-actions button {
+  color: #171717 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-nav > strong {
+  color: #171717 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moments {
+  background: #fff !important;
+  color: #222 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post {
+  background: #fff !important;
+  color: #222 !important;
+  border-bottom: 1px solid #eeeeee !important;
+  padding: 18px 15px 17px !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post strong,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post strong {
+  color: #607796 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post p,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post p {
+  color: #222 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post small,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post small {
+  color: #b2b2b2 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-social-likes {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  min-height: 38px;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: #f5f5f5 !important;
+  color: #607796 !important;
+  font-size: 13px !important;
+  line-height: 1.45;
+  text-align: left;
+  box-shadow: none !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-social-likes span {
+  flex: 0 0 auto;
+  color: #607796 !important;
+  font-size: 19px;
+  line-height: 1;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-social-comment {
+  margin-top: 1px;
+  padding: 7px 10px;
+  background: #f5f5f5;
+  color: #607796;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post .skin-photo {
+  background: #f4f4f4 !important;
+  color: #666 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .skin-empty {
+  background: #fff !important;
+  color: #999 !important;
+}
+.dark-phone .phone-screen:has(.wechat-ui.wx-reference-layout[data-moments="true"]) .status-bar {
+  background: #f7f7f7 !important;
+  color: #111 !important;
+}
+.dark-phone .phone-screen:has(.wechat-ui.wx-reference-layout[data-moments="true"]) .status-bar .status-time,
+.dark-phone .phone-screen:has(.wechat-ui.wx-reference-layout[data-moments="true"]) .status-bar .signals {
+  color: #111 !important;
+}
