@@ -6324,3 +6324,227 @@ label {
 .dark-phone .phone-screen:has(.wechat-ui.wx-reference-layout[data-moments="true"]) .status-bar .signals {
   color: #f5f5f5 !important;
 }
+
+
+/* WeChat chat details page and member picker. */
+.wechat-ui.wx-reference-layout:has(.wx-chat-detail-nav) {
+  background: #101010 !important;
+  color: #f2f2f2 !important;
+}
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav {
+  background: #101010 !important;
+  color: #f5f5f5 !important;
+  border-bottom: 1px solid #252525 !important;
+}
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav strong,
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav button,
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav .wx-header-actions button {
+  color: #f5f5f5 !important;
+}
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav strong {
+  visibility: visible !important;
+  font-size: 17px !important;
+  font-weight: 600;
+}
+.wechat-ui.wx-reference-layout .wx-utility:has(.wx-chat-info-page) {
+  background: #101010 !important;
+  color: #ededed !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-page {
+  min-height: 100%;
+  padding: 0 0 30px;
+  background: #101010 !important;
+  color: #ededed !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members {
+  display: flex;
+  align-items: flex-start;
+  gap: 19px;
+  min-height: 260px;
+  padding: 10px 18px 24px;
+  background: #101010 !important;
+  border-bottom: 9px solid #191919;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div {
+  width: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 62px;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div .skin-avatar {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 7px !important;
+  font-size: 20px;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div small {
+  max-width: 68px;
+  color: #aaa !important;
+  font-size: 11px !important;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members .wx-chat-add-member {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #4b4b4b;
+  border-radius: 8px;
+  background: transparent;
+  color: #888 !important;
+  font-size: 30px;
+  font-weight: 200;
+  line-height: 1;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row {
+  width: 100%;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px;
+  border: 0;
+  border-bottom: 1px solid #292929;
+  background: #191919 !important;
+  color: #e5e5e5 !important;
+  text-align: left;
+  font-size: 15px;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row svg {
+  color: #777 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-toggle .wx-switch {
+  flex: 0 0 48px;
+}
+.wechat-ui.wx-reference-layout .wx-chat-bg-row {
+  min-height: 105px;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  border-top: 8px solid #101010;
+  background: #191919 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-bg-row svg {
+  position: absolute;
+  right: 17px;
+}
+.wechat-ui.wx-reference-layout .wx-chat-bg-row input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-reset-bg {
+  min-height: 65px;
+  color: #888 !important;
+  background: #191919 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-clear {
+  margin-top: 9px;
+  border-top: 8px solid #101010;
+  background: #191919 !important;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  background: #0009;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker {
+  width: 100%;
+  max-height: 82%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #333;
+  border-radius: 15px;
+  background: #1b1b1b;
+  color: #eee;
+  overflow: hidden;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker header {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid #333;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker header strong {
+  font-size: 16px;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker header button {
+  color: #ddd;
+  font-size: 14px;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker header button:last-child {
+  color: #07c160;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker header button:disabled {
+  opacity: .35;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker > p {
+  padding: 10px 16px 4px;
+  color: #888;
+  font-size: 12px;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker-list {
+  min-height: 0;
+  overflow: auto;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker-list button {
+  width: 100%;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 16px;
+  border-bottom: 1px solid #303030;
+  background: transparent;
+  color: #eee;
+  text-align: left;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker-list .skin-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker-list button span {
+  flex: 1;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker-list button i {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #777;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker-list button i.is-selected {
+  border-color: #07c160;
+  background: #07c160;
+}
+.wechat-ui.wx-reference-layout .wx-group-picker > small {
+  padding: 12px 16px;
+  color: #888;
+  border-top: 1px solid #333;
+}
+.dark-phone .phone-screen:has(.wx-chat-detail-nav) .status-bar {
+  background: #101010 !important;
+  color: #f5f5f5 !important;
+}
+.dark-phone .phone-screen:has(.wx-chat-detail-nav) .status-bar .status-time,
+.dark-phone .phone-screen:has(.wx-chat-detail-nav) .status-bar .signals {
+  color: #f5f5f5 !important;
+}
