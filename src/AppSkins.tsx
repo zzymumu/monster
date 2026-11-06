@@ -2977,6 +2977,29 @@ export function WeChatSkin(p: SkinProps) {
   const [menu, setMenu] = useState(false);
   const [utility, setUtility] = useState("");
   const [wxChatSettingsRaw, setWxChatSettingsRaw] = useSkinState<string>(p, "wxChatSettingsV1", "{}");
+  const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
+  const [groupPickerOpen, setGroupPickerOpen] = useState(false);
+  const [selectedGroupMembers, setSelectedGroupMembers] = useState<string[]>([]);
+  const wxGroupChats = wxGroupChatsRaw.flatMap((raw) => {
+    try {
+      const group = JSON.parse(raw) as { id: string; name: string; members: string[] };
+      return group.id && group.name && Array.isArray(group.members) ? [group] : [];
+    } catch { return []; }
+  });
+  const activeGroupChat = wxGroupChats.find((group) => group.name === p.thread);
+  const detailMemberNames = activeGroupChat?.members ?? (p.thread && !["我", "机主"].includes(p.thread) ? [canonicalContactName(p.thread)] : []);
+  const createGroupChat = () => {
+    const members = Array.from(new Set(selectedGroupMembers.filter((name) => name && name !== "我" && name !== "机主")));
+    if (!members.length) return;
+    const group = { id: `wx-group-${Date.now()}`, name: `${members.map(displayName).join("、")}的群聊`, members };
+    const next = [...wxGroupChatsRaw, JSON.stringify(group)];
+    setWxGroupChatsRaw(next);
+    p.onUi?.("wxGroupChatsV1", JSON.stringify(next));
+    setGroupPickerOpen(false);
+    setSelectedGroupMembers([]);
+    setUtility("");
+    p.onThread(group.name);
+  };
   let wxChatSettings: Record<string, { muted?: boolean; pinned?: boolean; remind?: boolean; wallpaper?: string }> = {};
   try { const parsed = JSON.parse(wxChatSettingsRaw); if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) wxChatSettings = parsed; } catch { /* keep defaults */ }
   const activeChatSettings = wxChatSettings[p.thread] || {};
@@ -3106,7 +3129,7 @@ export function WeChatSkin(p: SkinProps) {
   };
 
   const conversations = Array.from(
-    new Set(allItems.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title)),
+    new Set([...allItems.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title), ...wxGroupChats.map((group) => group.name)]),
   ).filter((name) => !(monsterRemoved && name === "大G")).sort((a, b) => {
     const aLast = allItems.filter((i) => i.title === a).at(-1)?.time ?? "";
     const bLast = allItems.filter((i) => i.title === b).at(-1)?.time ?? "";
@@ -3230,7 +3253,7 @@ export function WeChatSkin(p: SkinProps) {
           </section>
         </div>
       )}
-      <div className="app-nav wx-nav">
+      <div className={`app-nav wx-nav ${utility === "聊天信息" ? "wx-chat-detail-nav" : ""}`}>
         <button aria-label={statusEditorOpen ? "关闭状态编辑" : "返回"} onClick={() => {
           if (statusEditorOpen) { setStatusEditorOpen(false); setCustomStatusOpen(false); }
           else if (utility) setUtility("");
@@ -3241,7 +3264,7 @@ export function WeChatSkin(p: SkinProps) {
         }}>
           {statusEditorOpen ? <span className="wx-status-close">×</span> : utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
         </button>
-        <strong onClick={() => p.thread && !statusEditorOpen ? openRemarkEditor(p.thread) : undefined} style={p.thread ? { cursor: "pointer" } : undefined} title={p.thread ? "点击修改备注" : undefined}>{statusEditorOpen ? "设个状态" : utility || (p.thread ? displayName(p.thread) : moments ? "朋友圈" : tab)}</strong>
+        <strong onClick={() => p.thread && !statusEditorOpen ? openRemarkEditor(p.thread) : undefined} style={p.thread ? { cursor: "pointer" } : undefined} title={p.thread ? "点击修改备注" : undefined}>{statusEditorOpen ? "设个状态" : utility === "聊天信息" ? "聊天详情" : utility || (p.thread ? displayName(p.thread) : moments ? "朋友圈" : tab)}</strong>
         <div className="wx-header-actions">{p.thread && <><button aria-label="语音通话" title="语音通话" onClick={() => p.onUi?.("wxOutgoingCallRequest", "audio")}><Phone size={19}/></button><button aria-label="视频通话" title="视频通话" onClick={() => p.onUi?.("wxOutgoingCallRequest", "video")}><Video size={20}/></button></>}{moments ? <button aria-label="发表朋友圈" title="发表朋友圈" onClick={() => setMomentComposer(true)}><Plus size={22} /></button> : <button aria-label={statusEditorOpen ? " " : p.thread ? "聊天详情" : "微信菜单"} onClick={() => statusEditorOpen ? undefined : p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>{statusEditorOpen ? null : p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}</button>}</div>
       </div>
 
@@ -3323,10 +3346,11 @@ export function WeChatSkin(p: SkinProps) {
           {utility === "聊天信息" && (
             <div className="wx-chat-info-page">
               <div className="wx-chat-info-members">
-                {Array.from(new Set(allItems.filter((i) => i.title === p.thread).map((i) => i.sender))).map((name) => (
-                  <div key={name}><Avatar name={name} src={allItems.find((i) => i.sender === name)?.avatar} /><small>{displayName(name)}</small></div>
-                ))}
-                <button className="wx-chat-add-member" aria-label="添加成员" onClick={() => setUtility("添加朋友")}>＋</button>
+                {detailMemberNames.map((name) => {
+                  const related = allItems.filter((i) => i.sender === name || i.title === name).at(-1);
+                  return <div key={name}><Avatar name={name} src={name === "西蓝花" ? GLOOMY_AVATAR : related?.avatar || ""} /><small>{displayName(name)}</small></div>;
+                })}
+                <button className="wx-chat-add-member" aria-label="发起群聊" title="发起群聊" onClick={() => { setSelectedGroupMembers(detailMemberNames); setGroupPickerOpen(true); }}>＋</button>
               </div>
               <button className="wx-chat-info-row" onClick={() => setUtility("查找聊天内容")}>查找聊天内容 <ChevronRight size={20}/></button>
               <button className="wx-chat-info-row wx-chat-info-toggle" onClick={() => updateActiveChatSettings({ muted: !activeChatSettings.muted })}>消息免打扰 <span className={activeChatSettings.muted ? "wx-switch is-on" : "wx-switch"}><i/></span></button>
@@ -3338,6 +3362,21 @@ export function WeChatSkin(p: SkinProps) {
               {activeChatSettings.wallpaper && <button className="wx-chat-info-row wx-chat-reset-bg" onClick={() => updateActiveChatSettings({ wallpaper: "" })}>恢复默认聊天背景</button>}
               <button className="wx-chat-info-row wx-chat-clear" onClick={() => { if (window.confirm("确定清空与该联系人的聊天记录吗？")) p.onUi?.("wxClearThreadRequest", p.thread); }}>清空聊天记录</button>
               <button className="wx-chat-info-row">投诉 <ChevronRight size={20}/></button>
+              {groupPickerOpen && <div className="wx-group-picker-backdrop"><section className="wx-group-picker" role="dialog" aria-modal="true" aria-label="选择群聊成员">
+                <header><button onClick={() => { setGroupPickerOpen(false); setSelectedGroupMembers([]); }}>取消</button><strong>选择联系人</strong><button disabled={!selectedGroupMembers.length} onClick={createGroupChat}>完成</button></header>
+                <p>选择要加入群聊的联系人</p>
+                <div className="wx-group-picker-list">
+                  {friendDirectory.filter((name) => !["我", "机主"].includes(name) && !(monsterRemoved && name === "大G")).map((name) => {
+                    const checked = selectedGroupMembers.includes(name);
+                    const related = allItems.filter((i) => i.sender === name || i.title === name).at(-1);
+                    return <button type="button" key={name} onClick={() => setSelectedGroupMembers((current) => checked ? current.filter((item) => item !== name) : [...current, name])}>
+                      <Avatar name={name} src={name === "西蓝花" ? GLOOMY_AVATAR : related?.avatar || ""}/>
+                      <span>{displayName(name)}</span><i className={checked ? "is-selected" : ""}>{checked ? "✓" : ""}</i>
+                    </button>;
+                  })}
+                </div>
+                <small>已选择 {selectedGroupMembers.length} 位联系人</small>
+              </section></div>}
             </div>
           )}
           {allItems.filter((i) => i.folder === utility).map((i) => (
