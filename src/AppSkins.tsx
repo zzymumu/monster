@@ -2104,8 +2104,20 @@ export function WeChatSkin(p: SkinProps) {
   const notificationIds = new Set(notificationStoryItems.filter(belongsToActiveThread).map((item) => item.id));
   let threadItems = [
     ...orderedThreadItems.filter((item) => !notificationIds.has(item.id)),
-    ...notificationStoryItems.filter(belongsToActiveThread),
+    ...notificationStoryItems.filter((item) => belongsToActiveThread(item) && item.id !== "drunk-post-door-broccoli-checkin-v1"),
   ];
+  // Broccoli's "祖宗，你是死了吗？" is the opening incoming message of
+  // this post-door conversation, not a new message delivered at the bottom.
+  // Place the persisted notification immediately before the player's
+  // "....哈喽。" opener so later replies remain below it in true chat order.
+  if (isBroccoliThread) {
+    const checkIn = notificationStoryItems.find((item) => item.id === "drunk-post-door-broccoli-checkin-v1");
+    if (checkIn) {
+      const openerIndex = threadItems.findIndex((item) => item.body.trim() === "....哈喽。");
+      if (openerIndex >= 0) threadItems.splice(openerIndex, 0, checkIn);
+      else threadItems.unshift(checkIn);
+    }
+  }
   // The delivered DaG dot is the anchor for the morning voice exchange.
   // Legacy notification bubbles were appended after saved chat messages,
   // which incorrectly placed the dot below the voice and player replies.
