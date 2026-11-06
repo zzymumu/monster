@@ -789,3 +789,10 @@
 .wx-moment-user-post{display:flex!important;align-items:flex-start!important}
 .wx-moment-social-likes{background:#f7f7f7!important;color:#576b95!important;padding:8px 10px!important;font-size:12px!important;margin-top:8px!important;line-height:1.5!important}
 .wx-moment-composer-backdrop{z-index:100!important}
+
+
+/* Center the active WeChat chat/contact title while keeping back and call controls anchored. */
+.ios18 .wechat-ui.wx-reference-layout[data-thread="true"] .wx-nav{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-between!important}
+.ios18 .wechat-ui.wx-reference-layout[data-thread="true"] .wx-nav>strong{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;max-width:42%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important;margin:0!important;z-index:1!important}
+.ios18 .wechat-ui.wx-reference-layout[data-thread="true"] .wx-nav>button{position:relative!important;z-index:2!important;flex:0 0 auto!important}
+.ios18 .wechat-ui.wx-reference-layout[data-thread="true"] .wx-header-actions{position:relative!important;z-index:2!important;flex:0 0 auto!important;margin-left:auto!important}
