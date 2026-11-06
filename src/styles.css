@@ -6132,3 +6132,27 @@ label {
 .incoming-call-screen:has(.wechat-call-topline) .accept-call>svg{background:#07c160}
 .incoming-call-screen:has(.wechat-call-topline) .decline-call>svg{background:#fa5151}
 .incoming-call-screen:has(.wechat-call-topline) .wechat-call-topline{font-size:14px;color:#f3f3f3}
+
+
+/* Moments cover: the photo itself is the change-cover target. */
+.wechat-ui.wx-reference-layout .wx-moment-cover {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.wechat-ui.wx-reference-layout .wx-moment-cover-change {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  cursor: pointer;
+}
+.wechat-ui.wx-reference-layout .wx-moment-cover-change input {
+  display: none;
+}
+.wechat-ui.wx-reference-layout .wx-moment-cover-top {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
