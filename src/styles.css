@@ -7100,3 +7100,38 @@ label {
   object-position: center center !important;
   background: transparent !important;
 }
+
+
+/* Force every Moments feed avatar to a true fixed square. The flex item
+   must not shrink, and the image must fill that square edge-to-edge. */
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post > .skin-avatar,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post > .skin-avatar {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  flex: 0 0 40px !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 6px !important;
+  background: #f2f2f2 !important;
+}
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-post > .skin-avatar > img,
+.wechat-ui.wx-reference-layout[data-moments="true"] .wx-moment-user-post > .skin-avatar > img {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: inherit !important;
+}
