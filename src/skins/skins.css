@@ -5785,3 +5785,41 @@
 .shopee-variant-picks button.selected { border:1px solid #ee4d2d; color:#ee4d2d; background:#fff8f5; }
 
 .shopee-checkout .shopee-coupon-deduction{margin-top:8px;color:#ee4d2d}.shopee-checkout .shopee-coupon-deduction b{color:#ee4d2d}.shopee-checkout .shopee-payable{padding-top:11px;border-top:1px solid #eee;font-size:14px;font-weight:700}.shopee-checkout .shopee-payable b{font-size:17px;color:#ee4d2d}.shopee-coupon .shopee-confirm:disabled{background:#b9b9b9;color:#fff;opacity:1;cursor:default}
+
+/* Shopee home product cards: force a vertical card layout so the image
+   occupies the full card width instead of shrinking beside the text. */
+.shopee-ui .shopee-product-grid > button{
+  display:block !important;
+  width:100%;
+  min-width:0;
+  padding:0 0 10px;
+  text-align:left;
+}
+.shopee-ui .shopee-product-grid .shopee-product-art{
+  display:grid !important;
+  width:100% !important;
+  height:190px !important;
+  min-height:190px !important;
+  flex:none !important;
+  box-sizing:border-box;
+  place-items:center;
+  overflow:hidden;
+}
+.shopee-ui .shopee-product-grid .shopee-product-art img{
+  display:block;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:center;
+  transform:scale(1.35) !important;
+  transform-origin:center;
+}
+.shopee-ui .shopee-product-grid > button > strong,
+.shopee-ui .shopee-product-grid > button > p,
+.shopee-ui .shopee-product-grid > button > small{
+  display:block;
+  width:auto;
+}
+.shopee-ui .shopee-product-grid > button > p{display:flex;}
