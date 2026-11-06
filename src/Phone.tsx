@@ -1421,17 +1421,25 @@ function PhoneRuntime({
                 const displayName = contactRemarksForNotifications[caller] ||
                   contactRemarksForNotifications[isBigG ? "大G" : "西蓝花"] || caller;
                 const daGAvatarChanged = s.ui?.wechat?.wxPostDrunkGDotDeliveredV1 === true;
-                const originalDaGAvatar = [...(s.messages.wechat ?? [])].reverse().find((item) =>
+                let savedStoryMessages: Array<{ sender?: string; title?: string; outgoing?: boolean; avatar?: string }> = [];
+                try {
+                  const rawStory = s.ui?.wechat?.catRescueState;
+                  if (typeof rawStory === "string") {
+                    const parsed = JSON.parse(rawStory);
+                    if (Array.isArray(parsed?.messages)) savedStoryMessages = parsed.messages;
+                  }
+                } catch { savedStoryMessages = []; }
+                const avatarCandidates = [...(s.messages.wechat ?? []), ...savedStoryMessages];
+                const originalDaGAvatar = [...avatarCandidates].reverse().find((item) =>
                   !item.outgoing &&
                   (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
-                  typeof item.avatar === "string" && item.avatar
+                  typeof item.avatar === "string" && item.avatar.trim()
                 )?.avatar || "";
+                const changedDaGAvatar = typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" && s.ui.wechat.wxDaGAvatarV2.trim()
+                  ? s.ui.wechat.wxDaGAvatarV2
+                  : "./assets/dag-new-avatar.jpg";
                 const avatarSrc = isBigG
-                  ? (daGAvatarChanged
-                      ? (typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" && s.ui.wechat.wxDaGAvatarV2
-                          ? s.ui.wechat.wxDaGAvatarV2
-                          : "./assets/dag-new-avatar.jpg")
-                      : originalDaGAvatar)
+                  ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar)
                   : GLOOMY_AVATAR;
                 return <>
                   <div className="wechat-call-topline">{s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>
