@@ -377,7 +377,7 @@ export function DeliverySkin(p: Props) {
       {id:"r4m1",name:"蜂蜜蒜香炸鸡",desc:"酥脆外皮，蜂蜜蒜香",price:220,image:"https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=360&q=80"},
       {id:"r4m2",name:"韩式辣炒年糕",desc:"Q弹年糕，甜辣酱汁",price:150,image:"https://images.unsplash.com/photo-1635363638580-c2809d049eee?w=360&q=80"},
       {id:"r4m3",name:"韩式海鲜煎饼",desc:"外脆内软，满满海鲜",price:180,image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=360&q=80"}]},
-    {id:"r5",name:"小笼包与面",category:"中餐",desc:"小笼包 · 生煎 · 汤面",rating:"4.8",time:"20–30 分钟",fee:"$0.99 起",price:"$12 起",tag:"附近好店",image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=640&q=85",menu:[
+    {id:"r5",name:"小笼包与面",category:"中餐",desc:"小笼包 · 生煎 · 汤面",rating:"4.8",time:"20–30 分钟",fee:"NT$ 25 起",price:"NT$ 120 起",tag:"附近好店",image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=640&q=85",menu:[
       {id:"r5m1",name:"招牌鲜肉小笼包",desc:"手工现包，皮薄汤汁足",price:150,image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=360&q=80"},
       {id:"r5m2",name:"上海生煎包",desc:"底部金黄酥脆，鲜肉馅",price:130,image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?w=360&q=80"},
       {id:"r5m3",name:"葱油拌面",desc:"葱香浓郁，经典上海风味",price:120,image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=360&q=80"}]},
@@ -389,7 +389,7 @@ export function DeliverySkin(p: Props) {
       {id:"r7m1",name:"经典珍珠奶茶",desc:"台式红茶与浓醇奶香",price:70,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
       {id:"r7m2",name:"芋泥波波鲜奶",desc:"绵密芋泥与Q弹波波",price:85,image:"https://elcanotrade.com/cdn/shop/collections/Milk_Tea_1080x.jpg?v=1604572273"},
       {id:"r7m3",name:"柠檬冬瓜茶",desc:"酸甜清爽，解腻消暑",price:60,image:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=360&q=80"}]},
-    {id:"r8",name:"阿嬷热炒",category:"热炒",desc:"台式热炒 · 炒蛤蜊 · 三杯鸡",rating:"4.8",time:"25–35 分钟",fee:"$1.49 起",price:"$18 起",tag:"台味人气",image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=640&q=85",menu:[
+    {id:"r8",name:"阿嬷热炒",category:"热炒",desc:"台式热炒 · 炒蛤蜊 · 三杯鸡",rating:"4.8",time:"25–35 分钟",fee:"NT$ 30 起",price:"NT$ 170 起",tag:"台味人气",image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=640&q=85",menu:[
       {id:"r8m1",name:"阿嬷招牌三杯鸡",desc:"九层塔香气，酱香下饭",price:240,image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=360&q=80"},
       {id:"r8m2",name:"蒜蓉炒蛤蜊",desc:"蒜香浓郁，鲜甜多汁",price:200,image:"https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=360&q=80"},
       {id:"r8m3",name:"金沙豆腐",desc:"咸蛋黄金沙，外酥内嫩",price:170,image:"https://images.unsplash.com/photo-1547592180-85f173990554?w=360&q=80"}]},
