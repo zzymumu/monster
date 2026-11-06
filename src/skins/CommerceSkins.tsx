@@ -351,20 +351,21 @@ export function JkoPaySkin(p:Props){
 }
 
 export function DeliverySkin(p: Props) {
-  const { tab, setTab, q, setQ, items } = useContent(p, "商家");
+  const { tab, setTab, q, setQ, items } = useContent(p, "首页");
   const list = items.filter((i) =>
     tab === "订单" ? i.folder === "订单" : i.folder !== "订单",
   );
   return (
     <div className="catalog-skin delivery-ui">
-      <Header p={p} />
+      <div className="panda-topbar"><div className="panda-brand"><span className="panda-mark">🐼</span><div><b>HungryPanda</b><small>熊猫外卖</small></div></div><button onClick={() => setTab("订单")}>我的订单</button></div>
       <div className="delivery-location">
         <MapPin size={18} />
         <strong>{meta(items[0], "address", "作品配送地址")}</strong>
       </div>
-      <SearchBox value={q} set={setQ} placeholder="搜索商家或订单" />
+      <SearchBox value={q} set={setQ} placeholder="搜索美食、餐厅或商品" />
+      <div className="panda-promo"><b>今天想吃点什么？</b><span>精选亚洲美食 · 送到你身边</span></div>
       <div className="catalog-scroll">
-        {tab === "商家"
+        {tab === "首页"
           ? list.map((i) => (
               <button
                 className="delivery-merchant"
@@ -413,10 +414,10 @@ export function DeliverySkin(p: Props) {
         <Empty items={list} />
       </div>
       <Tabs
-        tabs={["商家", "订单"]}
+        tabs={["首页", "订单", "我的"]}
         value={tab}
         set={setTab}
-        icons={[<Utensils />, <Receipt />]}
+        icons={[<Home />, <Receipt />, <Users />]}
       />
     </div>
   );
