@@ -5846,3 +5846,15 @@
 .shopee-simulation-note{display:block;color:#999;font-size:9px;line-height:1.5;margin:2px 0 12px}
 .shopee-tracking>.shopee-confirm{width:100%}
 .shopee-tracking>.shopee-confirm:disabled{background:#bbb;opacity:1}
+
+/* Shopee product detail: show the complete product photo without zoom/cropping */
+.shopee-ui .shopee-detail .shopee-product-art{
+  position:relative;display:grid;width:100%;height:auto !important;min-height:0;
+  aspect-ratio:1 / 1;max-height:min(92vw, 430px);overflow:hidden;place-items:center;
+  background:#fff !important;
+}
+.shopee-ui .shopee-detail .shopee-product-art img{
+  position:absolute;inset:0;display:block;width:100% !important;height:100% !important;
+  max-width:100% !important;max-height:100% !important;object-fit:contain !important;
+  object-position:center center !important;transform:none !important;mix-blend-mode:normal;
+}
