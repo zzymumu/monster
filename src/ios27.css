@@ -796,3 +796,23 @@
 .ios18 .wechat-ui.wx-reference-layout[data-thread="true"] .wx-nav>strong{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;max-width:42%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important;margin:0!important;z-index:1!important}
 .ios18 .wechat-ui.wx-reference-layout[data-thread="true"] .wx-nav>button{position:relative!important;z-index:2!important;flex:0 0 auto!important}
 .ios18 .wechat-ui.wx-reference-layout[data-thread="true"] .wx-header-actions{position:relative!important;z-index:2!important;flex:0 0 auto!important;margin-left:auto!important}
+
+
+/* WeChat per-conversation details screen */
+.ios18 .wechat-ui .wx-chat-info-page{min-height:100%;margin:-16px -14px 0;background:#111;color:#e8e8e8;padding:0 0 34px;box-sizing:border-box}
+.ios18 .wechat-ui .wx-chat-info-members{min-height:190px;padding:22px 28px 28px;display:flex;align-items:flex-start;gap:18px;border-bottom:8px solid #1b1b1b;box-sizing:border-box}
+.ios18 .wechat-ui .wx-chat-info-members>div{width:78px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.ios18 .wechat-ui .wx-chat-info-members .avatar,.ios18 .wechat-ui .wx-chat-info-members img{width:64px!important;height:64px!important;border-radius:8px!important;object-fit:cover}
+.ios18 .wechat-ui .wx-chat-info-members small{font-size:12px;color:#aaa;max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ios18 .wechat-ui .wx-chat-add-member{width:64px;height:64px;border:1px dashed #555;border-radius:8px;background:transparent;color:#777;font-size:32px;font-weight:200;line-height:1}
+.ios18 .wechat-ui .wx-chat-info-row{width:100%;height:82px;box-sizing:border-box;padding:0 28px;border:0;border-bottom:1px solid #292929;background:#181818;color:#ddd;display:flex;align-items:center;justify-content:space-between;text-align:left;font-size:17px;font-weight:400}
+.ios18 .wechat-ui .wx-chat-info-row svg{color:#777;flex:0 0 auto}
+.ios18 .wechat-ui .wx-chat-info-toggle{height:82px}
+.ios18 .wechat-ui .wx-switch{width:52px;height:30px;border-radius:18px;background:#555;display:flex;align-items:center;padding:3px;box-sizing:border-box;transition:background .18s}
+.ios18 .wechat-ui .wx-switch i{width:24px;height:24px;border-radius:50%;background:#fff;display:block;transition:transform .18s}
+.ios18 .wechat-ui .wx-switch.is-on{background:#07c160}
+.ios18 .wechat-ui .wx-switch.is-on i{transform:translateX(22px)}
+.ios18 .wechat-ui .wx-chat-bg-row{position:relative;cursor:pointer;margin-top:8px;border-top:1px solid #292929}
+.ios18 .wechat-ui .wx-chat-bg-row input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.ios18 .wechat-ui .wx-chat-reset-bg{height:60px;color:#999;font-size:14px}
+.ios18 .wechat-ui .wx-chat-clear{margin-top:8px;border-top:1px solid #292929}
