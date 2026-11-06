@@ -45,6 +45,7 @@ import { GLOOMY_AVATAR } from "./gloomyAvatar";
 export type SkinProps = {
   ui?: Record<string, UiValue>;
   onUi?: (key: string, value: UiValue) => void;
+  onNotify?: (message: string) => void;
   appId?: string;
   owner?: string;
   virtualTime?: string;
