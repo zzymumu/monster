@@ -3777,9 +3777,17 @@ export function WeChatSkin(p: SkinProps) {
               <div className="wx-contact-section-title">我的联系人</div>
               <div className="wx-contact-list">
                 {contacts.filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => {
-                  const avatarItem = allItems.find((i) => displayName(i.sender) === name || displayName(i.title) === name);
-                  return <button className="wx-contact-row" key={name} onClick={() => openContact(resolveContactName(name))}>
-                    <Avatar name={name} src={avatarItem?.avatar || (name === "西蓝花" ? GLOOMY_AVATAR : "")} /><span onClick={(event) => { event.stopPropagation(); openRemarkEditor(resolveContactName(name)); }} title="点击修改备注" style={{ cursor: "text" }}>{name}</span>
+                  const canonical = canonicalContactName(resolveContactName(name));
+                  const avatarItem = [...allItems].reverse().find((i) =>
+                    canonicalContactName(i.sender || "") === canonical || canonicalContactName(i.title || "") === canonical
+                  );
+                  const contactAvatar = isMonsterName(canonical)
+                    ? (typeof p.ui?.wxDaGAvatarV2 === "string" && p.ui.wxDaGAvatarV2
+                        ? p.ui.wxDaGAvatarV2
+                        : avatarItem?.avatar || "./assets/dag-new-avatar.jpg")
+                    : canonical === "西蓝花" ? GLOOMY_AVATAR : avatarItem?.avatar || "";
+                  return <button className="wx-contact-row" key={name} onClick={() => openContact(canonical)}>
+                    <Avatar name={canonical} src={contactAvatar} /><span onClick={(event) => { event.stopPropagation(); openRemarkEditor(canonical); }} title="点击修改备注" style={{ cursor: "text" }}>{name}</span>
                   </button>;
                 })}
                 {!contacts.length && <p className="skin-empty">联系人会在聊天后显示在这里</p>}
