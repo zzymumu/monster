@@ -6009,3 +6009,14 @@
 .hp-checkout-success h2{font-size:19px;margin:16px 0 5px}
 .hp-checkout-success p{font-size:11px;color:#888}
 .hp-checkout-success button{margin-top:18px;background:#ffd900;border-radius:22px;padding:10px 28px;font-weight:800;font-size:12px}
+
+/* HungryPanda restaurant detail inline cart */
+.hp-inline-cart{margin:18px 0 14px;padding:13px;background:#fff;border-radius:13px;box-shadow:0 3px 16px #00000012;border:1px solid #f0f0f0}
+.hp-inline-cart-title{display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:1px solid #eee;font-size:13px}
+.hp-inline-cart-title button{color:#999;font-size:10px}
+.hp-inline-cart-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:10px}
+.hp-inline-cart-row span{flex:1;min-width:0}
+.hp-inline-cart-row strong{color:#333}
+.hp-inline-cart-row button{width:23px;height:23px;border-radius:50%;background:#ffd900;color:#222;font-size:15px}
+.hp-inline-cart-total{display:flex;justify-content:space-between;align-items:center;padding-top:12px;font-size:13px}
+.hp-inline-cart-total button{background:#ffd900;border-radius:22px;padding:9px 20px;font-weight:800;color:#222;font-size:11px}
