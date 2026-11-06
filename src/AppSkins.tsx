@@ -2778,7 +2778,251 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 43, chat: "大G", id: "get-ready-for-pickup", label: "好！那我先去收拾一下，准备带玩玩下楼～", nextStage: 44, lines: [
       { sender: "我", body: "好！那我先去收拾一下，準備帶玩玩下樓～", thread: "大G" },
       { sender: "大G", body: "好，不急，妳慢慢來。我到了附近再跟妳說。", thread: "大G" },
+    ]},,
+
+    // New post-door conversation. The player must manually leave DaG's chat
+    // and open Broccoli; the first choice sends the owner's "....哈喽。" opener.
+    { stage: 300, chat: "西蓝花", id: "post-door-hello", label: "....哈喽。", nextStage: 301, lines: [
+      { sender: "我", body: "....哈喽。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "😊我還以為妳死了，差點去給妳燒紙。", thread: "西蓝花" },
     ]},
+    { stage: 301, chat: "西蓝花", id: "post-door-reproach-1", label: "有你这么咒闺蜜的吗！", nextStage: 302, lines: [
+      { sender: "我", body: "有妳這麼咒閨蜜的嗎！", thread: "西蓝花" },
+    ]},
+    { stage: 302, chat: "西蓝花", id: "post-door-reproach-2", label: "呸呸呸！我这不是好好的吗！", nextStage: 303, lines: [
+      { sender: "我", body: "呸呸呸！我這不是好好的嗎！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳還好意思說！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "昨天晚上給妳發那麼多消息，妳一個都不回。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我真的差點報警了好嗎！", thread: "西蓝花" },
+    ]},
+    { stage: 303, chat: "西蓝花", id: "post-door-drunk-apology", label: "我昨天真的喝断片了……", nextStage: 304, lines: [
+      { sender: "我", body: "我昨天真的喝斷片了……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳還知道啊？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳現在怎麼樣？頭還疼不疼？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "有沒有哪裡不舒服？", thread: "西蓝花" },
+    ]},
+    { stage: 304, chat: "西蓝花", id: "post-door-feel-better", label: "没有啦...我好多了。", nextStage: 305, lines: [
+      { sender: "我", body: "沒有啦……我好多了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "真服了妳了。", thread: "西蓝花" },
+    ]},
+    { stage: 305, chat: "西蓝花", id: "post-door-sorry", label: "对不起啦...让你担心了，以后再也不会了。", nextStage: 306, lines: [
+      { sender: "我", body: "對不起啦……讓妳擔心了，以後再也不會了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哼，最好是！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "從實招來，昨晚發生什麼了？妳為什麼會喝酒啊，還喝成那種樣子！！", thread: "西蓝花" },
+    ]},
+    { stage: 306, chat: "西蓝花", id: "post-door-not-on-purpose", label: "我真的不是故意喝酒的……", nextStage: 307, lines: [
+      { sender: "我", body: "我真的不是故意喝酒的……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "什麼意思？", thread: "西蓝花" },
+    ]},
+    { stage: 307, chat: "西蓝花", id: "post-door-mistook-drink", label: "我昨天拿错东西了，以为那瓶是普通饮料，没仔细看就喝了。", nextStage: 308, lines: [
+      { sender: "我", body: "我昨天拿錯東西了。", thread: "西蓝花" },
+      { sender: "我", body: "我以為那瓶是普通飲料，沒仔細看就喝了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "…………", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳拿酒當飲料喝了？？？", thread: "西蓝花" },
+    ]},
+    { stage: 308, chat: "西蓝花", id: "post-door-realized-alcohol", label: "对啊……喝了之后才发现不对劲。", nextStage: 309, lines: [
+      { sender: "我", body: "對啊……", thread: "西蓝花" },
+      { sender: "我", body: "喝了之後才發現不對勁。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈哈哈哈哈哈哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳到底是怎麼做到的啊！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "瓶子上沒寫酒精兩個字嗎？？？", thread: "西蓝花" },
+    ]},
+    { stage: 309, chat: "西蓝花", id: "post-door-didnt-look", label: "我哪有注意看啊！！我当时真的以为是饮料！", nextStage: 310, lines: [
+      { sender: "我", body: "我哪有注意看啊！！", thread: "西蓝花" },
+      { sender: "我", body: "我當時真的以為是飲料！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "救命……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳這也太離譜了吧！", thread: "西蓝花" },
+    ]},
+    { stage: 310, chat: "西蓝花", id: "post-door-not-my-fault", label: "我也不想啊……", nextStage: 311, lines: [
+      { sender: "我", body: "我也不想啊……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好啦好啦，幸好沒出什麼事。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "但講真的，妳都不知道，溫尚翊用妳手機給我發消息，我差點嚇個半死。", thread: "西蓝花" },
+    ]},
+    { stage: 311, chat: "西蓝花", id: "post-door-he-surprised-me", label: "他能来找我我也吓个半死好吗......", nextStage: 312, lines: [
+      { sender: "我", body: "他能來找我我也嚇個半死好嗎……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以……昨晚你們有沒有醬醬釀釀？？都說酒是個好東西啊好東西！", thread: "西蓝花" },
+    ]},
+    { stage: 312, chat: "西蓝花", id: "post-door-nothing-happened", label: "你乱说什么！他昨晚在沙发上睡的！", nextStage: 313, lines: [
+      { sender: "我", body: "妳亂說什麼！他昨晚在沙發上睡的！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "😕他是不是不行啊！", thread: "西蓝花" },
+    ]},
+    { stage: 313, chat: "西蓝花", id: "post-door-insult-broccoli", label: "你傻逼啊！！！你脑子装的是屎吗？", nextStage: 314, lines: [
+      { sender: "我", body: "妳傻逼啊！！！妳腦子裝的是屎嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？妳以前都不會罵我的！！", thread: "西蓝花" },
+    ]},
+    { stage: 314, chat: "西蓝花", id: "post-door-you-deserve-it", label: "我骂你怎么了？你该骂！", nextStage: 315, lines: [
+      { sender: "我", body: "我罵妳怎麼了？妳該罵！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好了好了，第一階段測試結束！他人品還行。", thread: "西蓝花" },
+    ]},
+    { stage: 315, chat: "西蓝花", id: "post-door-he-is-kind", label: "什么叫还行！他人很好啊，昨晚照顾我，刚才还给我去买早饭了。", nextStage: 316, lines: [
+      { sender: "我", body: "什麼叫還行！他人很好啊，昨晚照顧我，剛才還給我去買早飯了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以你們現在在酒店？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他還去給妳買早飯？？？他一大早出去給妳買早飯？？？", thread: "西蓝花" },
+    ]},
+    { stage: 316, chat: "西蓝花", id: "post-door-yes-hotel", label: "对呀....", nextStage: 317, lines: [
+      { sender: "我", body: "對呀……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "昨天晚上照顧妳，今天早上又買早餐。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "溫尚翊是不是有點太好了？？？", thread: "西蓝花" },
+    ]},
+    { stage: 317, chat: "西蓝花", id: "post-door-he-is-good", label: "人家本来就很好啊……", nextStage: 318, lines: [
+      { sender: "我", body: "人家本來就很好啊……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我知道他人好！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "但我說的不是這個意思！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳有沒有覺得他對妳特別好？", thread: "西蓝花" },
+    ]},
+    { stage: 318, chat: "西蓝花", id: "post-door-special-treatment-maybe", label: "可能只是因为我喝醉了吧。", nextStage: 319, lines: [
+      { sender: "我", body: "可能只是因為我喝醉了吧。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好好好，我不亂想。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那他現在在幹嘛？", thread: "西蓝花" },
+    ]},
+    { stage: 318, chat: "西蓝花", id: "post-door-special-treatment-shrug", label: "……不知道啦。", nextStage: 319, lines: [
+      { sender: "我", body: "……不知道啦。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好好好，我不亂想。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那他現在在幹嘛？", thread: "西蓝花" },
+    ]},
+    { stage: 318, chat: "西蓝花", id: "post-door-special-treatment-stop", label: "你不要乱想！", nextStage: 319, lines: [
+      { sender: "我", body: "妳不要亂想！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好好好，我不亂想。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那他現在在幹嘛？", thread: "西蓝花" },
+    ]},
+    { stage: 319, chat: "西蓝花", id: "post-door-on-balcony", label: "他有事啦，在阳台打电话。", nextStage: 320, lines: [
+      { sender: "我", body: "他有事啦，在陽台打電話。", thread: "西蓝花" },
+      { sender: "我", body: "我就趕緊來找妳了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "🙄", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怎麼，趁他不在趕緊跟我匯報？", thread: "西蓝花" },
+    ]},
+    { stage: 320, chat: "西蓝花", id: "post-door-worried-friend", label: "嘿嘿，这不是怕你着急嘛......", nextStage: 321, lines: [
+      { sender: "我", body: "嘿嘿，這不是怕妳著急嘛……", thread: "西蓝花" },
+      { sender: "我", body: "woc！！！我朋友圈是什麼東西！！！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "😊妳才看到啊！", thread: "西蓝花" },
+    ]},
+    { stage: 321, chat: "西蓝花", id: "post-door-moments-panic", label: "救命！！！！我为什么要发这个啊！！！！", nextStage: 322, lines: [
+      { sender: "我", body: "救命！！！！", thread: "西蓝花" },
+      { sender: "我", body: "我為什麼要發這個啊！！！！", thread: "西蓝花" },
+      { sender: "我", body: "這是什麼啊啊啊啊啊啊啊啊！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳問我？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我還想問妳呢！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳發完之後我都不敢相信自己的眼睛。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我反覆確認了好幾遍是不是妳的號。", thread: "西蓝花" },
+    ]},
+    { stage: 322, chat: "西蓝花", id: "post-door-moments-explain", label: "你别说了……我想死……", nextStage: 323, lines: [
+      { sender: "我", body: "妳別說了……我想死……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不行！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳先回答我一個問題！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怪獸知道嗎？？？", thread: "西蓝花" },
+    ]},
+    { stage: 323, chat: "西蓝花", id: "post-door-does-he-know-a", label: "我不知道啊啊啊！", nextStage: 324, lines: [
+      { sender: "我", body: "我不知道啊啊啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "但他有妳好友欸，很難不知道吧😄", thread: "西蓝花" },
+    ]},
+    { stage: 323, chat: "西蓝花", id: "post-door-does-he-know-b", label: "应该……不知道吧？", nextStage: 324, lines: [
+      { sender: "我", body: "應該……不知道吧？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "但他有妳好友欸，很難不知道吧😄", thread: "西蓝花" },
+    ]},
+    { stage: 323, chat: "西蓝花", id: "post-door-does-he-know-c", label: "你不要提醒我！！！", nextStage: 324, lines: [
+      { sender: "我", body: "妳不要提醒我！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "但他有妳好友欸，很難不知道吧😄", thread: "西蓝花" },
+    ]},
+    { stage: 324, chat: "西蓝花", id: "post-door-delete-friend", label: "........我现在删了还来得及吗？", nextStage: 325, lines: [
+      { sender: "我", body: "........我現在刪了還來得及嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈哈哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳現在知道害羞了？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "昨天晚上不是還愛得轟轟烈烈的嗎？", thread: "西蓝花" },
+    ]},
+    { stage: 325, chat: "西蓝花", id: "post-door-shut-up", label: "你闭嘴！！！", nextStage: 326, lines: [
+      { sender: "我", body: "妳閉嘴！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "🤐", thread: "西蓝花" },
+      { sender: "西蓝花", body: "反正我建議別刪了，也別提這事，萬一他沒看到呢？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "刪了顯得此地無銀三百兩，現在提起來就是自投羅網。", thread: "西蓝花" },
+    ]},
+    { stage: 326, chat: "西蓝花", id: "post-door-confession-discovery", label: "....我觉得，好像删不删都无所谓了。", nextStage: 327, lines: [
+      { sender: "我", body: "....我覺得，好像刪不刪都無所謂了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "什麼意思？", thread: "西蓝花" },
+    ]},
+    { stage: 327, chat: "西蓝花", id: "post-door-passionate-confession", label: "...............我刚翻聊天记录发现我激情表白了。", nextStage: 328, lines: [
+      { sender: "我", body: "...............我剛翻聊天記錄發現我激情表白了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "…………", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？？？？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳說什麼？？？", thread: "西蓝花" },
+    ]},
+    { stage: 328, chat: "西蓝花", id: "post-door-confession-explain", label: "我说我表白了……", nextStage: 329, lines: [
+      { sender: "我", body: "我說我表白了……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳先等等！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "什麼叫激情表白？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳到底發了什麼？？？", thread: "西蓝花" },
+    ]},
+    { stage: 329, chat: "西蓝花", id: "post-door-confession-details", label: "我说他弹琴好帅，然后说好喜欢他，还说了好多乱七八糟的……", nextStage: 330, lines: [
+      { sender: "我", body: "就是……", thread: "西蓝花" },
+      { sender: "我", body: "我說他彈琴好帥。", thread: "西蓝花" },
+      { sender: "我", body: "然後說好喜歡他。", thread: "西蓝花" },
+      { sender: "我", body: "還說了好多亂七八糟的……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "………………", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "救命啊！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的趁著喝醉把這輩子想說的話都說完了？？？", thread: "西蓝花" },
+    ]},
+    { stage: 330, chat: "西蓝花", id: "post-door-stop-laughing", label: "你还笑！！！！我现在真的想找个地洞钻进去！！", nextStage: 331, lines: [
+      { sender: "我", body: "妳還笑！！！！", thread: "西蓝花" },
+      { sender: "我", body: "我現在真的想找個地洞鑽進去！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不是，我真的忍不住。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳喜歡他多少年了？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "結果第一次跟人家單獨相處，就把粉絲濾鏡全倒出來了哈哈哈哈哈哈！", thread: "西蓝花" },
+    ]},
+    { stage: 331, chat: "西蓝花", id: "post-door-didnt-know", label: "我当时真的不知道自己在说什么……", nextStage: 332, lines: [
+      { sender: "我", body: "我當時真的不知道自己在說什麼……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那他怎麼回覆妳的？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "快給我看！！！", thread: "西蓝花" },
+    ]},
+    { stage: 332, chat: "西蓝花", id: "post-door-he-replied", label: "他好像……一直在回我。", nextStage: 333, lines: [
+      { sender: "我", body: "他好像……一直在回我。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "一直？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他沒有覺得妳煩嗎？", thread: "西蓝花" },
+    ]},
+    { stage: 333, chat: "西蓝花", id: "post-door-he-wasnt-annoyed", label: "没有啊……", nextStage: 334, lines: [
+      { sender: "我", body: "沒有啊……", thread: "西蓝花" },
+      { sender: "我", body: "他還誇我可愛呢……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？？？？", thread: "西蓝花" },
+    ]},
+    { stage: 334, chat: "西蓝花", id: "post-door-he-praised-me", label: "嘻嘻，他夸我好看！！！", nextStage: 335, lines: [
+      { sender: "我", body: "嘻嘻，他誇我好看！！！", thread: "西蓝花" },
+      { sender: "我", body: "他說我很可愛！！說我好看！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "………………", thread: "西蓝花" },
+      { sender: "西蓝花", body: "等一下。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳剛剛不是還在說想死嗎？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怎麼突然這麼得意？？？", thread: "西蓝花" },
+    ]},
+    { stage: 335, chat: "西蓝花", id: "post-door-he-is-cute", label: "那不一样！！！他说我可爱诶！！！还说我好看！！！", nextStage: 336, lines: [
+      { sender: "我", body: "那不一樣！！！", thread: "西蓝花" },
+      { sender: "我", body: "他說我可愛誒！！！", thread: "西蓝花" },
+      { sender: "我", body: "還說我好看！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈哈哈哈哈哈哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳完了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "妳真的完了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "人家誇妳兩句，妳已經開心成這樣了？", thread: "西蓝花" },
+    ]},
+    { stage: 336, chat: "西蓝花", id: "post-door-he-is-monster", label: "那可是温尚翊！！！！！温尚翊夸我可爱！！！！！", nextStage: 337, lines: [
+      { sender: "我", body: "那可是溫尚翊！！！！！", thread: "西蓝花" },
+      { sender: "我", body: "溫尚翊誇我可愛！！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "啊啊啊啊啊啊我知道了！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以妳現在已經不在乎自己酒後表白的事情了是吧？", thread: "西蓝花" },
+    ]},
+    { stage: 337, chat: "西蓝花", id: "post-door-still-embarrassed", label: "……也不是。但他夸我好看诶。", nextStage: 338, lines: [
+      { sender: "我", body: "……也不是。", thread: "西蓝花" },
+      { sender: "我", body: "但他誇我好看誒。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "救命哈哈哈哈哈哈！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "行行行，妳好看，妳最可愛。", thread: "西蓝花" },
+    ]},
+    { stage: 338, chat: "西蓝花", id: "post-door-phone-call-ended", label: "啊啊啊不说了，他电话挂了。拜拜拜拜！！", nextStage: 339, lines: [
+      { sender: "我", body: "啊啊啊不說了，他電話掛了。", thread: "西蓝花" },
+      { sender: "我", body: "拜拜拜拜！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "今晚出來陪我吃飯！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不許放我鴿子！！！", thread: "西蓝花" },
+    ]},
+
   ];
   // Contact handoffs are manual. When the player opens the destination
   // contact, activate that contact's waiting stage without navigating for them.
