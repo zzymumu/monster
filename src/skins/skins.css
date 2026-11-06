@@ -5823,3 +5823,26 @@
   width:auto;
 }
 .shopee-ui .shopee-product-grid > button > p{display:flex;}
+
+/* Shopee simulated order tracking */
+.shopee-track-button{grid-column:1/-1;justify-self:start;margin-top:5px;padding:6px 11px;border:1px solid #ee4d2d;border-radius:15px;color:#ee4d2d;background:#fff;font-size:10px}
+.shopee-tracking{position:relative;width:100%;max-height:90%;overflow:auto;background:#fff;border-radius:14px;padding:18px;color:#333}
+.shopee-tracking-head{display:flex;align-items:center;gap:12px;color:#ee4d2d;margin:2px 0 16px}
+.shopee-tracking-head h2{font-size:18px;margin:0 0 4px;color:#333}
+.shopee-tracking-head p{font-size:12px;margin:0;color:#ee4d2d}
+.shopee-tracking-meta{display:grid;grid-template-columns:82px minmax(0,1fr);gap:9px 8px;padding:12px;background:#fff6f2;border-radius:8px;font-size:11px}
+.shopee-tracking-meta span{color:#999}
+.shopee-tracking-meta b{font-weight:600;overflow-wrap:anywhere}
+.shopee-tracking-timeline{padding:17px 5px 7px}
+.shopee-tracking-step{display:flex;gap:12px;position:relative;min-height:49px;color:#aaa}
+.shopee-tracking-step:not(:last-child):before{content:"";position:absolute;left:5px;top:12px;bottom:-1px;width:2px;background:#e5e5e5}
+.shopee-tracking-step.done{color:#333}
+.shopee-tracking-step.done:not(:last-child):before{background:#ee8b73}
+.shopee-tracking-step i{position:relative;z-index:1;width:12px;height:12px;flex:0 0 12px;border-radius:50%;border:2px solid #ccc;background:#fff;margin-top:1px}
+.shopee-tracking-step.done i{border-color:#ee4d2d;background:#ee4d2d;box-shadow:inset 0 0 0 2px #fff}
+.shopee-tracking-step b,.shopee-tracking-step small{display:block}
+.shopee-tracking-step b{font-size:12px}
+.shopee-tracking-step small{font-size:9px;color:#999;margin-top:4px}
+.shopee-simulation-note{display:block;color:#999;font-size:9px;line-height:1.5;margin:2px 0 12px}
+.shopee-tracking>.shopee-confirm{width:100%}
+.shopee-tracking>.shopee-confirm:disabled{background:#bbb;opacity:1}
