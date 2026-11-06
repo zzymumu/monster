@@ -3933,7 +3933,7 @@
   align-items: center;
   gap: 6px;
   padding: 13px 14px 4px;
-  background: #f4d56c;
+  background: #2385c6;
   color: #fff;
 }
 .delivery-location strong {
@@ -3945,7 +3945,7 @@
 }
 .delivery-ui > .catalog-search {
   margin: 0;
-  background: #f4d56c;
+  background: #2385c6;
   border-radius: 0;
   padding: 10px 14px 16px;
   color: #6e7d89;
