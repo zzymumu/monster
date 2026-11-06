@@ -139,6 +139,8 @@ export type Runtime = {
     caller: string;
     target: string;
     status: "ringing" | "answered";
+    direction?: "incoming" | "outgoing";
+    callType?: "audio" | "video";
   } | null;
   ui?: Record<string, Record<string, UiValue>>;
   workId: string;
