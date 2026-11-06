@@ -5951,3 +5951,10 @@
 .shopee-checkout-standalone .shopee-payable{padding-top:14px;border-top:1px solid #e5e5e5;font-size:16px}
 .shopee-checkout-standalone>small{display:block;margin:18px 0;color:#999;font-size:11px}
 .shopee-checkout-standalone>.shopee-confirm{position:sticky;bottom:0;width:100%;min-height:48px;border:0;border-radius:24px;background:#ee4d2d;color:#fff;font-size:15px}
+
+
+/* Shopee standalone checkout: prominent primary payment action, cancellation below */
+.shopee-checkout-actions{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-top:18px}
+.shopee-checkout-actions>.shopee-confirm{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;padding:14px 18px;border:0;border-radius:28px;background:#ee4d2d;color:#fff;font-size:16px;font-weight:700;box-sizing:border-box}
+.shopee-checkout-actions>.shopee-cancel-order{align-self:center;min-width:112px;padding:9px 18px;border:0!important;background:transparent!important;color:#888!important;border-radius:18px;font-size:12px}
+.shopee-checkout-standalone>.shopee-checkout-actions>.shopee-confirm{position:static}
