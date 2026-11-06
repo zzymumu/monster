@@ -1420,7 +1420,19 @@ function PhoneRuntime({
                 const isBigG = caller === "大G" || caller === "温尚翊";
                 const displayName = contactRemarksForNotifications[caller] ||
                   contactRemarksForNotifications[isBigG ? "大G" : "西蓝花"] || caller;
-                const avatarSrc = isBigG ? "./assets/dag-new-avatar.jpg" : GLOOMY_AVATAR;
+                const daGAvatarChanged = s.ui?.wechat?.wxPostDrunkGDotDeliveredV1 === true;
+                const originalDaGAvatar = [...(s.messages.wechat ?? [])].reverse().find((item) =>
+                  !item.outgoing &&
+                  (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
+                  typeof item.avatar === "string" && item.avatar
+                )?.avatar || "";
+                const avatarSrc = isBigG
+                  ? (daGAvatarChanged
+                      ? (typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" && s.ui.wechat.wxDaGAvatarV2
+                          ? s.ui.wechat.wxDaGAvatarV2
+                          : "./assets/dag-new-avatar.jpg")
+                      : originalDaGAvatar)
+                  : GLOOMY_AVATAR;
                 return <>
                   <div className="wechat-call-topline">{s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>
                   <div className="incoming-avatar">
