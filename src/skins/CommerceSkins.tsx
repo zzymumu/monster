@@ -179,6 +179,7 @@ export function TaobaoSkin(p: Props) {
 }
 type ShopeeProduct = { id:string; name:string; price:number; oldPrice:number; category:string; emoji:string; color:string; sold:string; badge:string; image?:string; variants?:string[] };
 const shopeeProducts: ShopeeProduct[] = [
+{id:"iphone-18-pro-max",name:"Apple iPhone 18 Pro Max 256GB",price:44900,oldPrice:47900,category:"3C數位",emoji:"📱",color:"#eee9e7",image:"https://www.apple.com/v/iphone/home/cl/images/overview/priority-router/hero_iphone_18_pro__faygyzbu2yq2_large.jpg",sold:"已售出 128",badge:"最新旗艦",variants:["深酒紅","銀色","太空黑","冰川藍"]},
 {id:"mayday-light",name:"五月天 雲端互動版 LED 2.0 演唱會螢光棒",price:699,oldPrice:899,category:"娛樂收藏",emoji:"🎤",color:"#e7f1ff",image:"https://img.91app.com/webapi/imagesV3/Original/SalePage/8538699/1/639088450617830000?quality=80&v=1",sold:"已售出 2,816",badge:"五迷必收"},
 {id:"hermes-garden",name:"Hermès Garden Party 30 手提包",price:128000,oldPrice:145000,category:"女裝配件",emoji:"👜",color:"#ead9c7",image:"https://assets.hermes.cn/is/image/hermesproduct/garden-party-30-bag--051568CK37-worn-1-0-0-800-800_g.jpg",sold:"已售出 28",badge:"精品選物",variants:["黑色","灰褐色","Etoupe 大象灰","Gold 金棕色"]},
 {id:"lingerie",name:"法式蕾絲緞面成套內衣",price:1280,oldPrice:1680,category:"女裝配件",emoji:"🎀",color:"#f1e5e5",image:"https://img.wakudoki.ne.jp/Contents/ProductImages/0/537007-cz02_LL.jpg",sold:"已售出 936",badge:"質感推薦",variants:["經典黑","酒紅","奶油白"]},
@@ -188,7 +189,7 @@ const shopeeProducts: ShopeeProduct[] = [
 {id:"gibson",name:"Gibson Les Paul Standard 60s 電吉他",price:89900,oldPrice:99900,category:"娛樂收藏",emoji:"🎸",color:"#ead4b9",image:"https://cdn11.bigcommerce.com/s-dks6ju/images/stencil/1280x1280/products/27387/337762/d7af5d61-da96-5fc2-9c2d-fc5577d3d852__88272.1716059393.jpg?c=2",sold:"已售出 16",badge:"樂手夢想",variants:["Bourbon Burst","Ebony 黑色","Iced Tea"]},
 {id:"dating-book",name:"跟男人談戀愛的100種方法｜戀愛指南",price:299,oldPrice:399,category:"書籍文具",emoji:"📚",color:"#f0e0d8",image:"/monster/assets/shopee-dating-book.jpg",sold:"已售出 2,031",badge:"人氣讀物"}
 ];
-const shopeeCategories=["全部","女裝配件","寵物用品","居家生活","娛樂收藏","書籍文具"];
+const shopeeCategories=["全部","3C數位","女裝配件","寵物用品","居家生活","娛樂收藏","書籍文具"];
 type ShopeeCart=Record<string,number>;
 export function ShopeeSkin(p:Props){
  const [tab,setTab]=useState("首頁"),[query,setQuery]=useState(""),[category,setCategory]=useState("全部");
