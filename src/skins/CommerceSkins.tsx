@@ -276,6 +276,7 @@ type JkoTransaction={id:string;merchant:string;amount:number;date:string;note:st
 export function JkoPaySkin(p:Props){
  const [tab,setTab]=useState("首頁");
  const [success,setSuccess]=useState(false);
+ const [successAmount,setSuccessAmount]=useState(0);
  const [paySource,setPaySource]=useState("玉山銀行 **** 3188");
  const pending=(()=>{try{return JSON.parse(String(p.ui?.pendingShopeePayment||"null")) as JkoPendingPayment|null}catch{return null}})();
  const transactions=(()=>{try{return JSON.parse(String(p.ui?.transactions||"[]")) as JkoTransaction[]}catch{return[]}})();
@@ -284,9 +285,10 @@ export function JkoPaySkin(p:Props){
   if(!pending||success)return;
   const tx:JkoTransaction={id:pending.paymentId,merchant:"蝦皮購物",amount:pending.total,date:new Date().toLocaleString("zh-TW"),note:pending.items.map(v=>v.name+" × "+v.qty).join("、"),status:"付款成功"};
   p.onUi?.("transactions",JSON.stringify([tx,...transactions]));
-  p.onUi?.("balance",String(balance));
+  if(paySource==="街口帳戶餘額")p.onUi?.("balance",String(Math.max(0,balance-pending.total)));
   p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));
   p.onUi?.("pendingShopeePayment","");
+  setSuccessAmount(pending.total);
   setSuccess(true);
   window.setTimeout(()=>p.onOpenApp?.("shopee"),1100);
  };
@@ -298,7 +300,7 @@ export function JkoPaySkin(p:Props){
    <p className="jko-safe-note">🔒 此為遊戲內模擬付款，不會連接銀行或扣款</p>
    <button className="jko-pay-confirm" onClick={confirmPayment}>確認付款 NT$ {pending.total.toLocaleString("zh-TW")}</button>
    <button className="jko-pay-cancel" onClick={()=>{p.onUi?.("pendingShopeePayment","");p.onOpenApp?.("shopee")}}>取消付款，返回蝦皮</button>
-  </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給蝦皮購物</p><strong>NT$ {pending?.total.toLocaleString("zh-TW")}</strong><small>正在返回蝦皮購物…</small><button onClick={()=>p.onOpenApp?.("shopee")}>立即返回</button></div>:<>
+  </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給蝦皮購物</p><strong>NT$ {successAmount.toLocaleString("zh-TW")}</strong><small>正在返回蝦皮購物…</small><button onClick={()=>p.onOpenApp?.("shopee")}>立即返回</button></div>:<>
    <div className="jko-home-scroll">
     <div className="jko-balance"><small>街口帳戶餘額</small><strong>NT$ {balance.toLocaleString("zh-TW")}</strong><span>街口支付・讓生活更方便</span></div>
     <div className="jko-quick-actions"><button onClick={()=>setTab("付款碼")}><span>▦</span>付款碼</button><button onClick={()=>setTab("付款碼")}><span>⌗</span>掃碼付款</button><button onClick={()=>setTab("交易記錄")}><span>↗</span>轉帳</button><button onClick={()=>setTab("我的")}><span>＋</span>生活繳費</button></div>
