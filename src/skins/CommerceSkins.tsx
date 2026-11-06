@@ -278,14 +278,25 @@ export function JkoPaySkin(p:Props){
  const [success,setSuccess]=useState(false);
  const [successAmount,setSuccessAmount]=useState(0);
  const [paySource,setPaySource]=useState("玉山銀行 **** 3188");
+ const [paymentError,setPaymentError]=useState("");
  const pending=(()=>{try{return JSON.parse(String(p.ui?.pendingShopeePayment||"null")) as JkoPendingPayment|null}catch{return null}})();
  const transactions=(()=>{try{return JSON.parse(String(p.ui?.transactions||"[]")) as JkoTransaction[]}catch{return[]}})();
  const balance=Number(p.ui?.balance??12680);
+ const esunBalance=Number(p.ui?.esunBalance??38000);
+ const cathayBalance=Number(p.ui?.cathayBalance??8500);
+ const availableBalance=paySource==="街口帳戶餘額"?balance:paySource==="國泰世華 **** 6621"?cathayBalance:esunBalance;
  const confirmPayment=()=>{
   if(!pending||success)return;
+  if(pending.total>availableBalance){
+   setPaymentError(`付款失敗：餘額不足。此付款方式可用 NT$ ${availableBalance.toLocaleString("zh-TW")}，本次需 NT$ ${pending.total.toLocaleString("zh-TW")}，還差 NT$ ${(pending.total-availableBalance).toLocaleString("zh-TW")}。`);
+   return;
+  }
+  setPaymentError("");
   const tx:JkoTransaction={id:pending.paymentId,merchant:"蝦皮購物",amount:pending.total,date:new Date().toLocaleString("zh-TW"),note:pending.items.map(v=>v.name+" × "+v.qty).join("、"),status:"付款成功"};
   p.onUi?.("transactions",JSON.stringify([tx,...transactions]));
-  if(paySource==="街口帳戶餘額")p.onUi?.("balance",String(Math.max(0,balance-pending.total)));
+  if(paySource==="街口帳戶餘額")p.onUi?.("balance",String(balance-pending.total));
+  else if(paySource==="國泰世華 **** 6621")p.onUi?.("cathayBalance",String(cathayBalance-pending.total));
+  else p.onUi?.("esunBalance",String(esunBalance-pending.total));
   p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));
   p.onUi?.("pendingShopeePayment","");
   setSuccessAmount(pending.total);
@@ -296,9 +307,12 @@ export function JkoPaySkin(p:Props){
   <header className="jko-header"><button onClick={p.onBack} aria-label="返回">‹</button><strong>街口支付</strong><button onClick={()=>setTab("我的")}>⋯</button></header>
   {pending&&!success?<div className="jko-payment-page">
    <div className="jko-payment-brand"><span>街口支付</span><small>安全付款確認</small></div>
-   <div className="jko-pay-card"><small>付款商店</small><h2>蝦皮購物</h2><small>訂單商品</small><p>{pending.items.map(v=>v.name+" × "+v.qty).join("、")}</p><div className="jko-amount"><small>本次應付金額</small><strong>NT$ {pending.total.toLocaleString("zh-TW")}</strong></div><div className="jko-pay-row"><span>付款方式</span><select value={paySource} onChange={e=>setPaySource(e.target.value)}><option>玉山銀行 **** 3188</option><option>街口帳戶餘額</option><option>國泰世華 **** 6621</option></select></div><div className="jko-pay-row"><span>配送方式</span><b>{pending.pickup}</b></div></div>
+   <div className="jko-pay-card"><small>付款商店</small><h2>蝦皮購物</h2><small>訂單商品</small><p>{pending.items.map(v=>v.name+" × "+v.qty).join("、")}</p><div className="jko-amount"><small>本次應付金額</small><strong>NT$ {pending.total.toLocaleString("zh-TW")}</strong></div><div className="jko-pay-row"><span>付款方式</span><select value={paySource} onChange={e=>{setPaySource(e.target.value);setPaymentError("");}}><option>玉山銀行 **** 3188</option><option>街口帳戶餘額</option><option>國泰世華 **** 6621</option></select></div><div className="jko-pay-row"><span>配送方式</span><b>{pending.pickup}</b></div>
+    <div className="jko-available-balance"><span>此付款方式可用餘額</span><strong>NT$ {availableBalance.toLocaleString("zh-TW")}</strong></div>
+   </div>
+   {paymentError&&<div className="jko-payment-error"><b>⚠ 餘額不足，無法付款</b><span>{paymentError}</span><small>請改用其他付款方式，或取消訂單稍後再試。</small></div>}
    <p className="jko-safe-note">🔒 此為遊戲內模擬付款，不會連接銀行或扣款</p>
-   <button className="jko-pay-confirm" onClick={confirmPayment}>確認付款 NT$ {pending.total.toLocaleString("zh-TW")}</button>
+   <button className="jko-pay-confirm" onClick={confirmPayment}>{paymentError?"重新嘗試付款":"確認付款"} NT$ {pending.total.toLocaleString("zh-TW")}</button>
    <button className="jko-pay-cancel" onClick={()=>{p.onUi?.("pendingShopeePayment","");p.onOpenApp?.("shopee")}}>取消付款，返回蝦皮</button>
   </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給蝦皮購物</p><strong>NT$ {successAmount.toLocaleString("zh-TW")}</strong><small>正在返回蝦皮購物…</small><button onClick={()=>p.onOpenApp?.("shopee")}>立即返回</button></div>:<>
    <div className="jko-home-scroll">
