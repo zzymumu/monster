@@ -238,6 +238,53 @@ function PhoneRuntime({
     onRuntime?.(next);
   };
   useEffect(() => {
+    if (!ready || creator || external) return;
+    const tickShipments = () => {
+      const current = runtimeRef.current;
+      const raw = current.ui?.shopee?.shopeeOrders;
+      if (typeof raw !== "string") return;
+      let savedOrders: Array<{id:string;name:string;status:string;shippingStep?:number;nextUpdateAt?:number;arrivalNotified?:boolean;carrier?:string}> = [];
+      try { const parsed: unknown = JSON.parse(raw); if (Array.isArray(parsed)) savedOrders = parsed; } catch { return; }
+      const stages = ["訂單成立","賣家備貨中","包裹已出貨","物流配送中","已送達取貨門市","已取貨完成"];
+      const now = Date.now();
+      let changed = false;
+      const notices: string[] = [];
+      const nextOrders = savedOrders.map((order) => {
+        let step = order.shippingStep ?? 1;
+        let nextAt = order.nextUpdateAt;
+        let notified = order.arrivalNotified ?? false;
+        let orderChanged = false;
+        if (!nextAt || step >= 4) return order;
+        while (now >= nextAt && step < 4) {
+          step += 1;
+          nextAt += 30000;
+          orderChanged = true;
+          if (step === 4 && !notified) {
+            notified = true;
+            notices.push("蝦皮購物：" + order.name + " 已送達 " + (order.carrier || "取貨門市") + "，記得在期限內取貨喔！");
+          }
+        }
+        if (!orderChanged) return order;
+        changed = true;
+        return { ...order, shippingStep: step, status: stages[step], nextUpdateAt: step >= 4 ? undefined : nextAt, arrivalNotified: notified };
+      });
+      if (!changed) return;
+      update({
+        ...current,
+        ui: { ...current.ui, shopee: { ...current.ui?.shopee, shopeeOrders: JSON.stringify(nextOrders) } },
+        notifications: [...current.notifications, ...notices].slice(-60),
+      });
+    };
+    tickShipments();
+    const timer = window.setInterval(tickShipments, 1000);
+    document.addEventListener("visibilitychange", tickShipments);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", tickShipments);
+    };
+  }, [ready, creator, external]);
+
+  useEffect(() => {
     let active = true;
     if (creator || external) return;
     void (async () => {
