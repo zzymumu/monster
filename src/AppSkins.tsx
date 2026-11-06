@@ -77,16 +77,18 @@ function Avatar({
   name,
   round = false,
   src = "",
+  className = "",
 }: {
   name: string;
   round?: boolean;
   src?: string;
+  className?: string;
 }) {
   const safeSrc = safeMedia(src);
   const isBroccoli = name === "西蓝花" || name === "西兰花";
   const imageSrc = isBroccoli ? GLOOMY_AVATAR : (safeSrc.startsWith("data:image/") || safeSrc.startsWith("/assets/") || safeSrc.startsWith("./assets/")) ? safeSrc : "";
   return (
-    <span className={`skin-avatar ${round ? "round" : ""} ${name === "大G" || name === "温尚翊" ? "guitar-avatar" : ""}`}>
+    <span className={`skin-avatar ${round ? "round" : ""} ${name === "大G" || name === "温尚翊" ? "guitar-avatar" : ""} ${className}`}>
       {imageSrc ? <img src={imageSrc} alt="" /> : name === "大G" || name === "温尚翊" ? "🎸" : name.slice(0, 1)}
     </span>
   );
@@ -3705,7 +3707,7 @@ export function WeChatSkin(p: SkinProps) {
           </div>
           {momentFeed.map((entry) => entry.type === "mine" ? (
             <div key={entry.id} className="wx-moment-post wx-moment-user-post">
-              <Avatar name={ownerName} src={ownerAvatar} />
+              <Avatar name={ownerName} src={ownerAvatar} className="wx-moment-feed-avatar" />
               <div>
                 <strong>{ownerName}</strong>
                 <p>{entry.post.body}</p>
@@ -3717,7 +3719,7 @@ export function WeChatSkin(p: SkinProps) {
             </div>
           ) : (
             <button key={entry.id} className="wx-moment-post" onClick={() => p.onItem(entry.item)}>
-              <Avatar name={entry.item.sender} src={entry.item.sender === ownerName || entry.item.sender === "我" || entry.item.sender === "机主" ? ownerAvatar : entry.item.avatar} />
+              <Avatar name={entry.item.sender} src={entry.item.sender === ownerName || entry.item.sender === "我" || entry.item.sender === "机主" ? ownerAvatar : entry.item.avatar} className="wx-moment-feed-avatar" />
               <div><strong>{entry.item.sender}</strong><p>{entry.item.body}</p>{entry.item.media && <ItemMedia item={entry.item} />}<small>{entry.item.time}</small></div>
             </button>
           ))}
