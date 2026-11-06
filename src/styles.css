@@ -6898,3 +6898,78 @@ label {
   text-align: center !important;
   pointer-events: none;
 }
+
+
+/* Chat details spacing tuned to the supplied WeChat reference screenshot. */
+.wechat-ui.wx-reference-layout .wx-nav.wx-chat-detail-nav {
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0 16px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-page {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 0 18px !important;
+  margin: 0 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members {
+  min-height: 140px !important;
+  height: auto !important;
+  padding: 20px 24px 16px !important;
+  margin: 0 !important;
+  gap: 14px !important;
+  align-items: flex-start !important;
+  background: #fff !important;
+  border: 0 !important;
+  border-bottom: 8px solid #ededed !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div {
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members > div .skin-avatar {
+  display: block !important;
+  margin: 0 auto !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-members .wx-chat-add-member {
+  margin: 0 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row {
+  min-height: 52px !important;
+  height: 52px !important;
+  padding: 0 16px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  line-height: 1.35 !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-bg-row {
+  min-height: 52px !important;
+  height: 52px !important;
+  margin-top: 8px !important;
+  padding: 0 16px !important;
+  justify-content: space-between !important;
+  text-align: left !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-bg-row svg {
+  position: static !important;
+  margin-left: auto !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-clear {
+  margin-top: 8px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row:last-of-type {
+  margin-top: 8px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-row.wx-chat-reset-bg {
+  margin-top: 8px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-toggle .wx-switch {
+  width: 48px !important;
+  height: 28px !important;
+  flex: 0 0 48px !important;
+}
+.wechat-ui.wx-reference-layout .wx-chat-info-toggle .wx-switch i {
+  width: 22px !important;
+  height: 22px !important;
+}
