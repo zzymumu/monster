@@ -2976,6 +2976,22 @@ export function WeChatSkin(p: SkinProps) {
   };
   const [menu, setMenu] = useState(false);
   const [utility, setUtility] = useState("");
+  const [wxChatSettingsRaw, setWxChatSettingsRaw] = useSkinState<string>(p, "wxChatSettingsV1", "{}");
+  let wxChatSettings: Record<string, { muted?: boolean; pinned?: boolean; remind?: boolean; wallpaper?: string }> = {};
+  try { const parsed = JSON.parse(wxChatSettingsRaw); if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) wxChatSettings = parsed; } catch { /* keep defaults */ }
+  const activeChatSettings = wxChatSettings[p.thread] || {};
+  const updateActiveChatSettings = (patch: Record<string, unknown>) => {
+    const next = { ...wxChatSettings, [p.thread]: { ...activeChatSettings, ...patch } };
+    setWxChatSettingsRaw(JSON.stringify(next));
+    p.onUi?.("wxChatSettingsV1", JSON.stringify(next));
+  };
+  const updateChatWallpaper = (file?: File) => {
+    if (!file || !file.type.startsWith("image/")) return;
+    if (file.size > 3 * 1024 * 1024) { window.alert("聊天背景图片请控制在 3MB 以内"); return; }
+    const reader = new FileReader();
+    reader.onload = () => { if (typeof reader.result === "string") updateActiveChatSettings({ wallpaper: reader.result }); };
+    reader.readAsDataURL(file);
+  };
   const [readThreads, setReadThreads] = useSkinState<string[]>(p, "readThreads", []);
   const [addedFriends, setAddedFriends] = useSkinState<string[]>(p, "wxAddedFriends", []);
   const [monsterRemoved, setMonsterRemoved] = useSkinState<boolean>(p, "wxMonsterRemoved", false);
@@ -3305,10 +3321,23 @@ export function WeChatSkin(p: SkinProps) {
       ) : utility ? (
         <div className="skin-scroll wx-utility">
           {utility === "聊天信息" && (
-            <div className="wx-members">
-              {Array.from(new Set(allItems.filter((i) => i.title === p.thread).map((i) => i.sender))).map((name) => (
-                <div key={name}><Avatar name={name} src={allItems.find((i) => i.sender === name)?.avatar} /><small>{name}</small></div>
-              ))}
+            <div className="wx-chat-info-page">
+              <div className="wx-chat-info-members">
+                {Array.from(new Set(allItems.filter((i) => i.title === p.thread).map((i) => i.sender))).map((name) => (
+                  <div key={name}><Avatar name={name} src={allItems.find((i) => i.sender === name)?.avatar} /><small>{displayName(name)}</small></div>
+                ))}
+                <button className="wx-chat-add-member" aria-label="添加成员" onClick={() => setUtility("添加朋友")}>＋</button>
+              </div>
+              <button className="wx-chat-info-row" onClick={() => setUtility("查找聊天内容")}>查找聊天内容 <ChevronRight size={20}/></button>
+              <button className="wx-chat-info-row wx-chat-info-toggle" onClick={() => updateActiveChatSettings({ muted: !activeChatSettings.muted })}>消息免打扰 <span className={activeChatSettings.muted ? "wx-switch is-on" : "wx-switch"}><i/></span></button>
+              <button className="wx-chat-info-row wx-chat-info-toggle" onClick={() => updateActiveChatSettings({ pinned: !activeChatSettings.pinned })}>置顶聊天 <span className={activeChatSettings.pinned ? "wx-switch is-on" : "wx-switch"}><i/></span></button>
+              <button className="wx-chat-info-row wx-chat-info-toggle" onClick={() => updateActiveChatSettings({ remind: !activeChatSettings.remind })}>提醒 <span className={activeChatSettings.remind ? "wx-switch is-on" : "wx-switch"}><i/></span></button>
+              <label className="wx-chat-info-row wx-chat-bg-row">设置当前聊天背景 <ChevronRight size={20}/>
+                <input type="file" accept="image/*" onChange={(e) => updateChatWallpaper(e.target.files?.[0])}/>
+              </label>
+              {activeChatSettings.wallpaper && <button className="wx-chat-info-row wx-chat-reset-bg" onClick={() => updateActiveChatSettings({ wallpaper: "" })}>恢复默认聊天背景</button>}
+              <button className="wx-chat-info-row wx-chat-clear" onClick={() => { if (window.confirm("确定清空与该联系人的聊天记录吗？")) p.onUi?.("wxClearThreadRequest", p.thread); }}>清空聊天记录</button>
+              <button className="wx-chat-info-row">投诉 <ChevronRight size={20}/></button>
             </div>
           )}
           {allItems.filter((i) => i.folder === utility).map((i) => (
@@ -3322,7 +3351,7 @@ export function WeChatSkin(p: SkinProps) {
         <>
           {catRescueActive ? (
             <div className="cat-rescue-thread">
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" selfAvatar={ownerAvatar} />
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
               {isMonsterThread && (
                 (() => {
                   const firstReplies = [
