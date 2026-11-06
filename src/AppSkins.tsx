@@ -3365,7 +3365,7 @@ export function WeChatSkin(p: SkinProps) {
               <button className="wx-chat-info-row wx-chat-info-toggle" onClick={() => updateActiveChatSettings({ muted: !activeChatSettings.muted })}>消息免打扰 <span className={activeChatSettings.muted ? "wx-switch is-on" : "wx-switch"}><i/></span></button>
               <button className="wx-chat-info-row wx-chat-info-toggle" onClick={() => updateActiveChatSettings({ pinned: !activeChatSettings.pinned })}>置顶聊天 <span className={activeChatSettings.pinned ? "wx-switch is-on" : "wx-switch"}><i/></span></button>
               <button className="wx-chat-info-row wx-chat-info-toggle" onClick={() => updateActiveChatSettings({ remind: !activeChatSettings.remind })}>提醒 <span className={activeChatSettings.remind ? "wx-switch is-on" : "wx-switch"}><i/></span></button>
-              <label className="wx-chat-info-row wx-chat-bg-row">设置当前聊天背景 <ChevronRight size={20}/>
+              <label className="wx-chat-info-row wx-chat-bg-row"><span className="wx-chat-bg-label">设置当前聊天背景</span><ChevronRight size={20}/>
                 <input type="file" accept="image/*" onChange={(e) => updateChatWallpaper(e.target.files?.[0])}/>
               </label>
               {activeChatSettings.wallpaper && <button className="wx-chat-info-row wx-chat-reset-bg" onClick={() => updateActiveChatSettings({ wallpaper: "" })}>恢复默认聊天背景</button>}
