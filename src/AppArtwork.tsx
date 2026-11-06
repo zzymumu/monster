@@ -860,6 +860,18 @@ export function AppArtwork({
   time?: string;
 }) {
   const [failed, setFailed] = useState(false);
+  if (id === "delivery") {
+    return (
+      <span className="original-icon-wrap" data-original-icon="delivery">
+        <img
+          className="app-artwork original-app-artwork"
+          src="https://play-lh.googleusercontent.com/wB-ZEC1cTDznZZnNjxQx6el8ClU1JLFZZZg9aPolghMn6flJWGDTGQyBRkcPBmSFlfErX1vrwxnmdQgJOAqeyw=w512-h512"
+          alt="HungryPanda"
+          draggable={false}
+        />
+      </span>
+    );
+  }
   const file = originalIconFiles[id];
   if (!originalsEnabled || !file || failed)
     return <DrawnArtwork id={id} date={date} />;
