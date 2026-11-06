@@ -385,8 +385,8 @@ export function DeliverySkin(p: Props) {
       {id:"r6m1",name:"黑糖珍珠鲜奶",desc:"Q弹黑糖珍珠，浓醇鲜奶",price:85,image:"https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267"},
       {id:"r6m2",name:"芝士奶盖乌龙",desc:"清香乌龙搭配绵密奶盖",price:80,image:"https://sushishop.com/wp-content/uploads/2021/05/2020_01_20-BBTS0806-1-1410x1763.jpg"},
       {id:"r6m3",name:"满杯鲜橙绿茶",desc:"鲜果茶香，清爽解腻",price:85,image:"https://www.foodunfolded.com/media/images/in-article-bubbletea02.webp"}]},
-    {id:"r7",name:"茶日子手摇茶",category:"奶茶甜品",desc:"台式奶茶 · 芋圆 · 鲜果茶",rating:"4.7",time:"15–25 分钟",fee:"NT$ 25 起",price:"NT$ 60 起",tag:"第二杯优惠",image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=640&q=85",menu:[
-      {id:"r7m1",name:"经典珍珠奶茶",desc:"台式红茶与浓醇奶香",price:70,image:"https://images.unsplash.com/photo-1558857563-c0c3a7f3a7b1?w=360&q=80"},
+    {id:"r7",name:"茶日子手摇茶",category:"奶茶甜品",desc:"台式奶茶 · 芋圆 · 鲜果茶",rating:"4.7",time:"15–25 分钟",fee:"NT$ 25 起",price:"NT$ 60 起",tag:"第二杯优惠",image:"https://images.deliveryhero.io/image/fd-ph/LH/xgn3-listing.jpg",menu:[
+      {id:"r7m1",name:"经典珍珠奶茶",desc:"台式红茶与浓醇奶香",price:70,image:"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy%2Cf_auto%2Cq_auto%2Cw_400/RX_THUMBNAIL/IMAGES/VENDOR/2024/9/10/d7198917-e6e5-4849-9628-374e8c3fa1a6_952260.jpg"},
       {id:"r7m2",name:"芋泥波波鲜奶",desc:"绵密芋泥与Q弹波波",price:85,image:"https://elcanotrade.com/cdn/shop/collections/Milk_Tea_1080x.jpg?v=1604572273"},
       {id:"r7m3",name:"柠檬冬瓜茶",desc:"酸甜清爽，解腻消暑",price:60,image:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=360&q=80"}]},
     {id:"r8",name:"阿嬷热炒",category:"热炒",desc:"台式热炒 · 炒蛤蜊 · 三杯鸡",rating:"4.8",time:"25–35 分钟",fee:"NT$ 30 起",price:"NT$ 170 起",tag:"台味人气",image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=640&q=85",menu:[
@@ -512,7 +512,7 @@ export function DeliverySkin(p: Props) {
             <div className="hp-restaurant-list">
               {visibleRestaurants.map(r=>(
                 <button className="hp-restaurant-card" key={r.id} onClick={()=>setSelected(r.id)}>
-                  <div className="hp-restaurant-image"><img src={r.image} alt={r.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src="https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267"}}/><span>{r.tag}</span></div>
+                  <div className="hp-restaurant-image"><img src={r.image} alt={r.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=r.menu[0].image}}/><span>{r.tag}</span></div>
                   <div className="hp-restaurant-info"><b>{r.name}</b><div className="hp-rating"><strong>★ {r.rating}</strong><span>{r.time}</span></div><small>{r.desc}</small><footer><span>{r.fee}</span><span>{r.price}</span></footer></div>
                 </button>
               ))}
