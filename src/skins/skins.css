@@ -6020,3 +6020,15 @@
 .hp-inline-cart-row button{width:23px;height:23px;border-radius:50%;background:#ffd900;color:#222;font-size:15px}
 .hp-inline-cart-total{display:flex;justify-content:space-between;align-items:center;padding-top:12px;font-size:13px}
 .hp-inline-cart-total button{background:#ffd900;border-radius:22px;padding:9px 20px;font-weight:800;color:#222;font-size:11px}
+
+/* HungryPanda: keep added item details visible above the tab bar */
+.delivery-ui .hp-detail-page{position:relative}
+.delivery-ui .hp-inline-cart{position:sticky;bottom:0;z-index:35;margin:16px 0 0;padding:12px 12px calc(12px + env(safe-area-inset-bottom, 0px));background:#fff;border:1px solid #eee;border-radius:14px 14px 0 0;box-shadow:0 -5px 22px #00000018;max-height:34%;overflow-y:auto}
+.delivery-ui .hp-inline-cart-title{font-size:13px}
+.delivery-ui .hp-inline-cart-row{gap:8px}
+.delivery-ui .hp-inline-cart-row>img{width:42px;height:42px;object-fit:cover;border-radius:7px;flex-shrink:0}
+.delivery-ui .hp-inline-cart-row>span{display:flex;flex-direction:column;gap:3px}
+.delivery-ui .hp-inline-cart-row>span b{font-size:10px;font-weight:700}
+.delivery-ui .hp-inline-cart-row>span small{font-size:8px;color:#888}
+.delivery-ui .hp-inline-cart-row>strong{white-space:nowrap;font-size:10px}
+.delivery-ui .hp-inline-cart-total{position:sticky;bottom:-12px;background:#fff;padding:10px 0 0}
