@@ -1516,7 +1516,7 @@ function PhoneRuntime({
                           if (Array.isArray(parsed)) queued = parsed;
                         } catch { queued = []; }
                         queued.push(
-                          { id: "drunk-big-g-call-declined-v9", sender: "大G", body: "您已拒绝对方来电", thread: "大G", meta: { systemNotice: "yes" } },
+                          { id: "drunk-big-g-call-declined-v10", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
                           { id: "drunk-big-g-pick-up-v9", sender: "大G", body: "接電話。", thread: "大G" },
                         );
                         update({
