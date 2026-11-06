@@ -2987,7 +2987,7 @@ export function WeChatSkin(p: SkinProps) {
     } catch { return []; }
   });
   const activeGroupChat = wxGroupChats.find((group) => group.name === p.thread);
-  const detailMemberNames = activeGroupChat?.members ?? (p.thread && !["我", "机主"].includes(p.thread) ? [canonicalContactName(p.thread)] : []);
+  const detailMemberNames = Array.from(new Set((activeGroupChat?.members?.length ? activeGroupChat.members : (p.thread && !["我", "机主"].includes(p.thread) ? [canonicalContactName(p.thread)] : [])).map(canonicalContactName).filter((name) => name && !["我", "机主"].includes(name))));
   const createGroupChat = () => {
     const members = Array.from(new Set(selectedGroupMembers.filter((name) => name && name !== "我" && name !== "机主")));
     if (!members.length) return;
