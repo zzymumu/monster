@@ -5932,3 +5932,22 @@
 .shopee-pending-actions{display:flex;gap:8px;justify-content:flex-end;align-items:center;width:100%;margin-top:8px}
 .shopee-cancel-order{border:1px solid #bbb!important;background:#fff!important;color:#777!important;border-radius:16px;padding:7px 13px;font-size:10px}
 .shopee-pending-actions .shopee-track-button{margin:0}
+
+.shopee-checkout-page .shopee-checkout-scroll{position:absolute;inset:0;overflow-y:auto;padding:18px 16px 28px;background:#f5f5f5}
+.shopee-checkout-standalone{min-height:100%;max-width:560px;margin:0 auto;padding:8px 2px 28px;box-sizing:border-box}
+.shopee-checkout-standalone>.shopee-back{display:block;margin:0 0 16px;padding:7px 0;border:0;background:transparent;color:#e65a3c;font-size:14px}
+.shopee-checkout-standalone h2{margin:0 0 18px;font-size:22px;color:#222}
+.shopee-checkout-products{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.shopee-checkout-product{display:flex;align-items:center;gap:12px;padding:10px;background:#fff;border-radius:10px}
+.shopee-checkout-product>span{width:64px;height:64px;flex:0 0 64px;border-radius:7px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.shopee-checkout-product img{width:100%;height:100%;object-fit:contain}
+.shopee-checkout-product>div{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}
+.shopee-checkout-product strong{font-size:12px}
+.shopee-checkout-product small{font-size:11px;color:#888}
+.shopee-checkout-product>b{font-size:12px;color:#e65a3c;white-space:nowrap}
+.shopee-checkout-standalone>p{margin:15px 0 7px;font-size:13px;color:#666}
+.shopee-checkout-standalone>select,.shopee-checkout-standalone>input{width:100%;min-height:44px;padding:0 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#333;box-sizing:border-box}
+.shopee-checkout-standalone .shopee-checkout-total{display:flex;justify-content:space-between;align-items:center;margin-top:15px;font-size:13px}
+.shopee-checkout-standalone .shopee-payable{padding-top:14px;border-top:1px solid #e5e5e5;font-size:16px}
+.shopee-checkout-standalone>small{display:block;margin:18px 0;color:#999;font-size:11px}
+.shopee-checkout-standalone>.shopee-confirm{position:sticky;bottom:0;width:100%;min-height:48px;border:0;border-radius:24px;background:#ee4d2d;color:#fff;font-size:15px}
