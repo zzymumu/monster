@@ -32,7 +32,7 @@ describe("optional app lifecycle", () => {
       folder: "",
     });
     expect(w.data.redbook).toHaveLength(6);
-    expect(w.apps).toHaveLength(51);
+    expect(w.apps).toHaveLength(52);
   });
   it("upgrades old format v1 app records without uninstalling existing apps", () => {
     const old = createWork();
