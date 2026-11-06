@@ -1995,9 +1995,10 @@ export function WeChatSkin(p: SkinProps) {
       p.ui?.wxPostDrunkGDotDeliveredV1 === true
     ));
   const _catAvatar = GLOOMY_AVATAR;
-  // DaG's avatar is a story-state change: before the designated scene keep
-  // the original avatar; after it, every WeChat surface and historical bubble
-  // must consistently use the new avatar.
+  // DaG's avatar changes exactly at the incoming "." message.
+  // Keep every earlier message's original portrait; only the dot and later
+  // messages use the newly uploaded portrait. Contact/call surfaces follow the
+  // current story state once that boundary has been reached.
   const dagAvatarChanged = p.ui?.wxPostDrunkGDotDeliveredV1 === true;
   const savedDaGAvatar = typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2.trim() : "";
   // Ignore stale emoji placeholders saved by earlier builds. The portrait must
@@ -2116,15 +2117,22 @@ export function WeChatSkin(p: SkinProps) {
       const nextVoiceIndex = threadItems.findIndex((item) => item.id === "dag-morning-voice-01-v1");
       threadItems.splice(nextVoiceIndex, 0, dotMessage);
     }
-    // Once the avatar-change scene has happened, update every DaG message,
-    // including earlier history, so reopening an old part of the conversation
-    // never shows a mixture of old and new portraits.
+    // The "." bubble itself is the switch point: retain original portraits
+    // above it and apply the uploaded portrait only from that bubble onward.
     if (dagAvatarChanged) {
-      threadItems = threadItems.map((item) =>
-        !item.outgoing && (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊")
-          ? { ...item, avatar: dagCurrentAvatar }
-          : item
+      const avatarSwitchIndex = threadItems.findIndex((item) =>
+        item.id === "drunk-post-door-g-dot-v1" ||
+        (!item.outgoing && (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") && item.body.trim() === ".")
       );
+      if (avatarSwitchIndex >= 0) {
+        threadItems = threadItems.map((item, index) =>
+          index >= avatarSwitchIndex &&
+          !item.outgoing &&
+          (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊")
+            ? { ...item, avatar: dagCurrentAvatar }
+            : item
+        );
+      }
     }
   }
   // Never expose the next interaction branch while any scripted line is
