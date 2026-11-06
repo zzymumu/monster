@@ -288,7 +288,7 @@ export function JkoPaySkin(p:Props){
  const confirmPayment=()=>{
   if(!pending||success)return;
   if(pending.total>availableBalance){
-   setPaymentError(`付款失敗：餘額不足。此付款方式可用 NT$ ${availableBalance.toLocaleString("zh-TW")}，本次需 NT$ ${pending.total.toLocaleString("zh-TW")}，還差 NT$ ${(pending.total-availableBalance).toLocaleString("zh-TW")}。`);
+   setPaymentError(paySource==="街口帳戶餘額"?"街口帳戶餘額不足，無法完成付款。請改用已綁定的銀行卡，或稍後再試。":"銀行授權未通過，可能是可用額度不足或發卡銀行拒絕交易。請改用其他付款方式，或聯絡發卡銀行。");
    return;
   }
   setPaymentError("");
@@ -308,7 +308,7 @@ export function JkoPaySkin(p:Props){
   {pending&&!success?<div className="jko-payment-page">
    <div className="jko-payment-brand"><span>街口支付</span><small>安全付款確認</small></div>
    <div className="jko-pay-card"><small>付款商店</small><h2>蝦皮購物</h2><small>訂單商品</small><p>{pending.items.map(v=>v.name+" × "+v.qty).join("、")}</p><div className="jko-amount"><small>本次應付金額</small><strong>NT$ {pending.total.toLocaleString("zh-TW")}</strong></div><div className="jko-pay-row"><span>付款方式</span><select value={paySource} onChange={e=>{setPaySource(e.target.value);setPaymentError("");}}><option>玉山銀行 **** 3188</option><option>街口帳戶餘額</option><option>國泰世華 **** 6621</option></select></div><div className="jko-pay-row"><span>配送方式</span><b>{pending.pickup}</b></div>
-    <div className="jko-available-balance"><span>此付款方式可用餘額</span><strong>NT$ {availableBalance.toLocaleString("zh-TW")}</strong></div>
+    {paySource==="街口帳戶餘額"&&<div className="jko-available-balance"><span>街口帳戶可用餘額</span><strong>NT$ {balance.toLocaleString("zh-TW")}</strong></div>}
    </div>
    {paymentError&&<div className="jko-payment-error"><b>⚠ 餘額不足，無法付款</b><span>{paymentError}</span><small>請改用其他付款方式，或取消訂單稍後再試。</small></div>}
    <p className="jko-safe-note">🔒 此為遊戲內模擬付款，不會連接銀行或扣款</p>
