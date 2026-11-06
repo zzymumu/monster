@@ -352,7 +352,7 @@ export function DeliverySkin(p: Props) {
   const [category, setCategory] = useState("全部");
   const [selected, setSelected] = useState<string | null>(null);
   const [cart, setCart] = useState<Record<string, number>>({});
-  const [cartOpen, setCartOpen] = useState(false);
+  const [cartPage, setCartPage] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutDone, setCheckoutDone] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState("请输入收货地址");
@@ -405,6 +405,7 @@ export function DeliverySkin(p: Props) {
   const remove = (id:string) => setCart(v=>({...v,[id]:Math.max(0,(v[id]||0)-1)}));
   const activeRestaurant = restaurants.find(r=>r.id===selected);
   const menu = activeRestaurant?.menu ?? [];
+  const cartGroups = restaurants.map(restaurant=>({...restaurant,items:restaurant.menu.filter(item=>(cart[item.id]||0)>0)})).filter(restaurant=>restaurant.items.length>0);
   const restaurantCart = menu.filter(item=>(cart[item.id]||0)>0);
   const restaurantCount = restaurantCart.reduce((n,item)=>n+(cart[item.id]||0),0);
   const restaurantTotal = restaurantCart.reduce((n,item)=>n+item.price*(cart[item.id]||0),0);
@@ -417,13 +418,48 @@ export function DeliverySkin(p: Props) {
       <div className="hp-home-scroll">
         {checkoutOpen ? (
           <div className="hp-checkout-page">
-            {checkoutDone ? <div className="hp-checkout-success"><span>✓</span><h2>订单提交成功</h2><p>商家将尽快确认并开始准备餐点</p><button onClick={()=>{setCheckoutOpen(false);setCheckoutDone(false);setSelected(null);setTab("订单")}}>查看订单</button></div> : <>
+            {checkoutDone ? <div className="hp-checkout-success"><span>✓</span><h2>订单提交成功</h2><p>商家将尽快确认并开始准备餐点</p><button onClick={()=>{setCheckoutOpen(false);setCheckoutDone(false);setCartPage(false);setSelected(null);setTab("订单")}}>查看订单</button></div> : <>
               <div className="hp-checkout-header"><button onClick={()=>setCheckoutOpen(false)}>‹</button><h2>确认订单</h2><span/></div>
               <div className="hp-checkout-card"><b>配送地址</b><input value={deliveryAddress} onChange={e=>setDeliveryAddress(e.target.value)} placeholder="请输入详细收货地址"/><small>请确认地址及门牌号码</small></div>
               <div className="hp-checkout-card"><b>配送时间</b><select value={deliveryMethod} onChange={e=>setDeliveryMethod(e.target.value)}><option>尽快送达</option><option>预约配送</option></select></div>
               <div className="hp-checkout-card"><b>订单明细</b>{allMenu.filter(m=>cart[m.id]>0).map(m=><div className="hp-checkout-item" key={m.id}><span>{m.name} × {cart[m.id]}</span><strong>{money(m.price*cart[m.id])}</strong></div>)}<div className="hp-checkout-item"><span>配送费</span><strong>{money(deliveryFee)}</strong></div><div className="hp-checkout-total"><b>合计</b><strong>{money(total+deliveryFee)}</strong></div></div>
               <div className="hp-checkout-card"><b>付款方式</b><select value={checkoutPayment} onChange={e=>setCheckoutPayment(e.target.value)}><option>在线支付</option><option>现金支付</option></select></div>
               <button className="hp-submit-order" disabled={!count||!deliveryAddress.trim()||deliveryAddress==="请输入收货地址"} onClick={()=>{setCheckoutDone(true);setCart({});}}>提交订单 · {money(total+deliveryFee)}</button>
+            </>}
+          </div>
+        ) : cartPage ? (
+          <div style={{padding:"18px 16px 28px",minHeight:"100%",background:"#f7f7f7"}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:18}}>
+              <button onClick={()=>setCartPage(false)} style={{border:0,background:"transparent",fontSize:28}}>‹</button>
+              <h2 style={{margin:0,fontSize:22,fontWeight:800}}>购物车</h2>
+              <button onClick={()=>setCart({})} style={{border:0,background:"transparent",color:"#999"}}>清空</button>
+            </div>
+            {cartGroups.length===0 ? (
+              <div style={{background:"#fff",borderRadius:16,padding:"54px 20px",textAlign:"center",color:"#999"}}>
+                <div style={{fontSize:48,marginBottom:12}}>🛒</div><b style={{display:"block",color:"#333",fontSize:17}}>购物车还是空的</b><p>去挑选喜欢的美食吧</p>
+                <button onClick={()=>{setCartPage(false);setSelected(null);setTab("首页")}} style={{background:"#ffd400",border:0,borderRadius:24,padding:"11px 28px",fontWeight:700}}>去逛逛</button>
+              </div>
+            ) : <>
+              {cartGroups.map(restaurant=>{
+                const subtotal=restaurant.items.reduce((sum,item)=>sum+item.price*(cart[item.id]||0),0);
+                return <section key={restaurant.id} style={{background:"#fff",borderRadius:15,padding:"14px 13px",marginBottom:13}}>
+                  <div style={{display:"flex",alignItems:"center",gap:9,borderBottom:"1px solid #f0f0f0",paddingBottom:12,marginBottom:5}}>
+                    <span style={{fontSize:20}}>🏪</span><b style={{fontSize:16,flex:1}}>{restaurant.name}</b><small style={{color:"#999"}}>{restaurant.items.reduce((n,item)=>n+(cart[item.id]||0),0)} 件商品</small>
+                  </div>
+                  {restaurant.items.map(item=><div key={item.id} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 0",borderBottom:"1px solid #f4f4f4"}}>
+                    <img src={item.image} alt={item.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=restaurant.image}} style={{width:68,height:68,objectFit:"cover",borderRadius:10,flexShrink:0}}/>
+                    <div style={{flex:1,minWidth:0}}><b style={{display:"block",fontSize:14}}>{item.name}</b><small style={{color:"#999",display:"block",marginTop:5}}>{money(item.price)} / 份</small><strong style={{display:"block",marginTop:5}}>{money(item.price*(cart[item.id]||0))}</strong></div>
+                    <div style={{display:"flex",alignItems:"center",gap:9}}><button onClick={()=>remove(item.id)} style={{width:27,height:27,border:"1px solid #ddd",borderRadius:"50%",background:"#fff"}}>−</button><b>{cart[item.id]}</b><button onClick={()=>add(item.id)} style={{width:27,height:27,border:0,borderRadius:"50%",background:"#ffd400",fontWeight:700}}>＋</button></div>
+                  </div>)}
+                  <div style={{textAlign:"right",paddingTop:11,fontSize:14}}>店铺小计 <b style={{fontSize:17,marginLeft:7}}>{money(subtotal)}</b></div>
+                </section>;
+              })}
+              <div style={{background:"#fff",borderRadius:15,padding:15,marginTop:10}}>
+                <div style={{display:"flex",justifyContent:"space-between",color:"#777"}}><span>商品总额</span><b style={{color:"#222"}}>{money(total)}</b></div>
+                <div style={{display:"flex",justifyContent:"space-between",marginTop:9,color:"#777"}}><span>配送费</span><b style={{color:"#222"}}>{money(deliveryFee*cartGroups.length)}</b></div>
+                <div style={{display:"flex",justifyContent:"space-between",borderTop:"1px solid #eee",paddingTop:14,marginTop:14,fontSize:16}}><b>合计</b><strong style={{color:"#e84b24",fontSize:21}}>{money(total+deliveryFee*cartGroups.length)}</strong></div>
+                <button disabled={!count} onClick={()=>{setCheckoutOpen(true);setCheckoutDone(false)}} style={{width:"100%",border:0,borderRadius:28,background:"#ffd400",padding:15,fontSize:16,fontWeight:800,marginTop:17}}>去结算</button>
+              </div>
             </>}
           </div>
         ) : selected && activeRestaurant ? (
@@ -489,11 +525,11 @@ export function DeliverySkin(p: Props) {
           <div className="hp-profile"><div className="hp-profile-top"><span>🐼</span><div><b>欢迎来到 HungryPanda</b><small>登录后享受更多会员权益</small></div><button>登录 / 注册</button></div>{["我的优惠券","收货地址","收藏餐厅","客服与帮助","设置"].map((v,i)=><button className="hp-profile-row" key={v}><span>{["🎟️","📍","♡","🎧","⚙️"][i]}</span>{v}<b>›</b></button>)}</div>
         )}
       </div>
-      {cartOpen && <div className="hp-cart-sheet"><div className="hp-cart-head"><b>购物车</b><button onClick={()=>setCartOpen(false)}>×</button></div>{allMenu.filter(m=>cart[m.id]>0).map(m=><div className="hp-cart-row" key={m.id}><span>{m.name}</span><b>{money(m.price*cart[m.id])}</b><button onClick={()=>remove(m.id)}>−</button><strong>{cart[m.id]}</strong><button onClick={()=>add(m.id)}>＋</button></div>)}<div className="hp-cart-foot"><b>合计 {money(total)}</b><button disabled={!count} onClick={()=>{setCartOpen(false);setCheckoutOpen(true);setCheckoutDone(false)}}>去结算</button></div></div>}
+
       <div className="hp-bottom">
         <button className={tab==="首页"?"active":""} onClick={()=>{setSelected(null);setTab("首页")}}><span>⌂</span>首页</button>
         <button className={tab==="订单"?"active":""} onClick={()=>{setSelected(null);setTab("订单")}}><span>▤</span>订单</button>
-        <button onClick={()=>setCartOpen(true)} className="hp-cart-tab"><span>🛒{count>0&&<i>{count}</i>}</span>购物车</button>
+        <button onClick={()=>{setSelected(null);setCheckoutOpen(false);setCartPage(true)}} className={"hp-cart-tab"+(cartPage?" active":"")}><span>🛒{count>0&&<i>{count}</i>}</span>购物车</button>
         <button className={tab==="我的"?"active":""} onClick={()=>{setSelected(null);setTab("我的")}}><span>♙</span>我的</button>
       </div>
     </div>
