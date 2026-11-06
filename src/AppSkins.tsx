@@ -44,7 +44,10 @@ import { makeItem, safeMedia, type Item, type UiValue } from "./schema";
 import { GLOOMY_AVATAR } from "./gloomyAvatar";
 export type SkinProps = {
   ui?: Record<string, UiValue>;
+  allUi?: Record<string, Record<string, UiValue>>;
   onUi?: (key: string, value: UiValue) => void;
+  onAppUi?: (appId: string, key: string, value: UiValue) => void;
+  onOpenApp?: (appId: string) => void;
   appId?: string;
   owner?: string;
   virtualTime?: string;
