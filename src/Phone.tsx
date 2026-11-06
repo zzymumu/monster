@@ -1452,9 +1452,13 @@ function PhoneRuntime({
                   (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
                   typeof item.avatar === "string" && item.avatar.trim()
                 )?.avatar || "";
-                const changedDaGAvatar = typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" && s.ui.wechat.wxDaGAvatarV2.trim()
-                  ? s.ui.wechat.wxDaGAvatarV2
-                  : "./assets/dag-new-avatar.jpg";
+                const savedDaGAvatar = typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" ? s.ui.wechat.wxDaGAvatarV2.trim() : "";
+                // Older saves may contain the previous emoji placeholder. Only accept
+                // actual image sources; otherwise always resolve the uploaded portrait
+                // through Vite's deployment base path (works on /monster/ GitHub Pages).
+                const changedDaGAvatar = /^(data:image\\/|\\.\\/assets\\/|\\/assets\\/|https?:\\/\\/)/i.test(savedDaGAvatar)
+                  ? savedDaGAvatar
+                  : `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg`;
                 const avatarSrc = isBigG
                   ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar)
                   : GLOOMY_AVATAR;
@@ -1465,10 +1469,10 @@ function PhoneRuntime({
                       <img src={avatarSrc} alt="" onError={e => {
                         const holder = e.currentTarget.parentElement;
                         e.currentTarget.remove();
-                        if (holder) holder.textContent = isBigG ? "🎸" : "🐻";
+                        if (holder) holder.textContent = isBigG ? "" : "🐻";
                       }} />
                     ) : (
-                      <span className="incoming-avatar-fallback">{isBigG ? "🎸" : "🐻"}</span>
+                      <span className="incoming-avatar-fallback">{isBigG ? "" : "🐻"}</span>
                     )}
                   </div>
                   <h2>{displayName}</h2>
