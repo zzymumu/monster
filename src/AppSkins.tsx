@@ -2003,7 +2003,7 @@ export function WeChatSkin(p: SkinProps) {
   // Ignore stale emoji placeholders saved by earlier builds. The portrait must
   // always be a real image URL and must resolve under the GitHub Pages base path.
   const dagCurrentAvatar = dagAvatarChanged
-    ? (/^(data:image\\/|\\.\\/assets\\/|\\/assets\\/|https?:\\/\\/)/i.test(savedDaGAvatar)
+    ? (savedDaGAvatar.startsWith("data:image/") || savedDaGAvatar.startsWith("./assets/") || savedDaGAvatar.startsWith("/assets/") || savedDaGAvatar.startsWith("https://") || savedDaGAvatar.startsWith("http://"))
         ? savedDaGAvatar
         : `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg`)
     : "";
