@@ -2006,7 +2006,7 @@ export function WeChatSkin(p: SkinProps) {
   const dagCurrentAvatar = dagAvatarChanged
     ? (savedDaGAvatar.startsWith("data:image/") || savedDaGAvatar.startsWith("./assets/") || savedDaGAvatar.startsWith("/assets/") || savedDaGAvatar.startsWith("https://") || savedDaGAvatar.startsWith("http://"))
         ? savedDaGAvatar
-        : `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg`)
+        : `${import.meta.env.BASE_URL}assets/dag-new-avatar.jpg`
     : "";
   const getDaGAvatar = (fallback = "") => dagAvatarChanged ? dagCurrentAvatar : fallback;
   const broccoliBaseItems = p.items.filter((item) =>
