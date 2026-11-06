@@ -818,24 +818,31 @@
 .ios18 .wechat-ui .wx-chat-clear{margin-top:8px;border-top:1px solid #292929}
 
 
-/* WeChat Moments feed avatars: keep the avatar frame square and crop the
-   uploaded image inside it, rather than letting its intrinsic dimensions
-   distort or shrink the feed column. */
-.ios18 .wechat-ui .wx-moments .wx-moment-post > .catalog-avatar {
+
+/* WeChat Moments feed avatars use AppSkins' .skin-avatar component.
+   Constrain the actual wrapper and its nested image, not .catalog-avatar. */
+.ios18 .wechat-ui .wx-moments .wx-moment-post > .skin-avatar {
+  box-sizing: border-box !important;
+  display: block !important;
+  position: relative !important;
   width: 42px !important;
   height: 42px !important;
   min-width: 42px !important;
   min-height: 42px !important;
+  max-width: 42px !important;
+  max-height: 42px !important;
   flex: 0 0 42px !important;
-  display: block !important;
-  position: relative !important;
-  overflow: hidden !important;
   padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
   border-radius: 5px !important;
   line-height: 0 !important;
 }
-.ios18 .wechat-ui .wx-moments .wx-moment-post > .catalog-avatar > img {
+.ios18 .wechat-ui .wx-moments .wx-moment-post > .skin-avatar > img {
+  box-sizing: border-box !important;
   display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
   min-width: 100% !important;
