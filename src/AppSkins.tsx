@@ -4108,7 +4108,6 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "好的！！！" },
       { sender: "西蓝花", body: "……" },
       { sender: "西蓝花", body: "啊啊啊啊啊啊啊啊！" },
-      { sender: "大G", body: "哈哈哈哈哈哈哈哈。" },
     ] },
     { user: ["？？？？？", "你不是说你会说话吗！"], incoming: [
       { sender: "大G", body: "哈哈哈哈哈哈哈哈。" },
@@ -4150,7 +4149,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "這麼誇張喔？" },
       { sender: "大G", body: "那還是要謝謝她幫忙照顧玩玩。" },
     ] },
-    { user: ["你不要又谢啦！"], incoming: [
+    { user: ["你不要又谢啦！", "玩玩现在也是我家的一员了。"], incoming: [
       { sender: "大G", body: "好啦，那我就不客氣了。" },
       { sender: "西蓝花", body: "等等！！" },
       { sender: "西蓝花", body: "怪兽，我可以问你一个问题吗？" },
@@ -4204,6 +4203,8 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "妳跟她認識很久了喔？" },
     ] },
     { user: ["很久了！！", "久到我觉得自己都快变成她的生活保姆了。"], incoming: [
+      { sender: "西蓝花", body: "？？？？？" },
+      { sender: "西蓝花", body: "你不要在怪兽面前毁我形象！" },
       { sender: "大G", body: "哈哈哈哈哈哈。" },
       { sender: "大G", body: "她平常很難照顧嗎？" },
       { sender: "西蓝花", body: "何止啊！！" },
@@ -4260,18 +4261,19 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "不过怪兽，你工作那么忙，平时是不是很少看微信啊？" },
       { sender: "大G", body: "還好啦，忙的時候會比較少看。" },
       { sender: "大G", body: "不過有空還是會回的。" },
+      { sender: "西蓝花", body: "那你下次记得先回她，不然我怕她得相思病。" },
     ] },
     { user: ["你有病啊乱说什么啊！"], incoming: [
       { sender: "大G", body: "好喔好喔，我会的。" },
-    ] },
-    { user: ["........"], incoming: [
       { sender: "西蓝花", body: "你看吧，我帮你争取福利你还不夸我。" },
     ] },
-    { user: ["温尚翊，你今天很闲吗？"], incoming: [
+    { user: ["........", "温尚翊，你今天很闲吗？"], incoming: [
       { sender: "大G", body: "你是在赶我走吗🥺" },
     ] },
     { user: ["你这个表情是用上瘾了是吧！"], incoming: [
       { sender: "大G", body: "好啦好啦不闹了，我真的还有录音没做完。" },
+      { sender: "西蓝花", body: "没关系没关系！" },
+      { sender: "西蓝花", body: "你忙你的！" },
     ] },
     { user: ["你怎么突然这么客气？"], incoming: [
       { sender: "西蓝花", body: "我怕打扰人家工作不行吗！！" },
