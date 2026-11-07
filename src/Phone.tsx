@@ -1650,11 +1650,42 @@ function PhoneRuntime({
                   if (notice.appId === "wechat" && notice.contact) {
                     markWeChatThreadRead(notice.contact);
                     const current = runtimeRef.current;
+                    const currentWx = current.ui?.wechat ?? {};
+                    let nextMessages = current.messages.wechat ?? [];
+                    let nextStory: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
+                    try { if (typeof currentWx.catRescueState === "string") nextStory = JSON.parse(currentWx.catRescueState); } catch { nextStory = {}; }
+                    const storyMessages = Array.isArray(nextStory.messages) ? nextStory.messages : [];
+                    if ((notice.contact === "西蓝花" || notice.contact === "西兰花") &&
+                        currentWx.wxPostDrunkBroccoliCheckInV1 === true) {
+                      const checkIn = makeItem({
+                        id: "drunk-post-door-broccoli-checkin-v1",
+                        title: "西蓝花",
+                        sender: "西蓝花",
+                        body: "亲，你是死了吗？",
+                        time: (current.date || work.phone.date) + " " + (current.time || work.phone.time),
+                        outgoing: false,
+                        meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
+                      });
+                      const exists = nextMessages.some((item) => item.id === checkIn.id) ||
+                        storyMessages.some((item) => item.id === checkIn.id);
+                      if (!exists) {
+                        nextMessages = [...nextMessages, checkIn];
+                        nextStory = { ...nextStory, messages: [...storyMessages, checkIn] };
+                      }
+                    }
                     update({
                       ...current,
+                      messages: { ...current.messages, wechat: nextMessages },
                       ui: {
                         ...current.ui,
-                        wechat: { ...current.ui?.wechat, openThread: notice.contact },
+                        wechat: {
+                          ...currentWx,
+                          ...(notice.contact === "西蓝花" || notice.contact === "西兰花"
+                            ? { wxPostDoorBroccoliOpenedAfterDoorV1: true,
+                                catRescueState: JSON.stringify(nextStory) }
+                            : {}),
+                          openThread: notice.contact,
+                        },
                       },
                     });
                     open("wechat");
