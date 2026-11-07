@@ -4009,6 +4009,7 @@ export function WeChatSkin(p: SkinProps) {
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; body: string; time: string; image?: string; comments?: string[]; likes?: string[] };
+      if (post.id === "moment-autumn-milk-tea-v1" && returnDinnerStage < 436) return [];
       return post.id && post.body ? [post] : [];
     } catch {
       return [];
@@ -4122,10 +4123,15 @@ export function WeChatSkin(p: SkinProps) {
   }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist, vavaPlayStage, vavaPlayCompleted]);
 
   useEffect(() => {
-    // Seed the player's autumn milk-tea Moments post once the previous chat
-    // reaches its ending. The post is visible as soon as Moments is opened.
-    if (returnDinnerStage < 426) return;
+    // The milk-tea post must not exist until the player has completed
+    // every reply in Broccoli's studio conversation (stage 436).
     const postId = "moment-autumn-milk-tea-v1";
+    if (returnDinnerStage < 436) {
+      setMomentPostData((current) => current.filter((raw) => {
+        try { return JSON.parse(raw).id !== postId; } catch { return true; }
+      }));
+      return;
+    }
     setMomentPostData((current) => current.some((raw) => {
       try { return JSON.parse(raw).id === postId; } catch { return false; }
     }) ? current : [...current, JSON.stringify({
