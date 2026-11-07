@@ -3106,7 +3106,6 @@ export function WeChatSkin(p: SkinProps) {
       /(到門口了.*開門|到门口了.*开门|開門，我在外面|开门，我在外面)/.test(item.body.trim())
     );
     if (isBroccoli && doorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true && returnDinnerStage < 300) {
-      setPostDoorBroccoliHandoffArmed(false);
       setReturnDinnerStage(300);
     }
   }, [p.thread, p.items, catRescue.messages, p.ui?.wxPostDrunkBroccoliCheckInV1, returnDinnerStage]);
