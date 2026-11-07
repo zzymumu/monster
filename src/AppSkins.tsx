@@ -1567,10 +1567,15 @@ export function WeChatSkin(p: SkinProps) {
 
   const [broccoliSignatureCallQueued, setBroccoliSignatureCallQueued] = useSkinState<boolean>(p, "wxBroccoliSignatureCallQueuedV1", false);
   useEffect(() => {
-    if (returnDinnerStage !== 514 || p.thread !== "西蓝花" || broccoliSignatureCallQueued) return;
-    setBroccoliSignatureCallQueued(true);
-    p.onUi?.("wxBroccoliSignatureCallRequestedV1", true);
-  }, [returnDinnerStage, p.thread, broccoliSignatureCallQueued]);
+    // Wait until Broccoli's final "I have to call you" bubble has fully
+    // arrived, then leave a natural five-second pause before ringing.
+    if (returnDinnerStage !== 514 || p.thread !== "西蓝花" || broccoliSignatureCallQueued || pendingCatLines.length > 0) return;
+    const timer = window.setTimeout(() => {
+      setBroccoliSignatureCallQueued(true);
+      p.onUi?.("wxBroccoliSignatureCallRequestedV1", true);
+    }, 5000);
+    return () => window.clearTimeout(timer);
+  }, [returnDinnerStage, p.thread, broccoliSignatureCallQueued, pendingCatLines.length]);
 
   useEffect(() => {
     if (returnDinnerStage !== 472 || milkTeaCallPromptShown || p.thread !== "大G") return;
