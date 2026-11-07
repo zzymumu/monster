@@ -3250,7 +3250,7 @@ export function WeChatSkin(p: SkinProps) {
   // a notification while outside WeChat and sees the messages on opening DaG.
   useEffect(() => {
     if (returnDinnerStage !== 349 || postDoorInitialCheckInQueued) return;
-    const openingLines = [
+    const openingLines: CatLine[] = [
       { id: "post-door-lock-check-in-01-v1", sender: "大G", body: "到家了嗎？锁换好了嗎？", thread: "大G" },
       { id: "post-door-lock-check-in-02-v1", sender: "大G", body: "剛剛有點忙，現在才有空問妳。", thread: "大G" },
     ];
