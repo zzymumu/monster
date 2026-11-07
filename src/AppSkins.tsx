@@ -226,7 +226,8 @@ function MessageList({
             <Avatar name={i.sender} src={wechat && monsterMessage ? (monsterAvatar || i.avatar) : i.outgoing ? selfAvatar : i.avatar} />
           )}
           <button
-            className="skin-bubble"
+            className={i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? "skin-bubble wx-card-only-bubble" : "skin-bubble"}
+            style={i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? { background: "transparent", border: 0, boxShadow: "none", padding: 0, borderRadius: 0, minWidth: 0, maxWidth: "min(285px, 72vw)", overflow: "visible" } : undefined}
             onClick={() => { if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } if (creator) { onItem(i); } else { onRead(i.id); } }}
           >
             {i.kind === "call" ? (
