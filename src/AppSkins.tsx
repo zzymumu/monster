@@ -1523,7 +1523,6 @@ export function WeChatSkin(p: SkinProps) {
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const [milkTeaTransferStatus, setMilkTeaTransferStatus] = useSkinState<"pending" | "accepted" | "returned">(p, "wxMilkTeaTransferStatusV1", "pending");
   const [milkTeaArrivalWaitReady, setMilkTeaArrivalWaitReady] = useSkinState<boolean>(p, "wxMilkTeaArrivalWaitReadyV1", false);
-  const [milkTeaArrivalCallRequested, setMilkTeaArrivalCallRequested] = useSkinState<boolean>(p, "wxMilkTeaArrivalCallRequestedV1", false);
   const [milkTeaCallPromptShown, setMilkTeaCallPromptShown] = useSkinState<boolean>(p, "wxMilkTeaCallPromptShownV1", false);
   const [milkTeaCallPromptOpen, setMilkTeaCallPromptOpen] = useState(false);
   useEffect(() => {
