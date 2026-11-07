@@ -4702,10 +4702,13 @@ export function WeChatSkin(p: SkinProps) {
 
           {catRescueActive ? (
             <div className="cat-rescue-thread">
+
+
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {isMonsterThread && accidentalGroupInvitePending && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="群聊邀请">
                   <div style={{ padding: 14, borderRadius: 12, background: "#fff", color: "#222", border: "1px solid #ddd" }}>
-                    <strong>大G邀请你加入群聊</strong>
+                    <strong>{displayName("大G")}邀请你加入群聊</strong>
                     <div style={{ marginTop: 6, fontSize: 13, color: "#777" }}>大G、你、西蓝花</div>
                     <button style={{ marginTop: 12, width: "100%", minHeight: 42, borderRadius: 8, background: "#07c160", color: "#fff", fontWeight: 600 }} onClick={() => {
                       const nextGroups = wxGroupChatsRaw.map((raw) => {
@@ -4728,7 +4731,7 @@ export function WeChatSkin(p: SkinProps) {
                   </div>
                 </div>
               )}
-              {isMonsterThread && accidentalGroupStoryStep === 22 && pendingCatLines.length === 0 && (
+              {isMonsterThread && accidentalGroupStoryStep === 23 && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G群聊乌龙收尾">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     appendCatLines([{ id: "wx-accidental-group-last-user-v1", sender: "我", body: "...你再说我解散。", thread: "大G" }], catRescue.stage, catRescue.branch, "wx-accidental-group-last-user");
@@ -4736,8 +4739,6 @@ export function WeChatSkin(p: SkinProps) {
                   }}>...你再说我解散。</button>
                 </div>
               )}
-
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {isMonsterThread && (
                 (() => {
                   const firstReplies = [
