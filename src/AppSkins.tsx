@@ -3564,6 +3564,8 @@ export function WeChatSkin(p: SkinProps) {
   const [friendRequestModal, setFriendRequestModal] = useState<"" | "confirm" | "sent">("");
   const [momentCover, setMomentCover] = useSkinState<string>(p, "wxMomentCover", "");
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
+  const [storyFriendMomentPosts, setStoryFriendMomentPosts] = useSkinState<string[]>(p, "wxStoryFriendMomentPostsV1", []);
+  const [storyMomentCommentDraft, setStoryMomentCommentDraft] = useState("");
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
@@ -3605,6 +3607,24 @@ export function WeChatSkin(p: SkinProps) {
       ]);
     }
   };
+  useEffect(() => {
+    // DaG shares Wanwan only after the player has finished the check-in chat.
+    // This creates a feed post, never an automatic like or comment.
+    if (returnDinnerStage < 392) return;
+    const postId = "dag-wanwan-home-moment-v1";
+    setStoryFriendMomentPosts((current) => current.some((raw) => {
+      try { return JSON.parse(raw).id === postId; } catch { return false; }
+    }) ? current : [...current, JSON.stringify({
+      id: postId,
+      sender: "大G",
+      body: "终于回家了，小朋友。",
+      image: "./assets/wanwan-moments.webp",
+      time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      likes: [],
+      comments: [],
+    })]);
+  }, [returnDinnerStage]);
+
   useEffect(() => {
     // Phase 1: after the original found-cat conversation is complete,
     // create the Vava/玩玩 post with both likes. Do not message DaG yet.
@@ -3688,9 +3708,16 @@ export function WeChatSkin(p: SkinProps) {
         })
     : [];
   const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
+  const storyFriendPosts = storyFriendMomentPosts.flatMap((raw) => {
+    try {
+      const post = JSON.parse(raw) as { id: string; sender: string; body: string; image: string; time: string; likes: string[]; comments: string[] };
+      return post.id ? [post] : [];
+    } catch { return []; }
+  });
   const momentFeed = [
     ...myMomentPosts.map((post, index) => ({ type: "mine" as const, id: post.id, time: post.time, post, order: index })),
     ...posts.map((item, index) => ({ type: "friend" as const, id: item.id, time: item.time, item, order: myMomentPosts.length + index })),
+    ...storyFriendPosts.map((post, index) => ({ type: "story-friend" as const, id: post.id, time: post.time, post, order: myMomentPosts.length + posts.length + index })),
   ].sort((a, b) => {
     const aTime = Date.parse(a.time);
     const bTime = Date.parse(b.time);
@@ -4230,7 +4257,45 @@ export function WeChatSkin(p: SkinProps) {
               <Avatar name={ownerName} src={ownerAvatar} />
             </div>
           </div>
-          {momentFeed.map((entry) => entry.type === "mine" ? (
+          {momentFeed.map((entry) => entry.type === "story-friend" ? (
+            <article key={entry.id} className="wx-moment-post" style={{ display: "flex", gap: 12, padding: "16px 14px", borderBottom: "1px solid #eee", background: "#fff" }}>
+              <Avatar name="大G" src={allItems.find((item) => item.sender === "大G")?.avatar} className="wx-moment-feed-avatar" />
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <strong style={{ color: "#576b95" }}>大G</strong>
+                <p style={{ margin: "7px 0 10px", whiteSpace: "pre-wrap" }}>{entry.post.body}</p>
+                <img src={entry.post.image} alt="玩玩在家里睡觉" style={{ display: "block", width: "min(100%, 360px)", height: "auto", borderRadius: 3, objectFit: "cover" }} />
+                <small style={{ display: "block", color: "#999", marginTop: 9 }}>{entry.post.time}</small>
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: 14, padding: "8px 10px", marginTop: 6, background: "#f7f7f7", borderRadius: 3 }}>
+                  <button type="button" onClick={() => setStoryFriendMomentPosts((current) => current.map((raw) => {
+                    const post = JSON.parse(raw);
+                    if (post.id !== entry.id) return raw;
+                    const likes = Array.isArray(post.likes) ? post.likes : [];
+                    const nextLikes = likes.includes(ownerName) ? likes.filter((name: string) => name !== ownerName) : [...likes, ownerName];
+                    return JSON.stringify({ ...post, likes: nextLikes });
+                  }))} style={{ border: 0, background: "transparent", color: entry.post.likes.includes(ownerName) ? "#576b95" : "#666", fontSize: 13, cursor: "pointer" }}>
+                    {entry.post.likes.includes(ownerName) ? "取消" : "♡"} 赞
+                  </button>
+                  <button type="button" onClick={() => setStoryMomentCommentDraft("说好给我看的！")} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
+                </div>
+                {(entry.post.likes.length > 0 || entry.post.comments.length > 0) && <div className="wx-moment-social-likes" style={{ marginTop: 0 }}>
+                  {entry.post.likes.length > 0 && <div>♡ {entry.post.likes.join("、")}</div>}
+                  {entry.post.comments.map((comment: string, index: number) => <div className="wx-moment-social-comment" key={index}>{comment}</div>)}
+                </div>}
+                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                  <input aria-label="朋友圈评论" value={storyMomentCommentDraft} onChange={(event) => setStoryMomentCommentDraft(event.target.value)} placeholder="说好给我看的！" style={{ flex: 1, minWidth: 0, border: "1px solid #e5e5e5", borderRadius: 4, padding: "7px 9px", fontSize: 13 }} />
+                  <button type="button" disabled={!storyMomentCommentDraft.trim()} onClick={() => {
+                    const comment = storyMomentCommentDraft.trim();
+                    if (!comment) return;
+                    setStoryFriendMomentPosts((current) => current.map((raw) => {
+                      const post = JSON.parse(raw);
+                      return post.id === entry.id ? JSON.stringify({ ...post, comments: [...(post.comments || []), ownerName + "：" + comment] }) : raw;
+                    }));
+                    setStoryMomentCommentDraft("");
+                  }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>发送</button>
+                </div>
+              </div>
+            </article>
+          ) : entry.type === "mine" ? (
             <div key={entry.id} className="wx-moment-post wx-moment-user-post">
               <Avatar name={ownerName} src={ownerAvatar} className="wx-moment-feed-avatar" />
               <div>
