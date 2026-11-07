@@ -3927,12 +3927,33 @@ export function WeChatSkin(p: SkinProps) {
   }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist, vavaPlayStage, vavaPlayCompleted]);
 
   useEffect(() => {
-    // One-time autumn milk-tea post event: both friends like the post, then
-    // DaG sends the three incoming messages through the normal notification queue.
-    if (milkTeaMomentTriggered || returnDinnerStage < 426) return;
+    // Seed the player's autumn milk-tea Moments post once the previous chat
+    // reaches its ending. The post is visible as soon as Moments is opened.
+    if (returnDinnerStage < 426) return;
+    const postId = "moment-autumn-milk-tea-v1";
+    setMomentPostData((current) => current.some((raw) => {
+      try { return JSON.parse(raw).id === postId; } catch { return false; }
+    }) ? current : [...current, JSON.stringify({
+      id: postId,
+      body: "秋天的第一杯奶茶～这家超好喝！",
+      image: "https://zzymumu.github.io/monster/assets/autumn-milk-tea.jpg",
+      time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      likes: ["西蓝花", "大G"],
+      comments: [],
+    })]);
+  }, [returnDinnerStage]);
+
+  useEffect(() => {
+    // Opening Moments reveals the likes and only then queues DaG's opener.
+    if (milkTeaMomentTriggered || !moments || returnDinnerStage < 426) return;
     const postExists = momentPostData.some((raw) => {
-      try { return JSON.parse(raw).id === "moment-autumn-milk-tea-v1"; }
-      catch { return false; }
+      try {
+        const post = JSON.parse(raw);
+        return post.id === "moment-autumn-milk-tea-v1"
+          && Array.isArray(post.likes)
+          && post.likes.includes("西蓝花")
+          && post.likes.includes("大G");
+      } catch { return false; }
     });
     if (!postExists) return;
     setMilkTeaMomentTriggered(true);
@@ -3943,7 +3964,7 @@ export function WeChatSkin(p: SkinProps) {
           { id: "milk-tea-dag-question-v1", sender: "大G", body: "妳朋友圈那家奶茶真的有這麼好喝喔？", thread: "大G" },
           { id: "milk-tea-dag-followup-v1", sender: "大G", body: "我看妳好像常常點這家。", thread: "大G" },
         ]);
-  }, [milkTeaMomentTriggered, returnDinnerStage, momentPostData]);
+  }, [milkTeaMomentTriggered, moments, returnDinnerStage, momentPostData]);
 
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
