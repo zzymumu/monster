@@ -4693,12 +4693,32 @@ export function WeChatSkin(p: SkinProps) {
                     <strong>{displayName("大G")}邀请你加入群聊</strong>
                     <div style={{ marginTop: 6, fontSize: 13, color: "#777" }}>{displayName("大G")}、你、西蓝花</div>
                     <button style={{ marginTop: 12, width: "100%", minHeight: 42, borderRadius: 8, background: "#07c160", color: "#fff", fontWeight: 600 }} onClick={() => {
-                      const nextGroups = wxGroupChatsRaw.map((raw) => {
+                      const existingGroups = wxGroupChatsRaw.flatMap((raw) => {
                         try {
                           const group = JSON.parse(raw) as { id: string; name: string; members: string[]; leftByMe?: boolean };
-                          return group.leftByMe ? JSON.stringify({ ...group, leftByMe: false }) : raw;
-                        } catch { return raw; }
+                          return group.id && group.name && Array.isArray(group.members) ? [group] : [];
+                        } catch { return []; }
                       });
+                      const existingAccidentalGroup = existingGroups.find((group) =>
+                        group.members.includes("大G") && group.members.includes("西蓝花"),
+                      );
+                      const restoredGroup = existingAccidentalGroup
+                        ? { ...existingAccidentalGroup, members: Array.from(new Set([...existingAccidentalGroup.members, "我"])), leftByMe: false }
+                        : {
+                            id: "wx-accidental-group-chat-v1",
+                            name: `${displayName("大G")}、西蓝花的群聊`,
+                            members: ["大G", "西蓝花", "我"],
+                            leftByMe: false,
+                          };
+                      const nextGroups = [
+                        ...wxGroupChatsRaw.filter((raw) => {
+                          try {
+                            const group = JSON.parse(raw) as { id?: string; members?: string[] };
+                            return group.id !== restoredGroup.id && !(Array.isArray(group.members) && group.members.includes("大G") && group.members.includes("西蓝花"));
+                          } catch { return true; }
+                        }),
+                        JSON.stringify(restoredGroup),
+                      ];
                       setWxGroupChatsRaw(nextGroups);
                       p.onUi?.("wxGroupChatsV1", JSON.stringify(nextGroups));
                       setAccidentalGroupInvitePending(false);
