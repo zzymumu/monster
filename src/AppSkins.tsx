@@ -4115,7 +4115,7 @@ export function WeChatSkin(p: SkinProps) {
       try {
         const group = JSON.parse(raw) as { name: string; members: string[]; leftByMe?: boolean };
         if (group.name === p.thread && !group.leftByMe && group.members.includes("大G") && group.members.includes("西蓝花")) openedGroup = group;
-      } catch {}
+      } catch { /* Ignore malformed saved group records. */ }
     }
     if (!openedGroup) return;
     appendCatLines([
@@ -4768,12 +4768,6 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="三人群聊互动选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     const turn = threeWayGroupStory[threeWayGroupStoryStep];
-                    const senderFor = (body: string, index: number) => {
-                      const userBodies = new Set(["你先冷静一下。","你不是一直想认识他吗？现在机会来了！","你怎么还告状！","你们两个什么时候统一战线了？","假的！！"]);
-                      if (userBodies.has(body)) return "我" as const;
-                      if (["你看，她现在连话都不会说了。","？？？？？","你现在是不是正在疯狂深呼吸？","你怎么还告状！"].includes(body)) return "我" as const;
-                      return "大G" as const;
-                    };
                     const lines: CatLine[] = turn.user.map((body,index)=>({id:"wx-threeway-user-"+threeWayGroupStoryStep+"-"+index,sender:"我" as const,body,thread:activeGroupChat.name as string}));
                     const broccoliLines = new Set(["我怎么冷静？？？","你为什么不提前告诉我？？？","我现在跟怪兽在一个群里？？？","你好你好！！","不好意思！！","我有点激动！！","不是有点，是非常激动！！！","我会说话！！！","我只是需要一点时间接受这个事实……","好的！！！","啊啊啊啊啊啊啊啊！","你闭嘴！！！！","我现在跟你说话都要斟酌一下了好吗！！！","你能不能不要把我架在这里！！！","是！！不是！！","我的意思是……","我当然很喜欢五月天！","怪兽你好！！我是你们很多年的歌迷！！","好的好的！！","我会的！！","（努力冷静）","你真的够了！！","我现在不想跟你说话！！","对！！","她平常就这样欺负我！","怪兽你不要被她骗了！","那当然！！","不过……","我现在还是觉得很不真实。","前段时间还在听她跟我讲捡到玩玩的事情。","现在居然真的跟怪兽在一个群里聊天了……","等等！！","怪兽，我可以问你一个问题吗？","这个嘛……","她说你人很帅！","还说你人很好！","而且还亲自开车去接她！","我不是在说这个！！","我是想问……","你们见面的时候，她有没有很奇怪？","就是……","有没有突然很紧张？","或者说话不正常？","救命，我就知道！！","她回来以后跟我讲话都快疯了！","你有！！","你还记得你第一次跟我说见到怪兽的时候吗？","你那时候激动得跟什么一样！","哈哈哈哈哈哈哈哈哈哈哈哈！！！","很久了！！","久到我觉得自己都快变成她的生活保姆了。","何止啊！！","她有时候做事情真的很让人操心。","想到什么就做什么，完全不考虑后果！","不过我是真的没想到你们这么快就搞一起了。","哎呀，我的意思是你们怎么这么快就熟起来了嘛！","又是一起吃饭，又是互相聊天的。","当然可以！！","你继续！！","我怎么了！","我现在是在替你争取福利好吗！","没什么没什么！！","你们继续聊！！","她之前为了等你消息，手机都快被她看穿了！","我可没有乱讲。","那你下次记得先回她，不然我怕她得相思病。","你看吧，我帮你争取福利你还不夸我。","没关系没关系！","你忙你的！","我怕打扰人家工作不行吗！！","好的！！","记得常来哦🥺"]);
                     const ownerLines = new Set(["你看，她现在连话都不会说了。","？？？？？","你现在是不是正在疯狂深呼吸？","你怎么还告状！","你不要又谢啦！","玩玩现在也是我家的一员了。","喂！！！什么东西！！！","你看！我没乱说吧！","你到底在说什么啊？","温尚翊！！！","你不要什么都往外说！！","我哪有！！！","我退群了。","你们两个什么时候统一战线了？","什么叫搞一起了！","你会不会用词啊！！！","……","你怎么还当着我的面夸我啊。","？？？？？","西蓝花你能不能有点出息！","假的！！","西蓝花！！！","你不要听她乱讲！！","你有病啊乱说什么啊！","........","温尚翊，你今天很闲吗？","你这个表情是用上瘾了是吧！","收到，怪兽老师！","....温尚翊！！！！","快走吧你，你再呆下去西蓝花要癫狂了。"]);
