@@ -4765,6 +4765,7 @@ export function WeChatSkin(p: SkinProps) {
                   </div>
                 </div>
               )}
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {activeGroupChat && threeWayGroupStoryStep >= 0 && threeWayGroupStoryStep < threeWayGroupStory.length && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="三人群聊互动选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
@@ -4774,7 +4775,7 @@ export function WeChatSkin(p: SkinProps) {
                     const ownerLines = new Set(["你看，她现在连话都不会说了。","？？？？？","你现在是不是正在疯狂深呼吸？","你怎么还告状！","你不要又谢啦！","玩玩现在也是我家的一员了。","喂！！！什么东西！！！","你看！我没乱说吧！","你到底在说什么啊？","温尚翊！！！","你不要什么都往外说！！","我哪有！！！","我退群了。","你们两个什么时候统一战线了？","什么叫搞一起了！","你会不会用词啊！！！","……","你怎么还当着我的面夸我啊。","？？？？？","西蓝花你能不能有点出息！","假的！！","西蓝花！！！","你不要听她乱讲！！","你有病啊乱说什么啊！","........","温尚翊，你今天很闲吗？","你这个表情是用上瘾了是吧！","收到，怪兽老师！","....温尚翊！！！！","快走吧你，你再呆下去西蓝花要癫狂了。"]);
                     const incoming = turn.incoming.map((body,index)=>({
                       id:"wx-threeway-incoming-"+threeWayGroupStoryStep+"-"+index,
-                      sender: (broccoliLines.has(body) ? "西蓝花" : ownerLines.has(body) ? "我" : "大G") as "西蓝花" | "我" | "大G",
+                      sender: (broccoliLines.has(body) || body.startsWith("啊啊啊啊") ? "西蓝花" : ownerLines.has(body) ? "我" : "大G") as "西蓝花" | "我" | "大G",
                       body,
                       thread: activeGroupChat.name as string,
                     }));
@@ -4785,7 +4786,6 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的群聊回复</div>
                 </div>
               )}
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
           {isMonsterThread && accidentalGroupStoryStep >= 0 && accidentalGroupStoryStep < accidentalGroupStory.length && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G群聊乌龙对话">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
