@@ -1544,6 +1544,27 @@ export function WeChatSkin(p: SkinProps) {
     setReturnDinnerStage(500);
   }, [returnDinnerStage, p.thread, p.ui?.wxMilkTeaArrivalCallFinishedV1, p.items, catRescue.messages]);
 
+  // Repair existing saves that already sent the signature announcement
+  // but advanced to the reply-choice stage before Broccoli's two reactions
+  // were queued. Keep the choice hidden until both incoming bubbles arrive.
+  useEffect(() => {
+    if (returnDinnerStage !== 501) return;
+    const delivered = [...p.items, ...catRescue.messages];
+    const hasAnnouncement = delivered.some((item) =>
+      item.sender === "我" && ["报告！", "签名我帮你拿到了！！！"].includes(item.body.trim())
+    );
+    if (!hasAnnouncement) return;
+    const replies = [
+      { id: "broccoli-signature-reaction-01-v1", sender: "西蓝花" as const, body: "你怎么拿到的？", thread: "西蓝花" },
+      { id: "broccoli-signature-reaction-02-v1", sender: "西蓝花" as const, body: "你们又见面了？", thread: "西蓝花" },
+    ];
+    const missing = replies.filter((line) =>
+      !delivered.some((item) => item.id === line.id || (item.sender === line.sender && item.body.trim() === line.body)) &&
+      !pendingCatLines.some((item) => item.id === line.id || (item.sender === line.sender && item.body.trim() === line.body))
+    );
+    if (missing.length) setPendingCatLines((current) => [...current, ...missing]);
+  }, [returnDinnerStage, p.items, catRescue.messages, pendingCatLines]);
+
   const [broccoliSignatureCallQueued, setBroccoliSignatureCallQueued] = useSkinState<boolean>(p, "wxBroccoliSignatureCallQueuedV1", false);
   useEffect(() => {
     if (returnDinnerStage !== 514 || p.thread !== "西蓝花" || broccoliSignatureCallQueued) return;
