@@ -4076,7 +4076,7 @@ export function WeChatSkin(p: SkinProps) {
   const [selectedGroupMembers, setSelectedGroupMembers] = useState<string[]>([]);
   const wxGroupChats = wxGroupChatsRaw.flatMap((raw) => {
     try {
-      const group = JSON.parse(raw) as { id: string; name: string; members: string[] };
+      const group = JSON.parse(raw) as { id: string; name: string; members: string[]; leftByMe?: boolean };
       return group.id && group.name && Array.isArray(group.members) ? [group] : [];
     } catch { return []; }
   });
@@ -4309,7 +4309,7 @@ export function WeChatSkin(p: SkinProps) {
   };
 
   const conversations = Array.from(
-    new Set([...allItems.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title), ...wxGroupChats.map((group) => group.name)]),
+    new Set([...allItems.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title), ...wxGroupChats.filter((group) => !group.leftByMe).map((group) => group.name)]),
   ).filter((name) => !(monsterRemoved && name === "大G")).sort((a, b) => {
     const aLast = allItems.filter((i) => i.title === a).at(-1)?.time ?? "";
     const bLast = allItems.filter((i) => i.title === b).at(-1)?.time ?? "";
@@ -4579,7 +4579,21 @@ export function WeChatSkin(p: SkinProps) {
                 <input type="file" accept="image/*" onChange={(e) => updateChatWallpaper(e.target.files?.[0])}/>
               </label>
               {activeChatSettings.wallpaper && <button className="wx-chat-info-row wx-chat-reset-bg" onClick={() => updateActiveChatSettings({ wallpaper: "" })}>恢复默认聊天背景</button>}
-              <button className="wx-chat-info-row wx-chat-clear" onClick={() => { if (window.confirm("确定清空与该联系人的聊天记录吗？")) p.onUi?.("wxClearThreadRequest", p.thread); }}>清空聊天记录</button>
+              {activeGroupChat && <button className="wx-chat-info-row wx-chat-clear" onClick={() => {
+                // Accidental tap is intentional: leave immediately, no second confirmation.
+                const nextGroups = wxGroupChatsRaw.map((raw) => {
+                  try {
+                    const group = JSON.parse(raw) as { id: string; name: string; members: string[]; leftByMe?: boolean };
+                    return group.id === activeGroupChat.id ? JSON.stringify({ ...group, leftByMe: true }) : raw;
+                  } catch { return raw; }
+                });
+                setWxGroupChatsRaw(nextGroups);
+                p.onUi?.("wxGroupChatsV1", JSON.stringify(nextGroups));
+                p.onThread("");
+                setUtility("");
+                appendCatLines([{ id: "wx-after-accidental-group-exit-dag-question-v1", sender: "大G", body: "？", thread: "大G" }], catRescue.stage, catRescue.branch, "wx-after-accidental-group-exit-dag-question-v1");
+              }}>退出群聊</button>}
+              {!activeGroupChat && <button className="wx-chat-info-row wx-chat-clear" onClick={() => { if (window.confirm("确定清空与该联系人的聊天记录吗？")) p.onUi?.("wxClearThreadRequest", p.thread); }}>清空聊天记录</button>}
               <button className="wx-chat-info-row">投诉 <ChevronRight size={20}/></button>
               {groupPickerOpen && <div className="wx-group-picker-backdrop"><section className="wx-group-picker" role="dialog" aria-modal="true" aria-label="选择群聊成员">
                 <header><button onClick={() => { setGroupPickerOpen(false); setSelectedGroupMembers([]); }}>取消</button><strong>选择联系人</strong><button disabled={!selectedGroupMembers.length} onClick={createGroupChat}>完成</button></header>
