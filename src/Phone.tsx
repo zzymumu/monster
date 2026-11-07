@@ -1994,7 +1994,11 @@ function AppContent({
   const shown = [
     ...items.filter((i) => creator || visible(i, state)),
     ...notificationTranscriptItems.filter((eventItem) => !items.some((item) => item.id === eventItem.id)),
-  ].filter((i) =>
+  ].map((item) =>
+    item.id.startsWith("milk-tea-call-")
+      ? { ...item, title: "大G", meta: { ...item.meta, thread: "大G" } }
+      : item,
+  ).filter((i) =>
     (i.title + i.body + i.sender).toLowerCase().includes(q.toLowerCase()),
   );
   const filtered =
