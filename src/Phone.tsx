@@ -442,69 +442,63 @@ function PhoneRuntime({
     const previous = postDrunkThreadRef.current;
     postDrunkThreadRef.current = opened;
 
-    // Unlock the Broccoli opener only when the player manually returns from
-    // DaG's chat after the final door line has actually been delivered.
+    // The player receives Broccoli's post-door check-in only after manually
+    // returning from DaG's chat, and only after his final door line is saved.
     const returnedToBroccoliFromDaG =
       (previous === "大G" || previous === "温尚翊") &&
       (opened === "西蓝花" || opened === "西兰花");
-    if (returnedToBroccoliFromDaG && wx.wxPostDrunkGDotDeliveredV1 === true) {
-      const stored = current.messages.wechat ?? [];
-      let story: { messages?: Item[] } = {};
-      try { if (typeof wx.catRescueState === "string") story = JSON.parse(wx.catRescueState); } catch { story = {}; }
-      const transcript = [...stored, ...(Array.isArray(story.messages) ? story.messages : [])];
-      const doorLineDelivered = transcript.some((item) =>
-        (item.sender === "大G" || item.title === "大G") &&
-        item.body.trim() === "我到门口了，开门吧。"
-      );
-      if (doorLineDelivered && wx.wxPostDoorBroccoliOpenedAfterDoorV1 !== true) {
-        update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxPostDoorBroccoliOpenedAfterDoorV1: true } } });
-      }
-    }
+    if (!returnedToBroccoliFromDaG || creator || !ready || locked ||
+        wx.wxDrunkFinalCallFinishedV7 !== true ||
+        wx.wxPostDoorBroccoliOpenedAfterDoorV1 === true ||
+        wx.wxPostDrunkBroccoliCheckInV1 === true) return;
 
-    const leftBroccoli = (previous === "西蓝花" || previous === "西兰花") && opened === "";
-    let pending: unknown[] = [];
-    try {
-      const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
-      if (Array.isArray(parsed)) pending = parsed;
-    } catch { pending = []; }
-    if (
-      creator || !ready || locked || !leftBroccoli ||
-      wx.wxDrunkFinalCallFinishedV7 !== true || pending.length > 0 ||
-      wx.wxPostDrunkBroccoliCheckInV1 === true
-    ) return;
+    const stored = current.messages.wechat ?? [];
+    let story: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
+    try { if (typeof wx.catRescueState === "string") story = JSON.parse(wx.catRescueState); } catch { story = {}; }
+    const storyMessages = Array.isArray(story.messages) ? story.messages : [];
+    const transcript = [...stored, ...storyMessages];
+    const doorLineDelivered = transcript.some((item) =>
+      (item.sender === "大G" || item.title === "大G") &&
+      item.body.trim() === "我到门口了，开门吧。"
+    );
+    if (!doorLineDelivered) return;
+
     const time = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
     const message = makeItem({
       id: "drunk-post-door-broccoli-checkin-v1",
       title: "西蓝花",
       sender: "西蓝花",
-      body: "祖宗，你是死了吗？",
+      body: "亲，你是死了吗？",
       time,
       outgoing: false,
       avatar: "",
       meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
     });
-    const stored = current.messages.wechat ?? [];
-    const storyRaw = wx.catRescueState;
-    let story: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
-    try { if (typeof storyRaw === "string") story = JSON.parse(storyRaw); } catch { story = {}; }
-    const storyMessages = Array.isArray(story.messages) ? story.messages : [];
     const alreadyStored = stored.some((item) => item.id === message.id) || storyMessages.some((item) => item.id === message.id);
     const nextMessage = alreadyStored ? [] : [message];
     update({
       ...current,
       messages: { ...current.messages, wechat: [...stored, ...nextMessage] },
-      notifications: [...current.notifications, "微信：西蓝花：祖宗，你是死了吗？"].slice(-60),
+      notifications: [...current.notifications, "微信：西蓝花：亲，你是死了吗？"].slice(-60),
       ui: { ...current.ui, wechat: {
         ...wx,
         wxPostDrunkBroccoliCheckInV1: true,
+        wxPostDoorBroccoliOpenedAfterDoorV1: true,
         catRescueState: JSON.stringify({ ...story, messages: [...storyMessages, ...nextMessage] }),
       } },
     });
-  }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, s.ui?.wechat?.wxCatPendingLines, ready, locked, creator]);
+  }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, s.ui?.wechat?.wxPostDoorBroccoliOpenedAfterDoorV1, s.ui?.wechat?.wxPostDrunkBroccoliCheckInV1, ready, locked, creator]);
 
   useEffect(() => {
     const wx = s.ui?.wechat ?? {};
-    if (creator || !ready || locked || wx.wxPostDrunkBroccoliCheckInV1 !== true || wx.wxPostDrunkGDotDeliveredV1 === true) return;
+    let pending: unknown[] = [];
+    try {
+      const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
+      if (Array.isArray(parsed)) pending = parsed;
+    } catch { pending = []; }
+    // The dot follows the completed borrowed-phone reassurance exchange.
+    if (creator || !ready || locked || wx.wxDoorVoiceFollowupQueuedV1 !== true ||
+        pending.length > 0 || wx.wxPostDrunkGDotDeliveredV1 === true) return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
       const latestWx = current.ui?.wechat ?? {};
@@ -544,7 +538,7 @@ function PhoneRuntime({
       });
     }, 2200);
     return () => window.clearTimeout(timer);
-  }, [s.ui?.wechat?.wxPostDrunkBroccoliCheckInV1, s.ui?.wechat?.wxPostDrunkGDotDeliveredV1, ready, locked, creator, work.id]);
+  }, [s.ui?.wechat?.wxDoorVoiceFollowupQueuedV1, s.ui?.wechat?.wxCatPendingLines, s.ui?.wechat?.wxPostDrunkGDotDeliveredV1, ready, locked, creator, work.id]);
 
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
@@ -1883,7 +1877,7 @@ function AppContent({
   const notificationTranscriptItems: Item[] = app.id === "wechat" ? [
     ...(state.ui?.wechat?.wxPostDrunkBroccoliCheckInV1 === true ? [makeItem({
       id: "drunk-post-door-broccoli-checkin-v1",
-      title: "西蓝花", sender: "西蓝花", body: "祖宗，你是死了吗？",
+      title: "西蓝花", sender: "西蓝花", body: "亲，你是死了吗？",
       time: virtualDate + " " + virtualTime, outgoing: false,
       meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
     })] : []),
