@@ -7258,15 +7258,15 @@ label {
 /* Top utility controls and slightly higher contact cluster on WeChat calls. */
 .incoming-call-screen.is-outgoing .incoming-avatar,
 .incoming-call-screen.is-connected .incoming-avatar {
-  margin-top: 235px;
+  margin-top: 215px;
 }
 .incoming-call-screen.is-connected .incoming-avatar {
-  margin-top: 265px;
+  margin-top: 245px;
 }
 .incoming-call-screen .wechat-call-top-actions {
   position: absolute;
   z-index: 2;
-  top: max(20px, env(safe-area-inset-top));
+  top: max(32px, calc(env(safe-area-inset-top) + 12px));
   left: 22px;
   right: 22px;
   display: flex;
