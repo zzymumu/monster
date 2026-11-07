@@ -3626,8 +3626,8 @@ export function WeChatSkin(p: SkinProps) {
         catch { return true; }
       });
       const canonical = kept
-        ? { ...kept, id: postId, image: "/monster/assets/wannwan-sleeping-cat.jpg", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
-        : { id: postId, sender: "大G", body: "终于回家了，小朋友。", image: "./assets/wannwan-sleeping-cat.jpg", time: new Date().toLocaleString("zh-CN", { hour12: false }), likes: [], comments: [] };
+        ? { ...kept, id: postId, image: "./assets/wanwan-moments.webp", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
+        : { id: postId, sender: "大G", body: "终于回家了，小朋友。", image: "./assets/wanwan-moments.webp", time: new Date().toLocaleString("zh-CN", { hour12: false }), likes: [], comments: [] };
       return [...unrelated, JSON.stringify(canonical)];
     });
   }, [returnDinnerStage]);
@@ -4282,7 +4282,7 @@ export function WeChatSkin(p: SkinProps) {
                   }))} style={{ border: 0, background: "transparent", color: entry.post.likes.includes(ownerName) ? "#576b95" : "#666", fontSize: 13, cursor: "pointer" }}>
                     {entry.post.likes.includes(ownerName) ? "取消" : "♡"} 赞
                   </button>
-                  <button type="button" disabled={!entry.post.likes.includes(ownerName)} onClick={() => { setStoryMomentCommentOpen(storyMomentCommentOpen === entry.id ? "" : entry.id); setStoryMomentCommentDraft(""); }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
+                  <button type="button" onClick={() => { setStoryMomentCommentOpen(storyMomentCommentOpen === entry.id ? "" : entry.id); setStoryMomentCommentDraft(""); }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
                 </div>
                 {(entry.post.likes.length > 0 || entry.post.comments.length > 0) && (
                   <div className="wx-moment-social-panel" style={{ marginTop: 0, width: "100%", background: "#f5f5f5", borderRadius: 4, overflow: "hidden" }}>
