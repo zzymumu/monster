@@ -4076,6 +4076,14 @@ export function WeChatSkin(p: SkinProps) {
   const [selectedGroupMembers, setSelectedGroupMembers] = useState<string[]>([]);
   const [accidentalGroupStoryStep, setAccidentalGroupStoryStep] = useSkinState<number>(p, "wxAccidentalGroupStoryStepV1", -1);
   const [accidentalGroupInvitePending, setAccidentalGroupInvitePending] = useSkinState<boolean>(p, "wxAccidentalGroupInvitePendingV1", false);
+  const [threeWayGroupStoryStep, setThreeWayGroupStoryStep] = useSkinState<number>(p, "wxThreeWayGroupStoryStepV1", -1);
+  const threeWayGroupStory = [
+    { user: ["你先冷静一下。"], incoming: ["我怎么冷静？？？", "你为什么不提前告诉我？？？", "我现在跟怪兽在一个群里？？？", "妳好啊。", "你好你好！！", "不好意思！！", "我有点激动！！", "不是有点，是非常激动！！！", "你看，她现在连话都不会说了。", "我会说话！！！", "我只是需要一点时间接受这个事实……", "不用緊張啦。", "大家隨便聊就好。", "好的！！！", "……", "啊啊啊啊啊啊啊啊！", "？？？？？", "你不是说你会说话吗！", "哈哈哈哈哈哈哈哈。"] },
+    { user: ["你不是一直想认识他吗？现在机会来了！"], incoming: ["？？？？？？", "你闭嘴！！！！", "我现在跟你说话都要斟酌一下了好吗！！！", "你能不能不要把我架在这里！！！", "原來妳一直想認識我喔？", "啊啊啊啊啊啊啊！", "是！！不是！！", "我的意思是……", "我当然很喜欢五月天！", "怪兽你好！！我是你们很多年的歌迷！！", "妳好～", "謝謝妳一直支持我們。", "不過不用這麼緊張啦，輕鬆聊就好。", "好的好的！！", "我会的！！", "（努力冷静）", "哈哈哈哈哈哈哈哈哈哈哈哈。", "你现在是不是正在疯狂深呼吸？", "你真的够了！！", "我现在不想跟你说话！！", "妳們平常也是這樣聊天的喔？"] },
+    { user: ["你怎么还告状！"], incoming: ["哈哈哈哈哈哈。", "看得出來，妳們感情很好。", "那当然！！", "不过……", "我现在还是觉得很不真实。", "前段时间还在听她跟我讲捡到玩玩的事情。", "现在居然真的跟怪兽在一个群里聊天了……", "這麼誇張喔？", "那還是要謝謝她幫忙照顧玩玩。", "你不要又谢啦！", "玩玩现在也是我家的一员了。", "好啦，那我就不客氣了。", "等等！！", "怪兽，我可以问你一个问题吗？", "可以啊，妳問。", "你本人真的跟她说的一样吗？", "？？？？？", "你想问什么啦！", "她都跟妳說我什麼了？", "这个嘛……", "她说你人很帅！", "喂！！！什么东西！！！", "还有呢？", "还说你人很好！", "而且还亲自开车去接她！", "喔，那個喔。", "因為她幫忙照顧玩玩啊，本來就應該好好謝謝她。", "你看！我没乱说吧！", "我不是在说这个！！", "我是想问……", "你们见面的时候，她有没有很奇怪？", "奇怪？", "怎麼說？", "就是……", "有没有突然很紧张？", "或者说话不正常？", "你到底在说什么啊？", "🤔", "有啊。", "第一次見面的時候，她好像有點緊張。", "！！！！！！", "真的吗？？？", "温尚翊！！！", "你不要什么都往外说！！", "這有什麼不能說的？", "救命，我就知道！！", "她回来以后跟我讲话都快疯了！", "我哪有！！！", "你有！！", "你还记得你第一次跟我说见到怪兽的时候吗？", "你那时候激动得跟什么一样！", "真的假的？", "原來妳這麼開心喔？", "…………", "我退群了。", "不行，這次不准退。", "哈哈哈哈哈哈哈哈哈哈哈哈！！！"] },
+    { user: ["你们两个什么时候统一战线了？"], incoming: ["哈哈哈哈哈。", "聽起來妳真的很了解她欸。", "那当然！！", "不过我是真的没想到你们这么快就搞一起了。", "什么叫搞一起了！", "你会不会用词啊！！！", "哎呀，我的意思是你们怎么这么快就熟起来了嘛！", "又是一起吃饭，又是互相聊天的。", "對啊，就感覺還蠻投緣的。", "而且她人也很好啊，認識起來很自然。", "……", "你怎么还当着我的面夸我啊。", "稱讚妳也不行喔？", "当然可以！！", "你继续！！", "？？？？？", "西蓝花你能不能有点出息！", "我怎么了！", "我现在是在替你争取福利好吗！", "什麼福利？", "没什么没什么！！", "你们继续聊！！", "你最好真的没什么。"] },
+    { user: ["假的！！"], incoming: ["哈哈哈哈哈哈哈哈。", "真的假的？", "你别听她的！", "她之前为了等你消息，手机都快被她看穿了！", "西蓝花！！！", "哈哈哈哈哈。", "有這麼誇張喔？", "我回訊息有那麼重要嗎？", "你不要听她乱讲！！", "我可没有乱讲。", "不过怪兽，你工作那么忙，平时是不是很少看微信啊？", "還好啦，忙的時候會比較少看。", "不過有空還是會回的。", "那你下次记得先回她，不然我怕她得相思病。", "你有病啊乱说什么啊！", "好喔好喔，我会的。", "你看吧，我帮你争取福利你还不夸我。", "........", "温尚翊，你今天很闲吗？", "你是在赶我走吗🥺", "你这个表情是用上瘾了是吧！", "好啦好啦不闹了，我真的还有录音没做完。", "没关系没关系！", "你忙你的！", "你怎么突然这么客气？", "我怕打扰人家工作不行吗！！", "不會啦。", "妳們有事就說，不用太拘束。", "好的！！", "收到，怪兽老师！", "什麼老師啦，怪怪的，你不是叫我温尚翊吗？", "....温尚翊！！！！", "嗯，这回对了。", "好啦，那我走了喔，掰掰～", "快走吧你，你再呆下去西蓝花要癫狂了。", "记得常来哦🥺"] },
+  ];
   const accidentalGroupStory = [
     { user: ["怎么啦？"], incoming: ["妳怎麼突然退群了？"] },
     { user: ["啊？", "我退什么群？"], incoming: ["就剛才啊。", "妳不是把我跟西藍花拉了個群嗎？", "我都還沒來得及說話，妳就退掉了。"] },
@@ -4731,6 +4739,32 @@ export function WeChatSkin(p: SkinProps) {
                       p.onUi?.("wxAccidentalGroupStoryStepV1", 23);
                     }}>接受邀请</button>
                   </div>
+                </div>
+              )}
+              {activeGroupChat && threeWayGroupStoryStep >= 0 && threeWayGroupStoryStep < threeWayGroupStory.length && pendingCatLines.length === 0 && (
+                <div className="cat-rescue-choices" aria-label="三人群聊互动选项">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                    const turn = threeWayGroupStory[threeWayGroupStoryStep];
+                    const senderFor = (body: string, index: number) => {
+                      const userBodies = new Set(["你先冷静一下。","你不是一直想认识他吗？现在机会来了！","你怎么还告状！","你们两个什么时候统一战线了？","假的！！"]);
+                      if (userBodies.has(body)) return "我" as const;
+                      if (["你看，她现在连话都不会说了。","？？？？？","你现在是不是正在疯狂深呼吸？","你怎么还告状！"].includes(body)) return "我" as const;
+                      return "大G" as const;
+                    };
+                    const lines: CatLine[] = turn.user.map((body,index)=>({id:"wx-threeway-user-"+threeWayGroupStoryStep+"-"+index,sender:"我" as const,body,thread:activeGroupChat.name as string}));
+                    const incoming = turn.incoming.map((body,index)=>({
+                      id:"wx-threeway-incoming-"+threeWayGroupStoryStep+"-"+index,
+                      sender: ([
+                        "西蓝花","我","大G"
+                      ][0]) as const,
+                      body,
+                      thread: activeGroupChat.name as string,
+                    }));
+                    appendCatLines([...lines,...incoming], catRescue.stage, catRescue.branch, "wx-threeway-group-turn-"+threeWayGroupStoryStep);
+                    setThreeWayGroupStoryStep((current)=>current+1);
+                    p.onUi?.("wxThreeWayGroupStoryStepV1", threeWayGroupStoryStep+1);
+                  }}>{threeWayGroupStory[threeWayGroupStoryStep].user.join(" ")}</button>
+                  <div className="cat-rescue-option-hint">点击发送你的群聊回复</div>
                 </div>
               )}
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
