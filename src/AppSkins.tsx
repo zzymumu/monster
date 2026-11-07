@@ -4203,6 +4203,14 @@ export function WeChatSkin(p: SkinProps) {
         })
     : [];
   const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
+  const dagWanwanCommentCompleted = storyFriendMomentPosts.some((raw) => {
+    try {
+      const post = JSON.parse(raw);
+      return post.id === "dag-wanwan-home-photo-v1" && post.replyQueued === true
+        && Array.isArray(post.likes) && post.likes.includes(ownerName)
+        && Array.isArray(post.comments) && post.comments.length > 0;
+    } catch { return false; }
+  });
   const storyFriendPosts = storyFriendMomentPosts.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; sender: string; body: string; image: string; time: string; likes: string[]; comments: string[]; replyQueued?: boolean };
@@ -4656,9 +4664,9 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
-                  {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
+                  {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted)).map((choice) => (
                     <button key={choice.id} onClick={() => {
                       const choiceKey = returnDinnerStage + ":" + choice.id;
                       if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
