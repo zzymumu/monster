@@ -4100,6 +4100,11 @@ export function WeChatSkin(p: SkinProps) {
     { user: ["你直接退群，快点！"], incoming: ["不要！", "我剛剛不是說了，這樣不太禮貌嗎？", "再說，群是妳開的，哪有讓我退的道理。"] },
     { user: ["……好像有点道理。"], incoming: ["等一下，我把妳拉回來。"] },
   ];
+  useEffect(() => {
+    if (accidentalGroupStoryStep !== 22 || accidentalGroupInvitePending || pendingCatLines.length > 0) return;
+    setAccidentalGroupInvitePending(true);
+    p.onUi?.("wxAccidentalGroupInvitePendingV1", true);
+  }, [accidentalGroupStoryStep, accidentalGroupInvitePending, pendingCatLines.length]);
   const wxGroupChats = wxGroupChatsRaw.flatMap((raw) => {
     try {
       const group = JSON.parse(raw) as { id: string; name: string; members: string[]; leftByMe?: boolean };
@@ -4111,7 +4116,7 @@ export function WeChatSkin(p: SkinProps) {
   const createGroupChat = () => {
     const members = Array.from(new Set(selectedGroupMembers.filter((name) => name && name !== "我" && name !== "机主")));
     if (members.length < 2) return;
-    const group = { id: `wx-group-${Date.now()}`, name: `${members.map(displayName).join("、")}的群聊`, members };
+    const group = { id: `wx-group-${Date.now()}`, name: `${members.map(displayName).join("、")}的群聊`, members: [...members, "我"] };
     const next = [...wxGroupChatsRaw, JSON.stringify(group)];
     setWxGroupChatsRaw(next);
     p.onUi?.("wxGroupChatsV1", JSON.stringify(next));
