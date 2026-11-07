@@ -239,12 +239,6 @@ function MessageList({
               <VoiceMessage item={i} onRead={onRead} />
             ) : ["image", "audio", "video"].includes(i.kind) ? (
               <ItemMedia item={i} />
-            ) : i.kind === "transfer" ? (
-              <div className="skin-transfer" style={{ minWidth: 205, textAlign: "left" }}>
-                <strong>NT$ {Number(i.meta?.amount ?? body).toFixed(2)}</strong>
-                <small>{transferStatus === "accepted" ? "已收款" : transferStatus === "returned" ? "已退还" : "微信转账 · 待接收"}</small>
-                <small style={{ display: "block", marginTop: 7, opacity: .8 }}>点击查看转账详情</small>
-              </div>
             ) : i.kind === "transfer" && i.meta?.transferReturned === "yes" ? (
               <div style={{ minWidth: 220, maxWidth: 285, borderRadius: 8, padding: "13px 15px", background: "#b77b37", color: "#fff", boxShadow: "0 1px 2px rgba(0,0,0,.12)", textAlign: "left" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -255,6 +249,12 @@ function MessageList({
                   </span>
                 </div>
                 <div style={{ borderTop: "1px solid rgba(255,255,255,.2)", marginTop: 11, paddingTop: 7, fontSize: 12, color: "rgba(255,255,255,.82)" }}>转账</div>
+              </div>
+            ) : i.kind === "transfer" ? (
+              <div className="skin-transfer" style={{ minWidth: 205, textAlign: "left" }}>
+                <strong>NT$ {Number(i.meta?.amount ?? body).toFixed(2)}</strong>
+                <small>{transferStatus === "accepted" ? "已收款" : transferStatus === "returned" ? "已退还" : "微信转账 · 待接收"}</small>
+                <small style={{ display: "block", marginTop: 7, opacity: .8 }}>点击查看转账详情</small>
               </div>
             ) : i.kind === "transfer" ? (
               <div className="skin-transfer" style={{ minWidth: 205, textAlign: "left" }}>
