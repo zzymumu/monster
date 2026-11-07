@@ -3597,9 +3597,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "都可以啊。", thread: "大G" },
       { sender: "大G", body: "妳喜歡的應該不會太差吧。", thread: "大G" },
     ]},
-    { stage: 454, chat: "大G", id: "milk-tea-transfer-return-v1", label: "钱我退给你啦！我买完给你送录音室吧！", nextStage: 455, lines: [
-      { sender: "我", body: "（退回轉帳）", thread: "大G" },
-      { sender: "大G", body: "你已退还 NT$100.00", thread: "大G", meta: { systemNotice: "yes" } },
+    { stage: 454, chat: "大G", id: "milk-tea-transfer-return-v1", label: "钱我退给你啦！\n我买完给你送录音室吧！", nextStage: 455, lines: [
       { sender: "我", body: "钱我退给你啦。", thread: "大G" },
       { sender: "我", body: "我买完给你送录音室吧！", thread: "大G" },
       { sender: "我", body: "你们录音辛苦了，我请你们喝～", thread: "大G" },
@@ -4670,9 +4668,9 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted)) && (
+              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
-                  {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted)).map((choice) => (
+                  {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned")).map((choice) => (
                     <button key={choice.id} onClick={() => {
                       const choiceKey = returnDinnerStage + ":" + choice.id;
                       if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
