@@ -1,6 +1,6 @@
 import { NativeComposer } from "./DeviceSystem";
 import { useSkinState } from "./skinState";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
   Plus,
@@ -218,8 +218,8 @@ function MessageList({
             <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 5, background: "rgba(0,0,0,.32)" }}>{noticeText}</span>
           </div>;
         }
-        return <div
-          key={i.id}
+        return <Fragment key={i.id}>
+          <div
           className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
         >
           {!whatsapp && !i.outgoing && (
@@ -278,7 +278,7 @@ function MessageList({
             </div>
             <Avatar name="我" src={selfAvatar} />
           </div>
-        )};
+        )}</Fragment>;
       })}
     </div>
     {selectedTransfer && (
