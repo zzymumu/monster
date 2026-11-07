@@ -3241,7 +3241,190 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 391, chat: "大G", id: "okay-show-wanwan-later", label: "好呀！", nextStage: 392, lines: [
       { sender: "我", body: "好呀！", thread: "大G" },
     ]},
-
+    { stage: 392, chat: "大G", id: "question-your-credit", label: "我哪有生气，我只是合理质疑你的信用。", nextStage: 393, lines: [
+      { sender: "我", body: "我哪有生气，我只是合理质疑你的信用。", thread: "大G" },
+      { sender: "大G", body: "我不是發了嗎哈哈哈哈。", thread: "大G" },
+      { sender: "大G", body: "還是說，妳想看的是別的？", thread: "大G" },
+    ]},
+    { stage: 393, chat: "大G", id: "want-to-see-wanwan", label: "？？？？？\n我想看玩玩！！！", nextStage: 394, lines: [
+      { sender: "我", body: "？？？？？", thread: "大G" },
+      { sender: "我", body: "我想看玩玩！！！", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈哈哈。", thread: "大G" },
+      { sender: "大G", body: "我知道啊，我又没说什么🥺。", thread: "大G" },
+      { sender: "大G", body: "牠剛剛睡得跟豬一樣，怎麼叫都不起來。", thread: "大G" },
+    ]},
+    { stage: 394, chat: "大G", id: "defend-wanwan-cat", label: "玩玩明明是小猫！\n你怎么可以说牠像猪！", nextStage: 395, lines: [
+      { sender: "我", body: "玩玩明明是小猫！", thread: "大G" },
+      { sender: "我", body: "你怎么可以说牠像猪！", thread: "大G" },
+      { sender: "大G", body: "牠現在吃飽睡、睡飽吃啊。", thread: "大G" },
+      { sender: "大G", body: "不然妳以為牠在家都做什麼？", thread: "大G" },
+    ]},
+    { stage: 395, chat: "大G", id: "kitten-needs-sleep", label: "那是因为牠还小！\n小猫就是要多睡觉！", nextStage: 396, lines: [
+      { sender: "我", body: "那是因为牠还小！", thread: "大G" },
+      { sender: "我", body: "小猫就是要多睡觉！", thread: "大G" },
+      { sender: "大G", body: "好好好，妳說了算。", thread: "大G" },
+      { sender: "大G", body: "現在連牠主人都不能說牠了喔？", thread: "大G" },
+    ]},
+    { stage: 396, chat: "大G", id: "yes-protect-wanwan", label: "当然！", nextStage: 397, lines: [
+      { sender: "我", body: "当然！", thread: "大G" },
+      { sender: "大G", body: "夭壽，我這是收編了一個玩玩保護協會嗎？", thread: "大G" },
+    ]},
+    { stage: 397, chat: "大G", id: "official-fan-club", label: "怎么，不行吗？\n我可是玩玩官方认证的头号粉丝！", nextStage: 398, lines: [
+      { sender: "我", body: "怎么，不行吗？", thread: "大G" },
+      { sender: "我", body: "我可是玩玩官方认证的头号粉丝！", thread: "大G" },
+      { sender: "大G", body: "喔？還有官方認證喔？", thread: "大G" },
+      { sender: "大G", body: "誰認證的？", thread: "大G" },
+      { sender: "大G", body: "我是玩玩主人，這個認證應該我來吧？", thread: "大G" },
+    ]},
+    { stage: 398, chat: "大G", id: "speechless-about-certification", label: "…………\n", nextStage: 399, lines: [
+      { sender: "我", body: "…………", thread: "大G" },
+      { sender: "大G", body: "怎麼不說話了？", thread: "大G" },
+      { sender: "大G", body: "剛剛不是還很有自信嗎？", thread: "大G" },
+    ]},
+    { stage: 399, chat: "大G", id: "trying-to-get-certified", label: "我……\n我这是在争取一下嘛！", nextStage: 400, lines: [
+      { sender: "我", body: "我……", thread: "大G" },
+      { sender: "我", body: "我这是在争取一下嘛！", thread: "大G" },
+      { sender: "大G", body: "爭取什麼？", thread: "大G" },
+      { sender: "大G", body: "玩玩又不是選秀，還要報名喔？", thread: "大G" },
+    ]},
+    { stage: 400, chat: "大G", id: "grant-certification", label: "那你到底给不给我认证！", nextStage: 401, lines: [
+      { sender: "我", body: "那你到底给不给我认证！", thread: "大G" },
+      { sender: "大G", body: "嗯……", thread: "大G" },
+      { sender: "大G", body: "看妳這幾天表現還不錯，勉強通過好了。", thread: "大G" },
+    ]},
+    { stage: 401, chat: "大G", id: "not-reluctant", label: "什么叫勉强通过！", nextStage: 402, lines: [
+      { sender: "我", body: "什么叫勉强通过！", thread: "大G" },
+      { sender: "大G", body: "不然呢？", thread: "大G" },
+      { sender: "大G", body: "妳一直在怼我欸，我不能有點脾氣嗎🥺", thread: "大G" },
+    ]},
+    { stage: 402, chat: "大G", id: "not-arguing-with-you", label: "...我哪有一直怼你啊。\n我还没追究你没给我发玩玩照片，跑去发朋友圈的事情呢！", nextStage: 403, lines: [
+      { sender: "我", body: "...我哪有一直怼你啊。", thread: "大G" },
+      { sender: "我", body: "我还没追究你没给我发玩玩照片，跑去发朋友圈的事情呢！", thread: "大G" },
+      { sender: "大G", body: "因為逗妳很有意思啊！", thread: "大G" },
+    ]},
+    { stage: 403, chat: "大G", id: "you-are-annoying", label: "温尚翊！你真的很欠欸！", nextStage: 404, lines: [
+      { sender: "我", body: "温尚翊！你真的很欠欸！", thread: "大G" },
+      { sender: "大G", body: "現在才知道喔？", thread: "大G" },
+      { sender: "大G", body: "😃", thread: "大G" },
+      { sender: "大G", body: "好啦好啦，正式授予妳玩玩官方頭號粉絲的稱號。", thread: "大G" },
+      { sender: "大G", body: "有效期限……永久好了。", thread: "大G" },
+    ]},
+    { stage: 404, chat: "大G", id: "buy-wanwan-treats", label: "这才对嘛～\n跟玩玩说，下次姨姨给它买好吃的喔！", nextStage: 405, lines: [
+      { sender: "我", body: "这才对嘛～", thread: "大G" },
+      { sender: "我", body: "跟玩玩说，下次姨姨给它买好吃的喔！", thread: "大G" },
+      { sender: "大G", body: "妳這是在變相要我家地址嗎？", thread: "大G" },
+    ]},
+    { stage: 405, chat: "大G", id: "not-asking-address", label: "？？？？？\n我只是想给玩玩买点好吃的！\n你能不能不要什么事情都想得那么复杂！", nextStage: 406, lines: [
+      { sender: "我", body: "？？？？？", thread: "大G" },
+      { sender: "我", body: "我只是想给玩玩买点好吃的！", thread: "大G" },
+      { sender: "我", body: "你能不能不要什么事情都想得那么复杂！", thread: "大G" },
+      { sender: "大G", body: "我哪有想得複雜？", thread: "大G" },
+      { sender: "大G", body: "只是想說，妳要怎麼送到牠手上。", thread: "大G" },
+    ]},
+    { stage: 406, chat: "大G", id: "you-take-it-home", label: "你帮着带回去不就好了！", nextStage: 407, lines: [
+      { sender: "我", body: "你帮着带回去不就好了！", thread: "大G" },
+      { sender: "大G", body: "所以妳是在約我？", thread: "大G" },
+    ]},
+    { stage: 407, chat: "大G", id: "not-asking-you-out", label: "？？？？？\n我不是这个意思！！\n我是在说你帮我把东西带回去给玩玩！", nextStage: 408, lines: [
+      { sender: "我", body: "？？？？？", thread: "大G" },
+      { sender: "我", body: "我不是这个意思！！", thread: "大G" },
+      { sender: "我", body: "我是在说你帮我把东西带回去给玩玩！", thread: "大G" },
+      { sender: "大G", body: "喔，原來是這樣。", thread: "大G" },
+      { sender: "大G", body: "我還以為妳想約我呢。", thread: "大G" },
+    ]},
+    { stage: 408, chat: "大G", id: "dont-twist-my-words", label: "温尚翊！！！\n你不要什么话都乱接好不好！", nextStage: 409, lines: [
+      { sender: "我", body: "温尚翊！！！", thread: "大G" },
+      { sender: "我", body: "你不要什么话都乱接好不好！", thread: "大G" },
+      { sender: "大G", body: "我哪有亂接？", thread: "大G" },
+      { sender: "大G", body: "是妳自己說要我帶回去的啊。", thread: "大G" },
+    ]},
+    { stage: 409, chat: "大G", id: "cant-win-argument", label: "我……\n我说不过你！", nextStage: 410, lines: [
+      { sender: "我", body: "我……", thread: "大G" },
+      { sender: "我", body: "我说不过你！", thread: "大G" },
+      { sender: "大G", body: "怎麼又說不過我了？", thread: "大G" },
+      { sender: "大G", body: "剛剛不是還挺厲害的嗎？", thread: "大G" },
+    ]},
+    { stage: 410, chat: "大G", id: "stop-talking-to-you", label: "不跟你说了！！", nextStage: 411, lines: [
+      { sender: "我", body: "不跟你说了！！", thread: "大G" },
+      { sender: "大G", body: "好啦，不逗妳了。", thread: "大G" },
+      { sender: "大G", body: "不過要買什麼給玩玩，可以先跟我說，我看看牠能不能吃。", thread: "大G" },
+    ]},
+    { stage: 411, chat: "大G", id: "already-have-cat-experience", label: "知道啦！\n我又不是第一次养猫！", nextStage: 412, lines: [
+      { sender: "我", body: "知道啦！", thread: "大G" },
+      { sender: "我", body: "我又不是第一次养猫！", thread: "大G" },
+      { sender: "大G", body: "是是是，玩玩保護協會會長。", thread: "大G" },
+    ]},
+    { stage: 412, chat: "大G", id: "annoying-chairperson", label: "……你真的很烦！", nextStage: 413, lines: [
+      { sender: "我", body: "……你真的很烦！", thread: "大G" },
+      { sender: "大G", body: "收到，會長。", thread: "大G" },
+    ]},
+    { stage: 413, chat: "大G", id: "ask-todays-work", label: "🙄\n所以你今天都在干嘛？", nextStage: 414, lines: [
+      { sender: "我", body: "🙄", thread: "大G" },
+      { sender: "我", body: "所以你今天都在干嘛？", thread: "大G" },
+      { sender: "大G", body: "今天在錄音室待了一整天。", thread: "大G" },
+      { sender: "大G", body: "有一段一直弄不好，反覆錄了好幾次。", thread: "大G" },
+    ]},
+    { stage: 414, chat: "大G", id: "how-could-it-be-hard", label: "怎么会弄不好？你不是很厉害吗？", nextStage: 415, lines: [
+      { sender: "我", body: "怎么会弄不好？你不是很厉害吗？", thread: "大G" },
+      { sender: "大G", body: "……靠北，妳是在拿我的話嗆我？", thread: "大G" },
+    ]},
+    { stage: 415, chat: "大G", id: "not-teasing-you", label: "🥺\n我没有啊，不要多想。", nextStage: 416, lines: [
+      { sender: "我", body: "🥺", thread: "大G" },
+      { sender: "我", body: "我没有啊，不要多想。", thread: "大G" },
+      { sender: "大G", body: "……", thread: "大G" },
+    ]},
+    { stage: 416, chat: "大G", id: "guitar-battle", label: "所以你今天一直在跟吉他搏斗吗？", nextStage: 417, lines: [
+      { sender: "我", body: "所以你今天一直在跟吉他搏斗吗？", thread: "大G" },
+      { sender: "大G", body: "差不多。", thread: "大G" },
+      { sender: "大G", body: "今天差點想跟它說，我們明天再見好了。", thread: "大G" },
+    ]},
+    { stage: 417, chat: "大G", id: "rough-day-recording", label: "好惨馁。", nextStage: 418, lines: [
+      { sender: "我", body: "好惨馁。", thread: "大G" },
+      { sender: "大G", body: "真的有夠折騰。", thread: "大G" },
+      { sender: "大G", body: "而且反覆聽同一段，聽到後來都快不知道自己在聽什麼了。", thread: "大G" },
+      { sender: "大G", body: "還要先出去走一走，讓耳朵休息一下。", thread: "大G" },
+    ]},
+    { stage: 418, chat: "大G", id: "did-you-go-out", label: "所以你今天有出去吗？", nextStage: 419, lines: [
+      { sender: "我", body: "所以你今天有出去吗？", thread: "大G" },
+      { sender: "大G", body: "有啦，正在出門中。", thread: "大G" },
+      { sender: "大G", body: "不過回來還是要繼續改。", thread: "大G" },
+    ]},
+    { stage: 419, chat: "大G", id: "recording-is-hard", label: "辛苦了欸……\n感觉做音乐的人真的好不容易。", nextStage: 420, lines: [
+      { sender: "我", body: "辛苦了欸……", thread: "大G" },
+      { sender: "我", body: "感觉做音乐的人真的好不容易。", thread: "大G" },
+      { sender: "大G", body: "還好啦，習慣了。", thread: "大G" },
+      { sender: "大G", body: "聽到最後完成的版本，還是會覺得很值得。", thread: "大G" },
+    ]},
+    { stage: 420, chat: "大G", id: "listen-guitar-track", label: "那你录音的时候会一直听自己的吉他部分吗？", nextStage: 421, lines: [
+      { sender: "我", body: "那你录音的时候会一直听自己的吉他部分吗？", thread: "大G" },
+      { sender: "大G", body: "會啊，這不是廢話嗎哈哈哈。", thread: "大G" },
+      { sender: "大G", body: "不然我要聽誰的？", thread: "大G" },
+    ]},
+    { stage: 421, chat: "大G", id: "listen-to-vocalist", label: "我还以为你会说听主唱的！", nextStage: 422, lines: [
+      { sender: "我", body: "我还以为你会说听主唱的！", thread: "大G" },
+      { sender: "大G", body: "喔？妳是說阿信喔？", thread: "大G" },
+      { sender: "大G", body: "那我可能會先被他發現我在偷懶。", thread: "大G" },
+    ]},
+    { stage: 422, chat: "大G", id: "laugh-about-ashin", label: "救命哈哈哈哈哈哈！", nextStage: 423, lines: [
+      { sender: "我", body: "救命哈哈哈哈哈哈！", thread: "大G" },
+      { sender: "大G", body: "他有時候真的很會盯細節欸。", thread: "大G" },
+      { sender: "大G", body: "而且團員之間都太熟了，誰偷懶一下馬上就會被發現。", thread: "大G" },
+    ]},
+    { stage: 423, chat: "大G", id: "studio-atmosphere", label: "所以五月天录音室里面其实也很热闹吗？", nextStage: 424, lines: [
+      { sender: "我", body: "所以五月天录音室里面其实也很热闹吗？", thread: "大G" },
+      { sender: "大G", body: "看情況啦。", thread: "大G" },
+      { sender: "大G", body: "認真工作的時候還是很認真的。", thread: "大G" },
+      { sender: "大G", body: "但休息的時候就很難說了哈哈哈。", thread: "大G" },
+    ]},
+    { stage: 424, chat: "大G", id: "want-to-see-studio", label: "我突然好想看看你们录音的样子。", nextStage: 425, lines: [
+      { sender: "我", body: "我突然好想看看你们录音的样子。", thread: "大G" },
+      { sender: "大G", body: "有機會再給妳看看啊。", thread: "大G" },
+    ]},
+    { stage: 425, chat: "大G", id: "studio-visit-promise", label: "真的吗！一言为定！\n我带着给玩玩的东西去探班！", nextStage: 426, lines: [
+      { sender: "我", body: "真的吗！一言为定！", thread: "大G" },
+      { sender: "我", body: "我带着给玩玩的东西去探班！", thread: "大G" },
+      { sender: "大G", body: "好啊，下次喊妳。", thread: "大G" },
+    ]},
 
   ];
 
