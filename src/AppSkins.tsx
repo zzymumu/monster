@@ -4074,6 +4074,32 @@ export function WeChatSkin(p: SkinProps) {
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
   const [groupPickerOpen, setGroupPickerOpen] = useState(false);
   const [selectedGroupMembers, setSelectedGroupMembers] = useState<string[]>([]);
+  const [accidentalGroupStoryStep, setAccidentalGroupStoryStep] = useSkinState<number>(p, "wxAccidentalGroupStoryStepV1", -1);
+  const [accidentalGroupInvitePending, setAccidentalGroupInvitePending] = useSkinState<boolean>(p, "wxAccidentalGroupInvitePendingV1", false);
+  const accidentalGroupStory = [
+    { user: ["怎么啦？"], incoming: ["妳怎麼突然退群了？"] },
+    { user: ["啊？", "我退什么群？"], incoming: ["就剛才啊。", "妳不是把我跟西藍花拉了個群嗎？", "我都還沒來得及說話，妳就退掉了。"] },
+    { user: ["啊？？？？？", "我不是点的解散群聊吗？？？"], incoming: ["蛤？", "妳是想解散群喔？", "可是妳退掉了啊哈哈哈哈哈哈。"] },
+    { user: ["………………", "完了。", "我好像真的点错了。"], incoming: ["哈哈哈哈哈哈哈哈哈哈哈哈。", "妳到底在忙什麼啦！"] },
+    { user: ["我本来是想把西蓝花跟别人拉进群的！", "结果选错人了……"], incoming: ["……", "所以我是那個選錯的人喔？"] },
+    { user: ["对不起🥺"], incoming: ["干哈哈哈哈哈哈。", "那妳現在把我丟在群裡是怎樣？"] },
+    { user: ["西蓝花有说话吗？"], incoming: ["沒有。", "所以妳本來到底是想拉誰進群啦？這都能選錯！"] },
+    { user: ["啊....就一个朋友啊！", "你们的头像有点像嘛....我就点错了。"], incoming: ["😕", "所以妳是看頭像選人的喔？"] },
+    { user: ["对啊，头像多明显，哪知道你们头像那么像啦！"], incoming: ["那妳也太隨便了吧？", "萬一今天拉錯的是別人怎麼辦？"] },
+    { user: ["这不是拉错你了吗……"], incoming: ["喔，所以拉到我還比較好一點是不是？"] },
+    { user: ["……你不要自己加戏。"], incoming: ["哈哈哈哈哈哈。", "現在群裡只剩我跟西藍花，怎麼辦？"] },
+    { user: ["你要不....退群？"], incoming: ["不要，這樣也太不禮貌。"] },
+    { user: [".....那我去让西蓝花退群？"], incoming: ["喂！", "我就這麼不受歡迎嗎！", "妳怎麼一直想把我們其中一個弄出去啦！"] },
+    { user: ["那你说要怎么办嘛！！"], incoming: ["我拉妳進群好了。"] },
+    { user: ["？为什么？"], incoming: ["不然我跟西藍花兩個人待在群裡幹嘛？很尷尬欸！"] },
+    { user: ["尴尬什么！她可喜欢你了🙄"], incoming: ["不要，我怕生。"] },
+    { user: ["？你一个大明星！你好意思说这话。"], incoming: ["真的啦🥺", "而且我又不認識她，突然被妳丟進一個群裡，總要有人陪我吧？"] },
+    { user: ["她认识你啊！她可熟悉你了！"], incoming: ["那不一樣啦🥺", "她認識的是台上的怪獸，又不是現在這個莫名其妙被拉進群的人。"] },
+    { user: ["哈哈哈哈哈哈哈哈哈哈哈哈。", "你怎么还委屈上了！"], incoming: ["我本來就很無辜啊。", "莫名其妙被拉進群，話都還沒講就被群主拋棄了。"] },
+    { user: ["…………", "你不要说了！！"], incoming: ["哈哈哈哈哈哈哈哈。"] },
+    { user: ["你直接退群，快点！"], incoming: ["不要！", "我剛剛不是說了，這樣不太禮貌嗎？", "再說，群是妳開的，哪有讓我退的道理。"] },
+    { user: ["……好像有点道理。"], incoming: ["等一下，我把妳拉回來。"] },
+  ];
   const wxGroupChats = wxGroupChatsRaw.flatMap((raw) => {
     try {
       const group = JSON.parse(raw) as { id: string; name: string; members: string[]; leftByMe?: boolean };
@@ -4618,6 +4644,10 @@ export function WeChatSkin(p: SkinProps) {
                 p.onUi?.("wxGroupChatsV1", JSON.stringify(nextGroups));
                 p.onThread("");
                 setUtility("");
+                setAccidentalGroupStoryStep(0);
+                setAccidentalGroupInvitePending(false);
+                p.onUi?.("wxAccidentalGroupStoryStepV1", 0);
+                p.onUi?.("wxAccidentalGroupInvitePendingV1", false);
                 appendCatLines([{ id: "wx-after-accidental-group-exit-dag-question-v1", sender: "大G", body: "？", thread: "大G" }], catRescue.stage, catRescue.branch, "wx-after-accidental-group-exit-dag-question-v1");
               }}>退出群聊</button>}
               {!activeGroupChat && <button className="wx-chat-info-row wx-chat-clear" onClick={() => { if (window.confirm("确定清空与该联系人的聊天记录吗？")) p.onUi?.("wxClearThreadRequest", p.thread); }}>清空聊天记录</button>}
@@ -4650,6 +4680,57 @@ export function WeChatSkin(p: SkinProps) {
         <>
           {catRescueActive ? (
             <div className="cat-rescue-thread">
+              {isMonsterThread && accidentalGroupStoryStep >= 0 && accidentalGroupStoryStep < accidentalGroupStory.length && pendingCatLines.length === 0 && threadItems.some((item) => item.id === "wx-after-accidental-group-exit-dag-question-v1") && (
+                <div className="cat-rescue-choices" aria-label="大G群聊乌龙对话">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                    const turn = accidentalGroupStory[accidentalGroupStoryStep];
+                    const lines: CatLine[] = [
+                      ...turn.user.map((body, index) => ({ id: "wx-accidental-group-user-" + accidentalGroupStoryStep + "-" + index, sender: "我" as const, body, thread: "大G" })),
+                      ...turn.incoming.map((body, index) => ({ id: "wx-accidental-group-dag-" + accidentalGroupStoryStep + "-" + index, sender: "大G" as const, body, thread: "大G" })),
+                    ];
+                    appendCatLines(lines, catRescue.stage, catRescue.branch, "wx-accidental-group-turn-" + accidentalGroupStoryStep);
+                    setAccidentalGroupStoryStep((current) => current + 1);
+                  }}>
+                    {accidentalGroupStory[accidentalGroupStoryStep].user.join(" ")}
+                  </button>
+                  <div className="cat-rescue-option-hint">点击发送你的回复，等待大G说完再继续</div>
+                </div>
+              )}
+              {isMonsterThread && accidentalGroupInvitePending && pendingCatLines.length === 0 && (
+                <div className="cat-rescue-choices" aria-label="群聊邀请">
+                  <div style={{ padding: 14, borderRadius: 12, background: "#fff", color: "#222", border: "1px solid #ddd" }}>
+                    <strong>大G邀请你加入群聊</strong>
+                    <div style={{ marginTop: 6, fontSize: 13, color: "#777" }}>大G、你、西蓝花</div>
+                    <button style={{ marginTop: 12, width: "100%", minHeight: 42, borderRadius: 8, background: "#07c160", color: "#fff", fontWeight: 600 }} onClick={() => {
+                      const nextGroups = wxGroupChatsRaw.map((raw) => {
+                        try {
+                          const group = JSON.parse(raw) as { id: string; name: string; members: string[]; leftByMe?: boolean };
+                          return group.leftByMe ? JSON.stringify({ ...group, leftByMe: false }) : raw;
+                        } catch { return raw; }
+                      });
+                      setWxGroupChatsRaw(nextGroups);
+                      p.onUi?.("wxGroupChatsV1", JSON.stringify(nextGroups));
+                      setAccidentalGroupInvitePending(false);
+                      p.onUi?.("wxAccidentalGroupInvitePendingV1", false);
+                      appendCatLines([
+                        { id: "wx-accidental-group-rejoined-dag-01-v1", sender: "大G", body: "進來了嗎？", thread: "大G" },
+                        { id: "wx-accidental-group-rejoined-dag-02-v1", sender: "大G", body: "這次不要再把自己退掉了喔！", thread: "大G" },
+                      ], catRescue.stage, catRescue.branch, "wx-accidental-group-rejoined");
+                      setAccidentalGroupStoryStep(22);
+                      p.onUi?.("wxAccidentalGroupStoryStepV1", 22);
+                    }}>接受邀请</button>
+                  </div>
+                </div>
+              )}
+              {isMonsterThread && accidentalGroupStoryStep === 22 && pendingCatLines.length === 0 && (
+                <div className="cat-rescue-choices" aria-label="大G群聊乌龙收尾">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                    appendCatLines([{ id: "wx-accidental-group-last-user-v1", sender: "我", body: "...你再说我解散。", thread: "大G" }], catRescue.stage, catRescue.branch, "wx-accidental-group-last-user");
+                    setAccidentalGroupStoryStep(23);
+                  }}>...你再说我解散。</button>
+                </div>
+              )}
+
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {isMonsterThread && (
                 (() => {
