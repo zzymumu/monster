@@ -151,6 +151,14 @@ function PhoneRuntime({
   const [callMicOn, setCallMicOn] = useState(true);
   const [callSpeakerOn, setCallSpeakerOn] = useState(false);
   const [callTopNotice, setCallTopNotice] = useState("");
+  const [milkTeaCallStep, setMilkTeaCallStep] = useState(-1);
+  const [milkTeaCallReply, setMilkTeaCallReply] = useState(-1);
+  const milkTeaAudioRef = useRef<HTMLAudioElement | null>(null);
+  const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
+  const milkTeaCallAudio = ["./assets/audio/dag-call-01.mp3","./assets/audio/dag-call-02.mp3","./assets/audio/dag-call-03.mp3","./assets/audio/dag-call-04.mp3"];
+  const milkTeaCallLines = ["你到了是不是？pai seh，我刚才在录音没听到，我现在去接你。","你在哪啦？我怎么没有看见你。","啊，我看到你了，怎么买那么多，不是叫你少买点嘛！","好啦好啦，我帮你拿，走吧。"];
+  const milkTeaCallReplies = ["嗯嗯我到啦。","啊？我在路边欸，穿白色衣服的，提了个大袋子。","没事呀，我想着你们可能会有蛮多人，喝不完可以分给其他同事嘛！"];
+
   useEffect(() => {
     const updateSystemClock = () => setSystemNow(new Date());
     updateSystemClock();
@@ -370,6 +378,60 @@ function PhoneRuntime({
     }, 1000);
     return () => clearInterval(interval);
   }, [creator, ready, work.id, work.updatedAt]);
+
+  useEffect(() => {
+    if (!milkTeaCallActive || s.incomingCall?.status !== "ringing" || s.incomingCall?.direction !== "outgoing") return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      if (!current.incomingCall || current.incomingCall.status !== "ringing") return;
+      update({ ...current, incomingCall: { ...current.incomingCall, status: "answered" } });
+      setMilkTeaCallStep(0); setMilkTeaCallReply(-1);
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [milkTeaCallActive, s.incomingCall?.status, s.incomingCall?.direction]);
+
+  useEffect(() => {
+    if (!milkTeaCallActive || s.incomingCall?.status !== "answered" || milkTeaCallStep < 0 || milkTeaCallStep > 3) return;
+    const audio = milkTeaAudioRef.current;
+    if (!audio) return;
+    audio.src = milkTeaCallAudio[milkTeaCallStep]; audio.currentTime = 0;
+    void audio.play().catch(() => setCallTopNotice("语音播放失败，请检查设备音量"));
+  }, [milkTeaCallActive, s.incomingCall?.status, milkTeaCallStep]);
+
+  const sendMilkTeaCallReply = (replyIndex: number) => {
+    const current = runtimeRef.current;
+    if (!current.incomingCall || current.incomingCall.status !== "answered") return;
+    const line = milkTeaCallReplies[replyIndex]; if (!line) return;
+    const messages = current.messages.wechat ?? [];
+    update({ ...current, messages: { ...current.messages, wechat: [...messages, {
+      id: `milk-tea-call-player-reply-${replyIndex}-v1`, title: "微信消息", body: line,
+      richText: "", meta: { thread: "大G" }, time: new Date().toISOString(), sender: "我",
+      avatar: "", kind: "text", media: "", hidden: false, unlock: "", password: "",
+      folder: "", favorite: false, outgoing: true, read: true, likes: 0, comments: [],
+    }] } });
+    setMilkTeaCallReply(-1); setMilkTeaCallStep(replyIndex + 1);
+  };
+
+  const finishMilkTeaCall = () => {
+    const current = runtimeRef.current; if (!current.incomingCall) return;
+    const messages = current.messages.wechat ?? [];
+    const record = {
+      id: "milk-tea-call-duration-0143-v1", title: "语音通话", body: "通话时长：01:43",
+      richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "01:43" },
+      time: new Date().toISOString(), sender: "我", avatar: "", kind: "call" as const,
+      media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
+      outgoing: true, read: true, likes: 0, comments: [],
+    };
+    update({ ...current, incomingCall: null, messages: { ...current.messages, wechat: [...messages, record] },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxMilkTeaArrivalCallV1: false, wxMilkTeaArrivalCallFinishedV1: true } } });
+    setMilkTeaCallStep(-1); setMilkTeaCallReply(-1);
+    if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
+  };
+  const onMilkTeaAudioEnded = () => {
+    if (milkTeaCallStep === 3) finishMilkTeaCall();
+    else if (milkTeaCallStep >= 0 && milkTeaCallStep <= 2) setMilkTeaCallReply(milkTeaCallStep);
+  };
+
   useEffect(() => {
     if (!s.incomingCall || s.incomingCall.status !== "answered") {
       setCallElapsed(0);
@@ -1526,6 +1588,14 @@ function PhoneRuntime({
                   <p className="wechat-call-state">{connected ? (s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中") : s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…"}</p>
                 </>;
               })()}
+              {milkTeaCallActive && s.incomingCall.status === "answered" && (
+                <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
+                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>{milkTeaCallLines[milkTeaCallStep] ?? "正在通话…"}</div>
+                  {milkTeaCallReply >= 0 && milkTeaCallReply <= 2 && <button type="button" onClick={() => sendMilkTeaCallReply(milkTeaCallReply)} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{milkTeaCallReplies[milkTeaCallReply]}</button>}
+                </div>
+              )}
+              <audio ref={milkTeaAudioRef} onEnded={onMilkTeaAudioEnded} preload="auto" />
               <div className="incoming-actions">
                 {s.incomingCall.status === "answered" || s.incomingCall.direction === "outgoing" ? (
                   <>
