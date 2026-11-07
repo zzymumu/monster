@@ -1455,6 +1455,8 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [postLockWaitPending, setPostLockWaitPending] = useSkinState<boolean>(p, "wxPostLockWaitPendingV1", false);
+  const postLockWaitStartedRef = useRef(false);
   const [pickupSceneRebuiltV1, setPickupSceneRebuiltV1] = useSkinState<boolean>(p, "wxPickupSceneRebuiltV1", false);
   const [hotelBroccoliFollowupQueued, setHotelBroccoliFollowupQueued] = useSkinState<boolean>(p, "wxHotelBroccoliFollowupQueuedV1", false);
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
@@ -3246,6 +3248,23 @@ export function WeChatSkin(p: SkinProps) {
       setReturnDinnerStage(350);
     }
   }, [returnDinnerStage, p.thread]);
+  // After "兩遍就好", leave a real ten-second pause before DaG's next thought.
+  // The incoming lines go through the normal phone queue, so notifications
+  // are created when the player is outside WeChat.
+  useEffect(() => {
+    if (returnDinnerStage !== 354 || pendingCatLines.length > 0 ||
+        postLockWaitStartedRef.current || p.ui?.wxPostLockWaitDoneV1 === true) return;
+    postLockWaitStartedRef.current = true;
+    setPostLockWaitPending(true);
+    window.setTimeout(() => {
+      setPendingCatLines((current) => [...current,
+        { id: "post-lock-wait-followup-1", sender: "大G", body: "對了。", thread: "大G" },
+        { id: "post-lock-wait-followup-2", sender: "大G", body: "昨天晚上妳發的那些話……", thread: "大G" },
+      ]);
+      setPostLockWaitPending(false);
+      p.onUpdate?.({ ui: { ...p.ui, wxPostLockWaitDoneV1: true } });
+    }, 10000);
+  }, [returnDinnerStage, pendingCatLines.length]);
 
   // The player opens Broccoli directly from her notification after DaG's
   // final door message. Do not require an intermediate empty/home thread:
@@ -4091,7 +4110,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
