@@ -7253,3 +7253,64 @@ label {
 .incoming-call-screen.is-incoming .incoming-actions > button.call-control.accept-call > svg {
   background: #07c160;
 }
+
+
+/* Top utility controls and slightly higher contact cluster on WeChat calls. */
+.incoming-call-screen.is-outgoing .incoming-avatar,
+.incoming-call-screen.is-connected .incoming-avatar {
+  margin-top: 235px;
+}
+.incoming-call-screen.is-connected .incoming-avatar {
+  margin-top: 265px;
+}
+.incoming-call-screen .wechat-call-top-actions {
+  position: absolute;
+  z-index: 2;
+  top: max(20px, env(safe-area-inset-top));
+  left: 22px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.incoming-call-screen .wechat-call-top-actions button {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(15,13,19,.34);
+  pointer-events: auto;
+}
+.incoming-call-screen .wechat-call-top-actions button svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2.1;
+}
+.incoming-call-screen .wechat-call-top-notice {
+  position: absolute;
+  z-index: 5;
+  top: max(76px, calc(env(safe-area-inset-top) + 56px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(20,17,23,.88);
+  color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.incoming-call-screen .wechat-call-top-notice button {
+  border: 0;
+  padding: 2px 0;
+  color: #9fcaff;
+  background: transparent;
+  font-size: 13px;
+}
