@@ -4087,6 +4087,7 @@ export function WeChatSkin(p: SkinProps) {
   const [accidentalGroupStoryStep, setAccidentalGroupStoryStep] = useSkinState<number>(p, "wxAccidentalGroupStoryStepV1", -1);
   const [accidentalGroupInvitePending, setAccidentalGroupInvitePending] = useSkinState<boolean>(p, "wxAccidentalGroupInvitePendingV1", false);
   const [threeWayGroupStoryStep, setThreeWayGroupStoryStep] = useSkinState<number>(p, "wxThreeWayGroupStoryStepV1", -1);
+  const [threeWayRejoinReplyPending, setThreeWayRejoinReplyPending] = useSkinState<boolean>(p, "wxThreeWayRejoinReplyPendingV1", false);
   // Canonical three-person group transcript. Every incoming line has an explicit
   // sender; never infer the speaker from the message text.
   const threeWayGroupStory: Array<{ user: string[]; incoming: Array<{ sender: "西蓝花" | "大G"; body: string }> }> = [
@@ -4922,7 +4923,7 @@ export function WeChatSkin(p: SkinProps) {
                         ? { ...existingAccidentalGroup, members: Array.from(new Set([...existingAccidentalGroup.members, "我"])), leftByMe: false }
                         : {
                             id: "wx-accidental-group-chat-v1",
-                            name: `${displayName("大G")}、西蓝花的群聊`,
+                            name: `西蓝花、${displayName("大G")}的群聊`,
                             members: ["大G", "西蓝花", "我"],
                             leftByMe: false,
                           };
@@ -4939,24 +4940,17 @@ export function WeChatSkin(p: SkinProps) {
                       p.onUi?.("wxGroupChatsV1", JSON.stringify(nextGroups));
                       setAccidentalGroupInvitePending(false);
                       p.onUi?.("wxAccidentalGroupInvitePendingV1", false);
-                      appendCatLines([
-                        { id: "wx-accidental-group-rejoined-dag-01-v1", sender: "大G", body: "進來了嗎？", thread: "大G" },
-                        { id: "wx-accidental-group-rejoined-dag-02-v1", sender: "大G", body: "這次不要再把自己退掉了喔！", thread: "大G" },
-                      ], catRescue.stage, catRescue.branch, "wx-accidental-group-rejoined");
-                      // The group only becomes active after the player accepts the invitation.
-                      // Queue Broccoli's first group message now, so it can arrive as a group notification.
-                      appendCatLines([
-                        { id: "wx-threeway-opening-broccoli-01", sender: "西蓝花", body: "？", thread: restoredGroup.name },
-                        { id: "wx-threeway-opening-broccoli-02", sender: "西蓝花", body: "？？？？？？", thread: restoredGroup.name },
-                        { id: "wx-threeway-opening-broccoli-03", sender: "西蓝花", body: "这是什么群？？？", thread: restoredGroup.name },
-                        { id: "wx-threeway-opening-broccoli-04", sender: "西蓝花", body: "我怎么突然在这里？？？", thread: restoredGroup.name },
-                        { id: "wx-threeway-opening-broccoli-05", sender: "西蓝花", body: "…………", thread: restoredGroup.name },
-                        { id: "wx-threeway-opening-broccoli-06", sender: "西蓝花", body: "那个头像？？？", thread: restoredGroup.name },
-                        { id: "wx-threeway-opening-broccoli-07", sender: "西蓝花", body: "是我眼花了吗？？？", thread: restoredGroup.name },
-                        { id: "wx-threeway-opening-dag-01", sender: "大G", body: "哈囉～", thread: restoredGroup.name },
-                      ], catRescue.stage, catRescue.branch, "wx-threeway-group-opening");
+                      setThreeWayRejoinReplyPending(true);
+                      p.onUi?.("wxThreeWayRejoinReplyPendingV1", true);
                       setThreeWayGroupStoryStep(0);
                       p.onUi?.("wxThreeWayGroupStoryStepV1", 0);
+                      // On accepting the group invitation, open the actual group.
+                      // DaG's two check-in messages belong to this group, not his DM.
+                      p.onThread(restoredGroup.name);
+                      appendCatLines([
+                        { id: "wx-accidental-group-rejoined-dag-01-v2", sender: "大G", body: "進來了嗎？", thread: restoredGroup.name },
+                        { id: "wx-accidental-group-rejoined-dag-02-v2", sender: "大G", body: "這次不要再把自己退掉了喔！", thread: restoredGroup.name },
+                      ], catRescue.stage, catRescue.branch, "wx-accidental-group-rejoined-v2");
                       setAccidentalGroupStoryStep(23);
                       p.onUi?.("wxAccidentalGroupStoryStepV1", 23);
                     }}>接受邀请</button>
@@ -4964,6 +4958,31 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
+              {activeGroupChat && threeWayRejoinReplyPending && pendingCatLines.length === 0 && (
+                <div className="cat-rescue-choices" aria-label="重新加入群聊后的回复选项">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                    appendCatLines([
+                      { id: "wx-accidental-group-rejoined-user-01-v1", sender: "我", body: "...你再说我解散。", thread: activeGroupChat.name },
+                    ], catRescue.stage, catRescue.branch, "wx-accidental-group-rejoined-user-v1");
+                    setThreeWayRejoinReplyPending(false);
+                    p.onUi?.("wxThreeWayRejoinReplyPendingV1", false);
+                    // The player leaves the group view; Broccoli's first group message
+                    // can then arrive as a group-name notification, not a person-name DM.
+                    p.onThread("大G");
+                    appendCatLines([
+                      { id: "wx-threeway-opening-broccoli-01-v2", sender: "西蓝花", body: "？", thread: activeGroupChat.name },
+                      { id: "wx-threeway-opening-broccoli-02-v2", sender: "西蓝花", body: "？？？？？？", thread: activeGroupChat.name },
+                      { id: "wx-threeway-opening-broccoli-03-v2", sender: "西蓝花", body: "这是什么群？？？", thread: activeGroupChat.name },
+                      { id: "wx-threeway-opening-broccoli-04-v2", sender: "西蓝花", body: "我怎么突然在这里？？？", thread: activeGroupChat.name },
+                      { id: "wx-threeway-opening-broccoli-05-v2", sender: "西蓝花", body: "…………", thread: activeGroupChat.name },
+                      { id: "wx-threeway-opening-broccoli-06-v2", sender: "西蓝花", body: "那个头像？？？", thread: activeGroupChat.name },
+                      { id: "wx-threeway-opening-broccoli-07-v2", sender: "西蓝花", body: "是我眼花了吗？？？", thread: activeGroupChat.name },
+                      { id: "wx-threeway-opening-dag-01-v2", sender: "大G", body: "哈囉～", thread: activeGroupChat.name },
+                    ], catRescue.stage, catRescue.branch, "wx-threeway-group-opening-v2");
+                  }}>...你再说我解散。</button>
+                  <div className="cat-rescue-option-hint">点击发送你的群聊回复</div>
+                </div>
+              )}
               {activeGroupChat && threeWayGroupStoryStep >= 0 && threeWayGroupStoryStep < threeWayGroupStory.length && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="三人群聊互动选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
