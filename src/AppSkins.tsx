@@ -236,7 +236,7 @@ function MessageList({
                 <strong>NT$ {Number(i.meta?.amount ?? body).toFixed(2)}</strong>
                 <small>微信转账 · 待接收</small>
               </div>
-            ) : i.kind === "location" ? (
+            ) : i.kind === "event" && i.meta?.locationName ? (
               <div style={{ width: 250, borderRadius: 8, overflow: "hidden", background: "#f1f2f4", color: "#222", textAlign: "left" }}>
                 <div style={{ padding: "10px 12px 5px", fontWeight: 600 }}>{i.meta?.locationName || body}</div>
                 <div style={{ padding: "0 12px 9px", color: "#8b8f98", fontSize: 12 }}>{i.meta?.locationAddress || body}</div>
@@ -3495,7 +3495,7 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 426, chat: "大G", id: "milk-tea-propose-transfer-v1", label: "那我就按我的口味帮你选！", nextStage: 427, lines: [
       { sender: "我", body: "那我就按我的口味帮你选！", thread: "大G" },
       { sender: "大G", body: "不然這樣好了。", thread: "大G" },
-      { sender: "大G", body: "100.00", thread: "大G", kind: "transfer", meta: { amount: 100, currency: "TWD", transferStatus: "pending" } },
+      { sender: "大G", body: "100.00", thread: "大G", kind: "transfer", meta: { amount: "100", currency: "TWD", transferStatus: "pending" } },
       { sender: "大G", body: "今天真的走不開。", thread: "大G" },
       { sender: "大G", body: "等忙完再去喝好了。", thread: "大G" },
       { sender: "大G", body: "拜託妳幫我試喝一下啦。", thread: "大G" },
@@ -3518,7 +3518,7 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 430, chat: "大G", id: "milk-tea-transfer-return-v1", label: "退回转账，我买完给你送录音室吧！", nextStage: 431, lines: [
       { sender: "我", body: "（退回轉帳）", thread: "大G" },
-      { sender: "系统", body: "已退回 NT$100.00", thread: "大G" },
+      { sender: "大G", body: "已退回 NT$100.00", thread: "大G" },
       { sender: "我", body: "钱我退给你啦。", thread: "大G" },
       { sender: "我", body: "我买完给你送录音室吧！", thread: "大G" },
       { sender: "我", body: "你们录音辛苦了，我请你们喝～", thread: "大G" },
@@ -3594,7 +3594,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "温尚翊，你好烦！", thread: "大G" },
       { sender: "大G", body: "好，會長最大。", thread: "大G" },
       { sender: "大G", body: "路上小心。", thread: "大G" },
-      { sender: "大G", body: "光復南路33巷", thread: "大G", kind: "location", meta: { locationName: "光復南路33巷", locationAddress: "台北市大安區光復南路33巷" } },
+      { sender: "大G", body: "光復南路33巷", thread: "大G", kind: "event", meta: { locationName: "光復南路33巷", locationAddress: "台北市大安區光復南路33巷" } },
     ]},
 
   ];
