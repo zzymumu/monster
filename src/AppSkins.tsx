@@ -3425,6 +3425,63 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "我带着给玩玩的东西去探班！", thread: "大G" },
       { sender: "大G", body: "好啊，下次喊妳。", thread: "大G" },
     ]},
+    { stage: 426, chat: "西蓝花", id: "tell-broccoli-studio-invite", label: "啊啊啊啊啊啊啊啊啊！！！！！", nextStage: 427, lines: [
+      { sender: "我", body: "啊啊啊啊啊啊啊啊啊！！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "又怎么了？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你能不能别一天到晚嗷嗷叫。", thread: "西蓝花" },
+    ]},
+    { stage: 427, chat: "西蓝花", id: "tell-her-about-studio", label: "你懂什么，我刚刚跟怪兽聊天了！！", nextStage: 428, lines: [
+      { sender: "我", body: "你懂什么，我刚刚跟怪兽聊天了！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "这不是很正常吗？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你们现在不是天天聊天吗？", thread: "西蓝花" },
+    ]},
+    { stage: 428, chat: "西蓝花", id: "studio-invitation-news", label: "不是啦！\n他说下次可以让我去看他们录音！！", nextStage: 429, lines: [
+      { sender: "我", body: "不是啦！", thread: "西蓝花" },
+      { sender: "我", body: "他说下次可以让我去看他们录音！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "😱", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你说什么？？？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你已经约到五月天录音室探班了？？？", thread: "西蓝花" },
+    ]},
+    { stage: 429, chat: "西蓝花", id: "explain-studio-invite", label: "对啊，我就说想看他们录音，他说好啊，下次喊我。", nextStage: 430, lines: [
+      { sender: "我", body: "对啊，我就说想看他们录音，他说好啊，下次喊我。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "啊啊啊啊啊啊啊啊啊！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "温尚翊亲口说的？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他还主动邀请你去？？？", thread: "西蓝花" },
+    ]},
+    { stage: 430, chat: "西蓝花", id: "confirm-studio-invite", label: "对啊！", nextStage: 431, lines: [
+      { sender: "我", body: "对啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "姐妹！！！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你知道这是什么概念吗？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他是要介绍你给他兄弟认识啊！", thread: "西蓝花" },
+    ]},
+    { stage: 431, chat: "西蓝花", id: "realize-studio-visit", label: "我现在才反应过来……\n我是不是应该矜持一点的？", nextStage: 432, lines: [
+      { sender: "我", body: "我现在才反应过来……", thread: "西蓝花" },
+      { sender: "我", body: "我是不是应该矜持一点的？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你现在才想起来矜持？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你刚刚是不是已经兴奋得答应了？", thread: "西蓝花" },
+    ]},
+    { stage: 432, chat: "西蓝花", id: "admit-bringing-wanwan-gift", label: "……\n我还说要带玩玩的东西去。", nextStage: 433, lines: [
+      { sender: "我", body: "……", thread: "西蓝花" },
+      { sender: "我", body: "我还说要带玩玩的东西去。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哈哈哈哈哈哈哈哈", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你真的很会找理由欸！", thread: "西蓝花" },
+    ]},
+    { stage: 433, chat: "西蓝花", id: "defend-wanwan-gift", label: "我是真的要给玩玩送东西！！", nextStage: 434, lines: [
+      { sender: "我", body: "我是真的要给玩玩送东西！！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "好好好，玩玩最大。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哎不过说真的，你们进展真的很快。", thread: "西蓝花" },
+    ]},
+    { stage: 434, chat: "西蓝花", id: "he-is-kind-to-fans", label: "他对粉丝也太好了。", nextStage: 435, lines: [
+      { sender: "我", body: "他对粉丝也太好了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "……你现在还觉得你是单纯的粉丝？", thread: "西蓝花" },
+    ]},
+    { stage: 435, chat: "西蓝花", id: "special-because-of-wanwan", label: "也不是吧，毕竟我帮他照顾过玩玩，还是稍微特殊一点滴~", nextStage: 436, lines: [
+      { sender: "我", body: "也不是吧，毕竟我帮他照顾过玩玩，还是稍微特殊一点滴~", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我真是服了，随便吧随便吧反正我说什么你也不听。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "行了，你跟你家怪兽聊天去吧，我要去追韩剧了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "有什么进展跟我说啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我去准备份子钱了。", thread: "西蓝花" },
+    ]},
 
   ];
 
