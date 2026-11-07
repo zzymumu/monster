@@ -3626,7 +3626,7 @@ export function WeChatSkin(p: SkinProps) {
         catch { return true; }
       });
       const canonical = kept
-        ? { ...kept, id: postId, image: "./assets/wannwan-sleeping-cat.jpg", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
+        ? { ...kept, id: postId, image: "/monster/assets/wannwan-sleeping-cat.jpg", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
         : { id: postId, sender: "大G", body: "终于回家了，小朋友。", image: "./assets/wannwan-sleeping-cat.jpg", time: new Date().toLocaleString("zh-CN", { hour12: false }), likes: [], comments: [] };
       return [...unrelated, JSON.stringify(canonical)];
     });
@@ -4266,7 +4266,7 @@ export function WeChatSkin(p: SkinProps) {
           </div>
           {momentFeed.map((entry) => entry.type === "story-friend" ? (
             <article key={entry.id} className="wx-moment-post" style={{ display: "flex", gap: 12, padding: "16px 14px", borderBottom: "1px solid #eee", background: "#fff" }}>
-              <Avatar name={displayName("大G")} src={allItems.filter((item) => item.sender === "大G" && item.avatar).at(-1)?.avatar || "./assets/dag-new-avatar.jpg"} className="wx-moment-feed-avatar" />
+              <Avatar name={displayName("大G")} src={(typeof p.ui?.wxDaGAvatarV2 === "string" && p.ui.wxDaGAvatarV2) || "/monster/assets/dag-new-avatar.jpg"} className="wx-moment-feed-avatar" />
               <div style={{ minWidth: 0, flex: 1 }}>
                 <strong style={{ color: "#576b95" }}>{displayName("大G")}</strong>
                 <p style={{ margin: "7px 0 10px", whiteSpace: "pre-wrap" }}>{entry.post.body}</p>
@@ -4284,11 +4284,19 @@ export function WeChatSkin(p: SkinProps) {
                   </button>
                   <button type="button" disabled={!entry.post.likes.includes(ownerName)} onClick={() => { setStoryMomentCommentOpen(storyMomentCommentOpen === entry.id ? "" : entry.id); setStoryMomentCommentDraft(""); }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
                 </div>
-                {(entry.post.likes.length > 0 || entry.post.comments.length > 0) && <div className="wx-moment-social-likes" style={{ marginTop: 0 }}>
-                  {entry.post.likes.length > 0 && <div>♡ {entry.post.likes.join("、")}</div>}
-                  {entry.post.comments.map((comment: string, index: number) => <div className="wx-moment-social-comment" key={index}>{comment}</div>)}
-                </div>}
-                {entry.post.likes.includes(ownerName) ? (
+                {(entry.post.likes.length > 0 || entry.post.comments.length > 0) && (
+                  <div className="wx-moment-social-panel" style={{ marginTop: 0, width: "100%", background: "#f5f5f5", borderRadius: 4, overflow: "hidden" }}>
+                    {entry.post.likes.length > 0 && (
+                      <div className="wx-moment-social-likes" style={{ marginTop: 0, borderRadius: 0 }}>
+                        <span aria-hidden="true">♡</span>{entry.post.likes.map(displayName).join("、")}
+                      </div>
+                    )}
+                    {entry.post.comments.map((comment: string, index: number) => (
+                      <div className="wx-moment-social-comment" key={index}>{comment}</div>
+                    ))}
+                  </div>
+                )}
+                {storyMomentCommentOpen === entry.id ? (
                   <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
                     <input aria-label="朋友圈评论" value={storyMomentCommentDraft} onChange={(event) => setStoryMomentCommentDraft(event.target.value)} placeholder="评论..." style={{ flex: 1, minWidth: 0, border: "1px solid #e5e5e5", borderRadius: 4, padding: "7px 9px", fontSize: 13 }} />
                     <button type="button" disabled={!storyMomentCommentDraft.trim()} onClick={() => {
