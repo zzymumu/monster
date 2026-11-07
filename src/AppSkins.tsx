@@ -3626,6 +3626,24 @@ export function WeChatSkin(p: SkinProps) {
   }, [returnDinnerStage]);
 
   useEffect(() => {
+    // Once the player has finished the current DaG chat and opens Moments,
+    // seed the promised home photo exactly once. No automatic like/comment.
+    if (!moments || returnDinnerStage < 392) return;
+    const postId = "dag-wanwan-home-photo-v1";
+    setStoryFriendMomentPosts((current) => current.some((raw) => {
+      try { return JSON.parse(raw).id === postId; } catch { return false; }
+    }) ? current : [...current, JSON.stringify({
+      id: postId,
+      sender: "大G",
+      body: "终于回家了，小朋友。",
+      image: "./assets/wannwan-sleeping-cat.jpg",
+      time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      likes: [],
+      comments: [],
+    })]);
+  }, [moments, returnDinnerStage]);
+
+  useEffect(() => {
     // Phase 1: after the original found-cat conversation is complete,
     // create the Vava/玩玩 post with both likes. Do not message DaG yet.
     const foundCatConversationFinished =
