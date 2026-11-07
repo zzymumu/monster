@@ -1524,12 +1524,13 @@ export function WeChatSkin(p: SkinProps) {
   const [milkTeaTransferStatus, setMilkTeaTransferStatus] = useSkinState<"pending" | "accepted" | "returned">(p, "wxMilkTeaTransferStatusV1", "pending");
   const [milkTeaArrivalWaitReady, setMilkTeaArrivalWaitReady] = useSkinState<boolean>(p, "wxMilkTeaArrivalWaitReadyV1", false);
   const [milkTeaArrivalCallRequested, setMilkTeaArrivalCallRequested] = useSkinState<boolean>(p, "wxMilkTeaArrivalCallRequestedV1", false);
+  const [milkTeaCallPromptShown, setMilkTeaCallPromptShown] = useSkinState<boolean>(p, "wxMilkTeaCallPromptShownV1", false);
+  const [milkTeaCallPromptOpen, setMilkTeaCallPromptOpen] = useState(false);
   useEffect(() => {
-    if (returnDinnerStage !== 472 || milkTeaArrivalCallRequested || p.thread !== "大G") return;
-    setMilkTeaArrivalCallRequested(true);
-    p.onUi?.("wxOutgoingCallRequest", "audio");
-    p.onUi?.("wxMilkTeaArrivalCallV1", true);
-  }, [returnDinnerStage, milkTeaArrivalCallRequested, p.thread]);
+    if (returnDinnerStage !== 472 || milkTeaCallPromptShown || p.thread !== "大G") return;
+    setMilkTeaCallPromptShown(true);
+    setMilkTeaCallPromptOpen(true);
+  }, [returnDinnerStage, milkTeaCallPromptShown, p.thread]);
 
 
 
@@ -4383,6 +4384,21 @@ export function WeChatSkin(p: SkinProps) {
                 <button className="wx-friend-flow-primary" onClick={() => { appendNewFriendConversation(); setFriendRequestModal(""); setUtility(""); setTab("微信"); p.onThread("大G"); }}>完成，查看消息</button>
               </>
             )}
+          </section>
+        </div>
+      )}
+      {milkTeaCallPromptOpen && p.thread === "大G" && (
+        <div style={{ position: "absolute", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "rgba(0,0,0,.38)" }}>
+          <section role="dialog" aria-modal="true" aria-label="拨打语音通话" style={{ width: "min(300px, 100%)", borderRadius: 18, overflow: "hidden", background: "#f7f7f7", color: "#222", textAlign: "center", boxShadow: "0 12px 40px rgba(0,0,0,.22)" }}>
+            <div style={{ padding: "24px 18px 20px" }}>
+              <div style={{ width: 54, height: 54, borderRadius: 16, margin: "0 auto 12px", background: "#dce8d7", color: "#4f8d62", display: "grid", placeItems: "center" }}><Phone size={27}/></div>
+              <strong style={{ fontSize: 17 }}>语音通话</strong>
+              <p style={{ margin: "8px 0 0", color: "#888", fontSize: 13 }}>要拨打大G的语音通话吗？</p>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderTop: "1px solid #e4e4e4" }}>
+              <button type="button" onClick={() => setMilkTeaCallPromptOpen(false)} style={{ border: 0, borderRight: "1px solid #e4e4e4", background: "transparent", padding: 14, color: "#777", fontSize: 15 }}>取消</button>
+              <button type="button" onClick={() => { setMilkTeaCallPromptOpen(false); p.onUi?.("wxMilkTeaArrivalCallV1", true); p.onUi?.("wxOutgoingCallRequest", "audio"); }} style={{ border: 0, background: "transparent", padding: 14, color: "#07a35a", fontWeight: 600, fontSize: 15 }}>拨打</button>
+            </div>
           </section>
         </div>
       )}
