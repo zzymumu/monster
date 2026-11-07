@@ -1620,6 +1620,14 @@ function PhoneRuntime({
                     <button className="decline-call call-control" onClick={() => {
                       const call = runtimeRef.current.incomingCall;
                       if (!call) return;
+                      // The milk-tea scripted call must finish through its own
+                      // persisted completion path when the player taps hang up.
+                      // Otherwise the Broccoli handoff flag is never written.
+                      if (milkTeaCallActive && call.status === "answered" &&
+                          (call.caller === "大G" || call.caller === "温尚翊")) {
+                        finishMilkTeaCall();
+                        return;
+                      }
                       const current = runtimeRef.current;
                       const next = dispatch(work, { ...current, incomingCall: null }, call.status === "ringing" ? "callDeclined" : "callEnded", call.target || call.caller);
                       const wx = current.ui?.wechat ?? {};
