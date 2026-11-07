@@ -268,7 +268,7 @@ function MessageList({
         <div style={{ width: "min(330px, 100%)", borderRadius: 18, overflow: "hidden", background: "#fff", color: "#222", boxShadow: "0 12px 40px rgba(0,0,0,.25)" }}>
           <div style={{ background: "#fa9b45", color: "#fff", padding: "22px 18px", textAlign: "center" }}>
             <div style={{ fontSize: 13, opacity: .92 }}>大G 转账给你</div>
-            <div style={{ fontSize: 32, fontWeight: 700, marginTop: 8 }}>¥{Number(selectedTransfer.meta?.amount ?? selectedTransfer.body).toFixed(2)}</div>
+            <div style={{ fontSize: 32, fontWeight: 700, marginTop: 8 }}>NT$ {Number(selectedTransfer.meta?.amount ?? selectedTransfer.body).toFixed(2)}</div>
             <div style={{ fontSize: 12, marginTop: 5 }}>新台币 TWD</div>
           </div>
           <div style={{ padding: 18, textAlign: "center" }}>
@@ -287,10 +287,7 @@ function MessageList({
     {selectedLocation && (
       <div role="dialog" aria-modal="true" style={{ position: "absolute", inset: 0, zIndex: 80, display: "flex", alignItems: "center", justifyContent: "center", padding: 22, background: "rgba(0,0,0,.42)" }}>
         <div style={{ width: "min(340px, 100%)", borderRadius: 16, overflow: "hidden", background: "#fff", color: "#222", boxShadow: "0 12px 40px rgba(0,0,0,.25)" }}>
-          <div style={{ height: 180, position: "relative", background: "linear-gradient(90deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%),linear-gradient(0deg,transparent 43%,#fff 44%,#fff 47%,transparent 48%),#dce8d5" }}>
-            <div style={{ position: "absolute", left: "51%", top: "38%", width: 28, height: 28, borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)", background: "#07c160", border: "3px solid white", boxShadow: "0 1px 5px #777" }} />
-            <div style={{ position: "absolute", left: 12, bottom: 10, background: "#fff", borderRadius: 7, padding: "5px 8px", fontSize: 11 }}>台北市 · 地图位置</div>
-          </div>
+          <iframe title="光復南路33巷地图" src={"https://www.google.com/maps?q=" + encodeURIComponent(String(selectedLocation.meta?.locationAddress || "台北市大安區光復南路33巷")) + "&output=embed"} style={{ display: "block", width: "100%", height: 180, border: 0 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
           <div style={{ padding: 16 }}>
             <div style={{ fontWeight: 700, fontSize: 17 }}>{selectedLocation.meta?.locationName || "光復南路33巷"}</div>
             <div style={{ color: "#777", fontSize: 13, marginTop: 5 }}>{selectedLocation.meta?.locationAddress || "台北市大安區光復南路33巷"}</div>
