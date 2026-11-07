@@ -4735,7 +4735,8 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="大G群聊乌龙收尾">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     appendCatLines([{ id: "wx-accidental-group-last-user-v1", sender: "我", body: "...你再说我解散。", thread: "大G" }], catRescue.stage, catRescue.branch, "wx-accidental-group-last-user");
-                    setAccidentalGroupStoryStep(23);
+                    setAccidentalGroupStoryStep(-1);
+                    p.onUi?.("wxAccidentalGroupStoryStepV1", -1);
                   }}>...你再说我解散。</button>
                 </div>
               )}
@@ -5149,7 +5150,7 @@ export function WeChatSkin(p: SkinProps) {
               <div className="wx-conversation-list">
                 {filteredConversations.map((name) => {
                   const list = allItems.filter((i) => i.title === name);
-                  const last = list.at(-1)!;
+                  const last = list.at(-1) || { body: "群聊", time: "", avatar: "", read: true, title: name, sender: "" };
                   const unread = !readThreads.includes(name) && list.some((i) => !i.read);
                   return (
                     <button className="wx-chat-row" key={name} onClick={() => {
