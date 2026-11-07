@@ -1523,6 +1523,15 @@ export function WeChatSkin(p: SkinProps) {
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const [milkTeaTransferStatus, setMilkTeaTransferStatus] = useSkinState<"pending" | "accepted" | "returned">(p, "wxMilkTeaTransferStatusV1", "pending");
   const [milkTeaArrivalWaitReady, setMilkTeaArrivalWaitReady] = useSkinState<boolean>(p, "wxMilkTeaArrivalWaitReadyV1", false);
+  const [milkTeaArrivalCallRequested, setMilkTeaArrivalCallRequested] = useSkinState<boolean>(p, "wxMilkTeaArrivalCallRequestedV1", false);
+  useEffect(() => {
+    if (returnDinnerStage !== 475 || milkTeaArrivalCallRequested || !isMonsterThread) return;
+    setMilkTeaArrivalCallRequested(true);
+    p.onUi?.("wxOutgoingCallRequest", "audio");
+    p.onUi?.("wxMilkTeaArrivalCallV1", true);
+  }, [returnDinnerStage, milkTeaArrivalCallRequested, isMonsterThread]);
+
+
 
 
   useEffect(() => {
