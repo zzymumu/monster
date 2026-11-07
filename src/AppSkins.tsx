@@ -3597,7 +3597,7 @@ export function WeChatSkin(p: SkinProps) {
     ]},
     { stage: 433, chat: "大G", id: "milk-tea-transfer-return-v1", label: "钱我退给你啦！我买完给你送录音室吧！", nextStage: 434, lines: [
       { sender: "我", body: "（退回轉帳）", thread: "大G" },
-      { sender: "系统", body: "你已退还 NT$100.00", thread: "大G", meta: { systemNotice: "yes" } },
+      { sender: "大G", body: "你已退还 NT$100.00", thread: "大G", meta: { systemNotice: "yes" } },
       { sender: "我", body: "钱我退给你啦。", thread: "大G" },
       { sender: "我", body: "我买完给你送录音室吧！", thread: "大G" },
       { sender: "我", body: "你们录音辛苦了，我请你们喝～", thread: "大G" },
