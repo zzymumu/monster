@@ -1416,11 +1416,9 @@ export function WeChatSkin(p: SkinProps) {
   // reached the DaG transcript. Keep the real uploaded MP3 and transcript in
   // the same persisted story stream so it survives reopening the chat.
   useEffect(() => {
-    // This morning voice belongs immediately after the two notification
-    // messages: Broccoli's "祖宗，你是死了吗？", then DaG's "。".
-    // It must not wait for the later door/phone scene.
+    // This morning voice follows DaG's standalone dot notification.
+    // It does not wait for the later door scene.
     const precedingMessagesDelivered =
-      p.ui?.wxPostDrunkBroccoliCheckInV1 === true &&
       p.ui?.wxPostDrunkGDotDeliveredV1 === true;
     const morningVoiceExists = allItems.some((item) => item.id === "dag-morning-voice-01-v1");
     if (!precedingMessagesDelivered || morningVoiceExists) return;
@@ -2033,7 +2031,7 @@ export function WeChatSkin(p: SkinProps) {
       id: "drunk-post-door-broccoli-checkin-v1",
       title: "西蓝花",
       sender: "西蓝花",
-      body: "祖宗，你是死了吗？",
+      body: "亲，你是死了吗？",
       time: p.virtualDate + " " + p.virtualTime,
       outgoing: false,
       meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
@@ -2106,7 +2104,7 @@ export function WeChatSkin(p: SkinProps) {
     ...orderedThreadItems.filter((item) => !notificationIds.has(item.id)),
     ...notificationStoryItems.filter((item) => belongsToActiveThread(item) && item.id !== "drunk-post-door-broccoli-checkin-v1"),
   ];
-  // Broccoli's "祖宗，你是死了吗？" is the opening incoming message of
+  // Broccoli's "亲，你是死了吗？" is the opening incoming message of
   // this post-door conversation, not a new message delivered at the bottom.
   // Place the persisted notification immediately before the player's
   // "....哈喽。" opener so later replies remain below it in true chat order.
@@ -3924,7 +3922,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && (returnDinnerStage !== 300 || p.ui?.wxPostDoorBroccoliOpenedAfterDoorV1 === true) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && (returnDinnerStage !== 300 || (p.ui?.wxPostDoorBroccoliOpenedAfterDoorV1 === true && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
