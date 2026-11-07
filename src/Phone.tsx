@@ -59,6 +59,8 @@ import {
   Mic,
   Volume2,
   VolumeX,
+  Copy,
+  UserRoundPlus,
 } from "lucide-react";
 import { getApp, type AppPlugin } from "./registry";
 import {
@@ -147,7 +149,7 @@ function PhoneRuntime({
   const [systemNow, setSystemNow] = useState(() => new Date());
   const [callElapsed, setCallElapsed] = useState(0);
   const [callMicOn, setCallMicOn] = useState(true);
-  const [callSpeakerOn, setCallSpeakerOn] = useState(false);
+  const [callSpeakerOn, setCallSpeakerOn] = useState(false);\n  const [callTopNotice, setCallTopNotice] = useState("");
   useEffect(() => {
     const updateSystemClock = () => setSystemNow(new Date());
     updateSystemClock();
@@ -1469,6 +1471,10 @@ function PhoneRuntime({
           )}
           {!creator && s.incomingCall && (
             <div className={`incoming-call-screen ${s.incomingCall.status === "answered" ? "is-connected" : ""} ${s.incomingCall.direction === "outgoing" ? "is-outgoing" : "is-incoming"}`}>
+              {callTopNotice && <div className="wechat-call-top-notice">{callTopNotice}<button onClick={() => setCallTopNotice("")}>知道了</button></div>}\n              <div className="wechat-call-top-actions">
+                <button type="button" aria-label="切换通话设备" title="切换通话设备" onClick={() => setCallSpeakerOn(v => !v)}><Copy size={25}/></button>
+                <button type="button" aria-label="添加通话成员" title="添加通话成员" onClick={() => setCallTopNotice("暂不支持添加通话成员")}><UserRoundPlus size={25}/></button>
+              </div>
               {(() => {
                 const caller = s.incomingCall!.caller;
                 const isBigG = caller === "大G" || caller === "温尚翊";
