@@ -227,7 +227,7 @@ function MessageList({
           )}
           <button
             className="skin-bubble"
-            onClick={() => { if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } creator ? onItem(i) : onRead(i.id); }}
+            onClick={() => { if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } if (creator) { onItem(i); } else { onRead(i.id); } }}
           >
             {i.kind === "call" ? (
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "#777" }}>
