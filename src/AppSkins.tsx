@@ -264,7 +264,7 @@ function MessageList({
       })}
     </div>
     {selectedTransfer && (
-      <div role="dialog" aria-modal="true" style={{ position: "absolute", inset: 0, zIndex: 80, display: "flex", alignItems: "center", justifyContent: "center", padding: 22, background: "rgba(0,0,0,.42)" }}>
+      <div role="dialog" aria-modal="true" style={{ position: "fixed", inset: 0, zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: 22, background: "rgba(0,0,0,.42)" }}>
         <div style={{ width: "min(330px, 100%)", borderRadius: 18, overflow: "hidden", background: "#fff", color: "#222", boxShadow: "0 12px 40px rgba(0,0,0,.25)" }}>
           <div style={{ background: "#fa9b45", color: "#fff", padding: "22px 18px", textAlign: "center" }}>
             <div style={{ fontSize: 13, opacity: .92 }}>大G 转账给你</div>
@@ -3591,7 +3591,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "都可以啊。", thread: "大G" },
       { sender: "大G", body: "妳喜歡的應該不會太差吧。", thread: "大G" },
     ]},
-    { stage: 433, chat: "大G", id: "milk-tea-transfer-return-v1", label: "退回转账，我买完给你送录音室吧！", nextStage: 434, lines: [
+    { stage: 433, chat: "大G", id: "milk-tea-transfer-return-v1", label: "钱我退给你啦！我买完给你送录音室吧！", nextStage: 434, lines: [
       { sender: "我", body: "（退回轉帳）", thread: "大G" },
       { sender: "大G", body: "已退回 NT$100.00", thread: "大G" },
       { sender: "我", body: "钱我退给你啦。", thread: "大G" },
