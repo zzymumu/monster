@@ -1522,7 +1522,18 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const [milkTeaTransferStatus, setMilkTeaTransferStatus] = useSkinState<"pending" | "accepted" | "returned">(p, "wxMilkTeaTransferStatusV1", "pending");
+  const [milkTeaArrivalWaitReady, setMilkTeaArrivalWaitReady] = useSkinState<boolean>(p, "wxMilkTeaArrivalWaitReadyV1", false);
 
+
+  useEffect(() => {
+    if (![469, 471, 473].includes(returnDinnerStage)) {
+      if (milkTeaArrivalWaitReady) setMilkTeaArrivalWaitReady(false);
+      return;
+    }
+    setMilkTeaArrivalWaitReady(false);
+    const timer = window.setTimeout(() => setMilkTeaArrivalWaitReady(true), 10000);
+    return () => window.clearTimeout(timer);
+  }, [returnDinnerStage]);
 
   const [milkTeaStageCollisionMigratedV3, setMilkTeaStageCollisionMigratedV3] = useSkinState<boolean>(p, "wxMilkTeaStageCollisionMigratedV3", false);
   useEffect(() => {
@@ -3689,6 +3700,24 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "路上小心。", thread: "大G" },
       { sender: "大G", body: "光復南路33巷", thread: "大G", kind: "event", meta: { locationName: "光復南路33巷", locationAddress: "台北市大安區光復南路33巷" } },
     ]},
+    { stage: 468, chat: "大G", id: "milk-tea-arrival-message-01-v1", label: "我出发啦！\n奶茶已经买好了！", nextStage: 469, lines: [
+      { sender: "我", body: "我出发啦！", thread: "大G" },
+      { sender: "我", body: "奶茶已经买好了！", thread: "大G" },
+    ]},
+    { stage: 470, chat: "大G", id: "milk-tea-arrival-message-02-v1", label: "我到附近了～\n你们录音室是在这个位置对吧？", nextStage: 471, lines: [
+      { sender: "我", body: "我到附近了～", thread: "大G" },
+      { sender: "我", body: "你们录音室是在这个位置对吧？", thread: "大G" },
+    ]},
+    { stage: 472, chat: "大G", id: "milk-tea-arrival-message-03-v1", label: "温尚翊？\n你该不会又在录音吧😂", nextStage: 473, lines: [
+      { sender: "我", body: "温尚翊？", thread: "大G" },
+      { sender: "我", body: "你该不会又在录音吧😂", thread: "大G" },
+    ]},
+    { stage: 474, chat: "大G", id: "milk-tea-arrival-message-04-v1", label: "我已经到了喔。\n温尚翊？？？\n喂喂喂！\n你能收到我消息吗？", nextStage: 475, lines: [
+      { sender: "我", body: "我已经到了喔。", thread: "大G" },
+      { sender: "我", body: "温尚翊？？？", thread: "大G" },
+      { sender: "我", body: "喂喂喂！", thread: "大G" },
+      { sender: "我", body: "你能收到我消息吗？", thread: "大G" },
+    ]},
 
   ];
 
@@ -4682,9 +4711,9 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned")) && (
+              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
-                  {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned")).map((choice) => (
+                  {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
                     <button key={choice.id} onClick={() => {
                       const choiceKey = returnDinnerStage + ":" + choice.id;
                       if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
