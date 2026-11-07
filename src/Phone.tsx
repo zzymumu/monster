@@ -154,7 +154,6 @@ function PhoneRuntime({
   const [milkTeaCallStep, setMilkTeaCallStep] = useState(-1);
   const [milkTeaCallReply, setMilkTeaCallReply] = useState(-1);
   const milkTeaAudioRef = useRef<HTMLAudioElement | null>(null);
-  const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   const milkTeaCallAudio = ["./assets/audio/dag-call-01.mp3","./assets/audio/dag-call-02.mp3","./assets/audio/dag-call-03.mp3","./assets/audio/dag-call-04.mp3"];
   const milkTeaCallLines = ["你到了是不是？pai seh，我刚才在录音没听到，我现在去接你。","你在哪啦？我怎么没有看见你。","啊，我看到你了，怎么买那么多，不是叫你少买点嘛！","好啦好啦，我帮你拿，走吧。"];
   const milkTeaCallReplies = ["嗯嗯我到啦。","啊？我在路边欸，穿白色衣服的，提了个大袋子。","没事呀，我想着你们可能会有蛮多人，喝不完可以分给其他同事嘛！"];
@@ -248,6 +247,7 @@ function PhoneRuntime({
     };
   }, [creator, ready]);
   const s = external ?? own;
+  const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   const runtimeRef = useRef(s);
   runtimeRef.current = s;
   const update = (next: Runtime) => {
