@@ -2144,14 +2144,6 @@ export function WeChatSkin(p: SkinProps) {
   const hasDrunkStoryInMonsterChat = isMonsterThread && [...allItems, ...pendingCatLines].some((item) =>
     ("title" in item ? item.title : item.thread) === "大G" && item.body.trim() === "喂！你怎么不说话！"
   );
-  const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
-    try {
-      const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
-      return group.name === p.thread && group.leftByMe !== true &&
-        Array.isArray(group.members) && group.members.includes("我") &&
-        group.members.includes("大G") && group.members.includes("西蓝花");
-    } catch { return false; }
-  });
   const catRescueActive =
     isBroccoliThread || isThreeWayGroupThread ||
     (isMonsterThread && (
@@ -4080,6 +4072,15 @@ export function WeChatSkin(p: SkinProps) {
   const [utility, setUtility] = useState("");
   const [wxChatSettingsRaw, setWxChatSettingsRaw] = useSkinState<string>(p, "wxChatSettingsV1", "{}");
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
+  const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
+    try {
+      const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
+      return group.name === p.thread && group.leftByMe !== true &&
+        Array.isArray(group.members) && group.members.includes("我") &&
+        group.members.includes("大G") && group.members.includes("西蓝花");
+    } catch { return false; }
+  });
+
   const [groupPickerOpen, setGroupPickerOpen] = useState(false);
   const [selectedGroupMembers, setSelectedGroupMembers] = useState<string[]>([]);
   const [accidentalGroupStoryStep, setAccidentalGroupStoryStep] = useSkinState<number>(p, "wxAccidentalGroupStoryStepV1", -1);
