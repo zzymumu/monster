@@ -439,18 +439,10 @@ function PhoneRuntime({
     const current = runtimeRef.current;
     const wx = current.ui?.wechat ?? {};
     const opened = String(wx.openThread ?? "");
-    const previous = postDrunkThreadRef.current;
-    postDrunkThreadRef.current = opened;
+    const previousNonEmpty = postDrunkThreadRef.current;
+    if (opened) postDrunkThreadRef.current = opened;
 
-    // The player receives Broccoli's post-door check-in only after manually
-    // returning from DaG's chat, and only after his final door line is saved.
-    const returnedToBroccoliFromDaG =
-      (previous === "大G" || previous === "温尚翊") &&
-      (opened === "西蓝花" || opened === "西兰花");
-    if (!returnedToBroccoliFromDaG || creator || !ready || locked ||
-        wx.wxDrunkFinalCallFinishedV7 !== true ||
-        wx.wxPostDoorBroccoliOpenedAfterDoorV1 === true ||
-        wx.wxPostDrunkBroccoliCheckInV1 === true) return;
+    if (creator || !ready || locked || wx.wxDrunkFinalCallFinishedV7 !== true) return;
 
     const stored = current.messages.wechat ?? [];
     let story: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
@@ -458,36 +450,51 @@ function PhoneRuntime({
     const storyMessages = Array.isArray(story.messages) ? story.messages : [];
     const transcript = [...stored, ...storyMessages];
     const doorLineDelivered = transcript.some((item) =>
-      (item.sender === "大G" || item.title === "大G") &&
-      item.body.trim() === "我到门口了，开门吧。"
+      (item.sender === "大G" || item.title === "大G" || item.meta?.storyThread === "大G") &&
+      ["我到门口了，开门吧。", "我到門口了，開門吧。"].includes(item.body.trim())
     );
-    if (!doorLineDelivered) return;
 
-    const time = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
-    const message = makeItem({
-      id: "drunk-post-door-broccoli-checkin-v1",
-      title: "西蓝花",
-      sender: "西蓝花",
-      body: "亲，你是死了吗？",
-      time,
-      outgoing: false,
-      avatar: "",
-      meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
-    });
-    const alreadyStored = stored.some((item) => item.id === message.id) || storyMessages.some((item) => item.id === message.id);
-    const nextMessage = alreadyStored ? [] : [message];
-    update({
-      ...current,
-      messages: { ...current.messages, wechat: [...stored, ...nextMessage] },
-      notifications: [...current.notifications, "微信：西蓝花：亲，你是死了吗？"].slice(-60),
-      ui: { ...current.ui, wechat: {
-        ...wx,
-        wxPostDrunkBroccoliCheckInV1: true,
-        wxPostDoorBroccoliOpenedAfterDoorV1: true,
-        catRescueState: JSON.stringify({ ...story, messages: [...storyMessages, ...nextMessage] }),
-      } },
-    });
-  }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, s.ui?.wechat?.wxPostDoorBroccoliOpenedAfterDoorV1, s.ui?.wechat?.wxPostDrunkBroccoliCheckInV1, ready, locked, creator]);
+    // Deliver Broccoli's push as soon as DaG's final door line is actually
+    // present in the saved transcript, while the player is still in DaG's chat.
+    if (doorLineDelivered && wx.wxPostDrunkBroccoliCheckInV1 !== true) {
+      const time = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
+      const message = makeItem({
+        id: "drunk-post-door-broccoli-checkin-v1",
+        title: "西蓝花",
+        sender: "西蓝花",
+        body: "亲，你是死了吗？",
+        time,
+        outgoing: false,
+        avatar: "",
+        meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
+      });
+      const alreadyStored = stored.some((item) => item.id === message.id) || storyMessages.some((item) => item.id === message.id);
+      const nextMessage = alreadyStored ? [] : [message];
+      update({
+        ...current,
+        messages: { ...current.messages, wechat: [...stored, ...nextMessage] },
+        notifications: [...current.notifications, "微信：西蓝花：亲，你是死了吗？"].slice(-60),
+        ui: { ...current.ui, wechat: {
+          ...wx,
+          wxPostDrunkBroccoliCheckInV1: true,
+          catRescueState: JSON.stringify({ ...story, messages: [...storyMessages, ...nextMessage] }),
+        } },
+      });
+      return;
+    }
+
+    // Only after leaving DaG and re-entering Broccoli is the "....哈喽。" choice unlocked.
+    const returnedToBroccoliFromDaG =
+      (previousNonEmpty === "大G" || previousNonEmpty === "温尚翊") &&
+      (opened === "西蓝花" || opened === "西兰花");
+    if (returnedToBroccoliFromDaG && doorLineDelivered &&
+        wx.wxPostDrunkBroccoliCheckInV1 === true &&
+        wx.wxPostDoorBroccoliOpenedAfterDoorV1 !== true) {
+      update({ ...current, ui: { ...current.ui, wechat: {
+        ...wx, wxPostDoorBroccoliOpenedAfterDoorV1: true,
+      } } });
+    }
+  }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxDrunkFinalCallFinishedV7, s.ui?.wechat?.catRescueState, s.messages.wechat, ready, locked, creator]);
 
   useEffect(() => {
     const wx = s.ui?.wechat ?? {};
