@@ -4201,10 +4201,10 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "不行，這次不准退。" },
       { sender: "西蓝花", body: "哈哈哈哈哈哈哈哈哈哈哈哈！！！" },
       { sender: "大G", body: "妳跟她認識很久了喔？" },
+      { sender: "西蓝花", body: "很久了！！" },
+      { sender: "西蓝花", body: "久到我觉得自己都快变成她的生活保姆了。" },
     ] },
-    { user: ["很久了！！", "久到我觉得自己都快变成她的生活保姆了。"], incoming: [
-      { sender: "西蓝花", body: "？？？？？" },
-      { sender: "西蓝花", body: "你不要在怪兽面前毁我形象！" },
+    { user: ["？？？？？", "你不要在怪兽面前毁我形象！"], incoming: [
       { sender: "大G", body: "哈哈哈哈哈哈。" },
       { sender: "大G", body: "她平常很難照顧嗎？" },
       { sender: "西蓝花", body: "何止啊！！" },
