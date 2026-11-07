@@ -458,16 +458,7 @@ function PhoneRuntime({
     // present in the saved transcript, while the player is still in DaG's chat.
     if (doorLineDelivered && wx.wxPostDrunkBroccoliCheckInV1 !== true) {
       const time = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
-      const message = makeItem({
-        id: "drunk-post-door-broccoli-checkin-v1",
-        title: "西蓝花",
-        sender: "西蓝花",
-        body: "亲，你是死了吗？",
-        time,
-        outgoing: false,
-        avatar: "",
-        meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
-      });
+;
       // At delivery time, create only the push notification. The chat bubble
       // is committed when the player taps this notification/opening Broccoli.
       update({
