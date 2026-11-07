@@ -149,7 +149,8 @@ function PhoneRuntime({
   const [systemNow, setSystemNow] = useState(() => new Date());
   const [callElapsed, setCallElapsed] = useState(0);
   const [callMicOn, setCallMicOn] = useState(true);
-  const [callSpeakerOn, setCallSpeakerOn] = useState(false);\n  const [callTopNotice, setCallTopNotice] = useState("");
+  const [callSpeakerOn, setCallSpeakerOn] = useState(false);
+  const [callTopNotice, setCallTopNotice] = useState("");
   useEffect(() => {
     const updateSystemClock = () => setSystemNow(new Date());
     updateSystemClock();
