@@ -1530,9 +1530,19 @@ export function WeChatSkin(p: SkinProps) {
   // manually opens Broccoli, then expose the first reply choice immediately.
   useEffect(() => {
     const isBroccoli = p.thread === "西蓝花" || p.thread === "西兰花";
-    if (!isBroccoli || returnDinnerStage !== 472 || p.ui?.wxMilkTeaArrivalCallFinishedV1 !== true) return;
+    if (!isBroccoli || returnDinnerStage !== 472) return;
+    // Older saves/builds can contain the visible 01:43 call record even if
+    // the dedicated completion flag was not persisted. Treat that record as
+    // authoritative proof that the milk-tea call ended, then unlock the
+    // first Broccoli reply choice as soon as her chat is opened.
+    const callFinished = p.ui?.wxMilkTeaArrivalCallFinishedV1 === true ||
+      [...p.items, ...catRescue.messages].some((item) =>
+        item.id === "milk-tea-call-duration-0143-v1" ||
+        (item.kind === "call" && item.title === "大G" && /通话时长：?\s*01:43/.test(item.body))
+      );
+    if (!callFinished) return;
     setReturnDinnerStage(500);
-  }, [returnDinnerStage, p.thread, p.ui?.wxMilkTeaArrivalCallFinishedV1]);
+  }, [returnDinnerStage, p.thread, p.ui?.wxMilkTeaArrivalCallFinishedV1, p.items, catRescue.messages]);
 
   const [broccoliSignatureCallQueued, setBroccoliSignatureCallQueued] = useSkinState<boolean>(p, "wxBroccoliSignatureCallQueuedV1", false);
   useEffect(() => {
