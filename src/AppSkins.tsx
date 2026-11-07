@@ -1509,17 +1509,19 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const [milkTeaTransferStatus, setMilkTeaTransferStatus] = useSkinState<"pending" | "accepted" | "returned">(p, "wxMilkTeaTransferStatusV1", "pending");
-  const [milkTeaStageRenumberedV2, setMilkTeaStageRenumberedV2] = useSkinState<boolean>(p, "wxMilkTeaStageRenumberedV2", false);
+
+
+  const [milkTeaStageCollisionMigratedV3, setMilkTeaStageCollisionMigratedV3] = useSkinState<boolean>(p, "wxMilkTeaStageCollisionMigratedV3", false);
   useEffect(() => {
-    // Existing saves may already be inside the earlier, shortened milk-tea
-    // exchange. Shift only its later stages to make room for the restored
-    // opening messages; stages belonging to other chats remain unchanged.
-    if (milkTeaStageRenumberedV2) return;
-    if (returnDinnerStage >= 427 && returnDinnerStage <= 443) {
-      setReturnDinnerStage(returnDinnerStage + 3);
+    if (milkTeaStageCollisionMigratedV3) return;
+    const milkTeaEvidence = [...p.items, ...catRescue.messages, ...pendingCatLines].some((item) =>
+      /真的很好喝！！|有這麼誇張？|奶茶的評價就交給妳|拜託妳幫我試喝一下啦|你已退还 NT\$100/.test(item.body)
+    );
+    if (milkTeaEvidence && returnDinnerStage >= 426 && returnDinnerStage <= 446) {
+      setReturnDinnerStage(returnDinnerStage + 21);
     }
-    setMilkTeaStageRenumberedV2(true);
-  }, [milkTeaStageRenumberedV2, returnDinnerStage]);
+    setMilkTeaStageCollisionMigratedV3(true);
+  }, [milkTeaStageCollisionMigratedV3, p.items, catRescue.messages, pendingCatLines, returnDinnerStage]);
 
   const [postLockWaitPending, setPostLockWaitPending] = useSkinState<boolean>(p, "wxPostLockWaitPendingV1", false);
   const [postLockWaitDone, setPostLockWaitDone] = useSkinState<boolean>(p, "wxPostLockWaitDoneV1", false);
@@ -3549,26 +3551,26 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "我去准备份子钱了。", thread: "西蓝花" },
     ]},
 
-    { stage: 426, chat: "大G", id: "milk-tea-favorite-v2", label: "真的很好喝！！\n我最近的最爱！", nextStage: 427, lines: [
+    { stage: 447, chat: "大G", id: "milk-tea-favorite-v2", label: "真的很好喝！！\n我最近的最爱！", nextStage: 448, lines: [
       { sender: "我", body: "真的很好喝！！", thread: "大G" },
       { sender: "我", body: "我最近的最爱！", thread: "大G" },
       { sender: "大G", body: "有這麼誇張？", thread: "大G" },
       { sender: "大G", body: "到底是有多好喝？", thread: "大G" },
     ]},
-    { stage: 427, chat: "大G", id: "milk-tea-why-so-good-v2", label: "就是很好喝啊！\n你没喝过吗？", nextStage: 428, lines: [
+    { stage: 448, chat: "大G", id: "milk-tea-why-so-good-v2", label: "就是很好喝啊！\n你没喝过吗？", nextStage: 449, lines: [
       { sender: "我", body: "就是很好喝啊！", thread: "大G" },
       { sender: "我", body: "你没喝过吗？", thread: "大G" },
       { sender: "大G", body: "沒有欸。", thread: "大G" },
       { sender: "大G", body: "最近都待在錄音室，附近也沒什麼時間去逛。", thread: "大G" },
       { sender: "大G", body: "而且常常忙到忘記吃東西。", thread: "大G" },
     ]},
-    { stage: 428, chat: "大G", id: "milk-tea-worried-about-meals-v2", label: "啊？你连饭都不好好吃？", nextStage: 429, lines: [
+    { stage: 449, chat: "大G", id: "milk-tea-worried-about-meals-v2", label: "啊？你连饭都不好好吃？", nextStage: 450, lines: [
       { sender: "我", body: "啊？你连饭都不好好吃？", thread: "大G" },
       { sender: "大G", body: "有啦。", thread: "大G" },
       { sender: "大G", body: "只是時間不太固定。", thread: "大G" },
       { sender: "大G", body: "今天又被困在錄音室了。", thread: "大G" },
     ]},
-    { stage: 429, chat: "大G", id: "milk-tea-offer-review-v2", label: "辛苦了……\n那你应该喝点好喝的！", nextStage: 430, lines: [
+    { stage: 450, chat: "大G", id: "milk-tea-offer-review-v2", label: "辛苦了……\n那你应该喝点好喝的！", nextStage: 451, lines: [
       { sender: "我", body: "辛苦了……", thread: "大G" },
       { sender: "我", body: "那你应该喝点好喝的！", thread: "大G" },
       { sender: "大G", body: "說得也是。", thread: "大G" },
@@ -3579,23 +3581,23 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "拜託妳幫我試喝一下啦。", thread: "大G" },
     ]},
 
-    { stage: 430, chat: "大G", id: "milk-tea-transfer-tease-v1", label: "你怎么突然给我转账啦！温尚翊，你这是在收买我的奶茶测评吗？", nextStage: 431, lines: [
+    { stage: 451, chat: "大G", id: "milk-tea-transfer-tease-v1", label: "你怎么突然给我转账啦！温尚翊，你这是在收买我的奶茶测评吗？", nextStage: 452, lines: [
       { sender: "我", body: "你怎么突然给我转账啦！", thread: "大G" },
       { sender: "我", body: "温尚翊，你这是在收买我的奶茶测评吗？", thread: "大G" },
       { sender: "大G", body: "不行喔？", thread: "大G" },
       { sender: "大G", body: "我這杯奶茶的評價就交給妳了。", thread: "大G" },
     ]},
-    { stage: 431, chat: "大G", id: "milk-tea-professional-reviewer-v1", label: "我可是很严格的！", nextStage: 432, lines: [
+    { stage: 452, chat: "大G", id: "milk-tea-professional-reviewer-v1", label: "我可是很严格的！", nextStage: 453, lines: [
       { sender: "我", body: "我可是很严格的！", thread: "大G" },
       { sender: "大G", body: "好，那就拜託專業評審了。", thread: "大G" },
       { sender: "大G", body: "記得幫我選一杯妳覺得最好喝的。", thread: "大G" },
     ]},
-    { stage: 432, chat: "大G", id: "milk-tea-flavor-question-v1", label: "你平时喜欢喝什么口味？", nextStage: 433, lines: [
+    { stage: 453, chat: "大G", id: "milk-tea-flavor-question-v1", label: "你平时喜欢喝什么口味？", nextStage: 454, lines: [
       { sender: "我", body: "你平时喜欢喝什么口味？", thread: "大G" },
       { sender: "大G", body: "都可以啊。", thread: "大G" },
       { sender: "大G", body: "妳喜歡的應該不會太差吧。", thread: "大G" },
     ]},
-    { stage: 433, chat: "大G", id: "milk-tea-transfer-return-v1", label: "钱我退给你啦！我买完给你送录音室吧！", nextStage: 434, lines: [
+    { stage: 454, chat: "大G", id: "milk-tea-transfer-return-v1", label: "钱我退给你啦！我买完给你送录音室吧！", nextStage: 455, lines: [
       { sender: "我", body: "（退回轉帳）", thread: "大G" },
       { sender: "大G", body: "你已退还 NT$100.00", thread: "大G", meta: { systemNotice: "yes" } },
       { sender: "我", body: "钱我退给你啦。", thread: "大G" },
@@ -3605,71 +3607,71 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "妳認真的喔？", thread: "大G" },
       { sender: "大G", body: "妳要送來錄音室喔？", thread: "大G" },
     ]},
-    { stage: 434, chat: "大G", id: "milk-tea-bring-for-everyone-v1", label: "对啊！又不只是你一个人在工作，大家都辛苦了嘛。", nextStage: 435, lines: [
+    { stage: 455, chat: "大G", id: "milk-tea-bring-for-everyone-v1", label: "对啊！又不只是你一个人在工作，大家都辛苦了嘛。", nextStage: 456, lines: [
       { sender: "我", body: "对啊！", thread: "大G" },
       { sender: "我", body: "又不只是你一个人在工作，大家都辛苦了嘛。", thread: "大G" },
       { sender: "大G", body: "不用特地跑一趟啦。", thread: "大G" },
       { sender: "大G", body: "而且我們人還不少欸。", thread: "大G" },
     ]},
-    { stage: 435, chat: "大G", id: "milk-tea-generous-offer-v1", label: "那有什么关系！请一杯也是请，请一群也是请。", nextStage: 436, lines: [
+    { stage: 456, chat: "大G", id: "milk-tea-generous-offer-v1", label: "那有什么关系！请一杯也是请，请一群也是请。", nextStage: 457, lines: [
       { sender: "我", body: "那有什么关系！", thread: "大G" },
       { sender: "我", body: "请一杯也是请，请一群也是请。", thread: "大G" },
       { sender: "大G", body: "這麼大方？", thread: "大G" },
       { sender: "大G", body: "那我是不是應該點一點貴的🤔", thread: "大G" },
     ]},
-    { stage: 436, chat: "大G", id: "milk-tea-no-expensive-order-v1", label: "温尚翊！！！你不要得寸进尺！", nextStage: 437, lines: [
+    { stage: 457, chat: "大G", id: "milk-tea-no-expensive-order-v1", label: "温尚翊！！！你不要得寸进尺！", nextStage: 458, lines: [
       { sender: "我", body: "温尚翊！！！", thread: "大G" },
       { sender: "我", body: "你不要得寸进尺！", thread: "大G" },
       { sender: "大G", body: "不是妳說要請大家的嗎？", thread: "大G" },
       { sender: "大G", body: "那我點什麼價格的應該都可以吧🤔", thread: "大G" },
     ]},
-    { stage: 437, chat: "大G", id: "milk-tea-price-limit-v1", label: "……不准点太贵的！", nextStage: 438, lines: [
+    { stage: 458, chat: "大G", id: "milk-tea-price-limit-v1", label: "……不准点太贵的！", nextStage: 459, lines: [
       { sender: "我", body: "……", thread: "大G" },
       { sender: "我", body: "不准点太贵的！", thread: "大G" },
       { sender: "大G", body: "好啦，不逗妳了。", thread: "大G" },
       { sender: "大G", body: "不過真的不用這麼客氣。", thread: "大G" },
     ]},
-    { stage: 438, chat: "大G", id: "milk-tea-thanks-band-v1", label: "不是客气啦，我是真的想谢谢你们。", nextStage: 439, lines: [
+    { stage: 459, chat: "大G", id: "milk-tea-thanks-band-v1", label: "不是客气啦，我是真的想谢谢你们。", nextStage: 460, lines: [
       { sender: "我", body: "不是客气啦。", thread: "大G" },
       { sender: "我", body: "我是真的想谢谢你们。", thread: "大G" },
       { sender: "大G", body: "謝我們什麼？", thread: "大G" },
     ]},
-    { stage: 439, chat: "大G", id: "milk-tea-thank-music-v1", label: "你们录音这么辛苦，还一直在努力做音乐啊。而且我本来就很喜欢五月天嘛。", nextStage: 440, lines: [
+    { stage: 460, chat: "大G", id: "milk-tea-thank-music-v1", label: "你们录音这么辛苦，还一直在努力做音乐啊。而且我本来就很喜欢五月天嘛。", nextStage: 461, lines: [
       { sender: "我", body: "你们录音这么辛苦，还一直在努力做音乐啊。", thread: "大G" },
       { sender: "我", body: "而且我本来就很喜欢五月天嘛。", thread: "大G" },
       { sender: "大G", body: "這樣喔。", thread: "大G" },
       { sender: "大G", body: "那我代替大家先謝謝妳了。", thread: "大G" },
       { sender: "大G", body: "我再確認一下，妳真的要來？", thread: "大G" },
     ]},
-    { stage: 440, chat: "大G", id: "milk-tea-confirm-today-v1", label: "当然啊！", nextStage: 441, lines: [
+    { stage: 461, chat: "大G", id: "milk-tea-confirm-today-v1", label: "当然啊！", nextStage: 462, lines: [
       { sender: "我", body: "当然啊！", thread: "大G" },
       { sender: "大G", body: "那妳打算什麼時候過來？", thread: "大G" },
     ]},
-    { stage: 441, chat: "大G", id: "milk-tea-leave-now-v1", label: "我现在就去买～", nextStage: 442, lines: [
+    { stage: 462, chat: "大G", id: "milk-tea-leave-now-v1", label: "我现在就去买～", nextStage: 463, lines: [
       { sender: "我", body: "我现在就去买～", thread: "大G" },
       { sender: "大G", body: "妳還真的說來就來欸。", thread: "大G" },
     ]},
-    { stage: 442, chat: "大G", id: "milk-tea-mayday-motivation-v1", label: "五月天的事情怎么能磨叽(*❦ω❦)", nextStage: 443, lines: [
+    { stage: 463, chat: "大G", id: "milk-tea-mayday-motivation-v1", label: "五月天的事情怎么能磨叽(*❦ω❦)", nextStage: 464, lines: [
       { sender: "我", body: "五月天的事情怎么能磨叽(*❦ω❦)", thread: "大G" },
       { sender: "大G", body: "那妳到了奶茶店跟我說，我去接妳。", thread: "大G" },
     ]},
-    { stage: 443, chat: "大G", id: "milk-tea-no-pickup-needed-v1", label: "不用啊，你把地址给我我直接去就好了～你忙你的。", nextStage: 444, lines: [
+    { stage: 464, chat: "大G", id: "milk-tea-no-pickup-needed-v1", label: "不用啊，你把地址给我我直接去就好了～你忙你的。", nextStage: 465, lines: [
       { sender: "我", body: "不用啊，你把地址给我我直接去就好了～你忙你的。", thread: "大G" },
       { sender: "大G", body: "我知道啦。", thread: "大G" },
       { sender: "大G", body: "只是怕妳跑一趟會太累。", thread: "大G" },
     ]},
-    { stage: 444, chat: "大G", id: "milk-tea-not-tiring-v1", label: "不会啊，我又不是去搬砖。", nextStage: 445, lines: [
+    { stage: 465, chat: "大G", id: "milk-tea-not-tiring-v1", label: "不会啊，我又不是去搬砖。", nextStage: 466, lines: [
       { sender: "我", body: "不会啊，我又不是去搬砖。", thread: "大G" },
       { sender: "大G", body: "……", thread: "大G" },
       { sender: "大G", body: "好吧，說不過妳。", thread: "大G" },
       { sender: "大G", body: "不過奶茶不用買太多。", thread: "大G" },
       { sender: "大G", body: "真的不用特地破費。", thread: "大G" },
     ]},
-    { stage: 445, chat: "大G", id: "milk-tea-dont-listen-v1", label: "知道啦知道啦！", nextStage: 446, lines: [
+    { stage: 466, chat: "大G", id: "milk-tea-dont-listen-v1", label: "知道啦知道啦！", nextStage: 467, lines: [
       { sender: "我", body: "知道啦知道啦！", thread: "大G" },
       { sender: "大G", body: "我怎麼覺得妳根本沒聽進去。", thread: "大G" },
     ]},
-    { stage: 446, chat: "大G", id: "milk-tea-you-are-annoying-v1", label: "温尚翊，你好烦！", nextStage: 447, lines: [
+    { stage: 467, chat: "大G", id: "milk-tea-you-are-annoying-v1", label: "温尚翊，你好烦！", nextStage: 468, lines: [
       { sender: "我", body: "温尚翊，你好烦！", thread: "大G" },
       { sender: "大G", body: "好，會長最大。", thread: "大G" },
       { sender: "大G", body: "路上小心。", thread: "大G" },
@@ -4137,8 +4139,14 @@ export function WeChatSkin(p: SkinProps) {
   }, [returnDinnerStage]);
 
   useEffect(() => {
-    // Opening Moments reveals the likes and only then queues DaG's opener.
-    if (milkTeaMomentTriggered || !moments || returnDinnerStage < 426) return;
+    // Stages 426-435 belong exclusively to Broccoli's studio-invitation chat.
+    // Milk tea starts only after that conversation finishes at stage 436.
+    if (!moments || returnDinnerStage < 436) return;
+    if (returnDinnerStage === 436 && milkTeaMomentTriggered) {
+      setMilkTeaMomentTriggered(false);
+      return;
+    }
+    if (milkTeaMomentTriggered || returnDinnerStage >= 447) return;
     const postExists = momentPostData.some((raw) => {
       try {
         const post = JSON.parse(raw);
@@ -4150,6 +4158,7 @@ export function WeChatSkin(p: SkinProps) {
     });
     if (!postExists) return;
     setMilkTeaMomentTriggered(true);
+    setReturnDinnerStage(447);
     setPendingCatLines((current) => current.some((line) => line.id === "milk-tea-dag-opener-v1")
       ? current
       : [...current,
