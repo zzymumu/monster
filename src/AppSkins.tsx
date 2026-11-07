@@ -3809,10 +3809,11 @@ export function WeChatSkin(p: SkinProps) {
   const [storyMomentCommentOpen, setStoryMomentCommentOpen] = useState("");
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
+  const [milkTeaMomentTriggered, setMilkTeaMomentTriggered] = useSkinState<boolean>(p, "wxMilkTeaMomentTriggeredV1", false);
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
-      const post = JSON.parse(raw) as { id: string; body: string; time: string; comments?: string[]; likes?: string[] };
+      const post = JSON.parse(raw) as { id: string; body: string; time: string; image?: string; comments?: string[]; likes?: string[] };
       return post.id && post.body ? [post] : [];
     } catch {
       return [];
@@ -3823,9 +3824,13 @@ export function WeChatSkin(p: SkinProps) {
     if (!body) return;
     const isDrunkLovePost = /我愛溫尚翊一輩子|我爱温尚翊一辈子/.test(body);
     setMomentPostData((current) => [...current, JSON.stringify({
-      id: isDrunkLovePost ? "moment-drunk-love-monster-v1" : `moment-${Date.now()}`,
+      id: /秋天的第一杯奶茶/.test(body) ? "moment-autumn-milk-tea-v1" : isDrunkLovePost ? "moment-drunk-love-monster-v1" : `moment-${Date.now()}`,
       body,
       time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      ...(/秋天的第一杯奶茶/.test(body) ? {
+        image: "/monster/assets/autumn-milk-tea.jpg",
+        likes: ["西蓝花", "大G"],
+      } : {}),
       ...(isDrunkLovePost ? { comments: ["西蓝花：？"] } : {}),
     })]);
     setMomentDraft("");
@@ -3920,6 +3925,26 @@ export function WeChatSkin(p: SkinProps) {
     }]);
     setVavaPlayStage(0);
   }, [moments, vavaMomentSeeded, momentPostData, vavaPlayMessagesExist, vavaPlayStage, vavaPlayCompleted]);
+
+  useEffect(() => {
+    // One-time autumn milk-tea post event: both friends like the post, then
+    // DaG sends the three incoming messages through the normal notification queue.
+    if (milkTeaMomentTriggered || returnDinnerStage < 426) return;
+    const postExists = momentPostData.some((raw) => {
+      try { return JSON.parse(raw).id === "moment-autumn-milk-tea-v1"; }
+      catch { return false; }
+    });
+    if (!postExists) return;
+    setMilkTeaMomentTriggered(true);
+    setPendingCatLines((current) => current.some((line) => line.id === "milk-tea-dag-opener-v1")
+      ? current
+      : [...current,
+          { id: "milk-tea-dag-opener-v1", sender: "大G", body: "欸。", thread: "大G" },
+          { id: "milk-tea-dag-question-v1", sender: "大G", body: "妳朋友圈那家奶茶真的有這麼好喝喔？", thread: "大G" },
+          { id: "milk-tea-dag-followup-v1", sender: "大G", body: "我看妳好像常常點這家。", thread: "大G" },
+        ]);
+  }, [milkTeaMomentTriggered, returnDinnerStage, momentPostData]);
+
   const updateMomentCover = (file?: File) => {
     if (!file || !file.type.startsWith("image/")) return;
     if (file.size > 4 * 1024 * 1024) {
@@ -4584,6 +4609,7 @@ export function WeChatSkin(p: SkinProps) {
               <div>
                 <strong>{ownerName}</strong>
                 <p>{entry.post.body}</p>
+                {entry.post.image && <img src={entry.post.image} alt="秋天的第一杯奶茶" style={{ display: "block", width: "min(100%, 360px)", height: "auto", objectFit: "contain", borderRadius: 3, marginTop: 8 }} />}
                 <small>{entry.post.time}</small>
                 {Array.isArray(entry.post.likes) && entry.post.likes.length > 0 && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>{entry.post.likes.map(displayName).join("、")}</div>}
                 {entry.post.id === "moment-vava-wanwan-play-fight" && !entry.post.likes?.length && <div className="wx-moment-social-likes"><span aria-hidden="true">♡</span>西蓝花、大G</div>}
