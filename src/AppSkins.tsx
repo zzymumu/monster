@@ -2142,7 +2142,7 @@ export function WeChatSkin(p: SkinProps) {
   const postDoorDoorMessageExists = [...p.items, ...catRescue.messages].some((item) =>
     !item.outgoing &&
     (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
-    /(到門口了.*開門|到门口了.*开门|開門，我在外面|开门，我在外面)/.test(item.body.trim())
+    ["我到门口了，开门吧。", "我到門口了，開門吧。"].includes(item.body.trim())
   );
   if (isBroccoliThread && postDoorDoorMessageExists) {
     const checkInId = "drunk-post-door-broccoli-checkin-v1";
@@ -3103,7 +3103,7 @@ export function WeChatSkin(p: SkinProps) {
     const doorMessageExists = [...p.items, ...catRescue.messages].some((item) =>
       !item.outgoing &&
       (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
-      /(到門口了.*開門|到门口了.*开门|開門，我在外面|开门，我在外面)/.test(item.body.trim())
+      ["我到门口了，开门吧。", "我到門口了，開門吧。"].includes(item.body.trim())
     );
     if (isBroccoli && doorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true && returnDinnerStage < 300) {
       setReturnDinnerStage(300);
@@ -3938,7 +3938,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0 || postDoorHelloReady) && (returnDinnerStage !== 300 || p.ui?.wxPostDrunkBroccoliCheckInV1 === true) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0 || postDoorHelloReady) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
