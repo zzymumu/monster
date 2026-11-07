@@ -4690,8 +4690,8 @@ export function WeChatSkin(p: SkinProps) {
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     const turn = accidentalGroupStory[accidentalGroupStoryStep];
                     const lines: CatLine[] = [
-                      ...turn.user.map((body, index) => ({ id: "wx-accidental-group-user-" + accidentalGroupStoryStep + "-" + index, sender: "我" as const, body, thread: "大G" })),
-                      ...turn.incoming.map((body, index) => ({ id: "wx-accidental-group-dag-" + accidentalGroupStoryStep + "-" + index, sender: "大G" as const, body, thread: "大G" })),
+                      ...turn.user.map((body, index) => ({ id: "wx-accidental-group-user-" + accidentalGroupStoryStep + "-" + index, sender: "我" as const, body, thread: "大G" as const })),
+                      ...turn.incoming.map((body, index) => ({ id: "wx-accidental-group-dag-" + accidentalGroupStoryStep + "-" + index, sender: "大G" as const, body, thread: "大G" as const })),
                     ];
                     appendCatLines(lines, catRescue.stage, catRescue.branch, "wx-accidental-group-turn-" + accidentalGroupStoryStep);
                     setAccidentalGroupStoryStep((current) => current + 1);
