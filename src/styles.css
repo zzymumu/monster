@@ -7158,3 +7158,98 @@ label {
   padding: 0 !important;
   margin: 0 !important;
 }
+
+
+/* WeChat voice-call reference layout: outgoing/ringing and connected controls. */
+.incoming-call-screen.is-outgoing,
+.incoming-call-screen.is-connected {
+  background:
+    radial-gradient(ellipse at 50% 58%, rgba(91,63,79,.46), transparent 52%),
+    linear-gradient(155deg,#352d37 0%,#422d3a 54%,#241f2b 100%);
+  padding: max(54px, env(safe-area-inset-top)) 24px max(34px, env(safe-area-inset-bottom));
+}
+.incoming-call-screen.is-outgoing .wechat-call-topline {
+  margin-top: 5px;
+  font-size: 0;
+  color: transparent;
+}
+.incoming-call-screen.is-outgoing .wechat-call-topline::after {
+  content: " ";
+}
+.incoming-call-screen.is-outgoing .incoming-avatar,
+.incoming-call-screen.is-connected .incoming-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 13px;
+  margin-top: 270px;
+  box-shadow: none;
+}
+.incoming-call-screen.is-outgoing h2,
+.incoming-call-screen.is-connected h2 {
+  font-size: 23px;
+  margin-top: 30px;
+}
+.incoming-call-screen.is-outgoing .wechat-call-state,
+.incoming-call-screen.is-connected .wechat-call-state {
+  margin-top: 14px;
+  padding: 7px 14px;
+  border-radius: 18px;
+  background: rgba(0,0,0,.22);
+  color: rgba(255,255,255,.68);
+  font-size: 14px;
+}
+.incoming-call-screen.is-connected .incoming-avatar { margin-top: 300px; }
+.incoming-call-screen .wechat-call-timer {
+  position: absolute;
+  top: max(58px, calc(env(safe-area-inset-top) + 28px));
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.incoming-call-screen.is-connected .wechat-call-state { background: transparent; }
+.incoming-call-screen .incoming-actions {
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 10px max(22px, env(safe-area-inset-bottom));
+}
+.incoming-call-screen .incoming-actions > button.call-control {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 13px;
+  color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.incoming-call-screen .incoming-actions > button.call-control > svg {
+  width: 68px;
+  height: 68px;
+  padding: 21px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: #17151b;
+  color: #fff;
+  transform: none;
+}
+.incoming-call-screen .incoming-actions > button.call-control.control-active > svg {
+  background: #fff;
+  color: #111;
+}
+.incoming-call-screen .incoming-actions > button.call-control.control-muted > svg {
+  background: #17151b;
+  color: #fff;
+}
+.incoming-call-screen .incoming-actions > button.call-control.decline-call > svg {
+  background: #fa5151;
+  color: #fff;
+  transform: none;
+}
+.incoming-call-screen.is-incoming .incoming-actions > button.call-control.accept-call > svg {
+  background: #07c160;
+}
