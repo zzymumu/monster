@@ -4981,7 +4981,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的群聊回复</div>
                 </div>
               )}
-              {activeGroupChat && threeWayGroupStoryStep >= 0 && threeWayGroupStoryStep < threeWayGroupStory.length && pendingCatLines.length === 0 && (
+              {activeGroupChat && !threeWayRejoinReplyPending && threeWayGroupStoryStep >= 0 && threeWayGroupStoryStep < threeWayGroupStory.length && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="三人群聊互动选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     const turn = threeWayGroupStory[threeWayGroupStoryStep];
