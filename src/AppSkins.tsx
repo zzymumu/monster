@@ -3088,28 +3088,22 @@ export function WeChatSkin(p: SkinProps) {
 
   ];
 
-  // Start the new Broccoli scene only after the player reads DaG's door message,
-  // manually leaves his chat, and then opens Broccoli.
+  // The player opens Broccoli directly from her notification after DaG's
+  // final door message. Do not require an intermediate empty/home thread:
+  // entering Broccoli once is the handoff and should reveal the hello choice.
   useEffect(() => {
-    const previous = postDoorThreadRef.current;
     const current = p.thread || "";
-    postDoorThreadRef.current = current;
-    const isDaG = (value: string) => value === "大G" || value === "温尚翊";
-    const isBroccoli = (value: string) => value === "西蓝花" || value === "西兰花";
+    const isBroccoli = current === "西蓝花" || current === "西兰花";
     const doorMessageExists = [...p.items, ...catRescue.messages].some((item) =>
       !item.outgoing &&
       (item.sender === "大G" || item.sender === "温尚翊" || item.title === "大G" || item.title === "温尚翊") &&
       /(到門口了.*開門|到门口了.*开门|開門，我在外面|开门，我在外面)/.test(item.body.trim())
     );
-    if (isDaG(previous) && current === "" && doorMessageExists && !postDoorBroccoliHandoffArmed && returnDinnerStage < 300) {
-      setPostDoorBroccoliHandoffArmed(true);
-      return;
-    }
-    if (postDoorBroccoliHandoffArmed && isBroccoli(current) && returnDinnerStage < 300) {
+    if (isBroccoli && doorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true && returnDinnerStage < 300) {
       setPostDoorBroccoliHandoffArmed(false);
       setReturnDinnerStage(300);
     }
-  }, [p.thread, p.items, catRescue.messages, postDoorBroccoliHandoffArmed, returnDinnerStage]);
+  }, [p.thread, p.items, catRescue.messages, p.ui?.wxPostDrunkBroccoliCheckInV1, returnDinnerStage]);
   // Contact handoffs are manual. When the player opens the destination
   // contact, activate that contact's waiting stage without navigating for them.
   useEffect(() => {
@@ -3939,7 +3933,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && (returnDinnerStage !== 300 || (p.ui?.wxPostDoorBroccoliOpenedAfterDoorV1 === true && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
+              {returnDinnerStage !== 261 && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && (returnDinnerStage !== 300 || p.ui?.wxPostDrunkBroccoliCheckInV1 === true) && returnDinnerChoices.some((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === returnDinnerStage && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "")).map((choice) => (
                     <button key={choice.id} onClick={() => {
