@@ -233,8 +233,17 @@ function MessageList({
               <ItemMedia item={i} />
             ) : i.kind === "transfer" ? (
               <div className="skin-transfer">
-                ¥ {body}
-                <small>转账记录 · 虚构</small>
+                <strong>NT$ {Number(i.meta?.amount ?? body).toFixed(2)}</strong>
+                <small>微信转账 · 待接收</small>
+              </div>
+            ) : i.kind === "location" ? (
+              <div style={{ width: 250, borderRadius: 8, overflow: "hidden", background: "#f1f2f4", color: "#222", textAlign: "left" }}>
+                <div style={{ padding: "10px 12px 5px", fontWeight: 600 }}>{i.meta?.locationName || body}</div>
+                <div style={{ padding: "0 12px 9px", color: "#8b8f98", fontSize: 12 }}>{i.meta?.locationAddress || body}</div>
+                <div style={{ height: 112, position: "relative", background: "linear-gradient(90deg,transparent 47%,#fff 48%,#fff 53%,transparent 54%),linear-gradient(0deg,transparent 43%,#fff 44%,#fff 50%,transparent 51%),#dce8d5" }}>
+                  <div style={{ position: "absolute", left: "56%", top: "32%", width: 25, height: 25, borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)", background: "#16c77a", border: "3px solid white", boxShadow: "0 1px 4px #999" }} />
+                  <div style={{ position: "absolute", left: "58%", top: "60%", fontSize: 11, color: "#59636b" }}>光復南路</div>
+                </div>
               </div>
             ) : (
               body
@@ -3481,6 +3490,111 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "西蓝花", body: "行了，你跟你家怪兽聊天去吧，我要去追韩剧了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "有什么进展跟我说啊！", thread: "西蓝花" },
       { sender: "西蓝花", body: "我去准备份子钱了。", thread: "西蓝花" },
+    ]},
+
+    { stage: 426, chat: "大G", id: "milk-tea-propose-transfer-v1", label: "那我就按我的口味帮你选！", nextStage: 427, lines: [
+      { sender: "我", body: "那我就按我的口味帮你选！", thread: "大G" },
+      { sender: "大G", body: "不然這樣好了。", thread: "大G" },
+      { sender: "大G", body: "100.00", thread: "大G", kind: "transfer", meta: { amount: 100, currency: "TWD", transferStatus: "pending" } },
+      { sender: "大G", body: "今天真的走不開。", thread: "大G" },
+      { sender: "大G", body: "等忙完再去喝好了。", thread: "大G" },
+      { sender: "大G", body: "拜託妳幫我試喝一下啦。", thread: "大G" },
+    ]},
+    { stage: 427, chat: "大G", id: "milk-tea-transfer-tease-v1", label: "你怎么突然给我转账啦！温尚翊，你这是在收买我的奶茶测评吗？", nextStage: 428, lines: [
+      { sender: "我", body: "你怎么突然给我转账啦！", thread: "大G" },
+      { sender: "我", body: "温尚翊，你这是在收买我的奶茶测评吗？", thread: "大G" },
+      { sender: "大G", body: "不行喔？", thread: "大G" },
+      { sender: "大G", body: "我這杯奶茶的評價就交給妳了。", thread: "大G" },
+    ]},
+    { stage: 428, chat: "大G", id: "milk-tea-professional-reviewer-v1", label: "我可是很严格的！", nextStage: 429, lines: [
+      { sender: "我", body: "我可是很严格的！", thread: "大G" },
+      { sender: "大G", body: "好，那就拜託專業評審了。", thread: "大G" },
+      { sender: "大G", body: "記得幫我選一杯妳覺得最好喝的。", thread: "大G" },
+    ]},
+    { stage: 429, chat: "大G", id: "milk-tea-flavor-question-v1", label: "你平时喜欢喝什么口味？", nextStage: 430, lines: [
+      { sender: "我", body: "你平时喜欢喝什么口味？", thread: "大G" },
+      { sender: "大G", body: "都可以啊。", thread: "大G" },
+      { sender: "大G", body: "妳喜歡的應該不會太差吧。", thread: "大G" },
+    ]},
+    { stage: 430, chat: "大G", id: "milk-tea-transfer-return-v1", label: "退回转账，我买完给你送录音室吧！", nextStage: 431, lines: [
+      { sender: "我", body: "（退回轉帳）", thread: "大G" },
+      { sender: "系统", body: "已退回 NT$100.00", thread: "大G" },
+      { sender: "我", body: "钱我退给你啦。", thread: "大G" },
+      { sender: "我", body: "我买完给你送录音室吧！", thread: "大G" },
+      { sender: "我", body: "你们录音辛苦了，我请你们喝～", thread: "大G" },
+      { sender: "大G", body: "欸？", thread: "大G" },
+      { sender: "大G", body: "妳認真的喔？", thread: "大G" },
+      { sender: "大G", body: "妳要送來錄音室喔？", thread: "大G" },
+    ]},
+    { stage: 431, chat: "大G", id: "milk-tea-bring-for-everyone-v1", label: "对啊！又不只是你一个人在工作，大家都辛苦了嘛。", nextStage: 432, lines: [
+      { sender: "我", body: "对啊！", thread: "大G" },
+      { sender: "我", body: "又不只是你一个人在工作，大家都辛苦了嘛。", thread: "大G" },
+      { sender: "大G", body: "不用特地跑一趟啦。", thread: "大G" },
+      { sender: "大G", body: "而且我們人還不少欸。", thread: "大G" },
+    ]},
+    { stage: 432, chat: "大G", id: "milk-tea-generous-offer-v1", label: "那有什么关系！请一杯也是请，请一群也是请。", nextStage: 433, lines: [
+      { sender: "我", body: "那有什么关系！", thread: "大G" },
+      { sender: "我", body: "请一杯也是请，请一群也是请。", thread: "大G" },
+      { sender: "大G", body: "這麼大方？", thread: "大G" },
+      { sender: "大G", body: "那我是不是應該點一點貴的🤔", thread: "大G" },
+    ]},
+    { stage: 433, chat: "大G", id: "milk-tea-no-expensive-order-v1", label: "温尚翊！！！你不要得寸进尺！", nextStage: 434, lines: [
+      { sender: "我", body: "温尚翊！！！", thread: "大G" },
+      { sender: "我", body: "你不要得寸进尺！", thread: "大G" },
+      { sender: "大G", body: "不是妳說要請大家的嗎？", thread: "大G" },
+      { sender: "大G", body: "那我點什麼價格的應該都可以吧🤔", thread: "大G" },
+    ]},
+    { stage: 434, chat: "大G", id: "milk-tea-price-limit-v1", label: "……不准点太贵的！", nextStage: 435, lines: [
+      { sender: "我", body: "……", thread: "大G" },
+      { sender: "我", body: "不准点太贵的！", thread: "大G" },
+      { sender: "大G", body: "好啦，不逗妳了。", thread: "大G" },
+      { sender: "大G", body: "不過真的不用這麼客氣。", thread: "大G" },
+    ]},
+    { stage: 435, chat: "大G", id: "milk-tea-thanks-band-v1", label: "不是客气啦，我是真的想谢谢你们。", nextStage: 436, lines: [
+      { sender: "我", body: "不是客气啦。", thread: "大G" },
+      { sender: "我", body: "我是真的想谢谢你们。", thread: "大G" },
+      { sender: "大G", body: "謝我們什麼？", thread: "大G" },
+    ]},
+    { stage: 436, chat: "大G", id: "milk-tea-thank-music-v1", label: "你们录音这么辛苦，还一直在努力做音乐啊。而且我本来就很喜欢五月天嘛。", nextStage: 437, lines: [
+      { sender: "我", body: "你们录音这么辛苦，还一直在努力做音乐啊。", thread: "大G" },
+      { sender: "我", body: "而且我本来就很喜欢五月天嘛。", thread: "大G" },
+      { sender: "大G", body: "這樣喔。", thread: "大G" },
+      { sender: "大G", body: "那我代替大家先謝謝妳了。", thread: "大G" },
+      { sender: "大G", body: "我再確認一下，妳真的要來？", thread: "大G" },
+    ]},
+    { stage: 437, chat: "大G", id: "milk-tea-confirm-today-v1", label: "当然啊！", nextStage: 438, lines: [
+      { sender: "我", body: "当然啊！", thread: "大G" },
+      { sender: "大G", body: "那妳打算什麼時候過來？", thread: "大G" },
+    ]},
+    { stage: 438, chat: "大G", id: "milk-tea-leave-now-v1", label: "我现在就去买～", nextStage: 439, lines: [
+      { sender: "我", body: "我现在就去买～", thread: "大G" },
+      { sender: "大G", body: "妳還真的說來就來欸。", thread: "大G" },
+    ]},
+    { stage: 439, chat: "大G", id: "milk-tea-mayday-motivation-v1", label: "五月天的事情怎么能磨叽(*❦ω❦)", nextStage: 440, lines: [
+      { sender: "我", body: "五月天的事情怎么能磨叽(*❦ω❦)", thread: "大G" },
+      { sender: "大G", body: "那妳到了奶茶店跟我說，我去接妳。", thread: "大G" },
+    ]},
+    { stage: 440, chat: "大G", id: "milk-tea-no-pickup-needed-v1", label: "不用啊，你把地址给我我直接去就好了～你忙你的。", nextStage: 441, lines: [
+      { sender: "我", body: "不用啊，你把地址给我我直接去就好了～你忙你的。", thread: "大G" },
+      { sender: "大G", body: "我知道啦。", thread: "大G" },
+      { sender: "大G", body: "只是怕妳跑一趟會太累。", thread: "大G" },
+    ]},
+    { stage: 441, chat: "大G", id: "milk-tea-not-tiring-v1", label: "不会啊，我又不是去搬砖。", nextStage: 442, lines: [
+      { sender: "我", body: "不会啊，我又不是去搬砖。", thread: "大G" },
+      { sender: "大G", body: "……", thread: "大G" },
+      { sender: "大G", body: "好吧，說不過妳。", thread: "大G" },
+      { sender: "大G", body: "不過奶茶不用買太多。", thread: "大G" },
+      { sender: "大G", body: "真的不用特地破費。", thread: "大G" },
+    ]},
+    { stage: 442, chat: "大G", id: "milk-tea-dont-listen-v1", label: "知道啦知道啦！", nextStage: 443, lines: [
+      { sender: "我", body: "知道啦知道啦！", thread: "大G" },
+      { sender: "大G", body: "我怎麼覺得妳根本沒聽進去。", thread: "大G" },
+    ]},
+    { stage: 443, chat: "大G", id: "milk-tea-you-are-annoying-v1", label: "温尚翊，你好烦！", nextStage: 444, lines: [
+      { sender: "我", body: "温尚翊，你好烦！", thread: "大G" },
+      { sender: "大G", body: "好，會長最大。", thread: "大G" },
+      { sender: "大G", body: "路上小心。", thread: "大G" },
+      { sender: "大G", body: "光復南路33巷", thread: "大G", kind: "location", meta: { locationName: "光復南路33巷", locationAddress: "台北市大安區光復南路33巷" } },
     ]},
 
   ];
