@@ -263,7 +263,22 @@ function MessageList({
             </small>
           </button>
           {!whatsapp && i.outgoing && <Avatar name={i.sender} src={selfAvatar || i.avatar} />}
-        </div>;
+        </div>
+        {wechat && i.kind === "transfer" && transferStatus === "returned" && (
+          <div className="skin-message outgoing" style={{ justifyContent: "flex-end", marginTop: 5 }}>
+            <div style={{ minWidth: 220, maxWidth: 285, borderRadius: 8, padding: "13px 15px", background: "#b77b37", color: "#fff", boxShadow: "0 1px 2px rgba(0,0,0,.12)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ width: 43, height: 43, border: "3px solid rgba(255,255,255,.72)", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 29, lineHeight: 1 }}>↶</span>
+                <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <strong style={{ fontSize: 25, fontWeight: 600 }}>NT$100.00</strong>
+                  <small style={{ color: "rgba(255,255,255,.82)", fontSize: 13 }}>已退还</small>
+                </span>
+              </div>
+              <div style={{ borderTop: "1px solid rgba(255,255,255,.2)", marginTop: 11, paddingTop: 7, fontSize: 12, color: "rgba(255,255,255,.82)" }}>转账</div>
+            </div>
+            <Avatar name="我" src={selfAvatar} />
+          </div>
+        )};
       })}
     </div>
     {selectedTransfer && (
