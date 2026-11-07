@@ -167,6 +167,9 @@ function MessageList({
   monsterAvatar?: string;
 }) {
   const messagesRef = useRef<HTMLDivElement>(null);
+  const [selectedTransfer, setSelectedTransfer] = useState<Item | null>(null);
+  const [transferStatuses, setTransferStatuses] = useState<Record<string, "pending" | "accepted" | "returned">>({});
+  const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
   // Include the final message identity and body: a transcript can be updated
   // without changing its length (for example when an old save is repaired).
   const displayItems = items.map((item) =>
@@ -190,6 +193,7 @@ function MessageList({
   }, [items.length, messageContentKey]);
 
   return (
+    <>
     <div ref={messagesRef} className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""} ${wechat && wallpaper ? "wx-photo-wallpaper" : ""}`} style={wechat && wallpaper ? { backgroundImage: `url("${wallpaper}")`, backgroundSize: "cover", backgroundPosition: "center center" } : undefined}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
       {displayItems.map((i) => {
@@ -220,7 +224,7 @@ function MessageList({
           )}
           <button
             className="skin-bubble"
-            onClick={() => (creator ? onItem(i) : onRead(i.id))}
+            onClick={() => { if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } creator ? onItem(i) : onRead(i.id); }}
           >
             {i.kind === "call" ? (
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "#777" }}>
@@ -232,9 +236,10 @@ function MessageList({
             ) : ["image", "audio", "video"].includes(i.kind) ? (
               <ItemMedia item={i} />
             ) : i.kind === "transfer" ? (
-              <div className="skin-transfer">
+              <div className="skin-transfer" style={{ minWidth: 205, textAlign: "left" }}>
                 <strong>NT$ {Number(i.meta?.amount ?? body).toFixed(2)}</strong>
-                <small>微信转账 · 待接收</small>
+                <small>{transferStatuses[i.id] === "accepted" ? "已收款" : transferStatuses[i.id] === "returned" ? "已退还" : "微信转账 · 待接收"}</small>
+                <small style={{ display: "block", marginTop: 7, opacity: .8 }}>点击查看转账详情</small>
               </div>
             ) : i.kind === "event" && i.meta?.locationName ? (
               <div style={{ width: 250, borderRadius: 8, overflow: "hidden", background: "#f1f2f4", color: "#222", textAlign: "left" }}>
@@ -244,6 +249,7 @@ function MessageList({
                   <div style={{ position: "absolute", left: "56%", top: "32%", width: 25, height: 25, borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)", background: "#16c77a", border: "3px solid white", boxShadow: "0 1px 4px #999" }} />
                   <div style={{ position: "absolute", left: "58%", top: "60%", fontSize: 11, color: "#59636b" }}>光復南路</div>
                 </div>
+                <div style={{ padding: "8px 12px", color: "#07a65a", fontSize: 12 }}>点击查看位置 ›</div>
               </div>
             ) : (
               body
@@ -257,6 +263,44 @@ function MessageList({
         </div>;
       })}
     </div>
+    {selectedTransfer && (
+      <div role="dialog" aria-modal="true" style={{ position: "absolute", inset: 0, zIndex: 80, display: "flex", alignItems: "center", justifyContent: "center", padding: 22, background: "rgba(0,0,0,.42)" }}>
+        <div style={{ width: "min(330px, 100%)", borderRadius: 18, overflow: "hidden", background: "#fff", color: "#222", boxShadow: "0 12px 40px rgba(0,0,0,.25)" }}>
+          <div style={{ background: "#fa9b45", color: "#fff", padding: "22px 18px", textAlign: "center" }}>
+            <div style={{ fontSize: 13, opacity: .92 }}>大G 转账给你</div>
+            <div style={{ fontSize: 32, fontWeight: 700, marginTop: 8 }}>¥{Number(selectedTransfer.meta?.amount ?? selectedTransfer.body).toFixed(2)}</div>
+            <div style={{ fontSize: 12, marginTop: 5 }}>新台币 TWD</div>
+          </div>
+          <div style={{ padding: 18, textAlign: "center" }}>
+            <div style={{ fontSize: 13, color: "#777", marginBottom: 16 }}>{transferStatuses[selectedTransfer.id] === "accepted" ? "已收款" : transferStatuses[selectedTransfer.id] === "returned" ? "已退还给对方" : "转账待确认"}</div>
+            {transferStatuses[selectedTransfer.id] === "pending" || !transferStatuses[selectedTransfer.id] ? (
+              <div style={{ display: "flex", gap: 10 }}>
+                <button onClick={() => { setTransferStatuses(v => ({ ...v, [selectedTransfer.id]: "returned" })); setSelectedTransfer(null); }} style={{ flex: 1, border: "1px solid #ddd", background: "#fff", color: "#444", borderRadius: 9, padding: "12px 6px", fontSize: 14 }}>退还转账</button>
+                <button onClick={() => { setTransferStatuses(v => ({ ...v, [selectedTransfer.id]: "accepted" })); setSelectedTransfer(null); }} style={{ flex: 1, border: 0, background: "#07c160", color: "#fff", borderRadius: 9, padding: "12px 6px", fontSize: 14 }}>确认收款</button>
+              </div>
+            ) : <button onClick={() => setSelectedTransfer(null)} style={{ width: "100%", border: 0, background: "#07c160", color: "#fff", borderRadius: 9, padding: 12 }}>完成</button>}
+            <button onClick={() => setSelectedTransfer(null)} style={{ marginTop: 12, border: 0, background: "transparent", color: "#999", padding: 6 }}>关闭</button>
+          </div>
+        </div>
+      </div>
+    )}
+    {selectedLocation && (
+      <div role="dialog" aria-modal="true" style={{ position: "absolute", inset: 0, zIndex: 80, display: "flex", alignItems: "center", justifyContent: "center", padding: 22, background: "rgba(0,0,0,.42)" }}>
+        <div style={{ width: "min(340px, 100%)", borderRadius: 16, overflow: "hidden", background: "#fff", color: "#222", boxShadow: "0 12px 40px rgba(0,0,0,.25)" }}>
+          <div style={{ height: 180, position: "relative", background: "linear-gradient(90deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%),linear-gradient(0deg,transparent 43%,#fff 44%,#fff 47%,transparent 48%),#dce8d5" }}>
+            <div style={{ position: "absolute", left: "51%", top: "38%", width: 28, height: 28, borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)", background: "#07c160", border: "3px solid white", boxShadow: "0 1px 5px #777" }} />
+            <div style={{ position: "absolute", left: 12, bottom: 10, background: "#fff", borderRadius: 7, padding: "5px 8px", fontSize: 11 }}>台北市 · 地图位置</div>
+          </div>
+          <div style={{ padding: 16 }}>
+            <div style={{ fontWeight: 700, fontSize: 17 }}>{selectedLocation.meta?.locationName || "光復南路33巷"}</div>
+            <div style={{ color: "#777", fontSize: 13, marginTop: 5 }}>{selectedLocation.meta?.locationAddress || "台北市大安區光復南路33巷"}</div>
+            <button onClick={() => window.open("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(String(selectedLocation.meta?.locationAddress || "台北市大安區光復南路33巷")), "_blank", "noopener,noreferrer")} style={{ width: "100%", border: 0, background: "#07c160", color: "#fff", borderRadius: 9, padding: 12, marginTop: 16, fontSize: 14 }}>在地图中打开 / 导航</button>
+            <button onClick={() => setSelectedLocation(null)} style={{ width: "100%", border: 0, background: "transparent", color: "#999", padding: 10, marginTop: 4 }}>关闭</button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 function Compose({
