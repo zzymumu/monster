@@ -4275,24 +4275,26 @@ export function WeChatSkin(p: SkinProps) {
                   }))} style={{ border: 0, background: "transparent", color: entry.post.likes.includes(ownerName) ? "#576b95" : "#666", fontSize: 13, cursor: "pointer" }}>
                     {entry.post.likes.includes(ownerName) ? "取消" : "♡"} 赞
                   </button>
-                  <button type="button" onClick={() => setStoryMomentCommentDraft("说好给我看的！")} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
+                  <button type="button" disabled={!entry.post.likes.includes(ownerName)} onClick={() => setStoryMomentCommentDraft("说好给我看的！")} style={{ border: 0, background: "transparent", color: entry.post.likes.includes(ownerName) ? "#576b95" : "#aaa", fontSize: 13, cursor: entry.post.likes.includes(ownerName) ? "pointer" : "not-allowed" }}>评论</button>
                 </div>
                 {(entry.post.likes.length > 0 || entry.post.comments.length > 0) && <div className="wx-moment-social-likes" style={{ marginTop: 0 }}>
                   {entry.post.likes.length > 0 && <div>♡ {entry.post.likes.join("、")}</div>}
                   {entry.post.comments.map((comment: string, index: number) => <div className="wx-moment-social-comment" key={index}>{comment}</div>)}
                 </div>}
-                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-                  <input aria-label="朋友圈评论" value={storyMomentCommentDraft} onChange={(event) => setStoryMomentCommentDraft(event.target.value)} placeholder="说好给我看的！" style={{ flex: 1, minWidth: 0, border: "1px solid #e5e5e5", borderRadius: 4, padding: "7px 9px", fontSize: 13 }} />
-                  <button type="button" disabled={!storyMomentCommentDraft.trim()} onClick={() => {
-                    const comment = storyMomentCommentDraft.trim();
-                    if (!comment) return;
-                    setStoryFriendMomentPosts((current) => current.map((raw) => {
-                      const post = JSON.parse(raw);
-                      return post.id === entry.id ? JSON.stringify({ ...post, comments: [...(post.comments || []), ownerName + "：" + comment] }) : raw;
-                    }));
-                    setStoryMomentCommentDraft("");
-                  }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>发送</button>
-                </div>
+                {entry.post.likes.includes(ownerName) ? (
+                  <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                    <input aria-label="朋友圈评论" value={storyMomentCommentDraft} onChange={(event) => setStoryMomentCommentDraft(event.target.value)} placeholder="说好给我看的！" style={{ flex: 1, minWidth: 0, border: "1px solid #e5e5e5", borderRadius: 4, padding: "7px 9px", fontSize: 13 }} />
+                    <button type="button" disabled={!storyMomentCommentDraft.trim()} onClick={() => {
+                      const comment = storyMomentCommentDraft.trim();
+                      if (!comment) return;
+                      setStoryFriendMomentPosts((current) => current.map((raw) => {
+                        const post = JSON.parse(raw);
+                        return post.id === entry.id ? JSON.stringify({ ...post, comments: [...(post.comments || []), ownerName + "：" + comment] }) : raw;
+                      }));
+                      setStoryMomentCommentDraft("");
+                    }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>发送</button>
+                  </div>
+                ) : <small style={{ display: "block", color: "#999", marginTop: 8 }}>点赞后可以评论</small>}
               </div>
             </article>
           ) : entry.type === "mine" ? (
