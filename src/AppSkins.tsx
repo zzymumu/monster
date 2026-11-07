@@ -3626,24 +3626,6 @@ export function WeChatSkin(p: SkinProps) {
   }, [returnDinnerStage]);
 
   useEffect(() => {
-    // Once the player has finished the current DaG chat and opens Moments,
-    // seed the promised home photo exactly once. No automatic like/comment.
-    if (!moments || returnDinnerStage < 392) return;
-    const postId = "dag-wanwan-home-photo-v1";
-    setStoryFriendMomentPosts((current) => current.some((raw) => {
-      try { return JSON.parse(raw).id === postId; } catch { return false; }
-    }) ? current : [...current, JSON.stringify({
-      id: postId,
-      sender: "大G",
-      body: "终于回家了，小朋友。",
-      image: "./assets/wannwan-sleeping-cat.jpg",
-      time: new Date().toLocaleString("zh-CN", { hour12: false }),
-      likes: [],
-      comments: [],
-    })]);
-  }, [moments, returnDinnerStage]);
-
-  useEffect(() => {
     // Phase 1: after the original found-cat conversation is complete,
     // create the Vava/玩玩 post with both likes. Do not message DaG yet.
     const foundCatConversationFinished =
@@ -3728,7 +3710,7 @@ export function WeChatSkin(p: SkinProps) {
   const posts = allItems.filter((i) => i.folder === "朋友圈" || i.kind === "post");
   const storyFriendPosts = storyFriendMomentPosts.flatMap((raw) => {
     try {
-      const post = JSON.parse(raw) as { id: string; sender: string; body: string; image: string; time: string; likes: string[]; comments: string[] };
+      const post = JSON.parse(raw) as { id: string; sender: string; body: string; image: string; time: string; likes: string[]; comments: string[]; replyQueued?: boolean };
       return post.id ? [post] : [];
     } catch { return []; }
   });
@@ -4277,9 +4259,9 @@ export function WeChatSkin(p: SkinProps) {
           </div>
           {momentFeed.map((entry) => entry.type === "story-friend" ? (
             <article key={entry.id} className="wx-moment-post" style={{ display: "flex", gap: 12, padding: "16px 14px", borderBottom: "1px solid #eee", background: "#fff" }}>
-              <Avatar name="大G" src={allItems.find((item) => item.sender === "大G")?.avatar} className="wx-moment-feed-avatar" />
+              <Avatar name={displayName("大G")} src={allItems.find((item) => item.sender === "大G" && item.avatar)?.avatar || "./assets/dag-new-avatar.jpg"} className="wx-moment-feed-avatar" />
               <div style={{ minWidth: 0, flex: 1 }}>
-                <strong style={{ color: "#576b95" }}>大G</strong>
+                <strong style={{ color: "#576b95" }}>{displayName("大G")}</strong>
                 <p style={{ margin: "7px 0 10px", whiteSpace: "pre-wrap" }}>{entry.post.body}</p>
                 <img src={entry.post.image} alt="玩玩在家里睡觉" style={{ display: "block", width: "min(100%, 360px)", height: "auto", borderRadius: 3, objectFit: "cover" }} />
                 <small style={{ display: "block", color: "#999", marginTop: 9 }}>{entry.post.time}</small>
@@ -4293,7 +4275,7 @@ export function WeChatSkin(p: SkinProps) {
                   }))} style={{ border: 0, background: "transparent", color: entry.post.likes.includes(ownerName) ? "#576b95" : "#666", fontSize: 13, cursor: "pointer" }}>
                     {entry.post.likes.includes(ownerName) ? "取消" : "♡"} 赞
                   </button>
-                  <button type="button" disabled={!entry.post.likes.includes(ownerName)} onClick={() => setStoryMomentCommentDraft("说好给我看的！")} style={{ border: 0, background: "transparent", color: entry.post.likes.includes(ownerName) ? "#576b95" : "#aaa", fontSize: 13, cursor: entry.post.likes.includes(ownerName) ? "pointer" : "not-allowed" }}>评论</button>
+                  <button type="button" disabled={!entry.post.likes.includes(ownerName)} onClick={() => setStoryMomentCommentDraft(storyMomentCommentDraft ? "" : "")} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
                 </div>
                 {(entry.post.likes.length > 0 || entry.post.comments.length > 0) && <div className="wx-moment-social-likes" style={{ marginTop: 0 }}>
                   {entry.post.likes.length > 0 && <div>♡ {entry.post.likes.join("、")}</div>}
@@ -4301,7 +4283,7 @@ export function WeChatSkin(p: SkinProps) {
                 </div>}
                 {entry.post.likes.includes(ownerName) ? (
                   <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-                    <input aria-label="朋友圈评论" value={storyMomentCommentDraft} onChange={(event) => setStoryMomentCommentDraft(event.target.value)} placeholder="说好给我看的！" style={{ flex: 1, minWidth: 0, border: "1px solid #e5e5e5", borderRadius: 4, padding: "7px 9px", fontSize: 13 }} />
+                    <input aria-label="朋友圈评论" value={storyMomentCommentDraft} onChange={(event) => setStoryMomentCommentDraft(event.target.value)} placeholder="评论..." style={{ flex: 1, minWidth: 0, border: "1px solid #e5e5e5", borderRadius: 4, padding: "7px 9px", fontSize: 13 }} />
                     <button type="button" disabled={!storyMomentCommentDraft.trim()} onClick={() => {
                       const comment = storyMomentCommentDraft.trim();
                       if (!comment) return;
