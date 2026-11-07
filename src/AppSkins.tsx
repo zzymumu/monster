@@ -155,6 +155,8 @@ function MessageList({
   wallpaper = "",
   selfAvatar = "",
   monsterAvatar = "",
+  transferStatus = "pending",
+  onTransferStatusChange,
 }: {
   items: Item[];
   creator: boolean;
@@ -165,10 +167,11 @@ function MessageList({
   wallpaper?: string;
   selfAvatar?: string;
   monsterAvatar?: string;
+  transferStatus?: "pending" | "accepted" | "returned";
+  onTransferStatusChange?: (status: "accepted" | "returned") => void;
 }) {
   const messagesRef = useRef<HTMLDivElement>(null);
   const [selectedTransfer, setSelectedTransfer] = useState<Item | null>(null);
-  const [transferStatuses, setTransferStatuses] = useState<Record<string, "pending" | "accepted" | "returned">>({});
   const [selectedLocation, setSelectedLocation] = useState<Item | null>(null);
   // Include the final message identity and body: a transcript can be updated
   // without changing its length (for example when an old save is repaired).
@@ -238,7 +241,7 @@ function MessageList({
             ) : i.kind === "transfer" ? (
               <div className="skin-transfer" style={{ minWidth: 205, textAlign: "left" }}>
                 <strong>NT$ {Number(i.meta?.amount ?? body).toFixed(2)}</strong>
-                <small>{transferStatuses[i.id] === "accepted" ? "已收款" : transferStatuses[i.id] === "returned" ? "已退还" : "微信转账 · 待接收"}</small>
+                <small>{transferStatus === "accepted" ? "已收款" : transferStatus === "returned" ? "已退还" : "微信转账 · 待接收"}</small>
                 <small style={{ display: "block", marginTop: 7, opacity: .8 }}>点击查看转账详情</small>
               </div>
             ) : i.kind === "event" && i.meta?.locationName ? (
@@ -272,11 +275,11 @@ function MessageList({
             <div style={{ fontSize: 12, marginTop: 5 }}>新台币 TWD</div>
           </div>
           <div style={{ padding: 18, textAlign: "center" }}>
-            <div style={{ fontSize: 13, color: "#777", marginBottom: 16 }}>{transferStatuses[selectedTransfer.id] === "accepted" ? "已收款" : transferStatuses[selectedTransfer.id] === "returned" ? "已退还给对方" : "转账待确认"}</div>
-            {transferStatuses[selectedTransfer.id] === "pending" || !transferStatuses[selectedTransfer.id] ? (
+            <div style={{ fontSize: 13, color: "#777", marginBottom: 16 }}>{transferStatus === "accepted" ? "已收款" : transferStatus === "returned" ? "已退还给对方" : "转账待确认"}</div>
+            {transferStatus === "pending" ? (
               <div style={{ display: "flex", gap: 10 }}>
-                <button onClick={() => { setTransferStatuses(v => ({ ...v, [selectedTransfer.id]: "returned" })); setSelectedTransfer(null); }} style={{ flex: 1, border: "1px solid #ddd", background: "#fff", color: "#444", borderRadius: 9, padding: "12px 6px", fontSize: 14 }}>退还转账</button>
-                <button onClick={() => { setTransferStatuses(v => ({ ...v, [selectedTransfer.id]: "accepted" })); setSelectedTransfer(null); }} style={{ flex: 1, border: 0, background: "#07c160", color: "#fff", borderRadius: 9, padding: "12px 6px", fontSize: 14 }}>确认收款</button>
+                <button onClick={() => { onTransferStatusChange?.("returned"); setSelectedTransfer(null); }} style={{ flex: 1, border: "1px solid #ddd", background: "#fff", color: "#444", borderRadius: 9, padding: "12px 6px", fontSize: 14 }}>退还转账</button>
+                <button onClick={() => { onTransferStatusChange?.("accepted"); setSelectedTransfer(null); }} style={{ flex: 1, border: 0, background: "#07c160", color: "#fff", borderRadius: 9, padding: "12px 6px", fontSize: 14 }}>确认收款</button>
               </div>
             ) : <button onClick={() => setSelectedTransfer(null)} style={{ width: "100%", border: 0, background: "#07c160", color: "#fff", borderRadius: 9, padding: 12 }}>完成</button>}
             <button onClick={() => setSelectedTransfer(null)} style={{ marginTop: 12, border: 0, background: "transparent", color: "#999", padding: 6 }}>关闭</button>
@@ -1505,6 +1508,7 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [milkTeaTransferStatus, setMilkTeaTransferStatus] = useSkinState<"pending" | "accepted" | "returned">(p, "wxMilkTeaTransferStatusV1", "pending");
   const [milkTeaStageRenumberedV2, setMilkTeaStageRenumberedV2] = useSkinState<boolean>(p, "wxMilkTeaStageRenumberedV2", false);
   useEffect(() => {
     // Existing saves may already be inside the earlier, shortened milk-tea
@@ -4446,7 +4450,7 @@ export function WeChatSkin(p: SkinProps) {
         <>
           {catRescueActive ? (
             <div className="cat-rescue-thread">
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {isMonsterThread && (
                 (() => {
                   const firstReplies = [
