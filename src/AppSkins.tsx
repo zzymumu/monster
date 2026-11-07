@@ -1457,6 +1457,7 @@ export function WeChatSkin(p: SkinProps) {
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const [postLockWaitPending, setPostLockWaitPending] = useSkinState<boolean>(p, "wxPostLockWaitPendingV1", false);
   const [postLockWaitDone, setPostLockWaitDone] = useSkinState<boolean>(p, "wxPostLockWaitDoneV1", false);
+  const [postDoorInitialCheckInQueued, setPostDoorInitialCheckInQueued] = useSkinState<boolean>(p, "wxPostDoorInitialCheckInQueuedV1", false);
   const postLockWaitStartedRef = useRef(false);
   const [pickupSceneRebuiltV1, setPickupSceneRebuiltV1] = useSkinState<boolean>(p, "wxPickupSceneRebuiltV1", false);
   const [hotelBroccoliFollowupQueued, setHotelBroccoliFollowupQueued] = useSkinState<boolean>(p, "wxHotelBroccoliFollowupQueuedV1", false);
@@ -3244,11 +3245,33 @@ export function WeChatSkin(p: SkinProps) {
 
   ];
 
+  // After the player says goodbye to Broccoli, DaG sends the check-in
+  // first. These incoming lines use the normal phone queue, so the user gets
+  // a notification while outside WeChat and sees the messages on opening DaG.
   useEffect(() => {
-    if ((p.thread === "大G" || p.thread === "温尚翊") && returnDinnerStage === 349) {
-      setReturnDinnerStage(350);
-    }
-  }, [returnDinnerStage, p.thread]);
+    if (returnDinnerStage !== 349 || postDoorInitialCheckInQueued) return;
+    const openingLines = [
+      { id: "post-door-lock-check-in-01-v1", sender: "大G", body: "到家了嗎？锁换好了嗎？", thread: "大G" },
+      { id: "post-door-lock-check-in-02-v1", sender: "大G", body: "剛剛有點忙，現在才有空問妳。", thread: "大G" },
+    ];
+    const delivered = [...p.items, ...catRescue.messages];
+    const missing = openingLines.filter((line) =>
+      !delivered.some((item) => item.id === line.id) &&
+      !pendingCatLines.some((item) => item.id === line.id)
+    );
+    if (missing.length) setPendingCatLines((current) => [...current, ...missing]);
+    setPostDoorInitialCheckInQueued(true);
+  }, [returnDinnerStage, postDoorInitialCheckInQueued, p.items, catRescue.messages, pendingCatLines]);
+
+  // Only reveal the first player reply after both of DaG's check-in messages
+  // have actually arrived and the player opens his conversation.
+  useEffect(() => {
+    if ((p.thread !== "大G" && p.thread !== "温尚翊") || returnDinnerStage !== 349) return;
+    const delivered = [...p.items, ...catRescue.messages];
+    const hasFirst = delivered.some((item) => item.id === "post-door-lock-check-in-01-v1");
+    const hasSecond = delivered.some((item) => item.id === "post-door-lock-check-in-02-v1");
+    if (hasFirst && hasSecond) setReturnDinnerStage(350);
+  }, [returnDinnerStage, p.thread, p.items, catRescue.messages]);
   // After "兩遍就好", leave a real ten-second pause before DaG's next thought.
   // The incoming lines go through the normal phone queue, so notifications
   // are created when the player is outside WeChat.
