@@ -8,6 +8,12 @@ export function notificationContent(text: string, apps: Work["apps"], items: Ite
   const shopeeNotice = text.match(/^蝦皮購物[：:]\s*(.*)$/);
   if (shopeeNotice) return { title: "蝦皮購物", body: shopeeNotice[1], appId: "shopee", avatar: "", contact: "" };
   const wechat = text.match(/^(?:微信(?:消息)?[：:]\s*)?([^：:]+)[：:]\s*(.*)$/);
+  // A group title contains "西蓝花" too; resolve group pushes before the
+  // personal-contact rule so the banner keeps the full group name and opens it.
+  if (wechat && /^西蓝花[、,，].+的群聊$/.test(wechat[1].trim())) {
+    const groupName = wechat[1].trim();
+    return { title: groupName, body: wechat[2], appId: "wechat", avatar: "", contact: groupName };
+  }
   const broccoliNotice = /西蓝花|西兰花/.test(text);
   if (wechat && (/西蓝花|西兰花/.test(wechat[1]) || text.startsWith("微信"))) {
     const contact = /西蓝花|西兰花/.test(wechat[1]) ? "西蓝花" : wechat[1].trim();
