@@ -3611,18 +3611,24 @@ export function WeChatSkin(p: SkinProps) {
     // DaG shares Wanwan only after the player has finished the check-in chat.
     // This creates a feed post, never an automatic like or comment.
     if (returnDinnerStage < 392) return;
-    const postId = "dag-wanwan-home-moment-v1";
-    setStoryFriendMomentPosts((current) => current.some((raw) => {
-      try { return JSON.parse(raw).id === postId; } catch { return false; }
-    }) ? current : [...current, JSON.stringify({
-      id: postId,
-      sender: "大G",
-      body: "终于回家了，小朋友。",
-      image: "./assets/wanwan-moments.webp",
-      time: new Date().toLocaleString("zh-CN", { hour12: false }),
-      likes: [],
-      comments: [],
-    })]);
+    const postId = "dag-wanwan-home-photo-v1";
+    setStoryFriendMomentPosts((current) => {
+      const matching = current.flatMap((raw) => {
+        try {
+          const post = JSON.parse(raw);
+          return post.body === "终于回家了，小朋友。" && post.sender === "大G" ? [post] : [];
+        } catch { return []; }
+      });
+      const kept = matching[matching.length - 1];
+      const unrelated = current.filter((raw) => {
+        try { const post = JSON.parse(raw); return !(post.body === "终于回家了，小朋友。" && post.sender === "大G"); }
+        catch { return true; }
+      });
+      const canonical = kept
+        ? { ...kept, id: postId, image: "./assets/wannwan-sleeping-cat.jpg", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
+        : { id: postId, sender: "大G", body: "终于回家了，小朋友。", image: "./assets/wannwan-sleeping-cat.jpg", time: new Date().toLocaleString("zh-CN", { hour12: false }), likes: [], comments: [] };
+      return [...unrelated, JSON.stringify(canonical)];
+    });
   }, [returnDinnerStage]);
 
   useEffect(() => {
@@ -4259,7 +4265,7 @@ export function WeChatSkin(p: SkinProps) {
           </div>
           {momentFeed.map((entry) => entry.type === "story-friend" ? (
             <article key={entry.id} className="wx-moment-post" style={{ display: "flex", gap: 12, padding: "16px 14px", borderBottom: "1px solid #eee", background: "#fff" }}>
-              <Avatar name={displayName("大G")} src={allItems.find((item) => item.sender === "大G" && item.avatar)?.avatar || "./assets/dag-new-avatar.jpg"} className="wx-moment-feed-avatar" />
+              <Avatar name={displayName("大G")} src={allItems.filter((item) => item.sender === "大G" && item.avatar).at(-1)?.avatar || "./assets/dag-new-avatar.jpg"} className="wx-moment-feed-avatar" />
               <div style={{ minWidth: 0, flex: 1 }}>
                 <strong style={{ color: "#576b95" }}>{displayName("大G")}</strong>
                 <p style={{ margin: "7px 0 10px", whiteSpace: "pre-wrap" }}>{entry.post.body}</p>
