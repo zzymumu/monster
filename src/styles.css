@@ -7266,7 +7266,7 @@ label {
 .incoming-call-screen .wechat-call-top-actions {
   position: absolute;
   z-index: 2;
-  top: max(32px, calc(env(safe-area-inset-top) + 12px));
+  top: max(92px, calc(env(safe-area-inset-top) + 72px));
   left: 22px;
   right: 22px;
   display: flex;
