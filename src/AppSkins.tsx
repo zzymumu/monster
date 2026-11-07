@@ -3091,8 +3091,161 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 348, chat: "西蓝花", id: "post-door-bye", label: "知道啦知道啦！白白白白白", nextStage: 349, lines: [
       { sender: "我", body: "知道啦知道啦！白白白白白", thread: "西蓝花" },
     ]},
+    { stage: 350, chat: "大G", id: "lock-check-in-reply", label: "锁还在换.....\n好慢喔。", nextStage: 351, lines: [
+      { sender: "我", body: "锁还在换.....", thread: "大G" }, { sender: "我", body: "好慢喔。", thread: "大G" },
+      { sender: "大G", body: "下次可以藏个备用钥匙在附近🤔，换锁是真的很麻烦。", thread: "大G" }, { sender: "大G", body: "今天要好好休息啦。", thread: "大G" }, { sender: "大G", body: "昨天真的把我嚇到了。", thread: "大G" },
+    ]},
+    { stage: 351, chat: "大G", id: "drink-mistake-reassure", label: "我也被自己吓到了好吗……\n我发誓我真的以为那是饮料。", nextStage: 352, lines: [
+      { sender: "我", body: "我也被自己吓到了好吗……", thread: "大G" }, { sender: "我", body: "我发誓我真的以为那是饮料。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈哈哈。", thread: "大G" }, { sender: "大G", body: "到底是哪一瓶飲料啦？", thread: "大G" },
+    ]},
+    { stage: 352, chat: "大G", id: "drink-embarrassed", label: "你还笑！！！\n我现在想起来都觉得离谱。", nextStage: 353, lines: [
+      { sender: "我", body: "你还笑！！！", thread: "大G" }, { sender: "我", body: "我现在想起来都觉得离谱。", thread: "大G" },
+      { sender: "大G", body: "好啦，不笑妳。", thread: "大G" }, { sender: "大G", body: "不過以後真的要看清楚欸。", thread: "大G" }, { sender: "大G", body: "不是每次都這麼幸運的。", thread: "大G" },
+    ]},
+    { stage: 353, chat: "大G", id: "check-drinks-twice", label: "知道啦……\n我以后喝东西之前一定先检查三遍。", nextStage: 354, lines: [
+      { sender: "我", body: "知道啦……", thread: "大G" }, { sender: "我", body: "我以后喝东西之前一定先检查三遍。", thread: "大G" },
+      { sender: "大G", body: "三遍太多了啦哈哈哈。", thread: "大G" }, { sender: "大G", body: "兩遍就好。", thread: "大G" },
+    ]},
+    { stage: 354, chat: "大G", id: "yesterday-messages-reaction", label: "？？？？？", nextStage: 355, lines: [
+      { sender: "我", body: "？？？？？", thread: "大G" },
+      { sender: "大G", body: "我都有看到喔。", thread: "大G" },
+    ]},
+    { stage: 355, chat: "大G", id: "please-forget-confession", label: "你不准再提了！！！\n我现在申请失忆还来得及吗？\n……你忘掉好不好。", nextStage: 356, lines: [
+      { sender: "我", body: "你不准再提了！！！", thread: "大G" }, { sender: "我", body: "我现在申请失忆还来得及吗？", thread: "大G" }, { sender: "我", body: "……你忘掉好不好。", thread: "大G" },
+      { sender: "大G", body: "哈哈哈哈哈。", thread: "大G" }, { sender: "大G", body: "好啦，不逗妳了。", thread: "大G" }, { sender: "大G", body: "可是我覺得蠻可愛的啊。", thread: "大G" },
+    ]},
+    { stage: 356, chat: "大G", id: "embarrassed-cute", label: "哪里可爱了！！\n我都快尴尬死了。", nextStage: 357, lines: [
+      { sender: "我", body: "哪里可爱了！！", thread: "大G" }, { sender: "我", body: "我都快尴尬死了。", thread: "大G" },
+      { sender: "大G", body: "真的沒什麼啦。", thread: "大G" }, { sender: "大G", body: "喜歡音樂、喜歡五月天，又不是什麼丟臉的事。", thread: "大G" }, { sender: "大G", body: "而且妳昨天講得很認真欸。", thread: "大G" },
+    ]},
+    { stage: 357, chat: "大G", id: "am-i-weird", label: "……那你会不会觉得我很奇怪？", nextStage: 358, lines: [
+      { sender: "我", body: "……那你会不会觉得我很奇怪？", thread: "大G" },
+      { sender: "大G", body: "不會啊。", thread: "大G" }, { sender: "大G", body: "為什麼會這樣覺得？", thread: "大G" },
+    ]},
+    { stage: 358, chat: "大G", id: "not-usually-like-this", label: "因为我平时不是这样的……\n昨天真的太丢脸了。", nextStage: 359, lines: [
+      { sender: "我", body: "因为我平时不是这样的……", thread: "大G" }, { sender: "我", body: "昨天真的太丢脸了。", thread: "大G" },
+      { sender: "大G", body: "哈哈，放心啦。", thread: "大G" }, { sender: "大G", body: "我不會因為這樣就覺得妳奇怪。", thread: "大G" }, { sender: "大G", body: "而且我還蠻開心的。", thread: "大G" }, { sender: "大G", body: "謝謝妳喜歡五月天。", thread: "大G" },
+    ]},
+    { stage: 359, chat: "大G", id: "fan-is-not-angry", label: "你们很值得喜欢啦....不喜欢才不正常吧.....\n不过，你不会生气吗？我一开始隐瞒了我是你粉丝的事情🥺", nextStage: 360, lines: [
+      { sender: "我", body: "你们很值得喜欢啦....不喜欢才不正常吧.....", thread: "大G" }, { sender: "我", body: "不过，你不会生气吗？我一开始隐瞒了我是你粉丝的事情🥺", thread: "大G" },
+      { sender: "大G", body: "不會啊，這有什麼好生氣的？", thread: "大G" }, { sender: "大G", body: "妳一開始也不知道玩玩是我的貓啊。", thread: "大G" }, { sender: "大G", body: "而且我覺得妳好像一直很怕我誤會妳什麼。", thread: "大G" }, { sender: "大G", body: "其實不用想那麼多啦。", thread: "大G" },
+    ]},
+    { stage: 360, chat: "大G", id: "afraid-of-misunderstanding", label: "可是我真的很怕你觉得我别有用心……", nextStage: 361, lines: [
+      { sender: "我", body: "可是我真的很怕你觉得我别有用心……", thread: "大G" },
+      { sender: "大G", body: "胡思乱想什么喔😕。", thread: "大G" }, { sender: "大G", body: "妳要是真的別有用心，第一次見面就應該先跟我要簽名了吧？", thread: "大G" },
+    ]},
+    { stage: 361, chat: "大G", id: "forgot-autograph", label: "………………\n其实.....我是想来着，但我忘了。", nextStage: 362, lines: [
+      { sender: "我", body: "………………", thread: "大G" }, { sender: "我", body: "其实.....我是想来着，但我忘了。", thread: "大G" },
+      { sender: "大G", body: "下次见面我给你。", thread: "大G" }, { sender: "大G", body: "而且說真的，我還蠻謝謝妳的。", thread: "大G" },
+    ]},
+    { stage: 362, chat: "大G", id: "thank-you-what-for", label: "谢我什么？", nextStage: 363, lines: [
+      { sender: "我", body: "谢我什么？", thread: "大G" },
+      { sender: "大G", body: "謝謝妳那時候願意把玩玩帶去醫院。", thread: "大G" }, { sender: "大G", body: "也謝謝妳這段時間照顧牠。", thread: "大G" }, { sender: "大G", body: "如果不是妳，我可能還不知道牠跑去哪裡了。", thread: "大G" },
+    ]},
+    { stage: 363, chat: "大G", id: "kitten-soft-hearted", label: "玩玩真的很可爱嘛，而且谁看到路边的小猫会不心软呢？", nextStage: 364, lines: [
+      { sender: "我", body: "玩玩真的很可爱嘛，而且谁看到路边的小猫会不心软呢？", thread: "大G" },
+      { sender: "大G", body: "所以說妳很善良啊，我有個善良的粉絲我怎麼會生氣？而且玩玩也很喜歡妳。", thread: "大G" },
+    ]},
+    { stage: 364, chat: "大G", id: "favorite-person-to-wanwan", label: "那当然，我可是玩玩最喜欢的人！", nextStage: 365, lines: [
+      { sender: "我", body: "那当然，我可是玩玩最喜欢的人！", thread: "大G" },
+      { sender: "大G", body: "這麼有自信喔？", thread: "大G" }, { sender: "大G", body: "那我這個主人是不是要吃醋了哈哈哈。", thread: "大G" }, { sender: "大G", body: "不過，以後有什麼想說的就直接說啦。", thread: "大G" }, { sender: "大G", body: "不用因為我是誰，就特別緊張。", thread: "大G" }, { sender: "大G", body: "我也是普通人啊。", thread: "大G" },
+    ]},
+    { stage: 365, chat: "大G", id: "you-are-wen-shangyi", label: "你哪里普通了……\n你可是温尚翊欸。\n妈呀，我竟然跟温尚翊认识了还帮他照顾了几天猫...!!!", nextStage: 366, lines: [
+      { sender: "我", body: "你哪里普通了……", thread: "大G" }, { sender: "我", body: "你可是温尚翊欸。", thread: "大G" }, { sender: "我", body: "妈呀，我竟然跟温尚翊认识了还帮他照顾了几天猫...!!!", thread: "大G" },
+      { sender: "大G", body: "夭壽，又來了。", thread: "大G" },
+    ]},
+    { stage: 366, chat: "大G", id: "emoji-mayday-chat", label: "😝\n那我以后还能跟你聊五月天吗？", nextStage: 367, lines: [
+      { sender: "我", body: "😝", thread: "大G" }, { sender: "我", body: "那我以后还能跟你聊五月天吗？", thread: "大G" },
+      { sender: "大G", body: "當然可以啊。", thread: "大G" }, { sender: "大G", body: "妳是把我之前說的話當耳旁風是不是？我都說了想說什麼就說什麼啊！", thread: "大G" }, { sender: "大G", body: "不過有時候我可能會忍不住吐槽自己喔哈哈哈。", thread: "大G" },
+    ]},
+    { stage: 367, chat: "大G", id: "fan-questions", label: "那我可不可以问一些粉丝才会问的问题？", nextStage: 368, lines: [
+      { sender: "我", body: "那我可不可以问一些粉丝才会问的问题？", thread: "大G" }, { sender: "大G", body: "可以啊，妳想問什麼？", thread: "大G" },
+    ]},
+    { stage: 368, chat: "大G", id: "listen-to-mayday", label: "你自己平时也会听五月天的歌吗？", nextStage: 369, lines: [
+      { sender: "我", body: "你自己平时也会听五月天的歌吗？", thread: "大G" }, { sender: "大G", body: "會啊，怎麼不會。", thread: "大G" }, { sender: "大G", body: "有時候聽到以前的歌，會突然想起那時候錄音或演出的事情。", thread: "大G" }, { sender: "大G", body: "感覺時間過得真的很快欸。", thread: "大G" },
+    ]},
+    { stage: 369, chat: "大G", id: "praise-old-guitar", label: "那你会不会听到以前的歌，觉得自己当时弹得怎么这么好哈哈哈哈。", nextStage: 370, lines: [
+      { sender: "我", body: "那你会不会听到以前的歌，觉得自己当时弹得怎么这么好哈哈哈哈。", thread: "大G" }, { sender: "大G", body: "哈哈哈哈哈哈哈。", thread: "大G" }, { sender: "大G", body: "妳這是在誇我還是在考驗我的自信？", thread: "大G" },
+    ]},
+    { stage: 370, chat: "大G", id: "compliment-confidence", label: "当然是在夸你！", nextStage: 371, lines: [
+      { sender: "我", body: "当然是在夸你！", thread: "大G" }, { sender: "大G", body: "好啦，收到了哈哈哈。", thread: "大G" }, { sender: "大G", body: "但更多時候回頭聽，是覺得有些地方現在應該可以做得更好。", thread: "大G" },
+    ]},
+    { stage: 371, chat: "大G", id: "high-standards-music", label: "你真的对自己要求很高诶.....\n可是我觉得五月天的歌真的陪伴了很多人。\n有些歌不管听多少次，还是会有感觉。", nextStage: 372, lines: [
+      { sender: "我", body: "你真的对自己要求很高诶.....", thread: "大G" }, { sender: "我", body: "可是我觉得五月天的歌真的陪伴了很多人。", thread: "大G" }, { sender: "我", body: "有些歌不管听多少次，还是会有感觉。", thread: "大G" },
+      { sender: "大G", body: "這個我相信。", thread: "大G" }, { sender: "大G", body: "有時候一首歌能陪一個人走過一段時間，對我們來說就是很開心的事情。", thread: "大G" }, { sender: "大G", body: "所以妳最喜歡五月天哪一首？", thread: "大G" },
+    ]},
+    { stage: 372, chat: "大G", id: "favorite-mayday-song", label: "你这个问题好难回答！！", nextStage: 373, lines: [
+      { sender: "我", body: "你这个问题好难回答！！", thread: "大G" }, { sender: "大G", body: "怎麼，選不出來喔？", thread: "大G" },
+    ]},
+    { stage: 373, chat: "大G", id: "too-many-favorites", label: "因为喜欢的太多了啊！\n爱情万岁、疯狂世界、候鸟、九号球、孙悟空、乱世浮生……", nextStage: 374, lines: [
+      { sender: "我", body: "因为喜欢的太多了啊！", thread: "大G" }, { sender: "我", body: "爱情万岁、疯狂世界、候鸟、九号球、孙悟空、乱世浮生……", thread: "大G" },
+      { sender: "大G", body: "哇，跨度很大欸哈哈哈。", thread: "大G" }, { sender: "大G", body: "看來妳真的聽不少喔。", thread: "大G" },
+    ]},
+    { stage: 374, chat: "大G", id: "love-mayday-long-time", label: "那当然！我真的喜欢你们好久！", nextStage: 375, lines: [
+      { sender: "我", body: "那当然！我真的喜欢你们好久！", thread: "大G" }, { sender: "大G", body: "哈哈哈哈，這麼久喔？", thread: "大G" }, { sender: "大G", body: "那妳最近有去看演唱會嗎？", thread: "大G" },
+    ]},
+    { stage: 375, chat: "大G", id: "concerts", label: "有啊！当然有！\n而且我每次看演唱会都觉得自己快疯了。", nextStage: 376, lines: [
+      { sender: "我", body: "有啊！当然有！", thread: "大G" }, { sender: "我", body: "而且我每次看演唱会都觉得自己快疯了。", thread: "大G" }, { sender: "大G", body: "有這麼誇張喔？", thread: "大G" },
+    ]},
+    { stage: 376, chat: "大G", id: "concert-tears", label: "你不懂！！\n尤其是现场听到喜欢的歌，真的会想哭。", nextStage: 377, lines: [
+      { sender: "我", body: "你不懂！！", thread: "大G" }, { sender: "我", body: "尤其是现场听到喜欢的歌，真的会想哭。", thread: "大G" },
+      { sender: "大G", body: "我懂啦哈哈哈，我聽披頭四也會哭😭", thread: "大G" }, { sender: "大G", body: "而且看到大家一起唱，對我們來說也很感動。", thread: "大G" },
+    ]},
+    { stage: 377, chat: "大G", id: "keep-singing", label: "所以你们一定要一直唱下去！", nextStage: 378, lines: [
+      { sender: "我", body: "所以你们一定要一直唱下去！", thread: "大G" }, { sender: "大G", body: "哈哈哈哈，好啦。", thread: "大G" }, { sender: "大G", body: "我們會努力的。", thread: "大G" },
+    ]},
+    { stage: 378, chat: "大G", id: "sing-to-eighty", label: "说好了喔！", nextStage: 379, lines: [
+      { sender: "我", body: "说好了喔！", thread: "大G" }, { sender: "大G", body: "說好了，陪你們一起唱到八十歲。", thread: "大G" },
+    ]},
+    { stage: 379, chat: "大G", id: "live-to-hundred", label: "一百岁吧一百岁，五月天要长命百岁！", nextStage: 380, lines: [
+      { sender: "我", body: "一百岁吧一百岁，五月天要长命百岁！", thread: "大G" }, { sender: "大G", body: "我努力，但妳不要再掛我電話了，不然我會折壽。", thread: "大G" },
+    ]},
+    { stage: 380, chat: "大G", id: "hung-up-two-calls", label: "？", nextStage: 381, lines: [
+      { sender: "我", body: "？", thread: "大G" }, { sender: "大G", body: "妳昨天掛了我兩個電話欸！", thread: "大G" },
+    ]},
+    { stage: 381, chat: "大G", id: "hand-shook", label: "我那是手抖.....🙏", nextStage: 382, lines: [
+      { sender: "我", body: "我那是手抖.....🙏", thread: "大G" }, { sender: "大G", body: "嗯，大小姐做什麼都對。", thread: "大G" },
+    ]},
+    { stage: 382, chat: "大G", id: "dont-call-me-miss", label: "啊啊啊不要这么喊我。", nextStage: 383, lines: [
+      { sender: "我", body: "啊啊啊不要这么喊我。", thread: "大G" }, { sender: "大G", body: "好的大小姐。", thread: "大G" },
+    ]},
+    { stage: 383, chat: "大G", id: "scream-miss", label: "！！！！！", nextStage: 384, lines: [
+      { sender: "我", body: "！！！！！", thread: "大G" }, { sender: "大G", body: "好啦，不鬧妳了。", thread: "大G" }, { sender: "大G", body: "妳都不知道，妳掛了我電話後我還以為妳出了什麼事情，嚇死我。", thread: "大G" }, { sender: "大G", body: "而且妳朋友也很擔心妳。", thread: "大G" },
+    ]},
+    { stage: 384, chat: "大G", id: "broccoli-worried", label: "她昨天真的快疯了……", nextStage: 385, lines: [
+      { sender: "我", body: "她昨天真的快疯了……", thread: "大G" }, { sender: "大G", body: "她是真的很擔心妳。", thread: "大G" }, { sender: "大G", body: "我跟她說妳沒事了，她才放心一點。", thread: "大G" },
+    ]},
+    { stage: 385, chat: "大G", id: "broccoli-scolded", label: "嗯……她今天也把我骂了一顿。", nextStage: 386, lines: [
+      { sender: "我", body: "嗯……她今天也把我骂了一顿。", thread: "大G" }, { sender: "大G", body: "哈哈哈哈。", thread: "大G" }, { sender: "大G", body: "那妳今天有乖乖休息嗎？", thread: "大G" },
+    ]},
+    { stage: 386, chat: "大G", id: "lying-down", label: "有啊，我现在已经躺平了。", nextStage: 387, lines: [
+      { sender: "我", body: "有啊，我现在已经躺平了。", thread: "大G" }, { sender: "大G", body: "這麼早？", thread: "大G" },
+    ]},
+    { stage: 387, chat: "大G", id: "exhausted-yesterday", label: "我昨天消耗太大了……", nextStage: 388, lines: [
+      { sender: "我", body: "我昨天消耗太大了……", thread: "大G" }, { sender: "大G", body: "也是。", thread: "大G" }, { sender: "大G", body: "那今天就不要安排事情了。", thread: "大G" }, { sender: "大G", body: "好好睡一覺。", thread: "大G" },
+    ]},
+    { stage: 388, chat: "大G", id: "ask-his-work", label: "你呢？你今天还要工作吗？", nextStage: 389, lines: [
+      { sender: "我", body: "你呢？你今天还要工作吗？", thread: "大G" }, { sender: "大G", body: "等一下還有事情要處理。", thread: "大G" }, { sender: "大G", body: "最近比較忙，事情有點多。", thread: "大G" },
+    ]},
+    { stage: 389, chat: "大G", id: "remind-him-rest", label: "那你也要记得休息！\n不要只会叫别人好好休息。", nextStage: 390, lines: [
+      { sender: "我", body: "那你也要记得休息！", thread: "大G" }, { sender: "我", body: "不要只会叫别人好好休息。", thread: "大G" }, { sender: "大G", body: "哈哈哈。", thread: "大G" }, { sender: "大G", body: "好啦，知道了。", thread: "大G" }, { sender: "大G", body: "怎麼突然換妳叮嚀我了？", thread: "大G" },
+    ]},
+    { stage: 390, chat: "大G", id: "courtesy", label: "礼尚往来不行吗！", nextStage: 391, lines: [
+      { sender: "我", body: "礼尚往来不行吗！", thread: "大G" }, { sender: "大G", body: "當然好啊。", thread: "大G" }, { sender: "大G", body: "那我先去忙了喔，晚點拍玩玩給妳看。", thread: "大G" },
+    ]},
+    { stage: 391, chat: "大G", id: "okay-show-wanwan-later", label: "好呀！", nextStage: 392, lines: [
+      { sender: "我", body: "好呀！", thread: "大G" },
+    ]},
+
 
   ];
+
+  useEffect(() => {
+    if ((p.thread === "大G" || p.thread === "温尚翊") && returnDinnerStage === 349) {
+      setReturnDinnerStage(350);
+    }
+  }, [returnDinnerStage, p.thread]);
 
   // The player opens Broccoli directly from her notification after DaG's
   // final door message. Do not require an intermediate empty/home thread:
