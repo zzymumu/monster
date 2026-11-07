@@ -1554,9 +1554,9 @@ export function WeChatSkin(p: SkinProps) {
       item.sender === "我" && ["报告！", "签名我帮你拿到了！！！"].includes(item.body.trim())
     );
     if (!hasAnnouncement) return;
-    const replies = [
-      { id: "broccoli-signature-reaction-01-v1", sender: "西蓝花" as const, body: "你怎么拿到的？", thread: "西蓝花" },
-      { id: "broccoli-signature-reaction-02-v1", sender: "西蓝花" as const, body: "你们又见面了？", thread: "西蓝花" },
+    const replies: CatLine[] = [
+      { id: "broccoli-signature-reaction-01-v1", sender: "西蓝花", body: "你怎么拿到的？", thread: "西蓝花" },
+      { id: "broccoli-signature-reaction-02-v1", sender: "西蓝花", body: "你们又见面了？", thread: "西蓝花" },
     ];
     const missing = replies.filter((line) =>
       !delivered.some((item) => item.id === line.id || (item.sender === line.sender && item.body.trim() === line.body)) &&
