@@ -1456,6 +1456,7 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
   const [postLockWaitPending, setPostLockWaitPending] = useSkinState<boolean>(p, "wxPostLockWaitPendingV1", false);
+  const [postLockWaitDone, setPostLockWaitDone] = useSkinState<boolean>(p, "wxPostLockWaitDoneV1", false);
   const postLockWaitStartedRef = useRef(false);
   const [pickupSceneRebuiltV1, setPickupSceneRebuiltV1] = useSkinState<boolean>(p, "wxPickupSceneRebuiltV1", false);
   const [hotelBroccoliFollowupQueued, setHotelBroccoliFollowupQueued] = useSkinState<boolean>(p, "wxHotelBroccoliFollowupQueuedV1", false);
@@ -3253,7 +3254,7 @@ export function WeChatSkin(p: SkinProps) {
   // are created when the player is outside WeChat.
   useEffect(() => {
     if (returnDinnerStage !== 354 || pendingCatLines.length > 0 ||
-        postLockWaitStartedRef.current || p.ui?.wxPostLockWaitDoneV1 === true) return;
+        postLockWaitStartedRef.current || postLockWaitDone) return;
     postLockWaitStartedRef.current = true;
     setPostLockWaitPending(true);
     window.setTimeout(() => {
@@ -3262,9 +3263,9 @@ export function WeChatSkin(p: SkinProps) {
         { id: "post-lock-wait-followup-2", sender: "大G", body: "昨天晚上妳發的那些話……", thread: "大G" },
       ]);
       setPostLockWaitPending(false);
-      p.onUpdate?.({ ui: { ...p.ui, wxPostLockWaitDoneV1: true } });
+      setPostLockWaitDone(true);
     }, 10000);
-  }, [returnDinnerStage, pendingCatLines.length]);
+  }, [returnDinnerStage, pendingCatLines.length, postLockWaitDone]);
 
   // The player opens Broccoli directly from her notification after DaG's
   // final door message. Do not require an intermediate empty/home thread:
