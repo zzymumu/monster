@@ -4709,7 +4709,7 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="群聊邀请">
                   <div style={{ padding: 14, borderRadius: 12, background: "#fff", color: "#222", border: "1px solid #ddd" }}>
                     <strong>{displayName("大G")}邀请你加入群聊</strong>
-                    <div style={{ marginTop: 6, fontSize: 13, color: "#777" }}>大G、你、西蓝花</div>
+                    <div style={{ marginTop: 6, fontSize: 13, color: "#777" }}>{displayName("大G")}、你、西蓝花</div>
                     <button style={{ marginTop: 12, width: "100%", minHeight: 42, borderRadius: 8, background: "#07c160", color: "#fff", fontWeight: 600 }} onClick={() => {
                       const nextGroups = wxGroupChatsRaw.map((raw) => {
                         try {
@@ -4725,8 +4725,8 @@ export function WeChatSkin(p: SkinProps) {
                         { id: "wx-accidental-group-rejoined-dag-01-v1", sender: "大G", body: "進來了嗎？", thread: "大G" },
                         { id: "wx-accidental-group-rejoined-dag-02-v1", sender: "大G", body: "這次不要再把自己退掉了喔！", thread: "大G" },
                       ], catRescue.stage, catRescue.branch, "wx-accidental-group-rejoined");
-                      setAccidentalGroupStoryStep(22);
-                      p.onUi?.("wxAccidentalGroupStoryStepV1", 22);
+                      setAccidentalGroupStoryStep(23);
+                      p.onUi?.("wxAccidentalGroupStoryStepV1", 23);
                     }}>接受邀请</button>
                   </div>
                 </div>
