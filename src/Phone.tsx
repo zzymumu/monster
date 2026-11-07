@@ -257,6 +257,17 @@ function PhoneRuntime({
   };
   useEffect(() => {
     if (!ready || creator || external) return;
+    const current = runtimeRef.current;
+    const list = current.messages.wechat ?? [];
+    const oldRecord = list.find((item) => item.id === "milk-tea-call-duration-0143-v1");
+    if (!oldRecord || (oldRecord.sender === "大G" && oldRecord.outgoing === false)) return;
+    const fixed = list.map((item) => item.id === "milk-tea-call-duration-0143-v1"
+      ? { ...item, title: "大G", sender: "大G", outgoing: false, meta: { ...item.meta, thread: "大G", callStatus: "ended", callDuration: "01:43" } }
+      : item);
+    update({ ...current, messages: { ...current.messages, wechat: fixed } });
+  }, [ready, creator, external]);
+  useEffect(() => {
+    if (!ready || creator || external) return;
     const tickShipments = () => {
       const current = runtimeRef.current;
       const raw = current.ui?.shopee?.shopeeOrders;
@@ -413,11 +424,11 @@ function PhoneRuntime({
     const record = {
       id: "milk-tea-call-duration-0143-v1", title: "大G", body: "通话时长：01:43",
       richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "01:43" },
-      time: new Date().toISOString(), sender: "我", avatar: "", kind: "call" as const,
+      time: new Date().toISOString(), sender: "大G", avatar: "", kind: "call" as const,
       media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
-      outgoing: true, read: true, likes: 0, comments: [],
+      outgoing: false, read: true, likes: 0, comments: [],
     };
-    update({ ...current, incomingCall: null, messages: { ...current.messages, wechat: [...messages, record] },
+    update({ ...current, incomingCall: null, messages: { ...current.messages, wechat: [...messages.filter((item) => item.id !== record.id), record] },
       ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxMilkTeaArrivalCallV1: false, wxMilkTeaArrivalCallFinishedV1: true } } });
     setMilkTeaCallStep(-1); setMilkTeaCallReply(-1);
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
