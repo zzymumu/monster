@@ -1525,7 +1525,7 @@ export function WeChatSkin(p: SkinProps) {
   const [milkTeaArrivalWaitReady, setMilkTeaArrivalWaitReady] = useSkinState<boolean>(p, "wxMilkTeaArrivalWaitReadyV1", false);
   const [milkTeaArrivalCallRequested, setMilkTeaArrivalCallRequested] = useSkinState<boolean>(p, "wxMilkTeaArrivalCallRequestedV1", false);
   useEffect(() => {
-    if (returnDinnerStage !== 475 || milkTeaArrivalCallRequested || !isMonsterThread) return;
+    if (returnDinnerStage !== 475 || milkTeaArrivalCallRequested || p.thread !== "大G") return;
     setMilkTeaArrivalCallRequested(true);
     p.onUi?.("wxOutgoingCallRequest", "audio");
     p.onUi?.("wxMilkTeaArrivalCallV1", true);
