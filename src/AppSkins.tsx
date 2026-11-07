@@ -4683,9 +4683,7 @@ export function WeChatSkin(p: SkinProps) {
         </div>
       ) : p.thread ? (
         <>
-          {catRescueActive ? (
-            <div className="cat-rescue-thread">
-              {isMonsterThread && accidentalGroupStoryStep >= 0 && accidentalGroupStoryStep < accidentalGroupStory.length && pendingCatLines.length === 0 && threadItems.some((item) => item.id === "wx-after-accidental-group-exit-dag-question-v1") && (
+          {isMonsterThread && accidentalGroupStoryStep >= 0 && accidentalGroupStoryStep < accidentalGroupStory.length && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G群聊乌龙对话">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     const turn = accidentalGroupStory[accidentalGroupStoryStep];
@@ -4701,6 +4699,9 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复，等待大G说完再继续</div>
                 </div>
               )}
+
+          {catRescueActive ? (
+            <div className="cat-rescue-thread">
               {isMonsterThread && accidentalGroupInvitePending && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="群聊邀请">
                   <div style={{ padding: 14, borderRadius: 12, background: "#fff", color: "#222", border: "1px solid #ddd" }}>
