@@ -1529,7 +1529,7 @@ export function WeChatSkin(p: SkinProps) {
     setMilkTeaArrivalCallRequested(true);
     p.onUi?.("wxOutgoingCallRequest", "audio");
     p.onUi?.("wxMilkTeaArrivalCallV1", true);
-  }, [returnDinnerStage, milkTeaArrivalCallRequested, isMonsterThread]);
+  }, [returnDinnerStage, milkTeaArrivalCallRequested, p.thread]);
 
 
 
