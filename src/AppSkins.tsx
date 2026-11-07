@@ -3828,7 +3828,7 @@ export function WeChatSkin(p: SkinProps) {
       body,
       time: new Date().toLocaleString("zh-CN", { hour12: false }),
       ...(/秋天的第一杯奶茶/.test(body) ? {
-        image: "/monster/assets/autumn-milk-tea.jpg",
+        image: "https://zzymumu.github.io/monster/assets/autumn-milk-tea.jpg",
         likes: ["西蓝花", "大G"],
       } : {}),
       ...(isDrunkLovePost ? { comments: ["西蓝花：？"] } : {}),
