@@ -4571,7 +4571,7 @@ export function WeChatSkin(p: SkinProps) {
         <div className="skin-scroll wx-utility">
           {utility === "发起群聊" && (
             <div className="wx-chat-info-page">
-              <div className="wx-group-picker-list">
+              <div className="wx-group-picker-list wx-start-group-list">
                 {Array.from(new Set(friendDirectory.map(canonicalContactName)))
                   .filter((name) => !["我", "机主"].includes(name) && !(monsterRemoved && name === "大G"))
                   .map((name) => {
