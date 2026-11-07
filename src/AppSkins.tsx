@@ -4683,28 +4683,10 @@ export function WeChatSkin(p: SkinProps) {
         </div>
       ) : p.thread ? (
         <>
-          {isMonsterThread && accidentalGroupStoryStep >= 0 && accidentalGroupStoryStep < accidentalGroupStory.length && pendingCatLines.length === 0 && (
-                <div className="cat-rescue-choices" aria-label="大G群聊乌龙对话">
-                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
-                    const turn = accidentalGroupStory[accidentalGroupStoryStep];
-                    const lines: CatLine[] = [
-                      ...turn.user.map((body, index) => ({ id: "wx-accidental-group-user-" + accidentalGroupStoryStep + "-" + index, sender: "我" as const, body, thread: "大G" as const })),
-                      ...turn.incoming.map((body, index) => ({ id: "wx-accidental-group-dag-" + accidentalGroupStoryStep + "-" + index, sender: "大G" as const, body, thread: "大G" as const })),
-                    ];
-                    appendCatLines(lines, catRescue.stage, catRescue.branch, "wx-accidental-group-turn-" + accidentalGroupStoryStep);
-                    setAccidentalGroupStoryStep((current) => current + 1);
-                  }}>
-                    {accidentalGroupStory[accidentalGroupStoryStep].user.join(" ")}
-                  </button>
-                  <div className="cat-rescue-option-hint">点击发送你的回复，等待大G说完再继续</div>
-                </div>
-              )}
-
           {catRescueActive ? (
             <div className="cat-rescue-thread">
 
 
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {isMonsterThread && accidentalGroupInvitePending && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="群聊邀请">
                   <div style={{ padding: 14, borderRadius: 12, background: "#fff", color: "#222", border: "1px solid #ddd" }}>
@@ -4731,6 +4713,24 @@ export function WeChatSkin(p: SkinProps) {
                   </div>
                 </div>
               )}
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
+          {isMonsterThread && accidentalGroupStoryStep >= 0 && accidentalGroupStoryStep < accidentalGroupStory.length && pendingCatLines.length === 0 && (
+                <div className="cat-rescue-choices" aria-label="大G群聊乌龙对话">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                    const turn = accidentalGroupStory[accidentalGroupStoryStep];
+                    const lines: CatLine[] = [
+                      ...turn.user.map((body, index) => ({ id: "wx-accidental-group-user-" + accidentalGroupStoryStep + "-" + index, sender: "我" as const, body, thread: "大G" as const })),
+                      ...turn.incoming.map((body, index) => ({ id: "wx-accidental-group-dag-" + accidentalGroupStoryStep + "-" + index, sender: "大G" as const, body, thread: "大G" as const })),
+                    ];
+                    appendCatLines(lines, catRescue.stage, catRescue.branch, "wx-accidental-group-turn-" + accidentalGroupStoryStep);
+                    setAccidentalGroupStoryStep((current) => current + 1);
+                  }}>
+                    {accidentalGroupStory[accidentalGroupStoryStep].user.join(" ")}
+                  </button>
+                  <div className="cat-rescue-option-hint">点击发送你的回复，等待大G说完再继续</div>
+                </div>
+              )}
+
               {isMonsterThread && accidentalGroupStoryStep === 23 && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G群聊乌龙收尾">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
