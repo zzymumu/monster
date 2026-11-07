@@ -452,6 +452,15 @@ function PhoneRuntime({
   }, [s.incomingCall?.status, s.incomingCall?.caller, s.incomingCall?.target]);
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
+    const wx = runtimeRef.current.ui?.wechat ?? {};
+    if (wx.wxBroccoliSignatureCallRequestedV1 !== true || wx.wxBroccoliSignatureCallStartedV1 === true) return;
+    const current = runtimeRef.current;
+    update({ ...current, incomingCall: { caller: "西蓝花", target: "西蓝花", status: "ringing" },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxBroccoliSignatureCallStartedV1: true } } });
+  }, [s.incomingCall, s.ui?.wechat?.wxBroccoliSignatureCallRequestedV1, s.ui?.wechat?.wxBroccoliSignatureCallStartedV1, ready, locked, creator]);
+
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
     const request = s.ui?.wechat?.wxOutgoingCallRequest;
     if (request !== "audio" && request !== "video") return;
     const target = s.ui?.wechat?.openThread;
@@ -1629,6 +1638,17 @@ function PhoneRuntime({
                           { id: "drunk-door-broccoli-request-v1", sender: "西蓝花", body: "……那真的麻煩你了，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
                         ];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                      } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliSignatureCallStartedV1 === true) {
+                        const record = {
+                          id: "broccoli-signature-call-duration-4351-v1", title: "西蓝花",
+                          body: "通话时长：43:51", richText: "",
+                          meta: { thread: "西蓝花", callStatus: "ended", callDuration: "43:51" },
+                          time: new Date().toISOString(), sender: "我", avatar: "", kind: "call" as const,
+                          media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
+                          outgoing: true, read: true, likes: 0, comments: [],
+                        };
+                        update({ ...next, messages: { ...next.messages, wechat: [...(next.messages.wechat ?? []).filter((item) => item.id !== record.id), record] },
+                          ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliSignatureCallFinishedV1: true } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
                         const queued = [
                           { id: "drunk-broccoli-call-duration-v1", sender: "我", body: "聊天时长 00:09", thread: "西蓝花", kind: "call" },
