@@ -4084,7 +4084,7 @@ export function WeChatSkin(p: SkinProps) {
   const detailMemberNames = Array.from(new Set((activeGroupChat?.members?.length ? activeGroupChat.members : (p.thread && !["我", "机主"].includes(p.thread) ? [canonicalContactName(p.thread)] : [])).map(canonicalContactName).filter((name) => name && !["我", "机主"].includes(name))));
   const createGroupChat = () => {
     const members = Array.from(new Set(selectedGroupMembers.filter((name) => name && name !== "我" && name !== "机主")));
-    if (!members.length) return;
+    if (members.length < 2) return;
     const group = { id: `wx-group-${Date.now()}`, name: `${members.map(displayName).join("、")}的群聊`, members };
     const next = [...wxGroupChatsRaw, JSON.stringify(group)];
     setWxGroupChatsRaw(next);
@@ -4484,7 +4484,7 @@ export function WeChatSkin(p: SkinProps) {
           {statusEditorOpen ? <span className="wx-status-close">×</span> : utility || p.thread || moments || tab !== "微信" ? <ChevronLeft size={22} /> : <Star size={22} />}
         </button>
         <strong onClick={() => p.thread && !statusEditorOpen ? openRemarkEditor(p.thread) : undefined} style={p.thread ? { cursor: "pointer" } : undefined} title={p.thread ? "点击修改备注" : undefined}>{statusEditorOpen ? "设个状态" : utility === "聊天信息" ? "聊天详情" : utility || (p.thread ? displayName(p.thread) : moments ? "朋友圈" : tab)}</strong>
-        <div className="wx-header-actions">{utility === "聊天信息" ? null : <>{p.thread && <><button aria-label="语音通话" title="语音通话" onClick={() => p.onUi?.("wxOutgoingCallRequest", "audio")}><Phone size={19}/></button><button aria-label="视频通话" title="视频通话" onClick={() => p.onUi?.("wxOutgoingCallRequest", "video")}><Video size={20}/></button></>}{moments ? <button aria-label="发表朋友圈" title="发表朋友圈" onClick={() => setMomentComposer(true)}><Plus size={22} /></button> : <button aria-label={statusEditorOpen ? " " : p.thread ? "聊天详情" : "微信菜单"} onClick={() => statusEditorOpen ? undefined : p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>{statusEditorOpen ? null : p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}</button>}</>}</div>
+        <div className="wx-header-actions">{utility === "聊天信息" ? null : <>{p.thread && <><button aria-label="语音通话" title="语音通话" onClick={() => p.onUi?.("wxOutgoingCallRequest", "audio")}><Phone size={19}/></button><button aria-label="视频通话" title="视频通话" onClick={() => p.onUi?.("wxOutgoingCallRequest", "video")}><Video size={20}/></button></>}{moments ? <button aria-label="发表朋友圈" title="发表朋友圈" onClick={() => setMomentComposer(true)}><Plus size={22} /></button> : utility === "发起群聊" ? <button aria-label="发起群聊" title="发起群聊" disabled={selectedGroupMembers.length < 2} onClick={createGroupChat}>完成</button> : <button aria-label={statusEditorOpen ? " " : p.thread ? "聊天详情" : "微信菜单"} onClick={() => statusEditorOpen ? undefined : p.thread ? setUtility("聊天信息") : setMenu((v) => !v)}>{statusEditorOpen ? null : p.thread ? <MoreHorizontal size={22} /> : <CirclePlus size={23} />}</button>}</>}</div>
       </div>
 
       {menu && !p.thread && !moments && !utility && (
@@ -4585,7 +4585,7 @@ export function WeChatSkin(p: SkinProps) {
               </div>
               <div className="wx-group-picker-footer">
                 <small>已选择 {selectedGroupMembers.length} 位联系人</small>
-                <button disabled={selectedGroupMembers.length < 2} onClick={createGroupChat}>完成</button>
+                <button className="wx-start-group-submit" disabled={selectedGroupMembers.length < 2} onClick={createGroupChat}>发起群聊</button>
               </div>
             </div>
           )}
@@ -4642,7 +4642,7 @@ export function WeChatSkin(p: SkinProps) {
           {allItems.filter((i) => i.folder === utility).map((i) => (
             <button key={i.id} className="wx-discovery" onClick={() => p.onItem(i)}>{i.title}<span>›</span></button>
           ))}
-          {!allItems.some((i) => i.folder === utility) && utility !== "聊天信息" && (
+          {!allItems.some((i) => i.folder === utility) && utility !== "聊天信息" && utility !== "发起群聊" && (
             <div className="wx-empty-state"><span>{utility}</span><p>这里还没有内容</p></div>
           )}
         </div>
