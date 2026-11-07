@@ -3566,6 +3566,7 @@ export function WeChatSkin(p: SkinProps) {
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
   const [storyFriendMomentPosts, setStoryFriendMomentPosts] = useSkinState<string[]>(p, "wxStoryFriendMomentPostsV1", []);
   const [storyMomentCommentDraft, setStoryMomentCommentDraft] = useState("");
+  const [storyMomentCommentOpen, setStoryMomentCommentOpen] = useState("");
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
@@ -4281,7 +4282,7 @@ export function WeChatSkin(p: SkinProps) {
                   }))} style={{ border: 0, background: "transparent", color: entry.post.likes.includes(ownerName) ? "#576b95" : "#666", fontSize: 13, cursor: "pointer" }}>
                     {entry.post.likes.includes(ownerName) ? "取消" : "♡"} 赞
                   </button>
-                  <button type="button" disabled={!entry.post.likes.includes(ownerName)} onClick={() => setStoryMomentCommentDraft(storyMomentCommentDraft ? "" : "")} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
+                  <button type="button" disabled={!entry.post.likes.includes(ownerName)} onClick={() => { setStoryMomentCommentOpen(storyMomentCommentOpen === entry.id ? "" : entry.id); setStoryMomentCommentDraft(""); }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>评论</button>
                 </div>
                 {(entry.post.likes.length > 0 || entry.post.comments.length > 0) && <div className="wx-moment-social-likes" style={{ marginTop: 0 }}>
                   {entry.post.likes.length > 0 && <div>♡ {entry.post.likes.join("、")}</div>}
@@ -4298,7 +4299,7 @@ export function WeChatSkin(p: SkinProps) {
                         if (post.id !== entry.id) return raw;
                         return JSON.stringify({
                           ...post,
-                          comments: [...(post.comments || []), ownerName + "：" + comment],
+                          comments: [...(post.comments || []), displayName(ownerName) + "：" + comment],
                           ...(post.id === "dag-wanwan-home-photo-v1" ? { replyQueued: true } : {}),
                         });
                       }));
