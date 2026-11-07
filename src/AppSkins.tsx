@@ -4963,13 +4963,6 @@ export function WeChatSkin(p: SkinProps) {
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     appendCatLines([
                       { id: "wx-accidental-group-rejoined-user-01-v1", sender: "我", body: "...你再说我解散。", thread: activeGroupChat.name },
-                    ], catRescue.stage, catRescue.branch, "wx-accidental-group-rejoined-user-v1");
-                    setThreeWayRejoinReplyPending(false);
-                    p.onUi?.("wxThreeWayRejoinReplyPendingV1", false);
-                    // The player leaves the group view; Broccoli's first group message
-                    // can then arrive as a group-name notification, not a person-name DM.
-                    p.onThread("大G");
-                    appendCatLines([
                       { id: "wx-threeway-opening-broccoli-01-v2", sender: "西蓝花", body: "？", thread: activeGroupChat.name },
                       { id: "wx-threeway-opening-broccoli-02-v2", sender: "西蓝花", body: "？？？？？？", thread: activeGroupChat.name },
                       { id: "wx-threeway-opening-broccoli-03-v2", sender: "西蓝花", body: "这是什么群？？？", thread: activeGroupChat.name },
@@ -4979,6 +4972,11 @@ export function WeChatSkin(p: SkinProps) {
                       { id: "wx-threeway-opening-broccoli-07-v2", sender: "西蓝花", body: "是我眼花了吗？？？", thread: activeGroupChat.name },
                       { id: "wx-threeway-opening-dag-01-v2", sender: "大G", body: "哈囉～", thread: activeGroupChat.name },
                     ], catRescue.stage, catRescue.branch, "wx-threeway-group-opening-v2");
+                    setThreeWayRejoinReplyPending(false);
+                    p.onUi?.("wxThreeWayRejoinReplyPendingV1", false);
+                    // Leave the group view so the first Broccoli bubble is announced
+                    // using the group title in the WeChat notification.
+                    p.onThread("大G");
                   }}>...你再说我解散。</button>
                   <div className="cat-rescue-option-hint">点击发送你的群聊回复</div>
                 </div>
