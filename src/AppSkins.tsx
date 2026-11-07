@@ -256,6 +256,12 @@ function MessageList({
                 </div>
                 <div style={{ borderTop: "1px solid rgba(255,255,255,.2)", marginTop: 11, paddingTop: 7, fontSize: 12, color: "rgba(255,255,255,.82)" }}>转账</div>
               </div>
+            ) : i.kind === "transfer" ? (
+              <div className="skin-transfer" style={{ minWidth: 205, textAlign: "left" }}>
+                <strong>NT$ {Number(i.meta?.amount ?? body).toFixed(2)}</strong>
+                <small>{transferStatus === "accepted" ? "已收款" : transferStatus === "returned" ? "已退还" : "微信转账 · 待接收"}</small>
+                <small style={{ display: "block", marginTop: 7, opacity: .8 }}>点击查看转账详情</small>
+              </div>
             ) : i.kind === "event" && i.meta?.locationName ? (
               <div style={{ width: 250, borderRadius: 8, overflow: "hidden", background: "#f1f2f4", color: "#222", textAlign: "left" }}>
                 <div style={{ padding: "10px 12px 5px", fontWeight: 600 }}>{i.meta?.locationName || body}</div>
