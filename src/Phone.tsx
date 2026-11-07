@@ -56,6 +56,9 @@ import {
   ArrowUp,
   Folder,
   Phone as PhoneIcon,
+  Mic,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import { getApp, type AppPlugin } from "./registry";
 import {
@@ -142,6 +145,9 @@ function PhoneRuntime({
 }) {
   const [app, setApp] = useState("");
   const [systemNow, setSystemNow] = useState(() => new Date());
+  const [callElapsed, setCallElapsed] = useState(0);
+  const [callMicOn, setCallMicOn] = useState(true);
+  const [callSpeakerOn, setCallSpeakerOn] = useState(false);
   useEffect(() => {
     const updateSystemClock = () => setSystemNow(new Date());
     updateSystemClock();
@@ -361,6 +367,18 @@ function PhoneRuntime({
     }, 1000);
     return () => clearInterval(interval);
   }, [creator, ready, work.id, work.updatedAt]);
+  useEffect(() => {
+    if (!s.incomingCall || s.incomingCall.status !== "answered") {
+      setCallElapsed(0);
+      setCallMicOn(true);
+      setCallSpeakerOn(false);
+      return;
+    }
+    const startedAt = Date.now();
+    setCallElapsed(0);
+    const timer = window.setInterval(() => setCallElapsed(Math.floor((Date.now() - startedAt) / 1000)), 1000);
+    return () => window.clearInterval(timer);
+  }, [s.incomingCall?.status, s.incomingCall?.caller, s.incomingCall?.target]);
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
     const request = s.ui?.wechat?.wxOutgoingCallRequest;
@@ -1450,7 +1468,7 @@ function PhoneRuntime({
             </div>
           )}
           {!creator && s.incomingCall && (
-            <div className="incoming-call-screen">
+            <div className={`incoming-call-screen ${s.incomingCall.status === "answered" ? "is-connected" : ""} ${s.incomingCall.direction === "outgoing" ? "is-outgoing" : "is-incoming"}`}>
               {(() => {
                 const caller = s.incomingCall!.caller;
                 const isBigG = caller === "大G" || caller === "温尚翊";
@@ -1464,18 +1482,8 @@ function PhoneRuntime({
                     if (Array.isArray(parsed?.messages)) savedStoryMessages = parsed.messages;
                   }
                 } catch { savedStoryMessages = []; }
-                // Contact portraits may live in the authored work data rather than
-                // the live transcript (especially before the first DaG message is delivered).
-                // Resolve the pre-change portrait from every saved source, then let the
-                // explicit story flag switch all call surfaces to the new portrait.
                 const configuredAvatarCandidates = Object.values(work.data ?? {}).flat();
-                const avatarCandidates = [
-                  ...configuredAvatarCandidates,
-                  ...(s.messages.wechat ?? []),
-                  ...savedStoryMessages,
-                ];
-                // The dot message is the authoritative avatar-change moment.
-                // Older saves may contain that message while the UI flag is absent.
+                const avatarCandidates = [...configuredAvatarCandidates, ...(s.messages.wechat ?? []), ...savedStoryMessages];
                 const daGAvatarChanged =
                   s.ui?.wechat?.wxPostDrunkGDotDeliveredV1 === true ||
                   avatarCandidates.some((item) =>
@@ -1491,11 +1499,12 @@ function PhoneRuntime({
                 const changedDaGAvatar = typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" && s.ui.wechat.wxDaGAvatarV2.trim()
                   ? s.ui.wechat.wxDaGAvatarV2
                   : "./assets/dag-new-avatar.jpg";
-                const avatarSrc = isBigG
-                  ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar)
-                  : GLOOMY_AVATAR;
+                const avatarSrc = isBigG ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar) : GLOOMY_AVATAR;
+                const connected = s.incomingCall!.status === "answered";
+                const mm = String(Math.floor(callElapsed / 60)).padStart(2, "0");
+                const ss = String(callElapsed % 60).padStart(2, "0");
                 return <>
-                  <div className="wechat-call-topline">{s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>
+                  {connected ? <div className="wechat-call-timer">{mm}:{ss}</div> : <div className="wechat-call-topline">{s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>}
                   <div className="incoming-avatar">
                     {avatarSrc ? (
                       <img src={avatarSrc} alt="" onError={e => {
@@ -1503,57 +1512,41 @@ function PhoneRuntime({
                         e.currentTarget.remove();
                         if (holder) holder.textContent = isBigG ? "🎸" : "🐻";
                       }} />
-                    ) : (
-                      <span className="incoming-avatar-fallback">{isBigG ? "🎸" : "🐻"}</span>
-                    )}
+                    ) : <span className="incoming-avatar-fallback">{isBigG ? "🎸" : "🐻"}</span>}
                   </div>
                   <h2>{displayName}</h2>
-                  <p className="wechat-call-state">{s.incomingCall!.status === "ringing" ? (s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…") : (s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中")}</p>
+                  <p className="wechat-call-state">{connected ? (s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中") : s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…"}</p>
                 </>;
               })()}
-              {s.incomingCall.status === "answered" &&
-                (() => {
-                  const record = work.data.phone?.find(
-                    (i) => i.id === s.incomingCall?.target,
-                  );
-                  return record?.kind === "audio" && safeMedia(record.media) ? (
-                    <audio controls src={safeMedia(record.media)} />
-                  ) : null;
-                })()}
               <div className="incoming-actions">
-                <button
-                  className="decline-call"
-                  onClick={() => {
-                    const call = runtimeRef.current.incomingCall;
-                    if (call) {
+                {s.incomingCall.status === "answered" || s.incomingCall.direction === "outgoing" ? (
+                  <>
+                    <button className={`call-control ${callMicOn ? "control-active" : "control-muted"}`} onClick={() => setCallMicOn(v => !v)} aria-label={callMicOn ? "关闭麦克风" : "打开麦克风"}>
+                      <Mic size={27}/><span>{callMicOn ? "麦克风已开" : "麦克风已关"}</span>
+                    </button>
+                    <button className="decline-call call-control" onClick={() => {
+                      const call = runtimeRef.current.incomingCall;
+                      if (!call) return;
                       const current = runtimeRef.current;
-                      const next = dispatch(
-                        work,
-                        { ...current, incomingCall: null },
-                        call.status === "ringing" ? "callDeclined" : "callEnded",
-                        call.target || call.caller,
-                      );
+                      const next = dispatch(work, { ...current, incomingCall: null }, call.status === "ringing" ? "callDeclined" : "callEnded", call.target || call.caller);
                       const wx = current.ui?.wechat ?? {};
                       const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkFinalCallFinishedV7 !== true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
-      const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [
-          { id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled", switchThread: "西蓝花" } },
-          { id: "drunk-door-bigg-intro-v1", sender: "大G", body: "你好我是溫尚翊，你朋友喝多了。", thread: "西蓝花" },
-          { id: "drunk-door-broccoli-pause-v1", sender: "西蓝花", body: "………………", thread: "西蓝花" },
-          { id: "drunk-door-broccoli-gasp-v1", sender: "西蓝花", body: "啊？？？", thread: "西蓝花" },
-          { id: "drunk-door-broccoli-confirm-v1", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
-          { id: "drunk-door-broccoli-question-v1", sender: "西蓝花", body: "她在干嘛，能接电话吗？", thread: "西蓝花" },
-          { id: "drunk-door-bigg-explain-v1", sender: "大G", body: "嗯，她刚刚喝了不少，现在已经睡着了。", thread: "西蓝花" },
-          { id: "drunk-door-bigg-reassure-v1", sender: "大G", body: "不用擔心，我會照顧好她。", thread: "西蓝花" },
-          { id: "drunk-door-broccoli-relief-v1", sender: "西蓝花", body: "好吧.....我就知道......", thread: "西蓝花" },
-          { id: "drunk-door-broccoli-request-v1", sender: "西蓝花", body: "……那真的麻煩你了，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
-      ];
+                        const queued = [
+                          { id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled", switchThread: "西蓝花" } },
+                          { id: "drunk-door-bigg-intro-v1", sender: "大G", body: "你好我是溫尚翊，你朋友喝多了。", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-pause-v1", sender: "西蓝花", body: "………………", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-gasp-v1", sender: "西蓝花", body: "啊？？？", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-confirm-v1", sender: "西蓝花", body: "你是溫尚翊？？？", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-question-v1", sender: "西蓝花", body: "她在干嘛，能接电话吗？", thread: "西蓝花" },
+                          { id: "drunk-door-bigg-explain-v1", sender: "大G", body: "嗯，她刚刚喝了不少，现在已经睡着了。", thread: "西蓝花" },
+                          { id: "drunk-door-bigg-reassure-v1", sender: "大G", body: "不用擔心，我會照顧好她。", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-relief-v1", sender: "西蓝花", body: "好吧.....我就知道......", thread: "西蓝花" },
+                          { id: "drunk-door-broccoli-request-v1", sender: "西蓝花", body: "……那真的麻煩你了，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
+                        ];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliCallStartedV1 === true) {
-                        const queued: Array<{ id: string; sender: string; body: string; thread: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [
-                          // The answered call ended after nine seconds. This is
-                          // the owner's outgoing call-history bubble, shown
-                          // between the typing ellipsis and Broccoli's next line.
+                        const queued = [
                           { id: "drunk-broccoli-call-duration-v1", sender: "我", body: "聊天时长 00:09", thread: "西蓝花", kind: "call" },
                           { id: "drunk-broccoli-call-ended-v2", sender: "西蓝花", body: "你在說什麼我聽不清！！", thread: "西蓝花" },
                           { id: "drunk-broccoli-where-v2", sender: "西蓝花", body: "妳現在到底在幹嘛？", thread: "西蓝花" },
@@ -1564,10 +1557,7 @@ function PhoneRuntime({
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (isDrunkFinalCall && wx.wxBroccoliFinalGCallV1 === true) {
                         let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
-                        try {
-                          const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
-                          if (Array.isArray(parsed)) queued = parsed;
-                        } catch { queued = []; }
+                        try { const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : []; if (Array.isArray(parsed)) queued = parsed; } catch { queued = []; }
                         queued.push(
                           { id: "drunk-big-g-call-declined-first-v1", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
                           { id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" },
@@ -1576,55 +1566,36 @@ function PhoneRuntime({
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else if (isDrunkFinalCall) {
                         let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
-                        try {
-                          const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : [];
-                          if (Array.isArray(parsed)) queued = parsed;
-                        } catch { queued = []; }
+                        try { const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : []; if (Array.isArray(parsed)) queued = parsed; } catch { queued = []; }
                         queued.push(
                           { id: "drunk-big-g-call-declined-v10", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
                           { id: "drunk-big-g-pick-up-v9", sender: "大G", body: "接電話。", thread: "大G" },
                         );
-                        update({
-                          ...next,
-                          ui: { ...next.ui, wechat: {
-                            ...(next.ui?.wechat ?? {}),
-                            wxDrunkFinalCallFinishedV7: true,
-                            wxCatPendingLines: JSON.stringify(queued),
-                          }},
-                        });
-                      } else {
+                        update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                      } else update(next);
+                    }}>
+                      <PhoneIcon size={27}/><span>{s.incomingCall.status === "ringing" ? "取消" : "挂断"}</span>
+                    </button>
+                    <button className={`call-control ${callSpeakerOn ? "control-active" : "control-muted"}`} onClick={() => setCallSpeakerOn(v => !v)} aria-label={callSpeakerOn ? "关闭扬声器" : "打开扬声器"}>
+                      {callSpeakerOn ? <Volume2 size={27}/> : <VolumeX size={27}/>}<span>{callSpeakerOn ? "扬声器已开" : "扬声器已关"}</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="call-control control-active" onClick={() => setCallMicOn(v => !v)}><Mic size={27}/><span>{callMicOn ? "麦克风已开" : "麦克风已关"}</span></button>
+                    <button className="decline-call call-control" onClick={() => {
+                      const call = runtimeRef.current.incomingCall;
+                      if (call) {
+                        const current = runtimeRef.current;
+                        const next = dispatch(work, { ...current, incomingCall: null }, "callDeclined", call.target || call.caller);
                         update(next);
                       }
-                    }
-                  }}
-                >
-                  <PhoneIcon size={25} />
-                  <span>
-                    {s.incomingCall.status === "ringing" ? (s.incomingCall.direction === "outgoing" ? "取消" : "拒接") : "挂断"}
-                  </span>
-                </button>
-                {s.incomingCall.status === "ringing" && (
-                  <button
-                    className="accept-call"
-                    onClick={() => {
+                    }}><PhoneIcon size={27}/><span>拒接</span></button>
+                    <button className="accept-call call-control" onClick={() => {
                       const call = runtimeRef.current.incomingCall;
-                      if (call)
-                        update(
-                          dispatch(
-                            work,
-                            {
-                              ...runtimeRef.current,
-                              incomingCall: { ...call, status: "answered" },
-                            },
-                            "callAnswered",
-                            call.target || call.caller,
-                          ),
-                        );
-                    }}
-                  >
-                    <PhoneIcon size={25} />
-                    <span>接听</span>
-                  </button>
+                      if (call) update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller));
+                    }}><PhoneIcon size={27}/><span>接听</span></button>
+                  </>
                 )}
               </div>
             </div>
