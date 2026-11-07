@@ -1464,6 +1464,18 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [milkTeaStageRenumberedV2, setMilkTeaStageRenumberedV2] = useSkinState<boolean>(p, "wxMilkTeaStageRenumberedV2", false);
+  useEffect(() => {
+    // Existing saves may already be inside the earlier, shortened milk-tea
+    // exchange. Shift only its later stages to make room for the restored
+    // opening messages; stages belonging to other chats remain unchanged.
+    if (milkTeaStageRenumberedV2) return;
+    if (returnDinnerStage >= 427 && returnDinnerStage <= 443) {
+      setReturnDinnerStage(returnDinnerStage + 3);
+    }
+    setMilkTeaStageRenumberedV2(true);
+  }, [milkTeaStageRenumberedV2, returnDinnerStage]);
+
   const [postLockWaitPending, setPostLockWaitPending] = useSkinState<boolean>(p, "wxPostLockWaitPendingV1", false);
   const [postLockWaitDone, setPostLockWaitDone] = useSkinState<boolean>(p, "wxPostLockWaitDoneV1", false);
   const [postDoorInitialCheckInQueued, setPostDoorInitialCheckInQueued] = useSkinState<boolean>(p, "wxPostDoorInitialCheckInQueuedV1", false);
