@@ -4305,10 +4305,27 @@ export function WeChatSkin(p: SkinProps) {
                     <button type="button" disabled={!storyMomentCommentDraft.trim()} onClick={() => {
                       const comment = storyMomentCommentDraft.trim();
                       if (!comment) return;
+                      let shouldQueueDaGReply = false;
                       setStoryFriendMomentPosts((current) => current.map((raw) => {
                         const post = JSON.parse(raw);
-                        return post.id === entry.id ? JSON.stringify({ ...post, comments: [...(post.comments || []), ownerName + "：" + comment] }) : raw;
+                        if (post.id !== entry.id) return raw;
+                        if (post.id === "dag-wanwan-home-photo-v1" && !post.replyQueued) shouldQueueDaGReply = true;
+                        return JSON.stringify({
+                          ...post,
+                          comments: [...(post.comments || []), ownerName + "：" + comment],
+                          ...(post.id === "dag-wanwan-home-photo-v1" ? { replyQueued: true } : {}),
+                        });
                       }));
+                      if (entry.id === "dag-wanwan-home-photo-v1" && !entry.post.replyQueued) {
+                        setPendingCatLines((current) => current.some((line) => line.id === "dag-wanwan-comment-reply-v1")
+                          ? current
+                          : [...current, {
+                              id: "dag-wanwan-comment-reply-v1",
+                              sender: "大G",
+                              body: "怎麼，生氣了喔？",
+                              thread: "大G",
+                            }]);
+                      }
                       setStoryMomentCommentDraft("");
                     }} style={{ border: 0, background: "transparent", color: "#576b95", fontSize: 13, cursor: "pointer" }}>发送</button>
                   </div>
