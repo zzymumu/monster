@@ -2144,8 +2144,16 @@ export function WeChatSkin(p: SkinProps) {
   const hasDrunkStoryInMonsterChat = isMonsterThread && [...allItems, ...pendingCatLines].some((item) =>
     ("title" in item ? item.title : item.thread) === "大G" && item.body.trim() === "喂！你怎么不说话！"
   );
+  const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
+    try {
+      const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
+      return group.name === p.thread && group.leftByMe !== true &&
+        Array.isArray(group.members) && group.members.includes("我") &&
+        group.members.includes("大G") && group.members.includes("西蓝花");
+    } catch { return false; }
+  });
   const catRescueActive =
-    isBroccoliThread ||
+    isBroccoliThread || isThreeWayGroupThread ||
     (isMonsterThread && (
       monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53 ||
       vavaPlayActive || hasDrunkStoryInMonsterChat ||
@@ -4109,29 +4117,6 @@ export function WeChatSkin(p: SkinProps) {
     { user: ["……好像有点道理。"], incoming: ["等一下，我把妳拉回來。"] },
   ];
   useEffect(() => {
-    if (!p.thread || !wxGroupChatsRaw.length || threeWayGroupStoryStep !== -1) return;
-    let openedGroup: { name: string; members: string[] } | undefined;
-    for (const raw of wxGroupChatsRaw) {
-      try {
-        const group = JSON.parse(raw) as { name: string; members: string[]; leftByMe?: boolean };
-        if (group.name === p.thread && !group.leftByMe && group.members.includes("大G") && group.members.includes("西蓝花")) openedGroup = group;
-      } catch { /* Ignore malformed saved group records. */ }
-    }
-    if (!openedGroup) return;
-    appendCatLines([
-      { id: "wx-threeway-opening-broccoli-01", sender: "西蓝花", body: "？", thread: openedGroup.name },
-      { id: "wx-threeway-opening-broccoli-02", sender: "西蓝花", body: "？？？？？？", thread: openedGroup.name },
-      { id: "wx-threeway-opening-broccoli-03", sender: "西蓝花", body: "这是什么群？？？", thread: openedGroup.name },
-      { id: "wx-threeway-opening-broccoli-04", sender: "西蓝花", body: "我怎么突然在这里？？？", thread: openedGroup.name },
-      { id: "wx-threeway-opening-broccoli-05", sender: "西蓝花", body: "…………", thread: openedGroup.name },
-      { id: "wx-threeway-opening-broccoli-06", sender: "西蓝花", body: "那个头像？？？", thread: openedGroup.name },
-      { id: "wx-threeway-opening-broccoli-07", sender: "西蓝花", body: "是我眼花了吗？？？", thread: openedGroup.name },
-      { id: "wx-threeway-opening-dag-01", sender: "大G", body: "哈囉～", thread: openedGroup.name },
-    ], catRescue.stage, catRescue.branch, "wx-threeway-group-opening");
-    setThreeWayGroupStoryStep(0);
-    p.onUi?.("wxThreeWayGroupStoryStepV1", 0);
-  }, [p.thread, wxGroupChatsRaw, threeWayGroupStoryStep]);
-  useEffect(() => {
     if (accidentalGroupStoryStep !== 22 || accidentalGroupInvitePending || pendingCatLines.length > 0) return;
     setAccidentalGroupInvitePending(true);
     p.onUi?.("wxAccidentalGroupInvitePendingV1", true);
@@ -4758,6 +4743,20 @@ export function WeChatSkin(p: SkinProps) {
                         { id: "wx-accidental-group-rejoined-dag-01-v1", sender: "大G", body: "進來了嗎？", thread: "大G" },
                         { id: "wx-accidental-group-rejoined-dag-02-v1", sender: "大G", body: "這次不要再把自己退掉了喔！", thread: "大G" },
                       ], catRescue.stage, catRescue.branch, "wx-accidental-group-rejoined");
+                      // The group only becomes active after the player accepts the invitation.
+                      // Queue Broccoli's first group message now, so it can arrive as a group notification.
+                      appendCatLines([
+                        { id: "wx-threeway-opening-broccoli-01", sender: "西蓝花", body: "？", thread: restoredGroup.name },
+                        { id: "wx-threeway-opening-broccoli-02", sender: "西蓝花", body: "？？？？？？", thread: restoredGroup.name },
+                        { id: "wx-threeway-opening-broccoli-03", sender: "西蓝花", body: "这是什么群？？？", thread: restoredGroup.name },
+                        { id: "wx-threeway-opening-broccoli-04", sender: "西蓝花", body: "我怎么突然在这里？？？", thread: restoredGroup.name },
+                        { id: "wx-threeway-opening-broccoli-05", sender: "西蓝花", body: "…………", thread: restoredGroup.name },
+                        { id: "wx-threeway-opening-broccoli-06", sender: "西蓝花", body: "那个头像？？？", thread: restoredGroup.name },
+                        { id: "wx-threeway-opening-broccoli-07", sender: "西蓝花", body: "是我眼花了吗？？？", thread: restoredGroup.name },
+                        { id: "wx-threeway-opening-dag-01", sender: "大G", body: "哈囉～", thread: restoredGroup.name },
+                      ], catRescue.stage, catRescue.branch, "wx-threeway-group-opening");
+                      setThreeWayGroupStoryStep(0);
+                      p.onUi?.("wxThreeWayGroupStoryStepV1", 0);
                       setAccidentalGroupStoryStep(23);
                       p.onUi?.("wxAccidentalGroupStoryStepV1", 23);
                     }}>接受邀请</button>
