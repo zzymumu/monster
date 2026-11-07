@@ -245,6 +245,17 @@ function MessageList({
                 <small>{transferStatus === "accepted" ? "已收款" : transferStatus === "returned" ? "已退还" : "微信转账 · 待接收"}</small>
                 <small style={{ display: "block", marginTop: 7, opacity: .8 }}>点击查看转账详情</small>
               </div>
+            ) : i.kind === "transfer-return" ? (
+              <div style={{ minWidth: 220, maxWidth: 285, borderRadius: 8, padding: "13px 15px", background: "#b77b37", color: "#fff", boxShadow: "0 1px 2px rgba(0,0,0,.12)", textAlign: "left" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ width: 43, height: 43, border: "3px solid rgba(255,255,255,.72)", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 29, lineHeight: 1 }}>↶</span>
+                  <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <strong style={{ fontSize: 25, fontWeight: 600 }}>NT$ {Number(i.meta?.amount ?? 500).toFixed(2)}</strong>
+                    <small style={{ color: "rgba(255,255,255,.82)", fontSize: 13 }}>已退还</small>
+                  </span>
+                </div>
+                <div style={{ borderTop: "1px solid rgba(255,255,255,.2)", marginTop: 11, paddingTop: 7, fontSize: 12, color: "rgba(255,255,255,.82)" }}>转账</div>
+              </div>
             ) : i.kind === "event" && i.meta?.locationName ? (
               <div style={{ width: 250, borderRadius: 8, overflow: "hidden", background: "#f1f2f4", color: "#222", textAlign: "left" }}>
                 <div style={{ padding: "10px 12px 5px", fontWeight: 600 }}>{i.meta?.locationName || body}</div>
@@ -265,21 +276,7 @@ function MessageList({
           </button>
           {!whatsapp && i.outgoing && <Avatar name={i.sender} src={selfAvatar || i.avatar} />}
         </div>
-        {wechat && i.kind === "transfer" && transferStatus === "returned" && (
-          <div className="skin-message outgoing" style={{ justifyContent: "flex-end", marginTop: 5 }}>
-            <div style={{ minWidth: 220, maxWidth: 285, borderRadius: 8, padding: "13px 15px", background: "#b77b37", color: "#fff", boxShadow: "0 1px 2px rgba(0,0,0,.12)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ width: 43, height: 43, border: "3px solid rgba(255,255,255,.72)", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 29, lineHeight: 1 }}>↶</span>
-                <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  <strong style={{ fontSize: 25, fontWeight: 600 }}>NT$100.00</strong>
-                  <small style={{ color: "rgba(255,255,255,.82)", fontSize: 13 }}>已退还</small>
-                </span>
-              </div>
-              <div style={{ borderTop: "1px solid rgba(255,255,255,.2)", marginTop: 11, paddingTop: 7, fontSize: 12, color: "rgba(255,255,255,.82)" }}>转账</div>
-            </div>
-            <Avatar name="我" src={selfAvatar} />
-          </div>
-        )}</Fragment>;
+</Fragment>;
       })}
     </div>
     {selectedTransfer && (
@@ -3591,7 +3588,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "那你应该喝点好喝的！", thread: "大G" },
       { sender: "大G", body: "說得也是。", thread: "大G" },
       { sender: "大G", body: "不然這樣好了。", thread: "大G" },
-      { sender: "大G", body: "100.00", thread: "大G", kind: "transfer", meta: { amount: "100", currency: "TWD", transferStatus: "pending" } },
+      { sender: "大G", body: "100.00", thread: "大G", kind: "transfer", meta: { amount: "500", currency: "TWD", transferStatus: "pending" } },
       { sender: "大G", body: "今天真的走不開。", thread: "大G" },
       { sender: "大G", body: "等忙完再去喝好了。", thread: "大G" },
       { sender: "大G", body: "拜託妳幫我試喝一下啦。", thread: "大G" },
@@ -3614,6 +3611,7 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "妳喜歡的應該不會太差吧。", thread: "大G" },
     ]},
     { stage: 454, chat: "大G", id: "milk-tea-transfer-return-v1", label: "钱我退给你啦！\n我买完给你送录音室吧！", nextStage: 455, lines: [
+      { sender: "我", body: "500.00", thread: "大G", kind: "transfer-return", meta: { amount: "500", currency: "TWD" } },
       { sender: "我", body: "钱我退给你啦。", thread: "大G" },
       { sender: "我", body: "我买完给你送录音室吧！", thread: "大G" },
       { sender: "我", body: "你们录音辛苦了，我请你们喝～", thread: "大G" },
