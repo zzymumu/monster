@@ -1455,8 +1455,6 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
-  const [postDoorBroccoliHandoffArmed, setPostDoorBroccoliHandoffArmed] = useSkinState<boolean>(p, "wxPostDoorBroccoliHandoffArmedV1", false);
-  const postDoorThreadRef = useRef(p.thread || "");
   const [pickupSceneRebuiltV1, setPickupSceneRebuiltV1] = useSkinState<boolean>(p, "wxPickupSceneRebuiltV1", false);
   const [hotelBroccoliFollowupQueued, setHotelBroccoliFollowupQueued] = useSkinState<boolean>(p, "wxHotelBroccoliFollowupQueuedV1", false);
   const handledReturnDinnerChoicesRef = useRef(new Set<string>());
