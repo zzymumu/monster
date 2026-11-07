@@ -1525,6 +1525,15 @@ export function WeChatSkin(p: SkinProps) {
   const [milkTeaArrivalWaitReady, setMilkTeaArrivalWaitReady] = useSkinState<boolean>(p, "wxMilkTeaArrivalWaitReadyV1", false);
   const [milkTeaCallPromptShown, setMilkTeaCallPromptShown] = useSkinState<boolean>(p, "wxMilkTeaCallPromptShownV1", false);
   const [milkTeaCallPromptOpen, setMilkTeaCallPromptOpen] = useState(false);
+  // The milk-tea call is the handoff into the signature story. The call
+  // completion flag is persisted by PhoneRuntime; wait until the player
+  // manually opens Broccoli, then expose the first reply choice immediately.
+  useEffect(() => {
+    const isBroccoli = p.thread === "西蓝花" || p.thread === "西兰花";
+    if (!isBroccoli || returnDinnerStage !== 472 || p.ui?.wxMilkTeaArrivalCallFinishedV1 !== true) return;
+    setReturnDinnerStage(500);
+  }, [returnDinnerStage, p.thread, p.ui?.wxMilkTeaArrivalCallFinishedV1]);
+
   const [broccoliSignatureCallQueued, setBroccoliSignatureCallQueued] = useSkinState<boolean>(p, "wxBroccoliSignatureCallQueuedV1", false);
   useEffect(() => {
     if (returnDinnerStage !== 514 || p.thread !== "西蓝花" || broccoliSignatureCallQueued) return;
