@@ -399,17 +399,12 @@ function PhoneRuntime({
   }, [milkTeaCallActive, s.incomingCall?.status, milkTeaCallStep]);
 
   const sendMilkTeaCallReply = (replyIndex: number) => {
-    const current = runtimeRef.current;
-    if (!current.incomingCall || current.incomingCall.status !== "answered") return;
-    const line = milkTeaCallReplies[replyIndex]; if (!line) return;
-    const messages = current.messages.wechat ?? [];
-    update({ ...current, messages: { ...current.messages, wechat: [...messages, {
-      id: `milk-tea-call-player-reply-${replyIndex}-v1`, title: "大G", body: line,
-      richText: "", meta: { thread: "大G" }, time: new Date().toISOString(), sender: "我",
-      avatar: "", kind: "text", media: "", hidden: false, unlock: "", password: "",
-      folder: "", favorite: false, outgoing: true, read: true, likes: 0, comments: [],
-    }] } });
-    setMilkTeaCallReply(-1); setMilkTeaCallStep(replyIndex + 1);
+    if (!runtimeRef.current.incomingCall || runtimeRef.current.incomingCall.status !== "answered") return;
+    if (!milkTeaCallReplies[replyIndex]) return;
+    // Call replies are spoken interactions shown only in the call UI.
+    // Do not persist them as ordinary WeChat chat messages.
+    setMilkTeaCallReply(-1);
+    setMilkTeaCallStep(replyIndex + 1);
   };
 
   const finishMilkTeaCall = () => {
@@ -1994,11 +1989,12 @@ function AppContent({
   const shown = [
     ...items.filter((i) => creator || visible(i, state)),
     ...notificationTranscriptItems.filter((eventItem) => !items.some((item) => item.id === eventItem.id)),
-  ].map((item) =>
-    item.id.startsWith("milk-tea-call-")
-      ? { ...item, title: "大G", meta: { ...item.meta, thread: "大G" } }
-      : item,
-  ).filter((i) =>
+  ].filter((item) => !item.id.startsWith("milk-tea-call-player-reply-"))
+    .map((item) =>
+      item.id.startsWith("milk-tea-call-")
+        ? { ...item, title: "大G", meta: { ...item.meta, thread: "大G" } }
+        : item,
+    ).filter((i) =>
     (i.title + i.body + i.sender).toLowerCase().includes(q.toLowerCase()),
   );
   const filtered =
