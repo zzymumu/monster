@@ -2129,6 +2129,16 @@ export function WeChatSkin(p: SkinProps) {
   // ownership from sender text (the player's lines otherwise get misplaced).
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
+  const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
+  const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
+    try {
+      const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
+      return group.name === p.thread && group.leftByMe !== true &&
+        Array.isArray(group.members) && group.members.includes("我") &&
+        group.members.includes("大G") && group.members.includes("西蓝花");
+    } catch { return false; }
+  });
+
   // Keep the story UI active even before its first scripted message is saved.
   // The first choice is what starts the story, so requiring existing story
   // messages here prevents the initial choices from ever appearing.
@@ -4071,15 +4081,6 @@ export function WeChatSkin(p: SkinProps) {
   const [menu, setMenu] = useState(false);
   const [utility, setUtility] = useState("");
   const [wxChatSettingsRaw, setWxChatSettingsRaw] = useSkinState<string>(p, "wxChatSettingsV1", "{}");
-  const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
-  const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
-    try {
-      const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
-      return group.name === p.thread && group.leftByMe !== true &&
-        Array.isArray(group.members) && group.members.includes("我") &&
-        group.members.includes("大G") && group.members.includes("西蓝花");
-    } catch { return false; }
-  });
 
   const [groupPickerOpen, setGroupPickerOpen] = useState(false);
   const [selectedGroupMembers, setSelectedGroupMembers] = useState<string[]>([]);
