@@ -4490,7 +4490,14 @@ export function WeChatSkin(p: SkinProps) {
       {menu && !p.thread && !moments && !utility && (
         <div className="wx-popup-menu" role="menu">
           {["发起群聊", "添加朋友", "扫一扫", "收付款"].map((label) => (
-            <button role="menuitem" key={label} onClick={() => { setMenu(false); setUtility(label); }}>{label}</button>
+            <button role="menuitem" key={label} onClick={() => {
+            setMenu(false);
+            if (label === "发起群聊") {
+              setSelectedGroupMembers([]);
+              setGroupPickerOpen(true);
+              setUtility("发起群聊");
+            } else setUtility(label);
+          }}>{label}</button>
           ))}
         </div>
       )}
@@ -4562,6 +4569,26 @@ export function WeChatSkin(p: SkinProps) {
         </div>
       ) : utility ? (
         <div className="skin-scroll wx-utility">
+          {utility === "发起群聊" && (
+            <div className="wx-chat-info-page">
+              <div className="wx-group-picker-list">
+                {Array.from(new Set(friendDirectory.map(canonicalContactName)))
+                  .filter((name) => !["我", "机主"].includes(name) && !(monsterRemoved && name === "大G"))
+                  .map((name) => {
+                    const checked = selectedGroupMembers.includes(name);
+                    const related = allItems.filter((item) => item.sender === name || item.title === name).at(-1);
+                    return <button type="button" key={name} onClick={() => setSelectedGroupMembers((current) => checked ? current.filter((item) => item !== name) : [...current, name])}>
+                      <Avatar name={name} src={isMonsterName(name) ? getDaGAvatar(related?.avatar || "") : name === "西蓝花" ? GLOOMY_AVATAR : related?.avatar || ""}/>
+                      <span>{displayName(name)}</span><i className={checked ? "is-selected" : ""}>{checked ? "✓" : ""}</i>
+                    </button>;
+                  })}
+              </div>
+              <div className="wx-group-picker-footer">
+                <small>已选择 {selectedGroupMembers.length} 位联系人</small>
+                <button disabled={selectedGroupMembers.length < 2} onClick={createGroupChat}>完成</button>
+              </div>
+            </div>
+          )}
           {utility === "聊天信息" && (
             <div className="wx-chat-info-page">
               <div className="wx-chat-info-members">
