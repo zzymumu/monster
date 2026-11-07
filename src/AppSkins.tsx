@@ -3626,8 +3626,8 @@ export function WeChatSkin(p: SkinProps) {
         catch { return true; }
       });
       const canonical = kept
-        ? { ...kept, id: postId, image: "./assets/wanwan-moments.webp", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
-        : { id: postId, sender: "大G", body: "终于回家了，小朋友。", image: "./assets/wanwan-moments.webp", time: new Date().toLocaleString("zh-CN", { hour12: false }), likes: [], comments: [] };
+        ? { ...kept, id: postId, image: "https://zzymumu.github.io/monster/assets/wanwan-moments.webp", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
+        : { id: postId, sender: "大G", body: "终于回家了，小朋友。", image: "https://zzymumu.github.io/monster/assets/wanwan-moments.webp", time: new Date().toLocaleString("zh-CN", { hour12: false }), likes: [], comments: [] };
       return [...unrelated, JSON.stringify(canonical)];
     });
   }, [returnDinnerStage]);
@@ -4270,7 +4270,18 @@ export function WeChatSkin(p: SkinProps) {
               <div style={{ minWidth: 0, flex: 1 }}>
                 <strong style={{ color: "#576b95" }}>{displayName("大G")}</strong>
                 <p style={{ margin: "7px 0 10px", whiteSpace: "pre-wrap" }}>{entry.post.body}</p>
-                <img src={entry.post.image} alt="玩玩在家里睡觉" style={{ display: "block", width: "min(100%, 360px)", height: "auto", borderRadius: 3, objectFit: "cover" }} />
+                <img
+                  src={entry.id === "dag-wanwan-home-photo-v1" ? "https://zzymumu.github.io/monster/assets/wanwan-moments.webp" : entry.post.image}
+                  alt="玩玩在家里睡觉"
+                  onError={(event) => {
+                    const image = event.currentTarget;
+                    if (image.dataset.fallbackTried !== "true") {
+                      image.dataset.fallbackTried = "true";
+                      image.src = "https://zzymumu.github.io/monster/assets/wannwan-sleeping-cat.jpg";
+                    }
+                  }}
+                  style={{ display: "block", width: "min(100%, 360px)", height: "auto", borderRadius: 3, objectFit: "cover" }}
+                />
                 <small style={{ display: "block", color: "#999", marginTop: 9 }}>{entry.post.time}</small>
                 <div style={{ display: "flex", justifyContent: "flex-end", gap: 14, padding: "8px 10px", marginTop: 6, background: "#f7f7f7", borderRadius: 3 }}>
                   <button type="button" onClick={() => setStoryFriendMomentPosts((current) => current.map((raw) => {
