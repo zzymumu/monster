@@ -1472,7 +1472,8 @@ function PhoneRuntime({
           )}
           {!creator && s.incomingCall && (
             <div className={`incoming-call-screen ${s.incomingCall.status === "answered" ? "is-connected" : ""} ${s.incomingCall.direction === "outgoing" ? "is-outgoing" : "is-incoming"}`}>
-              {callTopNotice && <div className="wechat-call-top-notice">{callTopNotice}<button onClick={() => setCallTopNotice("")}>知道了</button></div>}\n              <div className="wechat-call-top-actions">
+              {callTopNotice && <div className="wechat-call-top-notice">{callTopNotice}<button onClick={() => setCallTopNotice("")}>知道了</button></div>}
+              <div className="wechat-call-top-actions">
                 <button type="button" aria-label="切换通话设备" title="切换通话设备" onClick={() => setCallSpeakerOn(v => !v)}><Copy size={25}/></button>
                 <button type="button" aria-label="添加通话成员" title="添加通话成员" onClick={() => setCallTopNotice("暂不支持添加通话成员")}><UserRoundPlus size={25}/></button>
               </div>
