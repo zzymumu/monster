@@ -4305,11 +4305,9 @@ export function WeChatSkin(p: SkinProps) {
                     <button type="button" disabled={!storyMomentCommentDraft.trim()} onClick={() => {
                       const comment = storyMomentCommentDraft.trim();
                       if (!comment) return;
-                      let shouldQueueDaGReply = false;
                       setStoryFriendMomentPosts((current) => current.map((raw) => {
                         const post = JSON.parse(raw);
                         if (post.id !== entry.id) return raw;
-                        if (post.id === "dag-wanwan-home-photo-v1" && !post.replyQueued) shouldQueueDaGReply = true;
                         return JSON.stringify({
                           ...post,
                           comments: [...(post.comments || []), ownerName + "：" + comment],
