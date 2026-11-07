@@ -404,7 +404,7 @@ function PhoneRuntime({
     const line = milkTeaCallReplies[replyIndex]; if (!line) return;
     const messages = current.messages.wechat ?? [];
     update({ ...current, messages: { ...current.messages, wechat: [...messages, {
-      id: `milk-tea-call-player-reply-${replyIndex}-v1`, title: "微信消息", body: line,
+      id: `milk-tea-call-player-reply-${replyIndex}-v1`, title: "大G", body: line,
       richText: "", meta: { thread: "大G" }, time: new Date().toISOString(), sender: "我",
       avatar: "", kind: "text", media: "", hidden: false, unlock: "", password: "",
       folder: "", favorite: false, outgoing: true, read: true, likes: 0, comments: [],
@@ -416,7 +416,7 @@ function PhoneRuntime({
     const current = runtimeRef.current; if (!current.incomingCall) return;
     const messages = current.messages.wechat ?? [];
     const record = {
-      id: "milk-tea-call-duration-0143-v1", title: "语音通话", body: "通话时长：01:43",
+      id: "milk-tea-call-duration-0143-v1", title: "大G", body: "通话时长：01:43",
       richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "01:43" },
       time: new Date().toISOString(), sender: "我", avatar: "", kind: "call" as const,
       media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
