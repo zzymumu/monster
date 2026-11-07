@@ -4974,9 +4974,8 @@ export function WeChatSkin(p: SkinProps) {
                     ], catRescue.stage, catRescue.branch, "wx-threeway-group-opening-v2");
                     setThreeWayRejoinReplyPending(false);
                     p.onUi?.("wxThreeWayRejoinReplyPendingV1", false);
-                    // Leave the group view so the first Broccoli bubble is announced
-                    // using the group title in the WeChat notification.
-                    p.onThread("大G");
+                    // Keep the player inside the group after sending the reply.
+                    // The next incoming group messages should appear here in order.
                   }}>...你再说我解散。</button>
                   <div className="cat-rescue-option-hint">点击发送你的群聊回复</div>
                 </div>
