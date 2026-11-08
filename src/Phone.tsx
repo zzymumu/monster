@@ -1697,6 +1697,7 @@ function PhoneRuntime({
                   )}
                 </div>
               ) : (
+                <>
               <div className="wechat-call-top-actions">
                 <button type="button" aria-label="切换通话设备" title="切换通话设备" onClick={() => setCallSpeakerOn(v => !v)}><Copy size={25}/></button>
                 <button type="button" aria-label="添加通话成员" title="添加通话成员" onClick={() => setCallTopNotice("暂不支持添加通话成员")}><UserRoundPlus size={25}/></button>
@@ -1751,15 +1752,7 @@ function PhoneRuntime({
                   <p className="wechat-call-state">{connected ? (isExternalDelivery ? "通话中" : s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中") : isExternalDelivery ? "来电…" : s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…"}</p>
                 </>;
               })()}
-              {deliveryCallActive && s.incomingCall.status === "answered" && (
-                <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
-                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>外卖员</div>
-                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>奶茶放门口了。</div>
-                  {deliveryCallReplySent
-                    ? <div style={{ marginTop: 12, fontSize: 15 }}>你：好，谢谢你！我现在去拿。</div>
-                    : <button type="button" onClick={() => setDeliveryCallReplySent(true)} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>好，谢谢你！我现在去拿。</button>}
-                </div>
-              )}
+                </>
               )}
               {milkTeaCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
