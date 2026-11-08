@@ -6170,3 +6170,9 @@
 /* KEBUKE merchant logo in HungryPanda order card */
 .hp-story-store-mark{overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff!important;border:1px solid #eee;}
 .hp-story-store-mark img{width:100%;height:100%;display:block;object-fit:contain;}
+
+
+/* HungryPanda: remove the white seam between the iOS status bar and yellow header. */
+.phone-shell .phone-screen:has(.delivery-ui) .status-bar{border:0!important;border-bottom:0!important;box-shadow:none!important;background:#ffd900!important}
+.phone-shell .phone-screen:has(.delivery-ui) .status-bar::after{display:none!important;content:none!important}
+.delivery-ui .hp-header{border-top:0!important;margin-top:0!important}
