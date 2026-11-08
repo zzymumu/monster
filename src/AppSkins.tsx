@@ -4128,6 +4128,7 @@ export function WeChatSkin(p: SkinProps) {
   const [accidentalGroupInvitePending, setAccidentalGroupInvitePending] = useSkinState<boolean>(p, "wxAccidentalGroupInvitePendingV1", false);
   const [threeWayGroupStoryStep, setThreeWayGroupStoryStep] = useSkinState<number>(p, "wxThreeWayGroupStoryStepV1", -1);
   const [threeWayRejoinReplyPending, setThreeWayRejoinReplyPending] = useSkinState<boolean>(p, "wxThreeWayRejoinReplyPendingV1", false);
+  const [threeWayGroupCallQueued, setThreeWayGroupCallQueued] = useSkinState<boolean>(p, "wxThreeWayGroupCallQueuedV1", false);
   // Canonical three-person group transcript. Every incoming line has an explicit
   // sender; never infer the speaker from the message text.
   const threeWayGroupStory: Array<{ user: string[]; incoming: Array<{ sender: "西蓝花" | "大G"; body: string }> }> = [
@@ -4369,6 +4370,21 @@ export function WeChatSkin(p: SkinProps) {
     } catch { return []; }
   });
   const activeGroupChat = wxGroupChats.find((group) => group.name === p.thread);
+  // After the final group-chat line has fully arrived, trigger Broccoli's
+  // one-time incoming call. Keep it tied to this group so the fixed call
+  // history is written back into the same conversation.
+  useEffect(() => {
+    if (threeWayGroupCallQueued || !activeGroupChat || pendingCatLines.length > 0) return;
+    if (threeWayGroupStoryStep !== threeWayGroupStory.length) return;
+    const finalLineDelivered = [...p.items, ...catRescue.messages].some((item) =>
+      item.body.trim() === "记得常来哦🥺" &&
+      (item.title === activeGroupChat.name || item.meta?.storyThread === activeGroupChat.name)
+    );
+    if (!finalLineDelivered) return;
+    setThreeWayGroupCallQueued(true);
+    p.onUi?.("wxThreeWayGroupCallThreadV1", activeGroupChat.name);
+    p.onUi?.("wxThreeWayGroupCallRequestedV1", true);
+  }, [threeWayGroupCallQueued, activeGroupChat?.name, pendingCatLines.length, threeWayGroupStoryStep, p.items, catRescue.messages]);
   const detailMemberNames = Array.from(new Set((activeGroupChat?.members?.length ? activeGroupChat.members : (p.thread && !["我", "机主"].includes(p.thread) ? [canonicalContactName(p.thread)] : [])).map(canonicalContactName).filter((name) => name && !["我", "机主"].includes(name))));
   const createGroupChat = () => {
     const members = Array.from(new Set(selectedGroupMembers.filter((name) => name && name !== "我" && name !== "机主")));
