@@ -4498,6 +4498,7 @@ export function WeChatSkin(p: SkinProps) {
   const [momentComposer, setMomentComposer] = useState(false);
   const [momentDraft, setMomentDraft] = useState("");
   const [milkTeaMomentTriggered, setMilkTeaMomentTriggered] = useSkinState<boolean>(p, "wxMilkTeaMomentTriggeredV1", false);
+  const [deliveryCallMomentConsumed, setDeliveryCallMomentConsumed] = useSkinState<boolean>(p, "wxDeliveryCallMomentConsumedV1", false);
   const [drunkMomentSequenceStarted, setDrunkMomentSequenceStarted] = useSkinState<boolean>(p, "wxDrunkMomentSequenceStartedV1", false);
   const myMomentPosts = momentPostData.flatMap((raw) => {
     try {
@@ -4508,6 +4509,30 @@ export function WeChatSkin(p: SkinProps) {
       return [];
     }
   });
+  const openMoments = () => {
+    setMoments(true);
+    const deliveryMomentWindowOpen = p.allUi?.phone?.wxDeliveryCallMomentsReadyV1 === true;
+    if (!deliveryMomentWindowOpen || deliveryCallMomentConsumed) return;
+    const postId = "moment-delivery-thanks-v1";
+    setMomentPostData((current) => current.some((raw) => {
+      try { return JSON.parse(raw).id === postId; } catch { return false; }
+    }) ? current : [...current, JSON.stringify({
+      id: postId,
+      body: "超感谢好心人的奶茶🥺\\n好心人快出来！我要给你一个大大的抱抱！",
+      image: "./assets/delivery-milk-tea-moments.jpg",
+      time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      likes: ["西蓝花", "大G"],
+      comments: [],
+    })]);
+    setDeliveryCallMomentConsumed(true);
+    p.onAppUi?.("phone", "wxDeliveryCallMomentsReadyV1", false);
+    setPendingCatLines((current) => current.some((line) => line.id === "delivery-moments-dag-dinner-1-v1")
+      ? current
+      : [...current,
+          { id: "delivery-moments-dag-dinner-1-v1", sender: "大G", body: "晚上有空嗎？", thread: "大G" },
+          { id: "delivery-moments-dag-dinner-2-v1", sender: "大G", body: "出來吃飯嗎？", thread: "大G" },
+        ]);
+  };
   const publishMoment = () => {
     const body = momentDraft.trim();
     if (!body) return;
@@ -5619,7 +5644,7 @@ export function WeChatSkin(p: SkinProps) {
               {discoverGroups.map((group, index) => (
                 <section className="wx-discover-group" key={index}>
                   {group.map(({label, icon: Icon, color}) => (
-                    <button className="wx-discover-row" key={label} onClick={() => label === "朋友圈" ? setMoments(true) : openUtility(label)}>
+                    <button className="wx-discover-row" key={label} onClick={() => label === "朋友圈" ? openMoments() : openUtility(label)}>
                       <Icon size={23} style={{color}} /><span>{label}</span><ChevronRight size={18} />
                     </button>
                   ))}
@@ -5662,7 +5687,7 @@ export function WeChatSkin(p: SkinProps) {
                 {profileRows.slice(0, 1).map(({label, icon: Icon, color}) => <button key={label} onClick={() => openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
               </div>
               <div className="wx-me-group">
-                {profileRows.slice(1, 6).map(({label, icon: Icon, color}) => <button key={label} onClick={() => label === "朋友圈" ? setMoments(true) : openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
+                {profileRows.slice(1, 6).map(({label, icon: Icon, color}) => <button key={label} onClick={() => label === "朋友圈" ? openMoments() : openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
               </div>
               <div className="wx-me-group">
                 {profileRows.slice(6).map(({label, icon: Icon, color}) => <button key={label} onClick={() => openUtility(label)}><Icon size={22} style={{color}}/><span>{label}</span><ChevronRight size={18}/></button>)}
