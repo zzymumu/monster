@@ -2160,7 +2160,7 @@ export function WeChatSkin(p: SkinProps) {
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
   const [milkTeaGiftStage, setMilkTeaGiftStage] = useSkinState<number>(p, "wxMilkTeaGiftStageV1", -1);
-  const milkTeaGiftTurns = [
+  const milkTeaGiftTurns: Array<{ user: string[]; incoming: string[]; orderDelivered?: boolean; externalCall?: boolean }> = [
     { user: ["欸，问你一件事。"], incoming: ["干嘛？"] },
     { user: ["你是不是给我点奶茶了？"], incoming: ["啊？没有啊。", "怎么突然问这个？"] },
     { user: ["我刚刚收到外卖通知，说有一单奶茶正在配送。", "我点进去看了一下，是可不可。"], incoming: ["我真的没有点欸。"] },
