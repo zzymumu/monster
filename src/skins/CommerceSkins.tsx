@@ -505,7 +505,7 @@ export function DeliverySkin(p: Props) {
         ) : tab === "首页" ? (
           <>
             <div className="hp-header">
-              <div className="hp-location"><small>配送至</small><b>⌖ 选择配送地址 ⌄</b></div>
+              <div className="hp-location"><small>配送至</small><b>⌖ 建成花園廣場 ⌄</b></div>
               <button className="hp-support" onClick={()=>setTab("我的")}>客服</button>
             </div>
             <div className="hp-search-wrap"><SearchBox value={q} set={setQ} placeholder="搜索餐厅、美食或商品"/></div>
