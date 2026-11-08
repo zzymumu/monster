@@ -1656,8 +1656,21 @@ function PhoneRuntime({
                       const current = runtimeRef.current;
                       const next = dispatch(work, { ...current, incomingCall: null }, call.status === "ringing" ? "callDeclined" : "callEnded", call.target || call.caller);
                       const wx = current.ui?.wechat ?? {};
-                      const isInitialDrunkCall = call.caller === "大G" && wx.wxDrunkCallStartedV8 === true && wx.wxDrunkInitialCallHangupHandledV1 !== true && wx.wxDrunkSecondCallStartedV1 !== true;
-                      const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallFinishedV7 !== true && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkSecondCallStartedV1 === true;
+                      // Scripted drunk-story calls are incoming calls from DaG.
+                      // Match both saved contact-name variants, and key off the
+                      // explicit story request rather than a fragile "started"
+                      // flag that can be stale or lost during call-state updates.
+                      const callIdentity = String(call.caller || call.target || "").trim();
+                      const isDaGCall = callIdentity === "大G" || callIdentity === "温尚翊" ||
+                        callIdentity === "温尚翊（大G）";
+                      const isScriptedIncomingDaGCall = isDaGCall && call.direction !== "outgoing";
+                      const isInitialDrunkCall = isScriptedIncomingDaGCall &&
+                        wx.wxDrunkCallRequestedV8 === true &&
+                        wx.wxDrunkInitialCallHangupHandledV1 !== true &&
+                        wx.wxDrunkSecondCallStartedV1 !== true;
+                      const isDrunkFinalCall = isScriptedIncomingDaGCall &&
+                        wx.wxDrunkFinalCallFinishedV7 !== true &&
+                        wx.wxDrunkSecondCallStartedV1 === true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
                         const queued = [
                           { id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled", switchThread: "西蓝花" } },
