@@ -1380,6 +1380,12 @@ export function WeChatSkin(p: SkinProps) {
   const [tab, setTab] = useState("微信");
   const [query, setQuery] = useState("");
   const [moments, setMoments] = useState(false);
+  // A notification deep-link can open a conversation while the Moments view
+  // is still mounted. Exit Moments immediately so its CSS cannot hide the
+  // conversation title in the WeChat navigation bar.
+  useEffect(() => {
+    if (p.thread && moments) setMoments(false);
+  }, [p.thread, moments]);
   const [contactRemarksRaw, setContactRemarksRaw] = useSkinState<string>(p, "wxContactRemarks", "{}");
   let contactRemarks: Record<string, string> = {};
   try {
@@ -4689,7 +4695,7 @@ export function WeChatSkin(p: SkinProps) {
     p.onRead(canonicalName);
   };
   return (
-    <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments} data-utility={!!utility} data-status-editor={statusEditorOpen}>
+    <div className="wechat-ui independent-skin wx-reference-layout" data-tab={tab} data-thread={!!p.thread} data-moments={moments && !p.thread} data-utility={!!utility} data-status-editor={statusEditorOpen}>
       {remarkEditorContact && (
         <div className="wx-friend-flow-backdrop" onClick={() => setRemarkEditorContact("")}>
           <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="修改联系人备注" onClick={(event) => event.stopPropagation()} style={{ gap: 14 }}>
