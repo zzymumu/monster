@@ -7662,3 +7662,38 @@ label {
   .native-phone-controls { gap: 12px 10px !important; padding-bottom: 12px !important; }
   .native-phone-controls b { width: 62px !important; height: 62px !important; }
 }
+
+
+/* Use actual iOS handset glyphs; never approximate the receiver with a crescent. */
+.native-phone-ring-actions b::after,
+.native-phone-controls .native-end b::after {
+  content: none !important;
+  display: none !important;
+}
+.native-phone-ring-actions b svg,
+.native-phone-controls b svg {
+  display: block !important;
+  width: 48px !important;
+  height: 48px !important;
+  overflow: visible;
+}
+.native-phone-ring-actions b svg { width: 42px !important; height: 42px !important; }
+.native-phone-controls b svg { width: 34px !important; height: 34px !important; }
+.native-phone-controls .native-end b svg { width: 40px !important; height: 40px !important; }
+.native-phone-ring-actions b {
+  display: grid !important;
+  place-items: center !important;
+  transform: none !important;
+}
+.native-phone-controls b {
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+.native-phone-controls .native-end b {
+  display: grid !important;
+  place-items: center !important;
+  transform: none !important;
+  font-size: initial !important;
+}
