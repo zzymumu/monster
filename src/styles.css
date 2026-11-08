@@ -7852,3 +7852,54 @@ label {
   .native-phone-ring-actions { margin-bottom: 18px !important; }
   .native-phone-ring-actions b { width: 82px !important; height: 82px !important; }
 }
+
+
+/* Incoming cellular call controls: match the compact, aligned reference layout.
+   This is intentionally scoped to the native delivery-call screen only. */
+.incoming-call-screen:has(.native-phone-call .ringing) .native-phone-incoming-tools,
+.native-phone-call.ringing .native-phone-incoming-tools {
+  width: 70% !important;
+  margin: auto auto clamp(72px, 10vh, 100px) !important;
+  justify-content: space-between !important;
+}
+.native-phone-call.ringing .native-phone-incoming-tools > div {
+  width: 58px !important;
+  flex: 0 0 58px !important;
+}
+.native-phone-call.ringing .native-phone-ring-actions {
+  width: 70% !important;
+  align-self: center !important;
+  padding: 0 !important;
+  margin: 0 0 26px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+}
+.native-phone-call.ringing .native-phone-ring-actions > button {
+  width: 72px !important;
+  flex: 0 0 72px !important;
+  gap: 10px !important;
+  font-size: 15px !important;
+}
+.native-phone-call.ringing .native-phone-ring-actions b {
+  width: 72px !important;
+  height: 72px !important;
+  flex: 0 0 72px !important;
+}
+.native-phone-call.ringing .native-phone-ring-actions b svg {
+  width: 38px !important;
+  height: 38px !important;
+}
+@media (max-height: 740px) {
+  .native-phone-call.ringing .native-phone-incoming-tools {
+    margin-bottom: 58px !important;
+  }
+  .native-phone-call.ringing .native-phone-ring-actions {
+    margin-bottom: 18px !important;
+  }
+  .native-phone-call.ringing .native-phone-ring-actions > button,
+  .native-phone-call.ringing .native-phone-ring-actions b {
+    width: 66px !important;
+    height: 66px !important;
+    flex-basis: 66px !important;
+  }
+}
