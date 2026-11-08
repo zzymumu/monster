@@ -7362,3 +7362,14 @@ label {
 .wechat-ui.wx-reference-layout .wx-header-actions button:disabled {
   opacity: .4;
 }
+
+
+/* A system call takes over the screen; never inherit the foreground app's status-bar theme. */
+.phone-screen:has(.incoming-call-screen) .status-bar {
+  background: #30343a !important;
+  color: #ffffff !important;
+}
+.phone-screen:has(.incoming-call-screen) .status-bar button,
+.phone-screen:has(.incoming-call-screen) .status-bar svg {
+  color: #ffffff !important;
+}
