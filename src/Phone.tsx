@@ -1118,6 +1118,13 @@ function PhoneRuntime({
     } catch { /* Ignore malformed saved remarks. */ }
     return {} as Record<string, string>;
   })();
+  const resolveWeChatNotificationContact = (notice: ReturnType<typeof notificationContent>) => {
+    const contact = typeof notice.contact === "string" ? notice.contact.trim() : "";
+    if (contact) return contact;
+    const title = typeof notice.title === "string" ? notice.title.trim() : "";
+    const remarkOwner = Object.entries(contactRemarksForNotifications).find(([, remark]) => remark.trim() === title)?.[0];
+    return remarkOwner || title;
+  };
   const notificationItems = (() => {
     let storyMessages: Item[] = [];
     const raw = s.ui?.wechat?.catRescueState;
@@ -1138,15 +1145,16 @@ function PhoneRuntime({
     });
   const openNotification = (notice: ReturnType<typeof notificationContent>) => {
     setPanel("");
-    if (notice.appId === "wechat" && notice.contact) {
-      markWeChatThreadRead(notice.contact);
+    const targetContact = resolveWeChatNotificationContact(notice);
+    if (notice.appId === "wechat" && targetContact) {
+      markWeChatThreadRead(targetContact);
       const current = runtimeRef.current;
       const currentWx = current.ui?.wechat ?? {};
       let nextMessages = current.messages.wechat ?? [];
       let nextStory: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
       try { if (typeof currentWx.catRescueState === "string") nextStory = JSON.parse(currentWx.catRescueState); } catch { nextStory = {}; }
       const storyMessages = Array.isArray(nextStory.messages) ? nextStory.messages : [];
-      if ((notice.contact === "西蓝花" || notice.contact === "西兰花") &&
+      if ((targetContact === "西蓝花" || targetContact === "西兰花") &&
           currentWx.wxPostDrunkBroccoliCheckInV1 === true) {
         const checkIn = makeItem({
           id: "drunk-post-door-broccoli-checkin-v1",
@@ -1171,11 +1179,11 @@ function PhoneRuntime({
           ...current.ui,
           wechat: {
             ...currentWx,
-            ...(notice.contact === "西蓝花" || notice.contact === "西兰花"
+            ...(targetContact === "西蓝花" || targetContact === "西兰花"
               ? { wxPostDoorBroccoliOpenedAfterDoorV1: true,
                   catRescueState: JSON.stringify(nextStory) }
               : {}),
-            openThread: notice.contact,
+            openThread: targetContact,
           },
         },
       });
@@ -1851,7 +1859,7 @@ function PhoneRuntime({
                             ? { wxPostDoorBroccoliOpenedAfterDoorV1: true,
                                 catRescueState: JSON.stringify(nextStory) }
                             : {}),
-                          openThread: notice.contact,
+                          openThread: resolveWeChatNotificationContact(notice),
                         },
                       },
                     });
