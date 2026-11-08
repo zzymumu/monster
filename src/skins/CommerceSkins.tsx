@@ -563,7 +563,7 @@ export function DeliverySkin(p: Props) {
                     <div className="hp-story-order-item-copy">
                       <b>白玉歐蕾（大杯）</b>
                       <small>×1</small>
-                      <span className="hp-story-order-custom">甜度：微糖　冰量：去冰</span>
+                      <span className="hp-story-order-custom">甜度：微糖 / 冰量：去冰</span>
                       <span className="hp-story-order-custom">加料：白玉珍珠</span>
                     </div>
                     <strong>NT$ 70</strong>
@@ -573,7 +573,7 @@ export function DeliverySkin(p: Props) {
                     <div className="hp-story-order-item-copy">
                       <b>熟檸紅茶（大杯）</b>
                       <small>×1</small>
-                      <span className="hp-story-order-custom">甜度：微糖　冰量：少冰</span>
+                      <span className="hp-story-order-custom">甜度：微糖 / 冰量：少冰</span>
                       <span className="hp-story-order-custom">備註：檸檬片正常</span>
                     </div>
                     <strong>NT$ 60</strong>
