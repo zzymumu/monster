@@ -1700,11 +1700,11 @@ function PhoneRuntime({
                       <div className="native-phone-ring-actions">
                         <button className="native-reject" onClick={() => {
                           finishDeliveryCall("missed");
-                        }}><b>☎</b><span>拒绝</span></button>
+                        }}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8.2 25.1c4.4-4.2 9.9-6.3 15.8-6.3s11.4 2.1 15.8 6.3c1.2 1.1 1.4 2.9.5 4.3l-3.2 4.7c-.9 1.3-2.5 1.8-4 .9l-5.2-3.1c-1.1-.7-1.7-1.9-1.5-3.1l.3-2.2c-1.8-.4-3.6-.4-5.4 0l.3 2.2c.2 1.2-.4 2.4-1.5 3.1l-5.2 3.1c-1.5.9-3.1.4-4-.9l-3.2-4.7c-.9-1.4-.7-3.2.5-4.3Z" fill="currentColor"/></svg></b><span>拒绝</span></button>
                         <button className="native-answer" onClick={() => {
                           const call = runtimeRef.current.incomingCall;
                           if (call) { setDeliveryCallReplySent(false); update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller)); }
-                        }}><b>☎</b><span>接听</span></button>
+                        }}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14.6 7.8c1.4-.8 3.1-.4 4 .9l3.5 5.1c.8 1.2.7 2.8-.3 3.9l-2.6 2.7c2 4.1 5.3 7.4 9.4 9.4l2.7-2.6c1.1-1 2.7-1.1 3.9-.3l5.1 3.5c1.3.9 1.7 2.6.9 4l-2.1 3.5c-.8 1.3-2.3 2-3.8 1.7C20.7 37.2 10.8 27.3 8.4 12.7c-.3-1.5.4-3 1.7-3.8l4.5-1.1Z" fill="currentColor"/></svg></b><span>接听</span></button>
                       </div>
                     </>
                   ) : (
@@ -1712,14 +1712,14 @@ function PhoneRuntime({
                       <div className="native-phone-connected-info"><small>主号</small><strong>0972518369</strong><span>{String(Math.floor(callElapsed / 60)).padStart(2, "0")}:{String(callElapsed % 60).padStart(2, "0")}</span></div>
                       <div className="native-phone-caption"><small>外卖员</small><p>奶茶放门口了。</p>{deliveryCallReplySent ? <p>你：好，谢谢你！我现在去拿。</p> : <button onClick={() => setDeliveryCallReplySent(true)}>好，谢谢你！我现在去拿。</button>}</div>
                       <div className="native-phone-controls">
-                        <button onClick={() => setCallSpeakerOn(v => !v)}><b>◖))</b><span>免提</span></button>
-                        <button><b>▣</b><span>FaceTime通话</span></button>
-                        <button onClick={() => setCallMicOn(v => !v)}><b>♩</b><span>静音</span></button>
-                        <button><b>•••</b><span>更多</span></button>
+                        <button onClick={() => setCallSpeakerOn(v => !v)}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 19v10h8l11 9V10L15 19H7Z" fill="currentColor"/><path d="M32 17c3 3 3 11 0 14M37 12c6 6 6 18 0 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/></svg></b><span>免提</span></button>
+                        <button><b><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="13" width="25" height="22" rx="3" fill="currentColor"/><path d="m32 20 9-6v20l-9-6" fill="currentColor"/><path d="M13 19h13v10H13z" fill="#777"/></svg></b><span>FaceTime通话</span></button>
+                        <button onClick={() => setCallMicOn(v => !v)}><b><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="18" y="6" width="12" height="22" rx="6" fill="currentColor"/><path d="M12 23a12 12 0 0 0 24 0M24 35v7M17 42h14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/><path d="m10 10 28 28" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/></svg></b><span>静音</span></button>
+                        <button><b><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="10" cy="24" r="3.5" fill="currentColor"/><circle cx="24" cy="24" r="3.5" fill="currentColor"/><circle cx="38" cy="24" r="3.5" fill="currentColor"/></svg></b><span>更多</span></button>
                         <button className="native-end" onClick={() => {
                           finishDeliveryCall("answered");
-                        }}><b>☎</b><span>结束</span></button>
-                        <button><b>▦</b><span>拨号键盘</span></button>
+                        }}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8.2 25.1c4.4-4.2 9.9-6.3 15.8-6.3s11.4 2.1 15.8 6.3c1.2 1.1 1.4 2.9.5 4.3l-3.2 4.7c-.9 1.3-2.5 1.8-4 .9l-5.2-3.1c-1.1-.7-1.7-1.9-1.5-3.1l.3-2.2c-1.8-.4-3.6-.4-5.4 0l.3 2.2c.2 1.2-.4 2.4-1.5 3.1l-5.2 3.1c-1.5.9-3.1.4-4-.9l-3.2-4.7c-.9-1.4-.7-3.2.5-4.3Z" fill="currentColor"/></svg></b><span>结束</span></button>
+                        <button><b><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="14" cy="14" r="3" fill="currentColor"/><circle cx="24" cy="14" r="3" fill="currentColor"/><circle cx="34" cy="14" r="3" fill="currentColor"/><circle cx="14" cy="24" r="3" fill="currentColor"/><circle cx="24" cy="24" r="3" fill="currentColor"/><circle cx="34" cy="24" r="3" fill="currentColor"/><circle cx="14" cy="34" r="3" fill="currentColor"/><circle cx="24" cy="34" r="3" fill="currentColor"/><circle cx="34" cy="34" r="3" fill="currentColor"/></svg></b><span>拨号键盘</span></button>
                       </div>
                     </>
                   )}
