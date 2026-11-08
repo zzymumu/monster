@@ -7,6 +7,8 @@ import type { Item, Work } from "./schema";
 export function notificationContent(text: string, apps: Work["apps"], items: Item[] = [], remarks: Record<string, string> = {}) {
   const shopeeNotice = text.match(/^蝦皮購物[：:]\s*(.*)$/);
   if (shopeeNotice) return { title: "蝦皮購物", body: shopeeNotice[1], appId: "shopee", avatar: "", contact: "" };
+  const hungryPandaNotice = text.match(/^HungryPanda[：:]\s*(.*)$/);
+  if (hungryPandaNotice) return { title: "HungryPanda", body: hungryPandaNotice[1], appId: "delivery", avatar: "", contact: "" };
   const wechat = text.match(/^(?:微信(?:消息)?[：:]\s*)?([^：:]+)[：:]\s*(.*)$/);
   // A group title contains "西蓝花" too; resolve group pushes before the
   // personal-contact rule so the banner keeps the full group name and opens it.
