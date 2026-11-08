@@ -974,6 +974,29 @@ function PhoneRuntime({
     onOpen?.(id);
     event("openApp", id);
   };
+  // After the scripted Broccoli call ends, the player must open Shopee
+  // and remain there for ten uninterrupted seconds before HungryPanda pushes.
+  useEffect(() => {
+    if (creator || external || !ready || locked || app !== "shopee") return;
+    const wx = s.ui?.wechat ?? {};
+    if (wx.wxThreeWayGroupCallFinishedV1 !== true || wx.wxHungryPandaDeliveryNoticeSentV1 === true) return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      const latestWx = current.ui?.wechat ?? {};
+      if (latestWx.wxThreeWayGroupCallFinishedV1 !== true || latestWx.wxHungryPandaDeliveryNoticeSentV1 === true) return;
+      update({
+        ...current,
+        ui: {
+          ...current.ui,
+          wechat: { ...latestWx, wxHungryPandaDeliveryNoticeSentV1: true },
+          delivery: { ...current.ui?.delivery, hpStoryOrderUnlockedV1: true },
+        },
+        notifications: [...current.notifications, "HungryPanda：您的订单正在配送中！骑手预计约 12 分钟送达。"].slice(-60),
+      });
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [app, locked, ready, creator, external, s.ui?.wechat?.wxThreeWayGroupCallFinishedV1, s.ui?.wechat?.wxHungryPandaDeliveryNoticeSentV1]);
+
   // The next DaG chapter is gated by the completed Moments/Vava exchange.
   // YouTube must remain the foreground app continuously for ten seconds.
   useEffect(() => {
@@ -1163,6 +1186,19 @@ function PhoneRuntime({
   const openNotification = (notice: ReturnType<typeof notificationContent>) => {
     setPanel("");
     const targetContact = resolveWeChatNotificationContact(notice);
+    if (notice.appId === "delivery") {
+      const current = runtimeRef.current;
+      update({
+        ...current,
+        ui: {
+          ...current.ui,
+          delivery: { ...current.ui?.delivery, hpStoryOpenOrdersV1: true },
+        },
+      });
+      open("delivery");
+      if (locked) setPinOpen(true);
+      return;
+    }
     if (notice.appId === "wechat" && targetContact) {
       markWeChatThreadRead(targetContact);
       const current = runtimeRef.current;
