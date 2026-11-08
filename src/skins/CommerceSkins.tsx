@@ -350,6 +350,16 @@ export function JkoPaySkin(p:Props){
 export function DeliverySkin(p: Props) {
   const { tab, setTab, q, setQ } = useContent(p, "首页");
   const [category, setCategory] = useState("全部");
+  const [storyOrderDetailOpen, setStoryOrderDetailOpen] = useState(false);
+  useEffect(() => {
+    if (p.ui?.hpStoryOpenOrdersV1 !== true) return;
+    setSelected(null);
+    setCartPage(false);
+    setCheckoutOpen(false);
+    setTab("订单");
+    setStoryOrderDetailOpen(true);
+    p.onUi?.("hpStoryOpenOrdersV1", false);
+  }, [p.ui?.hpStoryOpenOrdersV1]);
   const [selected, setSelected] = useState<string | null>(null);
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartPage, setCartPage] = useState(false);
@@ -520,7 +530,39 @@ export function DeliverySkin(p: Props) {
             </div>
           </>
         ) : tab === "订单" ? (
-          <div className="hp-orders"><h2>我的订单</h2><div className="hp-order-empty"><span>🧾</span><b>还没有订单</b><small>下单后，订单状态和配送进度会显示在这里</small><button onClick={()=>setTab("首页")}>去逛逛</button></div></div>
+          <div className="hp-orders">
+            <h2>我的订单</h2>
+            {p.ui?.hpStoryOrderUnlockedV1 === true ? (
+              <section className="hp-story-order">
+                <div className="hp-story-order-head">
+                  <div className="hp-story-store-mark">可</div>
+                  <div><b>可不可熟成茶行</b><small>订单已接单 · 骑手正在配送</small></div>
+                  <strong>配送中</strong>
+                </div>
+                <div className="hp-story-delivery-status">
+                  <b>骑手正在为您配送！</b>
+                  <span>预计约 12 分钟送达</span>
+                  <div className="hp-story-progress"><i/><i/><i className="active"/><i/></div>
+                  <div className="hp-story-progress-labels"><span>已下单</span><span>商家备餐</span><b>配送中</b><span>已送达</span></div>
+                </div>
+                {storyOrderDetailOpen && <div className="hp-story-order-items">
+                  <div className="hp-story-order-item">
+                    <img src="https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267" alt="白玉歐蕾"/>
+                    <div><b>白玉歐蕾</b><small>大杯 · 正常冰 · 微糖 · ×1</small></div>
+                    <strong>NT$ 75</strong>
+                  </div>
+                  <div className="hp-story-order-item">
+                    <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=360&q=85" alt="熟檸紅茶"/>
+                    <div><b>熟檸紅茶</b><small>大杯 · 少冰 · 微糖 · ×1</small></div>
+                    <strong>NT$ 55</strong>
+                  </div>
+                </div>}
+                <div className="hp-story-order-total"><span>共 2 件商品</span><b>合計 NT$ 130</b></div>
+                <div className="hp-story-rider"><span>🐼</span><div><b>外送員正在配送</b><small>感謝您的訂購，請留意來電</small></div><strong>聯絡騎手</strong></div>
+                <button className="hp-story-order-toggle" onClick={()=>setStoryOrderDetailOpen(v=>!v)}>{storyOrderDetailOpen ? "收起訂單明細" : "查看訂單明細"}</button>
+              </section>
+            ) : <div className="hp-order-empty"><span>🧾</span><b>还没有订单</b><small>下单后，订单状态和配送进度会显示在这里</small><button onClick={()=>setTab("首页")}>去逛逛</button></div>}
+          </div>
         ) : (
           <div className="hp-profile"><div className="hp-profile-top"><span>🐼</span><div><b>欢迎来到 HungryPanda</b><small>登录后享受更多会员权益</small></div><button>登录 / 注册</button></div>{["我的优惠券","收货地址","收藏餐厅","客服与帮助","设置"].map((v,i)=><button className="hp-profile-row" key={v}><span>{["🎟️","📍","♡","🎧","⚙️"][i]}</span>{v}<b>›</b></button>)}</div>
         )}
