@@ -7798,3 +7798,57 @@ label {
   content: none !important;
   display: none !important;
 }
+
+
+/* Final reference alignment for incoming courier call controls. */
+.native-phone-incoming-tools {
+  width: 90% !important;
+  margin: auto auto 36px !important;
+}
+.native-phone-incoming-tools span {
+  width: 56px !important;
+  height: 56px !important;
+  font-size: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+.native-phone-incoming-tools span svg {
+  display: block !important;
+  width: 27px !important;
+  height: 27px !important;
+}
+.native-phone-ring-actions {
+  width: 90% !important;
+  align-self: center !important;
+  justify-content: space-between !important;
+  padding: 0 2% !important;
+  box-sizing: border-box !important;
+  margin: 0 0 28px !important;
+}
+.native-phone-ring-actions b {
+  width: 96px !important;
+  height: 96px !important;
+}
+.native-phone-ring-actions .native-reject b svg {
+  width: 55px !important;
+  height: 55px !important;
+}
+.native-phone-ring-actions .native-answer b svg {
+  width: 48px !important;
+  height: 48px !important;
+}
+/* Keep the simulated battery neutral, like the white iOS status-bar battery. */
+.native-phone-status-signals .ios-battery > span {
+  display: none !important;
+}
+.native-phone-status-signals .ios-battery {
+  background: rgba(255,255,255,.9) !important;
+}
+.native-phone-status-signals .ios-battery > b {
+  color: #625b58 !important;
+}
+@media (max-height: 740px) {
+  .native-phone-incoming-tools { margin-bottom: 24px !important; }
+  .native-phone-ring-actions { margin-bottom: 18px !important; }
+  .native-phone-ring-actions b { width: 82px !important; height: 82px !important; }
+}
