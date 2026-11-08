@@ -1387,20 +1387,40 @@ function PhoneRuntime({
                   onSettings={onSettings}
                   onUi={(key, value) => {
                     const current = runtimeRef.current;
-                    update(
-                      dispatch(
-                        work,
-                        {
-                          ...current,
-                          ui: {
-                            ...current.ui,
-                            [app]: { ...current.ui?.[app], [key]: value },
+                    const dispatched = dispatch(
+                      work,
+                      {
+                        ...current,
+                        ui: {
+                          ...current.ui,
+                          [app]: { ...current.ui?.[app], [key]: value },
+                        },
+                      },
+                      "variable",
+                      `ui:${app}:${key}`,
+                    );
+                    // Every explicit No!!! reply starts a fresh two-call sequence.
+                    // Reset all stale save flags here, before the incoming-call
+                    // effect evaluates whether it should create the first call.
+                    if (app === "wechat" && key === "wxDrunkCallRequestedV8" && value === true) {
+                      update({
+                        ...dispatched,
+                        ui: {
+                          ...dispatched.ui,
+                          wechat: {
+                            ...(dispatched.ui?.wechat ?? {}),
+                            wxDrunkCallStartedV8: false,
+                            wxDrunkFinalCallStartedV7: true,
+                            wxDrunkFinalCallFinishedV7: false,
+                            wxDrunkInitialCallHangupHandledV1: false,
+                            wxDrunkSecondCallStartedV1: false,
+                            wxBroccoliFinalGCallV1: false,
                           },
                         },
-                        "variable",
-                        `ui:${app}:${key}`,
-                      ),
-                    );
+                      });
+                      return;
+                    }
+                    update(dispatched);
                   }}
                   onAppUi={(targetApp, key, value) => {
                     const current = runtimeRef.current;
