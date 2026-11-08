@@ -1763,7 +1763,36 @@ function PhoneRuntime({
                       if (call) {
                         const current = runtimeRef.current;
                         const next = dispatch(work, { ...current, incomingCall: null }, "callDeclined", call.target || call.caller);
-                        update(next);
+                        const wx = current.ui?.wechat ?? {};
+                        const identity = String(call.caller || call.target || "").trim();
+                        const isDaG = identity === "大G" || identity === "温尚翊" || identity === "温尚翊（大G）";
+                        const isScriptedDaGIncoming = isDaG && call.direction !== "outgoing";
+                        const isFirstDrunkCall = isScriptedDaGIncoming &&
+                          wx.wxDrunkCallRequestedV8 === true &&
+                          wx.wxDrunkInitialCallHangupHandledV1 !== true &&
+                          wx.wxDrunkSecondCallStartedV1 !== true;
+                        const isSecondDrunkCall = isScriptedDaGIncoming &&
+                          wx.wxDrunkSecondCallStartedV1 === true &&
+                          wx.wxDrunkFinalCallFinishedV7 !== true &&
+                          wx.wxBroccoliFinalGCallV1 === true;
+                        if (isFirstDrunkCall) {
+                          let queued: Array<{id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; meta?: Record<string,string>}> = [];
+                          try { const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : []; if (Array.isArray(parsed)) queued = parsed; } catch { queued = []; }
+                          queued.push(
+                            { id: "drunk-big-g-call-declined-v11", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
+                            { id: "drunk-big-g-pick-up-v10", sender: "大G", body: "接電話。", thread: "大G" },
+                          );
+                          update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkInitialCallHangupHandledV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                        } else if (isSecondDrunkCall) {
+                          let queued: Array<{id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string,string>}> = [];
+                          try { const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : []; if (Array.isArray(parsed)) queued = parsed; } catch { queued = []; }
+                          queued.push(
+                            { id: "drunk-big-g-call-declined-first-v1", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
+                            { id: "drunk-big-g-door-v1", sender: "大G", body: "開門。", thread: "大G" },
+                            { id: "drunk-big-g-door-voice-v1", sender: "大G", body: "開門，我在外面。", thread: "大G", kind: "audio", media: "./assets/dag-door-voice.mp3", outgoing: false, meta: { voiceDuration: "2", voiceTranscript: "開門，我在外面。" } },
+                          );
+                          update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                        } else update(next);
                       }
                     }}><PhoneIcon size={27}/><span>拒接</span></button>
                     <button className="accept-call call-control" onClick={() => {
