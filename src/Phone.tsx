@@ -279,6 +279,8 @@ function PhoneRuntime({
         phone: {
           ...(next.ui?.phone ?? {}),
           phoneCallHistory: JSON.stringify([record, ...history].slice(0, 100)),
+          // Arm the one-shot Moments scene only after the player answers and hangs up.
+          wxDeliveryCallMomentsReadyV1: outcome === "answered",
         },
       },
     });
@@ -1011,6 +1013,12 @@ function PhoneRuntime({
   };
   const open = (id: string) => {
     if (!work.apps.some((a) => a.id === id && a.installed)) return;
+    // This is a single immediate post-call moment: opening another app first
+    // consumes the opportunity, while opening WeChat keeps it available for Moments.
+    const current = runtimeRef.current;
+    if (current.ui?.phone?.wxDeliveryCallMomentsReadyV1 === true && id !== "wechat") {
+      update({ ...current, ui: { ...current.ui, phone: { ...current.ui?.phone, wxDeliveryCallMomentsReadyV1: false } } });
+    }
     setApp(id);
     setKeyboard(false);
     setRecent((v) => [id, ...v.filter((a) => a !== id)].slice(0, 8));
