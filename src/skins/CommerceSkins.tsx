@@ -558,8 +558,26 @@ export function DeliverySkin(p: Props) {
                   <div className="hp-story-progress-labels"><span>已下单<small>20:21</small></span><span>商家出餐<small>20:24</small></span><b>骑手配送中</b><span>已送达</span></div>
                 </div>
                 {storyOrderDetailOpen && <div className="hp-story-order-items">
-                  <div className="hp-story-order-item"><img src="/monster/assets/kebuke-white-jade.webp" alt="白玉歐蕾"/><div><b>白玉歐蕾（大杯）</b><small>×1</small></div><strong>NT$ 70</strong></div>
-                  <div className="hp-story-order-item"><img src="/monster/assets/kebuke-lemon-black-tea.webp" alt="熟檸紅茶"/><div><b>熟檸紅茶（大杯）</b><small>×1</small></div><strong>NT$ 60</strong></div>
+                  <div className="hp-story-order-item">
+                    <img src="/monster/assets/kebuke-white-jade.webp" alt="白玉歐蕾"/>
+                    <div className="hp-story-order-item-copy">
+                      <b>白玉歐蕾（大杯）</b>
+                      <small>×1</small>
+                      <span className="hp-story-order-custom">甜度：微糖　冰量：去冰</span>
+                      <span className="hp-story-order-custom">加料：白玉珍珠</span>
+                    </div>
+                    <strong>NT$ 70</strong>
+                  </div>
+                  <div className="hp-story-order-item">
+                    <img src="/monster/assets/kebuke-lemon-black-tea.webp" alt="熟檸紅茶"/>
+                    <div className="hp-story-order-item-copy">
+                      <b>熟檸紅茶（大杯）</b>
+                      <small>×1</small>
+                      <span className="hp-story-order-custom">甜度：微糖　冰量：少冰</span>
+                      <span className="hp-story-order-custom">備註：檸檬片正常</span>
+                    </div>
+                    <strong>NT$ 60</strong>
+                  </div>
                 </div>}
                 <div className="hp-story-order-total"><span>共 2 件商品</span><b>合計 NT$ 130</b></div>
                 <div className="hp-story-rider"><span>👨🏻‍🦱</span><div><b>騎手：陳先生</b><small>正在为您配送</small></div><button aria-label="联系骑手">☎</button><button aria-label="联系客服">▣</button></div>
