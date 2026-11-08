@@ -250,6 +250,40 @@ function PhoneRuntime({
   const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   const deliveryCallActive = s?.incomingCall?.caller === "外卖";
   const [deliveryCallReplySent, setDeliveryCallReplySent] = useState(false);
+  const finishDeliveryCall = (outcome: "answered" | "missed") => {
+    const current = runtimeRef.current;
+    const call = current.incomingCall;
+    if (!call || call.caller !== "外卖") return;
+    let history: Array<Record<string, string>> = [];
+    try {
+      const raw = current.ui?.phone?.phoneCallHistory;
+      const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
+      if (Array.isArray(parsed)) history = parsed.filter((item) => item && typeof item === "object");
+    } catch { history = []; }
+    const elapsed = outcome === "answered" ? Math.max(0, callElapsed) : 0;
+    const duration = `${String(Math.floor(elapsed / 60)).padStart(2, "0")}:${String(elapsed % 60).padStart(2, "0")}`;
+    const record = {
+      id: `delivery-call-${Date.now()}`,
+      number: "0972518369",
+      name: "外卖",
+      time: new Date().toISOString(),
+      duration,
+      status: outcome === "missed" ? "未接" : "已接",
+      direction: "incoming",
+    };
+    const next = dispatch(work, { ...current, incomingCall: null }, outcome === "missed" ? "callDeclined" : "callEnded", call.target || call.caller);
+    update({
+      ...next,
+      ui: {
+        ...next.ui,
+        phone: {
+          ...(next.ui?.phone ?? {}),
+          phoneCallHistory: JSON.stringify([record, ...history].slice(0, 100)),
+        },
+      },
+    });
+    setDeliveryCallReplySent(false);
+  };
   const runtimeRef = useRef(s);
   runtimeRef.current = s;
   const update = (next: Runtime) => {
@@ -1652,7 +1686,7 @@ function PhoneRuntime({
               {callTopNotice && <div className="wechat-call-top-notice">{callTopNotice}<button onClick={() => setCallTopNotice("")}>知道了</button></div>}
               {deliveryCallActive && (
                 <div className={`native-phone-call ${s.incomingCall?.status === "answered" ? "connected" : "ringing"}`}>
-                  <div className="native-phone-status"><span>13:30 ◉</span><span>▮▮▮　◉　▰</span></div>
+                  <div className="native-phone-status"><span>13:30 ◉</span><span>▮▮▮ ◉ ▰</span></div>
                   {s.incomingCall?.status === "ringing" ? (
                     <>
                       <div className="native-phone-contact"><small>主号</small><strong>0972518369</strong></div>
@@ -1661,9 +1695,7 @@ function PhoneRuntime({
                       </div>
                       <div className="native-phone-ring-actions">
                         <button className="native-reject" onClick={() => {
-                          const call = runtimeRef.current.incomingCall;
-                          if (!call) return;
-                          update(dispatch(work, { ...runtimeRef.current, incomingCall: null }, "callDeclined", call.target || call.caller));
+                          finishDeliveryCall("missed");
                         }}><b>☎</b><span>拒绝</span></button>
                         <button className="native-answer" onClick={() => {
                           const call = runtimeRef.current.incomingCall;
@@ -1681,10 +1713,7 @@ function PhoneRuntime({
                         <button onClick={() => setCallMicOn(v => !v)}><b>♩</b><span>静音</span></button>
                         <button><b>•••</b><span>更多</span></button>
                         <button className="native-end" onClick={() => {
-                          const call = runtimeRef.current.incomingCall;
-                          if (!call) return;
-                          setDeliveryCallReplySent(false);
-                          update(dispatch(work, { ...runtimeRef.current, incomingCall: null }, "callEnded", call.target || call.caller));
+                          finishDeliveryCall("answered");
                         }}><b>☎</b><span>结束</span></button>
                         <button><b>▦</b><span>拨号键盘</span></button>
                       </div>
