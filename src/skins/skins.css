@@ -6141,3 +6141,11 @@
 .hp-favorite-store>div>b{font-size:13px}
 .hp-favorite-store small{font-size:9px;color:#888}
 .hp-favorite-store>button{background:#ffd900;border-radius:18px;padding:8px 13px;font-size:10px;font-weight:700}
+
+
+/* KEBUKE story order: display drink customization clearly below each item. */
+.hp-story-order-item-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}
+.hp-story-order-item-copy>b{font-size:12px;line-height:1.35}
+.hp-story-order-item-copy>small{font-size:10px;color:#999}
+.hp-story-order-custom{display:block;font-size:9px;line-height:1.35;color:#777;white-space:normal}
+.hp-story-order-item>strong{align-self:flex-start;padding-top:2px}
