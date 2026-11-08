@@ -248,6 +248,8 @@ function PhoneRuntime({
   }, [creator, ready]);
   const s = external ?? own;
   const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
+  const deliveryCallActive = s?.incomingCall?.caller === "外卖";
+  const [deliveryCallReplySent, setDeliveryCallReplySent] = useState(false);
   const runtimeRef = useRef(s);
   runtimeRef.current = s;
   const update = (next: Runtime) => {
@@ -854,11 +856,16 @@ function PhoneRuntime({
       // Only the hotel-address message may trigger the second DaG call.
       // This rejects stale startBigGCall metadata from older saved queues.
       const isBroccoliHotelAddressTrigger = line.id === "drunk-broccoli-hotel-v2" && line.sender === "西蓝花" && line.body === "妳酒店到底在哪裡？把地址發我！";
+      const hpOrderDeliveredNow = line.meta?.hpOrderDeliveredPush === "yes" && wx.wxHpOrderDeliveredPushSentV1 !== true;
+      const hpExternalCallNow = line.meta?.startExternalDeliveryCall === "yes";
+      if (hpOrderDeliveredNow) nextNotifications.push("HungryPanda：您的订单已送达！奶茶已放在门口，请及时查收。");
       update({
         ...latest,
-        incomingCall: line.meta?.startBroccoliCall === "yes"
-          ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
-          : (line.meta?.startBigGCall === "yes" && isBroccoliHotelAddressTrigger) ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
+        incomingCall: hpExternalCallNow
+          ? { caller: "外卖", target: "外卖", status: "ringing" }
+          : line.meta?.startBroccoliCall === "yes"
+            ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
+            : (line.meta?.startBigGCall === "yes" && isBroccoliHotelAddressTrigger) ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
         messages: { ...latest.messages, wechat: nextWechatMessages },
         ui: {
           ...latest.ui,
@@ -877,7 +884,11 @@ function PhoneRuntime({
             ...(line.meta?.startBroccoliCall === "yes" ? { wxBroccoliCallStartedV1: true } : {}),
             ...(line.meta?.startBroccoliAfterDoor === "yes" ? { wxBroccoliAfterDoorCallV1: true } : {}),
             ...(line.meta?.startBigGCall === "yes" && isBroccoliHotelAddressTrigger ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxDrunkSecondCallStartedV1: true, wxBroccoliFinalGCallV1: true } : {}),
+            ...(hpOrderDeliveredNow ? { wxHpOrderDeliveredPushSentV1: true } : {}),
           },
+          delivery: hpOrderDeliveredNow
+            ? { ...latest.ui?.delivery, hpStoryOrderDeliveredV1: true }
+            : latest.ui?.delivery,
         },
         notifications: nextNotifications.slice(-60),
       });
@@ -1646,7 +1657,8 @@ function PhoneRuntime({
               {(() => {
                 const caller = s.incomingCall!.caller;
                 const isBigG = caller === "大G" || caller === "温尚翊";
-                const displayName = contactRemarksForNotifications[caller] ||
+                const isExternalDelivery = caller === "外卖";
+                const displayName = isExternalDelivery ? "外卖" : contactRemarksForNotifications[caller] ||
                   contactRemarksForNotifications[isBigG ? "大G" : "西蓝花"] || caller;
                 let savedStoryMessages: Array<{ id?: string; sender?: string; title?: string; body?: string; outgoing?: boolean; avatar?: string }> = [];
                 try {
@@ -1673,12 +1685,12 @@ function PhoneRuntime({
                 const changedDaGAvatar = typeof s.ui?.wechat?.wxDaGAvatarV2 === "string" && s.ui.wechat.wxDaGAvatarV2.trim()
                   ? s.ui.wechat.wxDaGAvatarV2
                   : "./assets/dag-new-avatar.jpg";
-                const avatarSrc = isBigG ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar) : GLOOMY_AVATAR;
+                const avatarSrc = isExternalDelivery ? "" : isBigG ? (daGAvatarChanged ? changedDaGAvatar : originalDaGAvatar) : GLOOMY_AVATAR;
                 const connected = s.incomingCall!.status === "answered";
                 const mm = String(Math.floor(callElapsed / 60)).padStart(2, "0");
                 const ss = String(callElapsed % 60).padStart(2, "0");
                 return <>
-                  {connected ? <div className="wechat-call-timer">{mm}:{ss}</div> : <div className="wechat-call-topline">{s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>}
+                  {connected ? <div className="wechat-call-timer">{mm}:{ss}</div> : <div className="wechat-call-topline">{isExternalDelivery ? "外部来电" : s.incomingCall!.callType === "video" ? "微信视频通话" : "微信语音通话"}</div>}
                   <div className="incoming-avatar">
                     {avatarSrc ? (
                       <img src={avatarSrc} alt="" onError={e => {
@@ -1686,12 +1698,21 @@ function PhoneRuntime({
                         e.currentTarget.remove();
                         if (holder) holder.textContent = isBigG ? "🎸" : "🐻";
                       }} />
-                    ) : <span className="incoming-avatar-fallback">{isBigG ? "🎸" : "🐻"}</span>}
+                    ) : <span className="incoming-avatar-fallback">{isExternalDelivery ? "🛵" : isBigG ? "🎸" : "🐻"}</span>}
                   </div>
                   <h2>{displayName}</h2>
-                  <p className="wechat-call-state">{connected ? (s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中") : s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…"}</p>
+                  <p className="wechat-call-state">{connected ? (isExternalDelivery ? "通话中" : s.incomingCall!.callType === "video" ? "视频通话中" : "语音通话中") : isExternalDelivery ? "来电…" : s.incomingCall!.direction === "outgoing" ? "等待对方接听…" : "邀请你进行语音通话…"}</p>
                 </>;
               })()}
+              {deliveryCallActive && s.incomingCall.status === "answered" && (
+                <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>外卖员</div>
+                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>奶茶放门口了。</div>
+                  {deliveryCallReplySent
+                    ? <div style={{ marginTop: 12, fontSize: 15 }}>你：好，谢谢你！我现在去拿。</div>
+                    : <button type="button" onClick={() => setDeliveryCallReplySent(true)} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>好，谢谢你！我现在去拿。</button>}
+                </div>
+              )}
               {milkTeaCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
                   <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
@@ -1717,6 +1738,7 @@ function PhoneRuntime({
                         finishMilkTeaCall();
                         return;
                       }
+                      if (call.caller === "外卖") setDeliveryCallReplySent(false);
                       const current = runtimeRef.current;
                       const next = dispatch(work, { ...current, incomingCall: null }, call.status === "ringing" ? "callDeclined" : "callEnded", call.target || call.caller);
                       const wx = current.ui?.wechat ?? {};
@@ -1872,7 +1894,10 @@ function PhoneRuntime({
                     }}><PhoneIcon size={27}/><span>拒接</span></button>
                     <button className="accept-call call-control" onClick={() => {
                       const call = runtimeRef.current.incomingCall;
-                      if (call) update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller));
+                      if (call) {
+                        if (call.caller === "外卖") setDeliveryCallReplySent(false);
+                        update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller));
+                      }
                     }}><PhoneIcon size={27}/><span>接听</span></button>
                   </>
                 )}
