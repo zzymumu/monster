@@ -1578,8 +1578,9 @@ export function WeChatSkin(p: SkinProps) {
     );
     if (!hasAnnouncement) return;
     const replies: CatLine[] = [
-      { id: "broccoli-signature-reaction-01-v1", sender: "西蓝花", body: "你怎么拿到的？", thread: "西蓝花" },
-      { id: "broccoli-signature-reaction-02-v1", sender: "西蓝花", body: "你们又见面了？", thread: "西蓝花" },
+      { id: "broccoli-signature-reaction-00-v1", sender: "西蓝花", body: "？？？？？", thread: "西蓝花" },
+      { id: "broccoli-signature-reaction-01-v1", sender: "西蓝花", body: "什么签名？", thread: "西蓝花" },
+      { id: "broccoli-signature-reaction-02-v1", sender: "西蓝花", body: "怪兽的？？", thread: "西蓝花" },
     ];
     const missing = replies.filter((line) =>
       !delivered.some((item) => item.id === line.id || (item.sender === line.sender && item.body.trim() === line.body)) &&
@@ -3825,8 +3826,9 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 500, chat: "西蓝花", id: "broccoli-signature-500-v1", label: "报告！\n签名我帮你拿到了！！！", nextStage: 501, lines: [
       { sender: "我", body: "报告！", thread: "西蓝花" },
       { sender: "我", body: "签名我帮你拿到了！！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "你怎么拿到的？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "你们又见面了？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "？？？？？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "什么签名？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怪兽的？？", thread: "西蓝花" },
     ] },
     { stage: 501, chat: "西蓝花", id: "broccoli-signature-501-v1", label: "当然啦！\n五月天怪兽亲笔签名，童叟无欺！", nextStage: 502, lines: [{ sender: "我", body: "当然啦！", thread: "西蓝花" }, { sender: "我", body: "五月天怪兽亲笔签名，童叟无欺！", thread: "西蓝花" }, { sender: "西蓝花", body: "你怎么拿到的？", thread: "西蓝花" }, { sender: "西蓝花", body: "你们又见面了？", thread: "西蓝花" }] },
     { stage: 502, chat: "西蓝花", id: "broccoli-signature-502-v1", label: "对啊~嘻嘻😝\n我下午去录音室送奶茶啦！", nextStage: 503, lines: [{ sender: "我", body: "对啊~嘻嘻😝", thread: "西蓝花" }, { sender: "我", body: "我下午去录音室送奶茶啦！", thread: "西蓝花" }, { sender: "西蓝花", body: "我的天，你还真是行动派。", thread: "西蓝花" }, { sender: "西蓝花", body: "你怎么都没跟我说！！！", thread: "西蓝花" }] },
