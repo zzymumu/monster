@@ -1715,7 +1715,7 @@ function PhoneRuntime({
                             ];
                             return candidates.some((item) => {
                               const body = String(item.body ?? "").replace(/\s/g, "");
-                              return (item.thread === "西蓝花" || item.thread === "西兰花") &&
+                              return ("thread" in item && (item.thread === "西蓝花" || item.thread === "西兰花")) &&
                                 /^[.。…]{12,}$/.test(body);
                             });
                           })()
