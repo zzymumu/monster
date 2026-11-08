@@ -1702,12 +1702,12 @@ function PhoneRuntime({
                     <>
                       <div className="native-phone-contact"><small>主号</small><strong>0972518369</strong></div>
                       <div className="native-phone-incoming-tools">
-                        <div><span>●</span><label>信息</label></div><div><span>◴</span><label>提醒我</label></div>
+                        <div><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8.5c-9.1 0-16.5 6.7-16.5 15s7.4 15 16.5 15h8.2c4.4 0 8.3-3.3 8.3-7.8V23.5c0-8.3-7.4-15-16.5-15Z" fill="currentColor"/></svg></span><label>信息</label></div><div><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 7a3 3 0 0 1 3 3v2.1a14 14 0 0 1 11 13.7v9.4H10v-9.4a14 14 0 0 1 11-13.7V10a3 3 0 0 1 3-3Z" fill="currentColor"/><path d="M18 39a6 6 0 0 0 12 0" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/><path d="m9 17 4-4m26 4-4-4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/></svg></span><label>提醒我</label></div>
                       </div>
                       <div className="native-phone-ring-actions">
                         <button className="native-reject" onClick={() => {
                           finishDeliveryCall("missed");
-                        }}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8.4 21.2c4.1-3.2 9.5-4.9 15.6-4.9s11.5 1.7 15.6 4.9c1.1.9 1.4 2.4.7 3.6l-3.1 5.1c-.7 1.2-2.2 1.6-3.4.9l-4.4-2.3c-.9-.5-1.5-1.4-1.5-2.4v-1.6c-2.6-.6-5.2-.6-7.8 0v1.6c0 1-.6 1.9-1.5 2.4l-4.4 2.3c-1.2.7-2.7.3-3.4-.9l-3.1-5.1c-.7-1.2-.4-2.7.7-3.6Z" fill="currentColor"/></svg></b><span>拒绝</span></button>
+                        }}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5.2 23.5c4.8-5.1 11.3-7.8 18.8-7.8s14 2.7 18.8 7.8c1.2 1.3 1.1 3.3-.2 4.5l-4.7 4.3c-1.2 1.1-3.1 1.1-4.3-.1l-3.4-3.4c-1.1-1.1-1.1-2.8-.1-4l.4-.5c-4.3-1.4-8.7-1.4-13 0l.4.5c1 1.2 1 2.9-.1 4l-3.4 3.4c-1.2 1.2-3.1 1.2-4.3.1l-4.7-4.3c-1.3-1.2-1.4-3.2-.2-4.5Z" fill="currentColor"/></svg></b><span>拒绝</span></button>
                         <button className="native-answer" onClick={() => {
                           const call = runtimeRef.current.incomingCall;
                           if (call) { setDeliveryCallReplySent(false); update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller)); }
@@ -1725,7 +1725,7 @@ function PhoneRuntime({
                         <button><b><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="10" cy="24" r="3.5" fill="currentColor"/><circle cx="24" cy="24" r="3.5" fill="currentColor"/><circle cx="38" cy="24" r="3.5" fill="currentColor"/></svg></b><span>更多</span></button>
                         <button className="native-end" onClick={() => {
                           finishDeliveryCall("answered");
-                        }}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8.4 21.2c4.1-3.2 9.5-4.9 15.6-4.9s11.5 1.7 15.6 4.9c1.1.9 1.4 2.4.7 3.6l-3.1 5.1c-.7 1.2-2.2 1.6-3.4.9l-4.4-2.3c-.9-.5-1.5-1.4-1.5-2.4v-1.6c-2.6-.6-5.2-.6-7.8 0v1.6c0 1-.6 1.9-1.5 2.4l-4.4 2.3c-1.2.7-2.7.3-3.4-.9l-3.1-5.1c-.7-1.2-.4-2.7.7-3.6Z" fill="currentColor"/></svg></b><span>结束</span></button>
+                        }}><b><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5.2 23.5c4.8-5.1 11.3-7.8 18.8-7.8s14 2.7 18.8 7.8c1.2 1.3 1.1 3.3-.2 4.5l-4.7 4.3c-1.2 1.1-3.1 1.1-4.3-.1l-3.4-3.4c-1.1-1.1-1.1-2.8-.1-4l.4-.5c-4.3-1.4-8.7-1.4-13 0l.4.5c1 1.2 1 2.9-.1 4l-3.4 3.4c-1.2 1.2-3.1 1.2-4.3.1l-4.7-4.3c-1.3-1.2-1.4-3.2-.2-4.5Z" fill="currentColor"/></svg></b><span>结束</span></button>
                         <button><b><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="14" cy="14" r="3" fill="currentColor"/><circle cx="24" cy="14" r="3" fill="currentColor"/><circle cx="34" cy="14" r="3" fill="currentColor"/><circle cx="14" cy="24" r="3" fill="currentColor"/><circle cx="24" cy="24" r="3" fill="currentColor"/><circle cx="34" cy="24" r="3" fill="currentColor"/><circle cx="14" cy="34" r="3" fill="currentColor"/><circle cx="24" cy="34" r="3" fill="currentColor"/><circle cx="34" cy="34" r="3" fill="currentColor"/></svg></b><span>拨号键盘</span></button>
                       </div>
                     </>
