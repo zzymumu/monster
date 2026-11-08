@@ -155,6 +155,7 @@ function MessageList({
   wallpaper = "",
   selfAvatar = "",
   monsterAvatar = "",
+  monsterName = "大G",
   transferStatus = "pending",
   onTransferStatusChange,
 }: {
@@ -167,6 +168,7 @@ function MessageList({
   wallpaper?: string;
   selfAvatar?: string;
   monsterAvatar?: string;
+  monsterName?: string;
   transferStatus?: "pending" | "accepted" | "returned";
   onTransferStatusChange?: (status: "accepted" | "returned") => void;
 }) {
@@ -286,7 +288,7 @@ function MessageList({
       <div role="dialog" aria-modal="true" style={{ position: "fixed", inset: 0, zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: 22, background: "rgba(0,0,0,.42)" }}>
         <div style={{ width: "min(330px, 100%)", borderRadius: 18, overflow: "hidden", background: "#fff", color: "#222", boxShadow: "0 12px 40px rgba(0,0,0,.25)" }}>
           <div style={{ background: "#fa9b45", color: "#fff", padding: "22px 18px", textAlign: "center" }}>
-            <div style={{ fontSize: 13, opacity: .92 }}>大G 转账给你</div>
+            <div style={{ fontSize: 13, opacity: .92 }}>{monsterName} 转账给你</div>
             <div style={{ fontSize: 32, fontWeight: 700, marginTop: 8 }}>NT$ {Number(selectedTransfer.meta?.amount ?? selectedTransfer.body).toFixed(2)}</div>
             <div style={{ fontSize: 12, marginTop: 5 }}>新台币 TWD</div>
           </div>
@@ -4718,7 +4720,7 @@ export function WeChatSkin(p: SkinProps) {
             <div style={{ padding: "24px 18px 20px" }}>
               <div style={{ width: 54, height: 54, borderRadius: 16, margin: "0 auto 12px", background: "#dce8d7", color: "#4f8d62", display: "grid", placeItems: "center" }}><Phone size={27}/></div>
               <strong style={{ fontSize: 17 }}>语音通话</strong>
-              <p style={{ margin: "8px 0 0", color: "#888", fontSize: 13 }}>要拨打大G的语音通话吗？</p>
+              <p style={{ margin: "8px 0 0", color: "#888", fontSize: 13 }}>要拨打{displayName("大G")}的语音通话吗？</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderTop: "1px solid #e4e4e4" }}>
               <button type="button" onClick={() => setMilkTeaCallPromptOpen(false)} style={{ border: 0, borderRight: "1px solid #e4e4e4", background: "transparent", padding: 14, color: "#777", fontSize: 15 }}>取消</button>
@@ -4964,7 +4966,7 @@ export function WeChatSkin(p: SkinProps) {
                   </div>
                 </div>
               )}
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {activeGroupChat && threeWayRejoinReplyPending && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="重新加入群聊后的回复选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
