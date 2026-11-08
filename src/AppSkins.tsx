@@ -2194,7 +2194,7 @@ export function WeChatSkin(p: SkinProps) {
     { user: ["嗷嗷，订单好像送达了！"], incoming: ["去吧去吧～", "我等你的好消息哦~~"], externalCall: true },
   ];
   const milkTeaGiftUnlocked =
-    p.allUi?.delivery?.hpStoryOpenOrdersV1 === true &&
+    p.allUi?.delivery?.hpStoryOrderUnlockedV1 === true &&
     p.allUi?.wechat?.wxHungryPandaDeliveryNoticeSentV1 === true;
   useEffect(() => {
     if (!isBroccoliThread || !milkTeaGiftUnlocked || milkTeaGiftStage >= 0) return;
