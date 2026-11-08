@@ -352,7 +352,6 @@ export function JkoPaySkin(p:Props){
 export function DeliverySkin(p: Props) {
   const { tab, setTab, q, setQ } = useContent(p, "首页");
   const [category, setCategory] = useState("全部");
-  const [storyOrderDetailOpen, setStoryOrderDetailOpen] = useState(false);
   const [orderFilter, setOrderFilter] = useState("进行中");
   useEffect(() => {
     if (p.ui?.hpStoryOpenOrdersV1 !== true) return;
@@ -360,7 +359,6 @@ export function DeliverySkin(p: Props) {
     setCartPage(false);
     setCheckoutOpen(false);
     setTab("订单");
-    setStoryOrderDetailOpen(true);
     p.onUi?.("hpStoryOpenOrdersV1", false);
   }, [p.ui?.hpStoryOpenOrdersV1]);
   const [selected, setSelected] = useState<string | null>(null);
@@ -560,7 +558,7 @@ export function DeliverySkin(p: Props) {
                   <div className="hp-story-progress"><i/><i/><i className="active"/><i/></div>
                   <div className="hp-story-progress-labels"><span>已下单<small>20:21</small></span><span>商家出餐<small>20:24</small></span><b>骑手配送中</b><span>已送达</span></div>
                 </div>
-                {storyOrderDetailOpen && <div className="hp-story-order-items">
+                <div className="hp-story-order-items">
                   <div className="hp-story-order-item">
                     <img src="/monster/assets/kebuke-white-jade.webp" alt="白玉歐蕾"/>
                     <div className="hp-story-order-item-copy">
@@ -581,7 +579,7 @@ export function DeliverySkin(p: Props) {
                     </div>
                     <strong>NT$ 60</strong>
                   </div>
-                </div>}
+                </div>
                 <div className="hp-story-order-total"><span>共 2 件商品</span><b>合計 NT$ 130</b></div>
                 <div className="hp-story-rider"><span>👨🏻‍🦱</span><div><b>騎手：陳先生</b><small>正在为您配送</small></div><button type="button" aria-label="联系骑手"><Phone size={18} strokeWidth={2.5}/></button><button type="button" aria-label="联系骑手聊天"><MessageCircle size={18} strokeWidth={2.5}/></button></div>
               </section>
