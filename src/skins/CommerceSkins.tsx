@@ -548,16 +548,16 @@ export function DeliverySkin(p: Props) {
                 {storyOrderDetailOpen && <div className="hp-story-order-items">
                   <div className="hp-story-order-item">
                     <img src="https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267" alt="白玉歐蕾"/>
-                    <div><b>白玉歐蕾</b><small>大杯 · 正常冰 · 微糖 · ×1</small></div>
-                    <strong>NT$ 75</strong>
+                    <div><b>白玉歐蕾</b><small>数量：1</small></div>
+                    
                   </div>
                   <div className="hp-story-order-item">
                     <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=360&q=85" alt="熟檸紅茶"/>
-                    <div><b>熟檸紅茶</b><small>大杯 · 少冰 · 微糖 · ×1</small></div>
-                    <strong>NT$ 55</strong>
+                    <div><b>熟檸紅茶</b><small>数量：1</small></div>
+                    
                   </div>
                 </div>}
-                <div className="hp-story-order-total"><span>共 2 件商品</span><b>合計 NT$ 130</b></div>
+                <div className="hp-story-order-total"><span>订单商品</span><b>共 2 件饮品</b></div>
                 <div className="hp-story-rider"><span>🐼</span><div><b>外送員正在配送</b><small>感謝您的訂購，請留意來電</small></div><strong>聯絡騎手</strong></div>
                 <button className="hp-story-order-toggle" onClick={()=>setStoryOrderDetailOpen(v=>!v)}>{storyOrderDetailOpen ? "收起訂單明細" : "查看訂單明細"}</button>
               </section>
