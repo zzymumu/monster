@@ -529,6 +529,18 @@ export function DeliverySkin(p: Props) {
               {visibleRestaurants.length===0 && <div className="hp-empty">没有找到相关餐厅，试试其他关键词吧</div>}
             </div>
           </>
+        ) : tab === "分类" ? (
+          <div className="hp-category-page">
+            <div className="hp-category-heading"><b>全部分类</b><small>选择喜欢的美食类型</small></div>
+            <div className="hp-categories">{["全部","中餐","日韩料理","奶茶甜品","热炒"].map((v,i)=><button className={category===v?"active":""} key={v} onClick={()=>setCategory(v)}><span>{["🍜","🥢","🍣","🧋","🍳"][i]}</span>{v}</button>)}</div>
+            <div className="hp-restaurant-list">
+              {visibleRestaurants.map(r=><button className="hp-restaurant-card" key={r.id} onClick={()=>setSelected(r.id)}>
+                <div className="hp-restaurant-image"><img src={r.image} alt={r.name} onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src=r.menu[0].image}}/><span>{r.tag}</span></div>
+                <div className="hp-restaurant-info"><b>{r.name}</b><div className="hp-rating"><strong>★ {r.rating}</strong><span>{r.time}</span></div><small>{r.desc}</small><footer><span>{r.fee}</span><span>{r.price}</span></footer></div>
+              </button>)}
+              {visibleRestaurants.length===0&&<div className="hp-empty">没有找到相关餐厅</div>}
+            </div>
+          </div>
         ) : tab === "订单" ? (
           <div className="hp-orders">
             <div className="hp-order-topbar"><div className="hp-order-brand"><span>🐼</span><b>HungryPanda</b></div><button aria-label="通知">♧<i/></button></div>
