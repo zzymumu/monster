@@ -7405,3 +7405,14 @@ label {
 .native-phone-controls button {border:0;background:none;color:white;display:flex;flex-direction:column;align-items:center;gap:9px;font-size:12px;}
 .native-phone-controls b {width:68px;height:68px;border-radius:50%;background:#ffffff35;border:1px solid #ffffff45;display:grid;place-items:center;font-size:25px;font-weight:500;}
 .native-phone-controls .native-end b {background:#ed252b;border:0;font-size:34px;transform:rotate(135deg);}
+
+
+/* When the courier calls, replace the WeChat call controls entirely with the native Phone UI. */
+.incoming-call-screen:has(.native-phone-call) {
+  padding: 0 !important;
+  background: linear-gradient(155deg,#77716e 0%,#514b49 52%,#373230 100%) !important;
+}
+.incoming-call-screen:has(.native-phone-call) > :not(.native-phone-call) {
+  display: none !important;
+}
+.native-phone-call { z-index: 2; }
