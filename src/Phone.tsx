@@ -1714,7 +1714,7 @@ function PhoneRuntime({
                               ...(Array.isArray(story.messages) ? story.messages : []),
                             ];
                             return candidates.some((item) => {
-                              const body = String(item.body ?? "").replace(/\\s/g, "");
+                              const body = String(item.body ?? "").replace(/\s/g, "");
                               return (item.thread === "西蓝花" || item.thread === "西兰花") &&
                                 /^[.。…]{12,}$/.test(body);
                             });
