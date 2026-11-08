@@ -3533,6 +3533,7 @@ function PhoneRuntime({
                 </div>
               )}
               <audio ref={milkTeaAudioRef} onEnded={onMilkTeaAudioEnded} preload="auto" />
+              {!deliveryCallActive && (
               <div className="incoming-actions">
                 {s.incomingCall.status === "answered" || s.incomingCall.direction === "outgoing" ? (
                   <>
@@ -3714,7 +3715,9 @@ function PhoneRuntime({
                   </>
                 )}
               </div>
-            </div>
+ 
+              )}
+           </div>
           )}
           {banner && !locked && (() => {
             const notice = notificationContent(banner, work.apps, notificationItems, contactRemarksForNotifications);
