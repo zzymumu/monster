@@ -6180,8 +6180,8 @@
 
 /* HungryPanda top-edge seam: paint over the app-window/status-bar join. */
 .phone-shell.ios27 .phone-screen:has(.delivery-ui){
-  /* Keep the device wallpaper behind the app; yellow belongs only to the status bar/header. */
-  background:transparent!important;
+  /* Do not override the inline wallpaper image; only HungryPanda's own header is yellow. */
+  background-color:transparent!important;
 }
 .phone-shell.ios27 .phone-screen:has(.delivery-ui) > .status-bar{
   height:59px!important;
