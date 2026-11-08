@@ -834,11 +834,14 @@ function PhoneRuntime({
         if (!nextNotifications.includes(notification)) nextNotifications.push(notification);
       }
 
+      // Only the hotel-address message may trigger the second DaG call.
+      // This rejects stale startBigGCall metadata from older saved queues.
+      const isBroccoliHotelAddressTrigger = line.id === "drunk-broccoli-hotel-v2" && line.sender === "西蓝花" && line.body === "妳酒店到底在哪裡？把地址發我！";
       update({
         ...latest,
         incomingCall: line.meta?.startBroccoliCall === "yes"
           ? { caller: "西蓝花", target: "西蓝花", status: "ringing" }
-          : line.meta?.startBigGCall === "yes" ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
+          : (line.meta?.startBigGCall === "yes" && isBroccoliHotelAddressTrigger) ? { caller: "大G", target: "大G", status: "ringing" } : latest.incomingCall,
         messages: { ...latest.messages, wechat: nextWechatMessages },
         ui: {
           ...latest.ui,
@@ -856,7 +859,7 @@ function PhoneRuntime({
             ...(line.meta?.switchThread ? { openThread: line.meta.switchThread } : {}),
             ...(line.meta?.startBroccoliCall === "yes" ? { wxBroccoliCallStartedV1: true } : {}),
             ...(line.meta?.startBroccoliAfterDoor === "yes" ? { wxBroccoliAfterDoorCallV1: true } : {}),
-            ...(line.meta?.startBigGCall === "yes" ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxDrunkSecondCallStartedV1: true, wxBroccoliFinalGCallV1: true } : {}),
+            ...(line.meta?.startBigGCall === "yes" && isBroccoliHotelAddressTrigger ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxDrunkSecondCallStartedV1: true, wxBroccoliFinalGCallV1: true } : {}),
           },
         },
         notifications: nextNotifications.slice(-60),
