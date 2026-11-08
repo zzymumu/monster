@@ -4518,7 +4518,7 @@ export function WeChatSkin(p: SkinProps) {
       try { return JSON.parse(raw).id === postId; } catch { return false; }
     }) ? current : [...current, JSON.stringify({
       id: postId,
-      body: "超感谢好心人的奶茶🥺\\n好心人快出来！我要给你一个大大的抱抱！",
+      body: "超感谢好心人的奶茶🥺\n好心人快出来！我要给你一个大大的抱抱！",
       image: "./assets/delivery-milk-tea-moments.jpg",
       time: new Date().toLocaleString("zh-CN", { hour12: false }),
       likes: ["西蓝花", "大G"],
