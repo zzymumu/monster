@@ -7416,3 +7416,249 @@ label {
   display: none !important;
 }
 .native-phone-call { z-index: 2; }
+
+
+/* Courier's ordinary cellular call: full-bleed iOS Phone screen.
+   Scoped exclusively to the delivery-call native-phone subtree. */
+.phone-screen:has(.native-phone-call) > .status-bar,
+.phone-screen:has(.native-phone-call) .status-bar {
+  display: none !important;
+}
+.incoming-call-screen:has(.native-phone-call) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: #625b58 !important;
+  color: #fff !important;
+}
+.native-phone-call {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 5 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: max(10px, env(safe-area-inset-top)) 24px max(18px, env(safe-area-inset-bottom)) !important;
+  overflow: hidden !important;
+  color: #fff !important;
+  background:
+    radial-gradient(ellipse at 48% 28%, rgba(184,166,155,.28), transparent 48%),
+    radial-gradient(ellipse at 18% 82%, rgba(92,77,68,.45), transparent 55%),
+    linear-gradient(145deg, #77706d 0%, #625b58 48%, #494340 100%) !important;
+  isolation: isolate;
+}
+.native-phone-call::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 22% 26%, rgba(210,198,188,.2), transparent 44%),
+    radial-gradient(ellipse at 78% 68%, rgba(44,37,34,.28), transparent 52%),
+    linear-gradient(155deg, #77716e 0%, #5d5653 54%, #403a37 100%);
+  filter: blur(22px);
+  transform: scale(1.04);
+}
+.native-phone-status {
+  position: relative !important;
+  z-index: 2 !important;
+  flex: 0 0 48px !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 132px 1fr !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+  font-weight: 650 !important;
+  color: rgba(255,255,255,.96) !important;
+  font-variant-numeric: tabular-nums;
+}
+.native-phone-status-time { justify-self: start; white-space: nowrap; }
+.native-phone-dynamic-island {
+  justify-self: center;
+  display: block;
+  width: 126px;
+  height: 34px;
+  border-radius: 22px;
+  background: #050505;
+  box-shadow: 0 1px 2px rgba(0,0,0,.28);
+}
+.native-phone-dynamic-island i {
+  display: block;
+  width: 7px;
+  height: 7px;
+  margin: 13px 0 0 auto;
+  margin-right: 17px;
+  border-radius: 50%;
+  background: #202a36;
+}
+.native-phone-status-icons {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.native-phone-status-icons b { font-weight: 700; letter-spacing: -2px; }
+.native-phone-status-icons .native-phone-wifi { font-size: 18px; font-style: normal; transform: rotate(45deg); }
+.native-phone-status-icons .native-phone-battery {
+  min-width: 31px;
+  padding: 3px 5px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.88);
+  color: #514b49;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+}
+.native-phone-contact {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(76px, 11vh, 120px) !important;
+  gap: 13px !important;
+}
+.native-phone-contact small,
+.native-phone-connected-info small {
+  padding: 3px 8px !important;
+  border-radius: 5px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+.native-phone-contact strong {
+  font-size: clamp(34px, 8vw, 43px) !important;
+  font-weight: 550 !important;
+  letter-spacing: 1px !important;
+  font-variant-numeric: tabular-nums;
+}
+.native-phone-incoming-tools {
+  position: relative;
+  z-index: 1;
+  width: 78%;
+  margin: auto auto 52px !important;
+}
+.native-phone-incoming-tools div { gap: 12px !important; font-size: 14px !important; }
+.native-phone-incoming-tools span {
+  width: 64px !important;
+  height: 64px !important;
+  background: rgba(255,255,255,.17) !important;
+  border: 1px solid rgba(255,255,255,.32) !important;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.12);
+}
+.native-phone-ring-actions {
+  position: relative;
+  z-index: 1;
+  justify-content: space-evenly !important;
+  margin: 0 0 clamp(42px, 8vh, 82px) !important;
+}
+.native-phone-ring-actions button { gap: 13px !important; font-size: 16px !important; }
+.native-phone-ring-actions b {
+  width: 88px !important;
+  height: 88px !important;
+  font-size: 0 !important;
+  transform: none !important;
+  position: relative;
+}
+.native-phone-ring-actions b::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 13px;
+  border: 0;
+  border-top: 8px solid white;
+  border-radius: 16px 16px 3px 3px;
+  transform: rotate(42deg);
+}
+.native-reject b { background: #f02d35 !important; }
+.native-answer b { background: #20c45a !important; }
+.native-phone-connected-info {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(54px, 8vh, 92px) !important;
+  gap: 11px !important;
+}
+.native-phone-connected-info strong {
+  font-size: clamp(35px, 8vw, 43px) !important;
+  font-weight: 550 !important;
+  letter-spacing: 1px !important;
+  font-variant-numeric: tabular-nums;
+}
+.native-phone-connected-info span { font-size: 17px !important; }
+.native-phone-caption {
+  position: relative;
+  z-index: 1;
+  margin: 28px auto 0 !important;
+  width: min(100%, 370px) !important;
+  padding: 17px 18px 16px !important;
+  border-radius: 23px !important;
+  background: rgba(255,255,255,.16) !important;
+  border: 1px solid rgba(255,255,255,.05);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.native-phone-caption small { font-size: 13px !important; }
+.native-phone-caption p { font-size: 16px !important; line-height: 1.5 !important; }
+.native-phone-caption button {
+  min-height: 48px;
+  margin-top: 10px !important;
+  padding: 0 22px !important;
+  border-radius: 26px !important;
+  background: rgba(255,255,255,.94) !important;
+  color: #252525 !important;
+  font-size: 15px !important;
+}
+.native-phone-controls {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin-top: auto !important;
+  padding: 0 0 22px !important;
+  gap: clamp(20px, 4vh, 38px) 12px !important;
+}
+.native-phone-controls button { gap: 10px !important; font-size: 14px !important; }
+.native-phone-controls b {
+  width: clamp(68px, 19vw, 82px) !important;
+  height: clamp(68px, 19vw, 82px) !important;
+  background: rgba(255,255,255,.17) !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.12);
+  font-size: 27px !important;
+}
+.native-phone-controls .native-end b {
+  background: #f02d35 !important;
+  border: 0 !important;
+  font-size: 0 !important;
+  transform: none !important;
+  position: relative;
+}
+.native-phone-controls .native-end b::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 13px;
+  border-top: 8px solid white;
+  border-radius: 16px 16px 3px 3px;
+  transform: rotate(42deg);
+}
+@media (max-height: 740px) {
+  .native-phone-contact { margin-top: 48px !important; }
+  .native-phone-connected-info { margin-top: 40px !important; }
+  .native-phone-caption { margin-top: 18px !important; }
+  .native-phone-controls { gap: 12px 10px !important; padding-bottom: 12px !important; }
+  .native-phone-controls b { width: 62px !important; height: 62px !important; }
+}
