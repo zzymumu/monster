@@ -5139,7 +5139,7 @@ export function WeChatSkin(p: SkinProps) {
                     ] },
                     { trigger: "接電話。", body: "我接個屁，你怎麼能命令你爸爸？？？？", replyId: "drunk-big-g-dad-reply-v10", reply: "", replyLines: [
                       { id: "drunk-big-g-ellipsis-v9", sender: "大G", body: "…………", thread: "大G" },
-                      { id: "drunk-big-g-wait-v11", sender: "大G", body: "妳等我。", thread: "大G", meta: { startBigGCall: "yes" } },
+                      { id: "drunk-big-g-wait-v11", sender: "大G", body: "妳等我。", thread: "大G" },
                     ] },
 
                   ];
