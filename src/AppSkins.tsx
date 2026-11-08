@@ -4381,6 +4381,22 @@ export function WeChatSkin(p: SkinProps) {
   const [momentCover, setMomentCover] = useSkinState<string>(p, "wxMomentCover", "");
   const [momentPostData, setMomentPostData] = useSkinState<string[]>(p, "wxMomentPosts", []);
   const [storyFriendMomentPosts, setStoryFriendMomentPosts] = useSkinState<string[]>(p, "wxStoryFriendMomentPostsV1", []);
+  // Restore DaG homecoming post after the player accepts his promise to show Wanwan.
+  // Seed once; the player still chooses whether to like and comment.
+  useEffect(() => {
+    if (returnDinnerStage < 392) return;
+    setStoryFriendMomentPosts((current) => current.some((raw) => {
+      try { return JSON.parse(raw).id === "dag-wanwan-home-photo-v1"; } catch { return false; }
+    }) ? current : [...current, JSON.stringify({
+      id: "dag-wanwan-home-photo-v1",
+      sender: "大G",
+      body: "终于回家了，小朋友。",
+      image: "https://zzymumu.github.io/monster/assets/wanwan-moments.webp",
+      time: new Date().toLocaleString("zh-CN", { hour12: false }),
+      likes: [],
+      comments: [],
+    })]);
+  }, [returnDinnerStage, setStoryFriendMomentPosts]);
   const [storyMomentCommentDraft, setStoryMomentCommentDraft] = useState("");
   const [storyMomentCommentOpen, setStoryMomentCommentOpen] = useState("");
   const [momentComposer, setMomentComposer] = useState(false);
@@ -4579,7 +4595,7 @@ export function WeChatSkin(p: SkinProps) {
       const post = JSON.parse(raw) as { id: string; sender: string; body: string; image: string; time: string; likes: string[]; comments: string[]; replyQueued?: boolean };
       // Keep the future DaG-at-home photo hidden until its own explicit
       // story milestone is reached. Older saves may already contain the post.
-      if (post.id === "dag-wanwan-home-photo-v1" && p.ui?.wxDrunkHomeMomentUnlockedV1 !== true) return [];
+      if (post.id === "dag-wanwan-home-photo-v1" && returnDinnerStage < 392) return [];
       return post.id ? [post] : [];
     } catch { return []; }
   });
