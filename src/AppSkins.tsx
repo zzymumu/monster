@@ -2159,6 +2159,48 @@ export function WeChatSkin(p: SkinProps) {
   // ownership from sender text (the player's lines otherwise get misplaced).
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
+  const [milkTeaGiftStage, setMilkTeaGiftStage] = useSkinState<number>(p, "wxMilkTeaGiftStageV1", -1);
+  const milkTeaGiftTurns = [
+    { user: ["欸，问你一件事。"], incoming: ["干嘛？"] },
+    { user: ["你是不是给我点奶茶了？"], incoming: ["啊？没有啊。", "怎么突然问这个？"] },
+    { user: ["我刚刚收到外卖通知，说有一单奶茶正在配送。", "我点进去看了一下，是可不可。"], incoming: ["我真的没有点欸。"] },
+    { user: ["那奇怪了.....是谁哦，还知道我家地址。"], incoming: ["等一下……", "我好像突然知道是谁了。"] },
+    { user: ["谁啊？"], incoming: ["不会吧……", "他动作这么快喔？"] },
+    { user: ["你在说谁啦？"], incoming: ["温尚翊啊！", "他之前有来找我问过你的地址。"] },
+    { user: ["啊？", "他什么时候找你问地址了？"], incoming: ["前几天啊！", "他问我知不知道你现在住哪里。", "说想给你送点东西，还特地叫我先不要告诉你。"] },
+    { user: ["……", "所以这奶茶是他点的？"], incoming: ["我觉得八九不离十了。", "救命，我还以为他只是先问问而已。", "没想到这么快就行动了。", "直接给你点上了欸🤭"] },
+    { user: ["你怎么都没告诉我啦。"], incoming: ["人家都说了要保密，我当然不能出卖他啊。", "而且我也不知道他什么时候会真的行动。", "这不就刚好被我撞上了嘛哈哈哈哈。"] },
+    { user: ["你们两个现在都有秘密了是吧。", "我当初就应该把你俩从群里都踢出去。"], incoming: ["哈哈哈哈哈哈！", "现在才想起来是不是太晚了？", "群是你自己建的，人也是你自己拉进来的。", "现在我们两个还有共同秘密了。"] },
+    { user: ["我就不应该拉你们两个进群。"], incoming: ["晚了啦。", "已经是一条船上的人了。", "不过说真的，他还挺会的欸。", "知道你喜欢这家，还记得你常喝什么。"] },
+    { user: ["可是他为什么突然给我点奶茶啦？"], incoming: ["哎哟，这还需要我教你吗？", "人家都偷偷找我要地址了，你觉得呢？", "哎呀，今天有人要幸福了😏"] },
+    { user: ["你真的很烦欸。"], incoming: ["不过我跟你说。", "射手座男生追人有时候就是这样的啦～"] },
+    { user: ["什么样？"], incoming: ["不会一开始就跟你讲什么喜欢不喜欢的。", "但是会找各种理由出现在你生活里。", "今天给你送点东西，明天又想起你喜欢什么。", "看起来好像很随意，其实不知道在心里盘算多久了。"] },
+    { user: ["真的吗……"], incoming: ["哎哟，你这个语气。", "怎么，开始心动啦？"] },
+    { user: ["没有啦……", "我就是有点好奇。"], incoming: ["好奇什么？"] },
+    { user: ["你说……", "他真的喜欢我吗？"], incoming: ["哎哟喂。", "你现在怎么这么乖啊？", "终于不嘴硬了是不是？"] },
+    { user: ["哎，就是觉得他最近对我好像有点不一样，但是又怕是自己多想。", "毕竟喜欢一个人的时候，看他所有做法都带着暗示......."], incoming: ["所以需要旁观者嘛！", "不过认真说，我觉得他对你肯定是有特别关注的。", "你自己想想看，从认识他到现在发生多少事情了？", "先是主动说要请你吃饭。", "后来你喝醉了，还是人家留下来照顾你的吧？", "之后又天天找你聊天。", "还邀请你去录音室。", "现在好了，连奶茶都直接送到你家了。", "你跟我说，这些都是普通朋友会做的事喔？", "而且你还记不记得，上次群里我开玩笑说你们两个什么时候搞在一起？", "他当时有反驳吗？", "没有吧？😏", "我可是记得很清楚欸。"] },
+    { user: ["可是……", "万一是因为我上次给他们送了奶茶，他觉得不好意思，所以想表示感谢呢？"], incoming: ["不是，你怎么还在帮他找理由啦。", "感谢就感谢啊，直接跟你说不就好了？", "干嘛还特地来问我要你的地址，偷偷下单？", "这明显就是想给你惊喜嘛。", "而且他又不是不知道你喜欢这家店。", "我看他就是想让你开心啦～"] },
+    { user: ["噢.....那我就再观察一下。", "欸，不过说起来。", "你今天怎么这么平静啊？", "之前每次跟你说他的事情，你不是都很激动吗？"], incoming: ["🙄我这是已经习惯了。", "你们都一起在酒店呆过了，现在不就是给你点个奶茶嘛。", "我甚至觉得这都算正常发挥了😂"] },
+    { user: ["什么叫正常发挥啦……"], incoming: ["不然呢？", "我现在比较好奇的是，你们两个到底什么时候才能有点实质性进展。", "我份子钱都准备好了。"] },
+    { user: ["你真的很烦欸……"], incoming: ["哈哈哈哈哈哈！", "我这是替你着急好不好！", "你快去跟人家说谢谢，等什么呢！？"] },
+    { user: ["嗯……", "我还在想要怎么开口。"], incoming: ["这有什么好想的，直接问啊。"] },
+    { user: ["就....万一不是他怎么办啊，多尴尬。"], incoming: ["那你就发个朋友圈让他来认领。"] },
+    { user: ["对喔，这个主意可以！", "但是……如果无人认领怎么办……"], incoming: ["哈哈哈哈哈哈！", "那你就自己喝掉啊，还能怎么办？", "怎么，没人认领你还不喝了喔？"] },
+    { user: ["不是啦……", "万一真的是他送的，结果他没看到怎么办？"], incoming: ["那你就再发一条啊。", "不然直接在朋友圈喊话好了。", "神秘好心人，你的奶茶我收到了，谢谢你。"] },
+    { user: ["救命，这也太明显了吧。"], incoming: ["那不然呢？", "你又想让人家知道你收到了，又不敢直接问。", "我看你就是想让他主动来找你。"] },
+    { user: ["嘿嘿嘿嘿嘿~", "好像也没有错。"], incoming: ["哼😒我还不知道你。", "那你就发嘛。", "反正如果真的是他，看到肯定会懂的。"] },
+    { user: ["可是如果他不理我呢……"], incoming: ["那你就当普通朋友圈发了啊。", "又没有指名道姓，怕什么。", "再说了，就算真的是他，他也不一定马上回复你嘛。", "你不要发完就一直盯着手机看喔。"] },
+    { user: ["我才不会！"], incoming: ["最好是这样😏"], orderDelivered: true },
+    { user: ["嗷嗷，订单好像送达了！"], incoming: ["去吧去吧～", "我等你的好消息哦~~"], externalCall: true },
+  ];
+  useEffect(() => {
+    if (!isBroccoliThread || milkTeaGiftStage >= 0) return;
+    if (p.allUi?.delivery?.hpStoryOpenOrdersV1 !== true ||
+        p.allUi?.wechat?.wxHungryPandaDeliveryNoticeSentV1 !== true) return;
+    setMilkTeaGiftStage(0);
+  }, [isBroccoliThread, milkTeaGiftStage, p.allUi?.delivery?.hpStoryOpenOrdersV1, p.allUi?.wechat?.wxHungryPandaDeliveryNoticeSentV1]);
+  const milkTeaGiftStoryActive = isBroccoliThread && milkTeaGiftStage >= 0;
+
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
   const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
     try {
@@ -2376,7 +2418,7 @@ export function WeChatSkin(p: SkinProps) {
   const isRestaurantPlanningFlow =
     returnDinnerStage === 37 || returnDinnerStage === 1370 ||
     (returnDinnerStage >= 38 && returnDinnerStage <= 80);
-  const catChoices = isRestaurantPlanningFlow || vavaPlayStage >= 0 ? [] :
+  const catChoices = milkTeaGiftStoryActive || isRestaurantPlanningFlow || vavaPlayStage >= 0 ? [] :
     // Stage 53 is the explicit DaG follow-up after "妳？？？怎麼啦？".
     // Keep its two replies visible in DaG's own chat even if an unrelated
     // stale queue entry remains from the previous contact.
@@ -5276,7 +5318,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {!postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
+              {!milkTeaGiftStoryActive && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 249 || pendingCatLines.length === 0) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
                     <button key={choice.id} onClick={() => {
@@ -5292,7 +5334,29 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {!postPickupGoodbyeSent && catChoices.length > 0 && (
+              {milkTeaGiftStoryActive && milkTeaGiftStage < milkTeaGiftTurns.length && pendingCatLines.length === 0 && (
+                <div className="cat-rescue-choices" aria-label="奶茶惊喜剧情回复选项">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                    const turn = milkTeaGiftTurns[milkTeaGiftStage];
+                    const lines: CatLine[] = [
+                      ...turn.user.map((body, index) => ({ id: "hp-milk-tea-user-" + milkTeaGiftStage + "-" + index, sender: "我" as const, body, thread: "西蓝花" as const })),
+                      ...turn.incoming.map((body, index) => ({
+                        id: "hp-milk-tea-broccoli-" + milkTeaGiftStage + "-" + index,
+                        sender: "西蓝花" as const,
+                        body,
+                        thread: "西蓝花" as const,
+                        meta: index === turn.incoming.length - 1
+                          ? { ...(turn.orderDelivered ? { hpOrderDeliveredPush: "yes" } : {}), ...(turn.externalCall ? { startExternalDeliveryCall: "yes" } : {}) }
+                          : undefined,
+                      })),
+                    ];
+                    appendCatLines(lines, catRescue.stage, catRescue.branch, "hp-milk-tea-" + milkTeaGiftStage);
+                    setMilkTeaGiftStage((current) => current + 1);
+                  }}>{milkTeaGiftTurns[milkTeaGiftStage].user.join(" ")}</button>
+                  <div className="cat-rescue-option-hint">点击发送你的回复</div>
+                </div>
+              )}
+              {!milkTeaGiftStoryActive && !postPickupGoodbyeSent && catChoices.length > 0 && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
