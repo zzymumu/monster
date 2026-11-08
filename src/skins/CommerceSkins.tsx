@@ -546,17 +546,17 @@ export function DeliverySkin(p: Props) {
           <div className="hp-orders">
             <div className="hp-order-topbar"><div className="hp-order-brand"><span>🐼</span><b>HungryPanda</b></div><button aria-label="通知">♧<i/></button></div>
             <div className="hp-order-filters">{["全部订单","进行中","待评价","退款/售后"].map((label)=><button type="button" key={label} className={orderFilter===label?"active":""} onClick={()=>setOrderFilter(label)}>{label}</button>)}</div>
-            {p.ui?.hpStoryOrderUnlockedV1 === true && (orderFilter==="全部订单" || orderFilter==="进行中") ? (
+            {p.ui?.hpStoryOrderUnlockedV1 === true && (orderFilter==="全部订单" || (orderFilter==="进行中" && p.ui?.hpStoryOrderDeliveredV1 !== true) || (orderFilter==="待评价" && p.ui?.hpStoryOrderDeliveredV1 === true)) ? (
               <section className="hp-story-order">
                 <div className="hp-story-order-head">
                   <div className="hp-story-store-mark"><img src="/monster/assets/kebuke-logo.webp" alt="可不可熟成茶行"/></div>
-                  <div><b>可不可熟成茶行 ›</b><small>订单已接单 · 商家已出餐</small></div>
-                  <strong>配送中</strong>
+                  <div><b>可不可熟成茶行 ›</b><small>{p.ui?.hpStoryOrderDeliveredV1 === true ? "订单已送达 · 请及时查收" : "订单已接单 · 商家已出餐"}</small></div>
+                  <strong>{p.ui?.hpStoryOrderDeliveredV1 === true ? "已送达" : "配送中"}</strong>
                 </div>
                 <div className="hp-story-delivery-status">
-                  <b>预计送达：约 12 分钟</b>
-                  <div className="hp-story-progress"><i/><i/><i className="active"/><i/></div>
-                  <div className="hp-story-progress-labels"><span>已下单<small>20:21</small></span><span>商家出餐<small>20:24</small></span><b>骑手配送中</b><span>已送达</span></div>
+                  <b>{p.ui?.hpStoryOrderDeliveredV1 === true ? "订单已送达" : "预计送达：约 12 分钟"}</b>
+                  <div className="hp-story-progress"><i/><i/><i className={p.ui?.hpStoryOrderDeliveredV1 === true ? "" : "active"}/><i className={p.ui?.hpStoryOrderDeliveredV1 === true ? "active" : ""}/></div>
+                  <div className="hp-story-progress-labels"><span>已下单<small>20:21</small></span><span>商家出餐<small>20:24</small></span>{p.ui?.hpStoryOrderDeliveredV1 === true ? <span>骑手配送中</span> : <b>骑手配送中</b>}{p.ui?.hpStoryOrderDeliveredV1 === true ? <b>已送达</b> : <span>已送达</span>}</div>
                 </div>
                 <div className="hp-story-order-items">
                   <div className="hp-story-order-item">
@@ -581,7 +581,7 @@ export function DeliverySkin(p: Props) {
                   </div>
                 </div>
                 <div className="hp-story-order-total"><span>共 2 件商品</span><b>合計 NT$ 130</b></div>
-                <div className="hp-story-rider"><span>👨🏻‍🦱</span><div><b>騎手：陳先生</b><small>正在为您配送</small></div><button type="button" aria-label="联系骑手"><Phone size={18} strokeWidth={2.5}/></button><button type="button" aria-label="联系骑手聊天"><MessageCircle size={18} strokeWidth={2.5}/></button></div>
+                <div className="hp-story-rider"><span>👨🏻‍🦱</span><div><b>騎手：陳先生</b><small>{p.ui?.hpStoryOrderDeliveredV1 === true ? "订单已送达" : "正在为您配送"}</small></div><button type="button" aria-label="联系骑手"><Phone size={18} strokeWidth={2.5}/></button><button type="button" aria-label="联系骑手聊天"><MessageCircle size={18} strokeWidth={2.5}/></button></div>
               </section>
             ) : <div className="hp-order-empty"><span>{orderFilter==="待评价"?"⭐":"🧾"}</span><b>{orderFilter==="待评价"?"暂无待评价订单":orderFilter==="退款/售后"?"暂无退款或售后订单":"还没有订单"}</b><small>{orderFilter==="待评价"?"完成订单后，可以在这里评价商家":orderFilter==="退款/售后"?"如有退款或售后申请，会显示在这里":"下单后，订单状态和配送进度会显示在这里"}</small>{orderFilter!=="待评价"&&orderFilter!=="退款/售后"&&<button onClick={()=>setTab("首页")}>去逛逛</button>}</div>}
             <div className="hp-favorite-store"><span>🛍️</span><div><b>收藏店鋪</b><small>下次點單更方便</small></div><button>♡ 收藏</button></div>
