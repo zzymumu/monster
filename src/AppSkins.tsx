@@ -720,12 +720,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "大G", body: "妳哪位？我不認識妳喔。" },
       { sender: "大G", body: "好喔，那我先把妳刪掉了。掰。" },
     ]},
-    { id: "monster-cat-intro", label: "你好，我捡到了一只小黑猫……", nextStage: 20, branch: "monster-cat", lines: [
+    { id: "monster-cat-intro", label: "你好，我捡到了一只小黑猫……", nextStage: 1900, branch: "monster-cat", lines: [
       { sender: "我", body: "你好，我捡到了一只小黑猫。它脖子上挂着挂牌，上面有你的联系方式，我就照着上面的微信号加你了。" },
-      { sender: "大G", body: "啊？小黑貓？妳在哪裡看到牠的？我這幾天都不在家，真的不知道牠什麼時候跑出去的……牠還好嗎？有沒有受傷？" },
-      { sender: "我", body: "我刚刚已经带它去医院检查过了，医生说它很健康，没有受伤，你放心。" },
-      { sender: "大G", body: "那就好……真的嚇到我了。牠平常很黏人，可能趁家裡沒人就偷偷溜出去了。" },
-      { sender: "大G", body: "妳先別緊張，牠有沒有一直叫？還是看到妳就自己跑過去？" },
+      { sender: "大G", body: "啊？小黑貓？" },
+      { sender: "大G", body: "妳在哪裡看到牠的？" },
+      { sender: "大G", body: "我這幾天都不在家，真的不知道牠什麼時候跑出去的……" },
+      { sender: "大G", body: "牠還好嗎？有沒有受傷？" },
     ]},
   ],
   13: [],
@@ -768,6 +768,20 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     { id: "monster-found-cat-explain", label: "我是在路边捡到一只小黑猫，看到挂牌才联系你的", nextStage: 20, branch: "monster-cat", lines: [
       { sender: "我", body: "我在路邊撿到一隻小黑貓，看到牠脖子上的牌子有你的微信號，才知道是你的貓。" },
       { sender: "大G", body: "夭壽！牠怎麼會自己跑出去啦？我真的完全不知道……牠有沒有受傷？" },
+    ]},
+  ],
+  1900: [
+    { id: "cat-health-reassure", label: "它没事！我已经带它去医院检查过了，医生说很健康，没有受伤，你放心。", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "它没事！我已经带它去医院检查过了，医生说很健康，没有受伤，你放心。" },
+      { sender: "大G", body: "那就好……真的嚇到我了。" },
+      { sender: "大G", body: "牠平常很黏人，可能趁家裡沒人就偷偷溜出去了。" },
+      { sender: "大G", body: "妳先別緊張，牠有沒有一直叫？還是看到妳就自己跑過去？" },
+    ]},
+    { id: "cat-health-explain", label: "我发现它的时候就先带它去医院了，医生说没什么问题，它现在很安全。", nextStage: 20, branch: "monster-cat", lines: [
+      { sender: "我", body: "我发现它的时候就先带它去医院了，医生说没什么问题，它现在很安全。" },
+      { sender: "大G", body: "那就好……真的嚇到我了。" },
+      { sender: "大G", body: "牠平常很黏人，可能趁家裡沒人就偷偷溜出去了。" },
+      { sender: "大G", body: "妳先別緊張，牠有沒有一直叫？還是看到妳就自己跑過去？" },
     ]},
   ],
   20: [
