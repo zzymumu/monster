@@ -459,6 +459,23 @@ function PhoneRuntime({
       ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxBroccoliSignatureCallStartedV1: true } } });
   }, [s.incomingCall, s.ui?.wechat?.wxBroccoliSignatureCallRequestedV1, s.ui?.wechat?.wxBroccoliSignatureCallStartedV1, ready, locked, creator]);
 
+  // One-time incoming call from Broccoli after the three-person group chat.
+  // The call history belongs in the private Broccoli DM, never in the group.
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const wx = runtimeRef.current.ui?.wechat ?? {};
+    if (wx.wxThreeWayGroupCallRequestedV1 !== true || wx.wxThreeWayGroupCallStartedV1 === true) return;
+    const current = runtimeRef.current;
+    update({
+      ...current,
+      incomingCall: { caller: "西蓝花", target: "西蓝花", status: "ringing" },
+      ui: { ...current.ui, wechat: {
+        ...(current.ui?.wechat ?? {}),
+        wxThreeWayGroupCallStartedV1: true,
+      } },
+    });
+  }, [s.incomingCall, s.ui?.wechat?.wxThreeWayGroupCallRequestedV1, s.ui?.wechat?.wxThreeWayGroupCallStartedV1, ready, locked, creator]);
+
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
     const request = s.ui?.wechat?.wxOutgoingCallRequest;
@@ -1696,6 +1713,17 @@ function PhoneRuntime({
                           { id: "drunk-door-broccoli-request-v1", sender: "西蓝花", body: "……那真的麻煩你了，醒了叫她回我消息！還有拜託你看好她，不要再讓她喝了……", thread: "西蓝花" },
                         ];
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxBroccoliAfterDoorCallDeclinedV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                      } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxThreeWayGroupCallStartedV1 === true && wx.wxThreeWayGroupCallFinishedV1 !== true) {
+                        const record = {
+                          id: "threeway-broccoli-private-call-duration-1721-v1", title: "西蓝花",
+                          body: "通话时长：17:21", richText: "",
+                          meta: { thread: "西蓝花", callStatus: "ended", callDuration: "17:21" },
+                          time: new Date().toISOString(), sender: "西蓝花", avatar: "", kind: "call" as const,
+                          media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
+                          outgoing: false, read: true, likes: 0, comments: [],
+                        };
+                        update({ ...next, messages: { ...next.messages, wechat: [...(next.messages.wechat ?? []).filter((item) => item.id !== record.id), record] },
+                          ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), openThread: "西蓝花", wxThreeWayGroupCallFinishedV1: true, wxThreeWayGroupCallRequestedV1: false } } });
                       } else if (call.caller === "西蓝花" && call.status === "answered" && wx.wxBroccoliSignatureCallStartedV1 === true) {
                         const record = {
                           id: "broccoli-signature-call-duration-4351-v1", title: "西蓝花",
