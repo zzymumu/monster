@@ -594,10 +594,12 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "這樣比較好！可是妳確定牠願意讓妳抱嗎？也要小心別被抓傷。" },
       { sender: "西蓝花", body: "如果牠一直躲，就先不要硬抓，找附近有經驗的人幫忙會比較安全。" },
       { sender: "西蓝花", body: "等醫生檢查過再決定要不要帶回家，先答應我不要讓 Vava 冒險！" },
+      { sender: "我", body: "嗯嗯放心啦，我現在就帶它去醫院！" },
     ]},
     { id: "still-worried", label: "好吧……那我先带它去医院检查", nextStage: 3, lines: [
       { sender: "我", body: "好吧好吧，妳說得對！那我先帶牠去醫院檢查，確認健康狀況再決定怎麼安置。", thread: "西蓝花" },
       { sender: "西蓝花", body: "這樣比較安心！先讓醫生檢查，也保護 Vava。妳路上小心，到了醫院記得跟我說！", thread: "西蓝花" },
+      { sender: "我", body: "嗯嗯放心啦，我現在就帶它去醫院！", thread: "西蓝花" },
     ]},
   ],
   30: [
@@ -657,11 +659,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   12: [
     { id: "finally-in-carrier", label: "好不容易把它安抚下来，终于进外出笼了", nextStage: 30, lines: [
       { sender: "我", body: "好不容易！牠終於安靜下來，也順利進外出籠了，我現在準備帶牠去醫院。" },
-      { sender: "西蓝花", body: "太好了！妳先確認外出籠有關好，路上小心……妳到醫院了嗎？" },
+      { sender: "西蓝花", body: "太好了！妳先確認外出籠有關好，路上小心……" },
+      { sender: "西蓝花", body: "妳到醫院了嗎？" },
     ]},
     { id: "staff-helped-carrier", label: "刚刚请附近的人帮忙，已经安全放进外出笼", nextStage: 30, lines: [
       { sender: "我", body: "剛剛請旁邊的人幫忙，終於安全把牠放進外出籠了，現在要出發去醫院。" },
-      { sender: "西蓝花", body: "呼……那我放心一點了！記得把外出籠固定好，妳到醫院了嗎？" },
+      { sender: "西蓝花", body: "呼……那我放心一點了！記得把外出籠固定好。" },
+      { sender: "西蓝花", body: "妳到醫院了嗎？" },
     ]},
   ],
   4: [
