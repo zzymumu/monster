@@ -6032,3 +6032,37 @@
 .delivery-ui .hp-inline-cart-row>span small{font-size:8px;color:#888}
 .delivery-ui .hp-inline-cart-row>strong{white-space:nowrap;font-size:10px}
 .delivery-ui .hp-inline-cart-total{position:sticky;bottom:-12px;background:#fff;padding:10px 0 0}
+
+
+/* Scripted HungryPanda KEBUKE order revealed by the Shopee dwell notification */
+.hp-story-order{background:#fff;border-radius:14px;padding:13px;margin:0 0 14px;box-shadow:0 2px 10px #17344b0d;color:#222}
+.hp-story-order-head{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
+.hp-story-store-mark{width:43px;height:43px;flex:0 0 43px;border-radius:10px;background:#142f4c;color:#e5c98e;display:grid;place-items:center;font-size:23px;font-weight:800}
+.hp-story-order-head>div:nth-child(2){display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.hp-story-order-head>div:nth-child(2)>b{font-size:14px}
+.hp-story-order-head small{font-size:10px;color:#999}
+.hp-story-order-head>strong{font-size:11px;color:#2385c6;white-space:nowrap}
+.hp-story-delivery-status{margin:12px 0;padding:12px;border-radius:10px;background:#eef7fd;display:flex;flex-direction:column;gap:5px}
+.hp-story-delivery-status>b{font-size:14px;color:#236b9f}
+.hp-story-delivery-status>span{font-size:11px;color:#67869a}
+.hp-story-progress{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:10px}
+.hp-story-progress i{height:4px;border-radius:5px;background:#d6e1e9}
+.hp-story-progress i:first-child,.hp-story-progress i:nth-child(2),.hp-story-progress i.active{background:#2385c6}
+.hp-story-progress-labels{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;font-size:8px;color:#9aa8b2;text-align:center}
+.hp-story-progress-labels b{color:#2385c6}
+.hp-story-order-items{display:flex;flex-direction:column;gap:10px;padding:5px 0 12px}
+.hp-story-order-item{display:flex;align-items:center;gap:10px;min-width:0}
+.hp-story-order-item img{width:66px;height:66px;flex:0 0 66px;border-radius:9px;object-fit:cover;background:#f7f4ef}
+.hp-story-order-item>div{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}
+.hp-story-order-item>div>b{font-size:13px}
+.hp-story-order-item small{font-size:10px;color:#999}
+.hp-story-order-item>strong{font-size:12px;white-space:nowrap}
+.hp-story-order-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #eee;padding:12px 0;font-size:11px;color:#888}
+.hp-story-order-total>b{font-size:15px;color:#222}
+.hp-story-rider{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #eee}
+.hp-story-rider>span{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#fff5d0;font-size:22px}
+.hp-story-rider>div{display:flex;flex:1;flex-direction:column;gap:3px}
+.hp-story-rider>div>b{font-size:12px}
+.hp-story-rider small{font-size:9px;color:#999}
+.hp-story-rider>strong{font-size:10px;color:#2385c6}
+.hp-story-order-toggle{display:block;width:100%;padding:9px;border:1px solid #e6edf2;border-radius:18px;background:#fff;color:#2385c6;font-size:11px}
