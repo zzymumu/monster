@@ -4431,30 +4431,6 @@ export function WeChatSkin(p: SkinProps) {
     }
   };
   useEffect(() => {
-    // DaG shares Wanwan only after the player has finished the check-in chat.
-    // This creates a feed post, never an automatic like or comment.
-    if (returnDinnerStage < 392) return;
-    const postId = "dag-wanwan-home-photo-v1";
-    setStoryFriendMomentPosts((current) => {
-      const matching = current.flatMap((raw) => {
-        try {
-          const post = JSON.parse(raw);
-          return post.body === "终于回家了，小朋友。" && post.sender === "大G" ? [post] : [];
-        } catch { return []; }
-      });
-      const kept = matching[matching.length - 1];
-      const unrelated = current.filter((raw) => {
-        try { const post = JSON.parse(raw); return !(post.body === "终于回家了，小朋友。" && post.sender === "大G"); }
-        catch { return true; }
-      });
-      const canonical = kept
-        ? { ...kept, id: postId, image: "https://zzymumu.github.io/monster/assets/wanwan-moments.webp", likes: Array.isArray(kept.likes) ? kept.likes : [], comments: Array.isArray(kept.comments) ? kept.comments : [] }
-        : { id: postId, sender: "大G", body: "终于回家了，小朋友。", image: "https://zzymumu.github.io/monster/assets/wanwan-moments.webp", time: new Date().toLocaleString("zh-CN", { hour12: false }), likes: [], comments: [] };
-      return [...unrelated, JSON.stringify(canonical)];
-    });
-  }, [returnDinnerStage]);
-
-  useEffect(() => {
     // Phase 1: after the original found-cat conversation is complete,
     // create the Vava/玩玩 post with both likes. Do not message DaG yet.
     const foundCatConversationFinished =
@@ -4601,6 +4577,9 @@ export function WeChatSkin(p: SkinProps) {
   const storyFriendPosts = storyFriendMomentPosts.flatMap((raw) => {
     try {
       const post = JSON.parse(raw) as { id: string; sender: string; body: string; image: string; time: string; likes: string[]; comments: string[]; replyQueued?: boolean };
+      // Keep the future DaG-at-home photo hidden until its own explicit
+      // story milestone is reached. Older saves may already contain the post.
+      if (post.id === "dag-wanwan-home-photo-v1" && p.ui?.wxDrunkHomeMomentUnlockedV1 !== true) return [];
       return post.id ? [post] : [];
     } catch { return []; }
   });
