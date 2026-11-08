@@ -2343,7 +2343,13 @@ export function WeChatSkin(p: SkinProps) {
   const isCurrentChoiceThread =
     (isBroccoliThread && choiceThread === "西蓝花") ||
     (isMonsterThread && choiceThread === "大G");
-  const catChoices = vavaPlayStage >= 0 ? [] :
+  // Once the restaurant-planning branch is active, only its own
+  // returnDinnerChoices may be shown. Older CAT_RESCUE choices can remain
+  // persisted at stage 370 and must not leak into this conversation.
+  const isRestaurantPlanningFlow =
+    returnDinnerStage === 37 || returnDinnerStage === 1370 ||
+    (returnDinnerStage >= 38 && returnDinnerStage <= 80);
+  const catChoices = isRestaurantPlanningFlow || vavaPlayStage >= 0 ? [] :
     // Stage 53 is the explicit DaG follow-up after "妳？？？怎麼啦？".
     // Keep its two replies visible in DaG's own chat even if an unrelated
     // stale queue entry remains from the previous contact.
