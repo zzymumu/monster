@@ -2958,8 +2958,11 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "哈哈哈歡迎回來！台北最近真的很悶熱欸，你先喝點水啦，搭飛機也辛苦了。", thread: "大G" },
       { sender: "大G", body: "真的，剛剛拿行李的時候就熱到不行。妳那邊餐廳有想好了嗎？", thread: "大G" },
     ]},
-    { stage: 37, chat: "大G", id: "send-restaurant-location", label: "我刚刚查了一下，这家看起来还不错，先把定位传给你。📍阿嬷热炒", nextStage: 38, lines: [
-      { sender: "我", body: "我剛剛查了一下，這家看起來還不錯，先把定位傳給你。\n📍 位置分享\n阿嬤熱炒\n（店家定位）", thread: "大G" },
+    { stage: 37, chat: "大G", id: "send-restaurant-intro", label: "我刚刚查了一下，这家看起来很不错~先把定位传给你。", nextStage: 370, lines: [
+      { sender: "我", body: "我剛剛查了一下，這家看起來很不錯～先把定位傳給你。", thread: "大G" },
+    ]},
+    { stage: 370, chat: "大G", id: "send-restaurant-location-card", label: "📍发送阿嬷热炒的位置", nextStage: 38, lines: [
+      { sender: "我", body: "", thread: "大G", kind: "event", meta: { locationName: "阿嬤熱炒", locationAddress: "台北市松山區民生東路五段 110 巷" } },
       { sender: "大G", body: "喔！這家店！很有名欸！我好像有聽過，之前也有人跟我推薦過。", thread: "大G" },
     ]},
     { stage: 38, chat: "大G", id: "praise-restaurant", label: "对啊！我看评价很好，而且真的超好吃的！", nextStage: 39, lines: [
