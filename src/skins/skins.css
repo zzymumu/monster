@@ -6176,3 +6176,35 @@
 .phone-shell .phone-screen:has(.delivery-ui) .status-bar{border:0!important;border-bottom:0!important;box-shadow:none!important;background:#ffd900!important}
 .phone-shell .phone-screen:has(.delivery-ui) .status-bar::after{display:none!important;content:none!important}
 .delivery-ui .hp-header{border-top:0!important;margin-top:0!important}
+
+
+/* HungryPanda top-edge seam: paint over the app-window/status-bar join. */
+.phone-shell.ios27 .phone-screen:has(.delivery-ui){
+  background:#ffd900!important;
+}
+.phone-shell.ios27 .phone-screen:has(.delivery-ui) > .status-bar{
+  height:59px!important;
+  background:#ffd900!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+.phone-shell.ios27 .phone-screen:has(.delivery-ui) > .status-bar::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:-3px!important;
+  height:5px!important;
+  background:#ffd900!important;
+  border:0!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
+}
+.phone-shell.ios27 .phone-screen:has(.delivery-ui) .app-screen{
+  border-top:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
