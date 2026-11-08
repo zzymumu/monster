@@ -531,37 +531,29 @@ export function DeliverySkin(p: Props) {
           </>
         ) : tab === "订单" ? (
           <div className="hp-orders">
-            <h2>我的订单</h2>
+            <div className="hp-order-topbar"><div className="hp-order-brand"><span>🐼</span><b>HungryPanda</b></div><button aria-label="通知">♧<i/></button></div>
+            <div className="hp-order-filters">{["全部订单","进行中","待评价","退款/售后"].map((label,index)=><button key={label} className={index===1?"active":""}>{label}</button>)}</div>
             {p.ui?.hpStoryOrderUnlockedV1 === true ? (
               <section className="hp-story-order">
                 <div className="hp-story-order-head">
                   <div className="hp-story-store-mark">可</div>
-                  <div><b>可不可熟成茶行</b><small>订单已接单 · 骑手正在配送</small></div>
+                  <div><b>可不可熟成茶行 ›</b><small>订单已接单 · 商家已出餐</small></div>
                   <strong>配送中</strong>
                 </div>
                 <div className="hp-story-delivery-status">
-                  <b>骑手正在为您配送！</b>
-                  <span>预计约 12 分钟送达</span>
+                  <b>预计送达：约 12 分钟</b>
                   <div className="hp-story-progress"><i/><i/><i className="active"/><i/></div>
-                  <div className="hp-story-progress-labels"><span>已下单</span><span>商家备餐</span><b>配送中</b><span>已送达</span></div>
+                  <div className="hp-story-progress-labels"><span>已下单<small>20:21</small></span><span>商家出餐<small>20:24</small></span><b>骑手配送中</b><span>已送达</span></div>
                 </div>
                 {storyOrderDetailOpen && <div className="hp-story-order-items">
-                  <div className="hp-story-order-item">
-                    <img src="https://framerusercontent.com/images/w4p5pcB6luR99F294p6sNuBQc.jpg?height=1267&width=1267" alt="白玉歐蕾"/>
-                    <div><b>白玉歐蕾</b><small>数量：1</small></div>
-                    
-                  </div>
-                  <div className="hp-story-order-item">
-                    <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=360&q=85" alt="熟檸紅茶"/>
-                    <div><b>熟檸紅茶</b><small>数量：1</small></div>
-                    
-                  </div>
+                  <div className="hp-story-order-item"><img src="/monster/assets/kebuke-white-jade.webp" alt="白玉歐蕾"/><div><b>白玉歐蕾（大杯）</b><small>×1</small></div><strong>NT$ 70</strong></div>
+                  <div className="hp-story-order-item"><img src="/monster/assets/kebuke-lemon-black-tea.webp" alt="熟檸紅茶"/><div><b>熟檸紅茶（大杯）</b><small>×1</small></div><strong>NT$ 60</strong></div>
                 </div>}
-                <div className="hp-story-order-total"><span>订单商品</span><b>共 2 件饮品</b></div>
-                <div className="hp-story-rider"><span>🐼</span><div><b>外送員正在配送</b><small>感謝您的訂購，請留意來電</small></div><strong>聯絡騎手</strong></div>
-                <button className="hp-story-order-toggle" onClick={()=>setStoryOrderDetailOpen(v=>!v)}>{storyOrderDetailOpen ? "收起訂單明細" : "查看訂單明細"}</button>
+                <div className="hp-story-order-total"><span>共 2 件商品</span><b>合計 NT$ 130</b></div>
+                <div className="hp-story-rider"><span>👨🏻‍🦱</span><div><b>騎手：陳先生</b><small>正在为您配送</small></div><button aria-label="联系骑手">☎</button><button aria-label="联系客服">▣</button></div>
               </section>
             ) : <div className="hp-order-empty"><span>🧾</span><b>还没有订单</b><small>下单后，订单状态和配送进度会显示在这里</small><button onClick={()=>setTab("首页")}>去逛逛</button></div>}
+            <div className="hp-favorite-store"><span>🛍️</span><div><b>收藏店鋪</b><small>下次點單更方便</small></div><button>♡ 收藏</button></div>
           </div>
         ) : (
           <div className="hp-profile"><div className="hp-profile-top"><span>🐼</span><div><b>欢迎来到 HungryPanda</b><small>登录后享受更多会员权益</small></div><button>登录 / 注册</button></div>{["我的优惠券","收货地址","收藏餐厅","客服与帮助","设置"].map((v,i)=><button className="hp-profile-row" key={v}><span>{["🎟️","📍","♡","🎧","⚙️"][i]}</span>{v}<b>›</b></button>)}</div>
@@ -569,10 +561,11 @@ export function DeliverySkin(p: Props) {
       </div>
 
       <div className="hp-bottom">
-        <button className={tab==="首页"?"active":""} onClick={()=>{setSelected(null);setTab("首页")}}><span>⌂</span>首页</button>
-        <button className={tab==="订单"?"active":""} onClick={()=>{setSelected(null);setTab("订单")}}><span>▤</span>订单</button>
+        <button className={!cartPage&&!checkoutOpen&&tab==="首页"?"active":""} onClick={()=>{setSelected(null);setCartPage(false);setCheckoutOpen(false);setTab("首页")}}><span>⌂</span>首页</button>
+        <button className={!cartPage&&!checkoutOpen&&tab==="分类"?"active":""} onClick={()=>{setSelected(null);setCartPage(false);setCheckoutOpen(false);setCategory("全部");setTab("分类")}}><span>⌘</span>分类</button>
+        <button className={!cartPage&&!checkoutOpen&&tab==="订单"?"active":""} onClick={()=>{setSelected(null);setCartPage(false);setCheckoutOpen(false);setTab("订单")}}><span>▤</span>订单</button>
         <button onClick={()=>{setSelected(null);setCheckoutOpen(false);setCartPage(true)}} className={"hp-cart-tab"+(cartPage?" active":"")}><span>🛒{count>0&&<i>{count}</i>}</span>购物车</button>
-        <button className={tab==="我的"?"active":""} onClick={()=>{setSelected(null);setTab("我的")}}><span>♙</span>我的</button>
+        <button className={!cartPage&&!checkoutOpen&&tab==="我的"?"active":""} onClick={()=>{setSelected(null);setCartPage(false);setCheckoutOpen(false);setTab("我的")}}><span>♙</span>我的</button>
       </div>
     </div>
   );
