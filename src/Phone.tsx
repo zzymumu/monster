@@ -886,9 +886,9 @@ function PhoneRuntime({
             ...(line.meta?.startBigGCall === "yes" && isBroccoliHotelAddressTrigger ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxDrunkSecondCallStartedV1: true, wxBroccoliFinalGCallV1: true } : {}),
             ...(hpOrderDeliveredNow ? { wxHpOrderDeliveredPushSentV1: true } : {}),
           },
-          delivery: hpOrderDeliveredNow
-            ? { ...latest.ui?.delivery, hpStoryOrderDeliveredV1: true }
-            : latest.ui?.delivery,
+          ...(hpOrderDeliveredNow
+            ? { delivery: { ...(latest.ui?.delivery ?? {}), hpStoryOrderDeliveredV1: true } }
+            : {}),
         },
         notifications: nextNotifications.slice(-60),
       });
