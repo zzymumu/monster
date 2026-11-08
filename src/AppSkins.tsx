@@ -2193,13 +2193,18 @@ export function WeChatSkin(p: SkinProps) {
     { user: ["我才不会！"], incoming: ["最好是这样😏"], orderDelivered: true },
     { user: ["嗷嗷，订单好像送达了！"], incoming: ["去吧去吧～", "我等你的好消息哦~~"], externalCall: true },
   ];
+  const milkTeaGiftUnlocked =
+    p.allUi?.delivery?.hpStoryOpenOrdersV1 === true &&
+    p.allUi?.wechat?.wxHungryPandaDeliveryNoticeSentV1 === true;
   useEffect(() => {
-    if (!isBroccoliThread || milkTeaGiftStage >= 0) return;
-    if (p.allUi?.delivery?.hpStoryOpenOrdersV1 !== true ||
-        p.allUi?.wechat?.wxHungryPandaDeliveryNoticeSentV1 !== true) return;
+    if (!isBroccoliThread || !milkTeaGiftUnlocked || milkTeaGiftStage >= 0) return;
     setMilkTeaGiftStage(0);
-  }, [isBroccoliThread, milkTeaGiftStage, p.allUi?.delivery?.hpStoryOpenOrdersV1, p.allUi?.wechat?.wxHungryPandaDeliveryNoticeSentV1]);
-  const milkTeaGiftStoryActive = isBroccoliThread && milkTeaGiftStage >= 0;
+  }, [isBroccoliThread, milkTeaGiftUnlocked, milkTeaGiftStage]);
+  // Derive stage zero directly from the unlock flags as well. This prevents a
+  // first-render timing gap from hiding the opening reply before useSkinState
+  // has persisted the initial stage.
+  const activeMilkTeaGiftStage = milkTeaGiftStage < 0 ? 0 : milkTeaGiftStage;
+  const milkTeaGiftStoryActive = isBroccoliThread && milkTeaGiftUnlocked && activeMilkTeaGiftStage >= 0;
 
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
   const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
@@ -5072,6 +5077,10 @@ export function WeChatSkin(p: SkinProps) {
                     ], catRescue.stage, catRescue.branch, "wx-threeway-group-opening-v2");
                     setThreeWayRejoinReplyPending(false);
                     p.onUi?.("wxThreeWayRejoinReplyPendingV1", false);
+                    // This reply belongs only to the group. Retire the legacy
+                    // DaG-DM duplicate so it can never reappear on contact switch.
+                    setAccidentalGroupStoryStep(-1);
+                    p.onUi?.("wxAccidentalGroupStoryStepV1", -1);
                     // Keep the player inside the group after sending the reply.
                     // The next incoming group messages should appear here in order.
                   }}>...你再说我解散。</button>
@@ -5113,15 +5122,7 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
 
-              {isMonsterThread && accidentalGroupStoryStep === 23 && pendingCatLines.length === 0 && (
-                <div className="cat-rescue-choices" aria-label="大G群聊乌龙收尾">
-                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
-                    appendCatLines([{ id: "wx-accidental-group-last-user-v1", sender: "我", body: "...你再说我解散。", thread: "大G" }], catRescue.stage, catRescue.branch, "wx-accidental-group-last-user");
-                    setAccidentalGroupStoryStep(-1);
-                    p.onUi?.("wxAccidentalGroupStoryStepV1", -1);
-                  }}>...你再说我解散。</button>
-                </div>
-              )}
+
               {isMonsterThread && (
                 (() => {
                   const firstReplies = [
@@ -5334,14 +5335,14 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {milkTeaGiftStoryActive && milkTeaGiftStage < milkTeaGiftTurns.length && pendingCatLines.length === 0 && (
+              {milkTeaGiftStoryActive && activeMilkTeaGiftStage < milkTeaGiftTurns.length && pendingCatLines.filter((line) => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="奶茶惊喜剧情回复选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
-                    const turn = milkTeaGiftTurns[milkTeaGiftStage];
+                    const turn = milkTeaGiftTurns[activeMilkTeaGiftStage];
                     const lines: CatLine[] = [
-                      ...turn.user.map((body, index) => ({ id: "hp-milk-tea-user-" + milkTeaGiftStage + "-" + index, sender: "我" as const, body, thread: "西蓝花" as const })),
+                      ...turn.user.map((body, index) => ({ id: "hp-milk-tea-user-" + activeMilkTeaGiftStage + "-" + index, sender: "我" as const, body, thread: "西蓝花" as const })),
                       ...turn.incoming.map((body, index) => ({
-                        id: "hp-milk-tea-broccoli-" + milkTeaGiftStage + "-" + index,
+                        id: "hp-milk-tea-broccoli-" + activeMilkTeaGiftStage + "-" + index,
                         sender: "西蓝花" as const,
                         body,
                         thread: "西蓝花" as const,
@@ -5350,9 +5351,9 @@ export function WeChatSkin(p: SkinProps) {
                           : undefined,
                       })),
                     ];
-                    appendCatLines(lines, catRescue.stage, catRescue.branch, "hp-milk-tea-" + milkTeaGiftStage);
-                    setMilkTeaGiftStage((current) => current + 1);
-                  }}>{milkTeaGiftTurns[milkTeaGiftStage].user.join(" ")}</button>
+                    appendCatLines(lines, catRescue.stage, catRescue.branch, "hp-milk-tea-" + activeMilkTeaGiftStage);
+                    setMilkTeaGiftStage(activeMilkTeaGiftStage + 1);
+                  }}>{milkTeaGiftTurns[activeMilkTeaGiftStage].user.join(" ")}</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
