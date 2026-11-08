@@ -7697,3 +7697,104 @@ label {
   transform: none !important;
   font-size: initial !important;
 }
+
+
+/* Final handset/status-bar alignment for the courier's native cellular call. */
+.native-phone-status-signals {
+  justify-self: end !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 28px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(255,255,255,.96) !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+.native-phone-status-signals .status-cellular {
+  display: block !important;
+  width: 22px !important;
+  height: 16px !important;
+  flex: 0 0 22px !important;
+}
+.native-phone-status-signals .status-wifi {
+  display: block !important;
+  width: 20px !important;
+  height: 16px !important;
+  flex: 0 0 20px !important;
+}
+.native-phone-status-signals .ios-battery {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 17px !important;
+  flex: 0 0 34px !important;
+  padding: 0 !important;
+  margin: 0 3px 0 1px !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 5px !important;
+  background: rgba(255,255,255,.88) !important;
+  color: #625b58 !important;
+  box-sizing: border-box !important;
+}
+.native-phone-status-signals .ios-battery > span {
+  position: absolute !important;
+  inset: 0 auto 0 0 !important;
+  max-width: 100% !important;
+  border-radius: 5px !important;
+  background: #38c65a !important;
+  opacity: 1 !important;
+}
+.native-phone-status-signals .ios-battery > b {
+  position: relative !important;
+  z-index: 1 !important;
+  display: block !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  line-height: 17px !important;
+  letter-spacing: -.25px !important;
+}
+.native-phone-status-signals .ios-battery::after {
+  content: "" !important;
+  position: absolute !important;
+  right: -3px !important;
+  top: 5px !important;
+  width: 2px !important;
+  height: 7px !important;
+  border-radius: 0 2px 2px 0 !important;
+  background: rgba(255,255,255,.88) !important;
+}
+.native-phone-ring-actions b svg {
+  width: 46px !important;
+  height: 46px !important;
+}
+.native-phone-ring-actions .native-answer b svg {
+  width: 43px !important;
+  height: 43px !important;
+}
+.native-phone-controls .native-end b svg {
+  width: 46px !important;
+  height: 46px !important;
+}
+.native-phone-ring-actions b,
+.native-phone-controls .native-end b {
+  overflow: visible !important;
+}
+.native-phone-ring-actions b::before,
+.native-phone-ring-actions b::after,
+.native-phone-controls .native-end b::before,
+.native-phone-controls .native-end b::after {
+  content: none !important;
+  display: none !important;
+}
