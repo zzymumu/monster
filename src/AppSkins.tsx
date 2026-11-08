@@ -260,10 +260,13 @@ function MessageList({
               <div style={{ width: 250, borderRadius: 8, overflow: "hidden", background: "#f1f2f4", color: "#222", textAlign: "left" }}>
                 <div style={{ padding: "10px 12px 5px", fontWeight: 600 }}>{i.meta?.locationName || body}</div>
                 <div style={{ padding: "0 12px 9px", color: "#8b8f98", fontSize: 12 }}>{i.meta?.locationAddress || body}</div>
-                <div style={{ height: 112, position: "relative", background: "linear-gradient(90deg,transparent 47%,#fff 48%,#fff 53%,transparent 54%),linear-gradient(0deg,transparent 43%,#fff 44%,#fff 50%,transparent 51%),#dce8d5" }}>
-                  <div style={{ position: "absolute", left: "56%", top: "32%", width: 25, height: 25, borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg)", background: "#16c77a", border: "3px solid white", boxShadow: "0 1px 4px #999" }} />
-                  <div style={{ position: "absolute", left: "58%", top: "60%", fontSize: 11, color: "#59636b" }}>光復南路</div>
-                </div>
+                <iframe
+                  title={String(i.meta?.locationName || "位置地图")}
+                  src={"https://www.google.com/maps?q=" + encodeURIComponent(String(i.meta?.locationAddress || "")) + "&output=embed"}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  style={{ display: "block", width: "100%", height: 112, border: 0, pointerEvents: "none" }}
+                />
                 <div style={{ padding: "8px 12px", color: "#07a65a", fontSize: 12 }}>点击查看位置 ›</div>
               </div>
             ) : (
@@ -303,7 +306,7 @@ function MessageList({
     {selectedLocation && (
       <div role="dialog" aria-modal="true" style={{ position: "fixed", inset: 0, zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: 22, background: "rgba(0,0,0,.42)" }}>
         <div style={{ width: "min(340px, 100%)", borderRadius: 16, overflow: "hidden", background: "#fff", color: "#222", boxShadow: "0 12px 40px rgba(0,0,0,.25)" }}>
-          <iframe title="光復南路33巷地图" src={"https://www.google.com/maps?q=" + encodeURIComponent(String(selectedLocation.meta?.locationAddress || "台北市大安區光復南路33巷")) + "&output=embed"} style={{ display: "block", width: "100%", height: 180, border: 0 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          <iframe title={String(selectedLocation.meta?.locationName || "位置地图")} src={"https://www.google.com/maps?q=" + encodeURIComponent(String(selectedLocation.meta?.locationAddress || "")) + "&output=embed"} style={{ display: "block", width: "100%", height: 180, border: 0 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
           <div style={{ padding: 16 }}>
             <div style={{ fontWeight: 700, fontSize: 17 }}>{selectedLocation.meta?.locationName || "光復南路33巷"}</div>
             <div style={{ color: "#777", fontSize: 13, marginTop: 5 }}>{selectedLocation.meta?.locationAddress || "台北市大安區光復南路33巷"}</div>
@@ -2447,8 +2450,8 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "我", body: "幹嘛？突然要我家地址喔？", thread: "大G" },
       { sender: "大G", body: "沒有啦，想看一下妳家在哪裡，順便確認一下明天怎麼走比較順。方便的話傳個定位給我就好。", thread: "大G" },
     ]},
-    { stage: 14, chat: "大G", id: "send-home-location", label: "（還是傳了定位）📍我的位置", nextStage: 15, lines: [
-      { sender: "我", body: "📍 位置分享\n我的位置\n（已傳送定位）", thread: "大G" },
+    { stage: 14, chat: "大G", id: "send-home-location", label: "📍傳送位置", nextStage: 15, lines: [
+      { sender: "我", body: "", thread: "大G", kind: "event", meta: { locationName: "建成花園廣場", locationAddress: "台北市松山區民生東路五段 198" } },
       { sender: "大G", body: "欸？妳就這樣把地址傳給陌生人喔？哈哈哈哈。", thread: "大G" },
     ]},
     { stage: 15, chat: "大G", id: "not-a-stranger", label: "你又不是陌生人！你這樣說我會傷心欸，我還以為我們是朋友。", nextStage: 16, lines: [
