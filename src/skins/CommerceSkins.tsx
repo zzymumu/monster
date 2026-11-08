@@ -549,7 +549,7 @@ export function DeliverySkin(p: Props) {
             {p.ui?.hpStoryOrderUnlockedV1 === true && (orderFilter==="全部订单" || orderFilter==="进行中") ? (
               <section className="hp-story-order">
                 <div className="hp-story-order-head">
-                  <div className="hp-story-store-mark">可</div>
+                  <div className="hp-story-store-mark"><img src="/monster/assets/kebuke-logo.webp" alt="可不可熟成茶行"/></div>
                   <div><b>可不可熟成茶行 ›</b><small>订单已接单 · 商家已出餐</small></div>
                   <strong>配送中</strong>
                 </div>
