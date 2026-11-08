@@ -478,10 +478,12 @@ function PhoneRuntime({
       ui: { ...current.ui, wechat: {
         ...wx,
         wxDrunkCallStartedV8: true,
-        // This is the scripted incoming call from DaG after the final "No!!!".
-        // Mark it as the final door-call branch so hanging up queues the door scene
-        // immediately; it must not fall through to the outgoing-call "接電話" branch.
+        // Reset stale completion flags for this new scripted incoming call.
+        // The first hang-up must always queue "已拒绝" + "接電話。".
         wxDrunkFinalCallStartedV7: true,
+        wxDrunkFinalCallFinishedV7: false,
+        wxDrunkInitialCallHangupHandledV1: false,
+        wxBroccoliFinalGCallV1: false,
       } },
     });
   }, [s.incomingCall, s.ui?.wechat?.wxDrunkCallRequestedV8, s.ui?.wechat?.wxDrunkCallStartedV8, ready, locked, creator]);
@@ -1633,7 +1635,8 @@ function PhoneRuntime({
                       const current = runtimeRef.current;
                       const next = dispatch(work, { ...current, incomingCall: null }, call.status === "ringing" ? "callDeclined" : "callEnded", call.target || call.caller);
                       const wx = current.ui?.wechat ?? {};
-                      const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallFinishedV7 !== true && (wx.wxDrunkFinalCallStartedV7 === true || wx.wxBroccoliFinalGCallV1 === true);
+                      const isInitialDrunkCall = call.caller === "大G" && wx.wxDrunkCallStartedV8 === true && wx.wxDrunkInitialCallHangupHandledV1 !== true && wx.wxBroccoliFinalGCallV1 !== true;
+                      const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallFinishedV7 !== true && wx.wxDrunkFinalCallStartedV7 === true && wx.wxBroccoliFinalGCallV1 === true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
                         const queued = [
                           { id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled", switchThread: "西蓝花" } },
@@ -1678,14 +1681,14 @@ function PhoneRuntime({
                           { id: "drunk-big-g-door-voice-v1", sender: "大G", body: "開門，我在外面。", thread: "大G", kind: "audio", media: "./assets/dag-door-voice.mp3", outgoing: false, meta: { voiceDuration: "2", voiceTranscript: "開門，我在外面。" } },
                         );
                         update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
-                      } else if (isDrunkFinalCall) {
+                      } else if (isInitialDrunkCall) {
                         let queued: Array<{ id?: string; sender: string; body: string; thread?: string; kind?: Item["kind"]; media?: string; outgoing?: boolean; meta?: Record<string, string> }> = [];
                         try { const parsed = typeof wx.wxCatPendingLines === "string" ? JSON.parse(wx.wxCatPendingLines) : []; if (Array.isArray(parsed)) queued = parsed; } catch { queued = []; }
                         queued.push(
-                          { id: "drunk-big-g-call-declined-v10", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
-                          { id: "drunk-big-g-pick-up-v9", sender: "大G", body: "接電話。", thread: "大G" },
+                          { id: "drunk-big-g-call-declined-v11", sender: "大G", body: "已拒绝", thread: "大G", kind: "call", meta: { callStatus: "declined" } },
+                          { id: "drunk-big-g-pick-up-v10", sender: "大G", body: "接電話。", thread: "大G" },
                         );
-                        update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkFinalCallFinishedV7: true, wxCatPendingLines: JSON.stringify(queued) } } });
+                        update({ ...next, ui: { ...next.ui, wechat: { ...(next.ui?.wechat ?? {}), wxDrunkInitialCallHangupHandledV1: true, wxCatPendingLines: JSON.stringify(queued) } } });
                       } else update(next);
                     }}>
                       <PhoneIcon size={27}/><span>{s.incomingCall.status === "ringing" ? "取消" : "挂断"}</span>
