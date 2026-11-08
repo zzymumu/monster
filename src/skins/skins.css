@@ -6149,3 +6149,19 @@
 .hp-story-order-item-copy>small{font-size:10px;color:#999}
 .hp-story-order-custom{display:block;font-size:9px;line-height:1.35;color:#777;white-space:normal}
 .hp-story-order-item>strong{align-self:flex-start;padding-top:2px}
+
+
+/* Shopee: keep the bottom tabs fully inside the handset and clear of the last cards. */
+.app-screen:has(.shopee-ui){padding:0 0 8px!important;min-height:0;overflow:hidden;box-sizing:border-box}
+.phone-shell .phone-screen:has(.shopee-ui){overflow:hidden}
+.shopee-ui{height:100%;max-height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.shopee-ui>.shopee-scroll{flex:1 1 0;min-height:0;overflow-y:auto;padding-bottom:22px;overscroll-behavior:contain}
+.shopee-ui>.catalog-tabs{position:relative;z-index:20;flex:0 0 62px;min-height:62px;margin-bottom:5px;padding:7px 6px 8px;box-sizing:border-box;background:#fff;box-shadow:0 -2px 8px #00000008;touch-action:manipulation}
+.shopee-ui>.catalog-tabs button{min-height:42px;justify-content:center;gap:3px;touch-action:manipulation}
+
+/* HungryPanda order category filters are real selectable tabs. */
+.hp-order-filters button{cursor:pointer;touch-action:manipulation}
+.hp-order-filters button.active{color:#171717;font-weight:750}
+.hp-order-filters button.active:after{content:"";display:block;width:42px;height:4px;margin:7px auto -11px;border-radius:5px;background:#ffd900}
+.hp-story-rider>button{width:42px;height:42px;flex:0 0 42px;border-radius:50%;display:grid;place-items:center;background:#ffd900;color:#171717;margin-left:3px;padding:0}
+.hp-story-rider>button svg{display:block}
