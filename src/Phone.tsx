@@ -483,6 +483,7 @@ function PhoneRuntime({
         wxDrunkFinalCallStartedV7: true,
         wxDrunkFinalCallFinishedV7: false,
         wxDrunkInitialCallHangupHandledV1: false,
+        wxDrunkSecondCallStartedV1: false,
         wxBroccoliFinalGCallV1: false,
       } },
     });
@@ -855,7 +856,7 @@ function PhoneRuntime({
             ...(line.meta?.switchThread ? { openThread: line.meta.switchThread } : {}),
             ...(line.meta?.startBroccoliCall === "yes" ? { wxBroccoliCallStartedV1: true } : {}),
             ...(line.meta?.startBroccoliAfterDoor === "yes" ? { wxBroccoliAfterDoorCallV1: true } : {}),
-            ...(line.meta?.startBigGCall === "yes" ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxBroccoliFinalGCallV1: true } : {}),
+            ...(line.meta?.startBigGCall === "yes" ? { wxDrunkFinalCallStartedV7: true, wxDrunkFinalCallFinishedV7: false, wxDrunkSecondCallStartedV1: true, wxBroccoliFinalGCallV1: true } : {}),
           },
         },
         notifications: nextNotifications.slice(-60),
@@ -1635,8 +1636,8 @@ function PhoneRuntime({
                       const current = runtimeRef.current;
                       const next = dispatch(work, { ...current, incomingCall: null }, call.status === "ringing" ? "callDeclined" : "callEnded", call.target || call.caller);
                       const wx = current.ui?.wechat ?? {};
-                      const isInitialDrunkCall = call.caller === "大G" && wx.wxDrunkCallStartedV8 === true && wx.wxDrunkInitialCallHangupHandledV1 !== true && wx.wxBroccoliFinalGCallV1 !== true;
-                      const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallFinishedV7 !== true && wx.wxDrunkFinalCallStartedV7 === true && wx.wxBroccoliFinalGCallV1 === true;
+                      const isInitialDrunkCall = call.caller === "大G" && wx.wxDrunkCallStartedV8 === true && wx.wxDrunkInitialCallHangupHandledV1 !== true && wx.wxDrunkSecondCallStartedV1 !== true;
+                      const isDrunkFinalCall = call.caller === "大G" && wx.wxDrunkFinalCallFinishedV7 !== true && wx.wxDrunkFinalCallStartedV7 === true && wx.wxDrunkSecondCallStartedV1 === true;
                       if (call.caller === "西蓝花" && call.status === "ringing" && wx.wxBroccoliAfterDoorCallV1 === true && wx.wxBroccoliAfterDoorCallDeclinedV1 !== true) {
                         const queued = [
                           { id: "drunk-broccoli-missed-after-door-v1", sender: "西蓝花", body: "对方已取消", thread: "西蓝花", kind: "call", meta: { callStatus: "cancelled", switchThread: "西蓝花" } },
