@@ -1686,7 +1686,11 @@ function PhoneRuntime({
               {callTopNotice && <div className="wechat-call-top-notice">{callTopNotice}<button onClick={() => setCallTopNotice("")}>知道了</button></div>}
               {deliveryCallActive && (
                 <div className={`native-phone-call ${s.incomingCall?.status === "answered" ? "connected" : "ringing"}`}>
-                  <div className="native-phone-status"><span>13:30 ◉</span><span>▮▮▮ ◉ ▰</span></div>
+                  <div className="native-phone-status" aria-label="iPhone 状态栏">
+                    <span className="native-phone-status-time">{displayTime}</span>
+                    <span className="native-phone-dynamic-island"><i /></span>
+                    <span className="native-phone-status-icons" aria-hidden="true"><b>▮▮▮</b><b className="native-phone-wifi">◔</b><b className="native-phone-battery">94</b></span>
+                  </div>
                   {s.incomingCall?.status === "ringing" ? (
                     <>
                       <div className="native-phone-contact"><small>主号</small><strong>0972518369</strong></div>
