@@ -9,6 +9,8 @@ import {
   Ticket,
   Truck,
   Wallet,
+  Phone,
+  MessageCircle,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
@@ -351,6 +353,7 @@ export function DeliverySkin(p: Props) {
   const { tab, setTab, q, setQ } = useContent(p, "首页");
   const [category, setCategory] = useState("全部");
   const [storyOrderDetailOpen, setStoryOrderDetailOpen] = useState(false);
+  const [orderFilter, setOrderFilter] = useState("进行中");
   useEffect(() => {
     if (p.ui?.hpStoryOpenOrdersV1 !== true) return;
     setSelected(null);
@@ -544,8 +547,8 @@ export function DeliverySkin(p: Props) {
         ) : tab === "订单" ? (
           <div className="hp-orders">
             <div className="hp-order-topbar"><div className="hp-order-brand"><span>🐼</span><b>HungryPanda</b></div><button aria-label="通知">♧<i/></button></div>
-            <div className="hp-order-filters">{["全部订单","进行中","待评价","退款/售后"].map((label,index)=><button key={label} className={index===1?"active":""}>{label}</button>)}</div>
-            {p.ui?.hpStoryOrderUnlockedV1 === true ? (
+            <div className="hp-order-filters">{["全部订单","进行中","待评价","退款/售后"].map((label)=><button type="button" key={label} className={orderFilter===label?"active":""} onClick={()=>setOrderFilter(label)}>{label}</button>)}</div>
+            {p.ui?.hpStoryOrderUnlockedV1 === true && (orderFilter==="全部订单" || orderFilter==="进行中") ? (
               <section className="hp-story-order">
                 <div className="hp-story-order-head">
                   <div className="hp-story-store-mark">可</div>
@@ -580,9 +583,9 @@ export function DeliverySkin(p: Props) {
                   </div>
                 </div>}
                 <div className="hp-story-order-total"><span>共 2 件商品</span><b>合計 NT$ 130</b></div>
-                <div className="hp-story-rider"><span>👨🏻‍🦱</span><div><b>騎手：陳先生</b><small>正在为您配送</small></div><button aria-label="联系骑手">☎</button><button aria-label="联系客服">▣</button></div>
+                <div className="hp-story-rider"><span>👨🏻‍🦱</span><div><b>騎手：陳先生</b><small>正在为您配送</small></div><button type="button" aria-label="联系骑手"><Phone size={18} strokeWidth={2.5}/></button><button type="button" aria-label="联系骑手聊天"><MessageCircle size={18} strokeWidth={2.5}/></button></div>
               </section>
-            ) : <div className="hp-order-empty"><span>🧾</span><b>还没有订单</b><small>下单后，订单状态和配送进度会显示在这里</small><button onClick={()=>setTab("首页")}>去逛逛</button></div>}
+            ) : <div className="hp-order-empty"><span>{orderFilter==="待评价"?"⭐":"🧾"}</span><b>{orderFilter==="待评价"?"暂无待评价订单":orderFilter==="退款/售后"?"暂无退款或售后订单":"还没有订单"}</b><small>{orderFilter==="待评价"?"完成订单后，可以在这里评价商家":orderFilter==="退款/售后"?"如有退款或售后申请，会显示在这里":"下单后，订单状态和配送进度会显示在这里"}</small>{orderFilter!=="待评价"&&orderFilter!=="退款/售后"&&<button onClick={()=>setTab("首页")}>去逛逛</button>}</div>}
             <div className="hp-favorite-store"><span>🛍️</span><div><b>收藏店鋪</b><small>下次點單更方便</small></div><button>♡ 收藏</button></div>
           </div>
         ) : (
