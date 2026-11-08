@@ -478,8 +478,12 @@ function PhoneRuntime({
       ui: { ...current.ui, wechat: {
         ...wx,
         wxDrunkCallStartedV8: true,
-        // Keep the legacy flag so the existing manual-hang-up follow-up remains compatible.
+        // This is the scripted incoming call from DaG after the final "No!!!".
+        // Mark it as the final door-call branch so hanging up queues the door scene
+        // immediately; it must not fall through to the outgoing-call "接電話" branch.
         wxDrunkFinalCallStartedV7: true,
+        wxDrunkFinalCallFinishedV7: false,
+        wxBroccoliFinalGCallV1: true,
       } },
     });
   }, [s.incomingCall, s.ui?.wechat?.wxDrunkCallRequestedV8, s.ui?.wechat?.wxDrunkCallStartedV8, ready, locked, creator]);
