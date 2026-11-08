@@ -80,6 +80,20 @@ export function PhoneSkin(p: Props) {
   const [digits, setDigits] = useState(""),
     [call, setCall] = useState("");
   const list = tab === "收藏" ? items.filter((i) => i.favorite) : items;
+  const callHistory = (() => {
+    try {
+      const raw = p.ui?.phoneCallHistory;
+      const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
+      return Array.isArray(parsed)
+        ? parsed.filter((record) => record && typeof record.number === "string" && typeof record.time === "string")
+        : [];
+    } catch {
+      return [];
+    }
+  })();
+  const filteredCallHistory = callHistory.filter((record) =>
+    `${record.number} ${record.name ?? ""} ${record.status ?? ""}`.toLowerCase().includes(q.toLowerCase()),
+  );
   return (
     <div className="catalog-skin native-phone">
       <Header p={p} />
@@ -132,6 +146,20 @@ export function PhoneSkin(p: Props) {
         ) : (
           <>
             <SearchBox value={q} set={setQ} />
+            {tab === "最近通话" && filteredCallHistory.map((record) => (
+              <button
+                className={`call-row ${record.status === "未接" ? "missed" : ""}`}
+                key={record.id}
+                onClick={() => setCall(record.number)}
+              >
+                <Phone size={17} />
+                <span>
+                  <strong>{record.number}</strong>
+                  <small>{record.direction === "incoming" ? "↙ " : "↗ "}主号 · {record.name ?? "外卖"} · {record.status === "未接" ? "未接来电" : `通话时长 ${record.duration ?? "00:00"}`}</small>
+                </span>
+                <time>{new Date(record.time).toLocaleDateString("zh-TW", { month: "2-digit", day: "2-digit" })}</time>
+              </button>
+            ))}
             {list.map((i) => (
               <button
                 className={`call-row ${meta(i, "status") === "未接" ? "missed" : ""}`}
@@ -149,7 +177,7 @@ export function PhoneSkin(p: Props) {
                 <time>{i.time.slice(5, 10)}</time>
               </button>
             ))}
-            <Empty items={list} />
+            {list.length === 0 && filteredCallHistory.length === 0 && <Empty items={list} />}
           </>
         )}
       </div>
