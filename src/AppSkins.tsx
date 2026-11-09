@@ -1557,8 +1557,8 @@ export function WeChatSkin(p: SkinProps) {
       580:580, 581:581, 582:582, 583:587, 584:589, 585:590,
       586:592, 587:593, 588:594, 589:595, 590:597, 591:598,
       592:599, 593:600, 594:601, 595:602, 596:603, 597:604,
-      598:605, 599:606, 600:607, 601:608, 602:609, 603:610,
-      604:611, 605:612,
+      598:605, 599:607, 600:608, 601:609, 602:610, 603:611,
+      604:612, 605:613,
     };
     setReturnDinnerStage(legacyToCompleteSequence[returnDinnerStage] ?? returnDinnerStage);
     setPostDinnerSequenceMigratedV2(true);
@@ -4268,27 +4268,30 @@ export function WeChatSkin(p: SkinProps) {
       ["我","不知道……"],["西蓝花","不知道？"],["西蓝花","你连这个都没注意？"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
     { stage:605, chat:"西蓝花", id:"post-dinner-busy-605-v2", label:"我那时候哪有空注意这个啦……", nextStage:606, lines:[
-      ["我","我那时候哪有空注意这个啦……"],["西蓝花","噢。"],["西蓝花","懂了。"],["我","你懂什么啦！"],["西蓝花","没什么。"],["西蓝花","看来你当时挺忙的。"]
+      ["我","我那时候哪有空注意这个啦……"],["西蓝花","噢。"],["西蓝花","懂了。"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
-    { stage:606, chat:"西蓝花", id:"post-dinner-feeling-606-v2", label:"……\n有点开心。", nextStage:607, lines:[
+    { stage:606, chat:"西蓝花", id:"post-dinner-what-understand-606-v2", label:"你懂什么啦！", nextStage:607, lines:[
+      ["我","你懂什么啦！"],["西蓝花","没什么。"],["西蓝花","看来你当时挺忙的。"]
+    ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
+    { stage:607, chat:"西蓝花", id:"post-dinner-feeling-607-v2", label:"……\n有点开心。", nextStage:608, lines:[
       ["我","……"],["我","有点开心。"],["西蓝花","只有一点？"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
-    { stage:607, chat:"西蓝花", id:"post-dinner-happy-607-v2", label:"好啦，是很开心。", nextStage:608, lines:[
+    { stage:608, chat:"西蓝花", id:"post-dinner-happy-607-v2", label:"好啦，是很开心。", nextStage:609, lines:[
       ["我","好啦，是很开心。"],["西蓝花","这还差不多。"],["西蓝花","我就说嘛。"],["西蓝花","你之前还一直纠结是不是自己想太多，现在人家都主动抱你了，你总不能还觉得人家只是出于礼貌吧。"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
-    { stage:608, chat:"西蓝花", id:"post-dinner-special-words-608-v2", label:"可是……\n他也没有说什么特别的话。", nextStage:609, lines:[
+    { stage:609, chat:"西蓝花", id:"post-dinner-special-words-608-v2", label:"可是……\n他也没有说什么特别的话。", nextStage:610, lines:[
       ["我","可是……"],["我","他也没有说什么特别的话。"],["西蓝花","有些事情也不用非得马上说出来吧。"],["西蓝花","至少今晚他确实抱你了，还是主动提出来的。"],["西蓝花","这人真的很会。"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
-    { stage:609, chat:"西蓝花", id:"post-dinner-scent-609-v2", label:"嗯……", nextStage:610, lines:[
+    { stage:610, chat:"西蓝花", id:"post-dinner-scent-609-v2", label:"嗯……", nextStage:611, lines:[
       ["我","嗯……"],["西蓝花","所以，他身上香不香！"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
-    { stage:610, chat:"西蓝花", id:"post-dinner-topic-610-v2", label:"？你跳话题的速度也太快了吧？", nextStage:611, lines:[
+    { stage:611, chat:"西蓝花", id:"post-dinner-topic-610-v2", label:"？你跳话题的速度也太快了吧？", nextStage:612, lines:[
       ["我","？你跳话题的速度也太快了吧？"],["西蓝花","哎呀快说啦！香不香？"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
-    { stage:611, chat:"西蓝花", id:"post-dinner-laundry-611-v2", label:"就洗衣液的味道啦.......", nextStage:612, lines:[
+    { stage:612, chat:"西蓝花", id:"post-dinner-laundry-611-v2", label:"就洗衣液的味道啦.......", nextStage:613, lines:[
       ["我","就洗衣液的味道啦......."],["西蓝花","我靠，我一想被体温蒸的热乎乎....啊你好幸福！"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
-    { stage:612, chat:"西蓝花", id:"post-dinner-giggle-612-v2", label:"嘿嘿嘿嘿嘿嘿嘿嘿", nextStage:613, lines:[
+    { stage:613, chat:"西蓝花", id:"post-dinner-giggle-612-v2", label:"嘿嘿嘿嘿嘿嘿嘿嘿", nextStage:614, lines:[
       ["我","嘿嘿嘿嘿嘿嘿嘿嘿"],["我","他给我打电话了！先不说了喔！"],["西蓝花","🙄"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
 
@@ -5776,7 +5779,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 612)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
+              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 613)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
                     <button key={choice.id} onClick={() => {
