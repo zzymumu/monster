@@ -273,7 +273,8 @@ function PhoneRuntime({
   const s = external ?? own;
   const postDinnerCallActive = s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
-  const dagHotpotCallActive = s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
+  // A later post-dinner call must never render/play the earlier hotpot-call subtitles.
+  const dagHotpotCallActive = !postDinnerCallActive && s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const deliveryCallActive = s?.incomingCall?.caller === "外卖";
   const [deliveryCallReplySent, setDeliveryCallReplySent] = useState(false);
   const finishDeliveryCall = (outcome: "answered" | "missed") => {
