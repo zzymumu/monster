@@ -2371,7 +2371,9 @@ export function WeChatSkin(p: SkinProps) {
           ).filter((item) => item.body.trim() !== "我知道啊，可是它这么小一只，身边也没有猫妈妈，我真的走不开。"),
           ...notificationStoryItems.filter((item) => item.title === "西蓝花"),
         ])
-      : allItems.filter((item) => item.title === p.thread);
+      : orderCatRescueThreadItems(allItems.filter((item) =>
+          item.title === p.thread || item.meta?.storyThread === p.thread
+        ));
   // Append these two notification-triggered bubbles after legacy/story filters.
   // They must remain visible even when an older save's prank-history filter
   // or timestamp ordering would otherwise discard them.
