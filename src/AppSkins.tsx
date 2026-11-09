@@ -2261,6 +2261,16 @@ export function WeChatSkin(p: SkinProps) {
       return [JSON.stringify(candidate)];
     });
   };
+  const mergeWxGroupChats = (...sources: string[][]): string[] => {
+    const byId = new Map<string, string>();
+    for (const source of sources) for (const raw of source) {
+      try {
+        const group = JSON.parse(raw) as { id?: string };
+        if (group.id) byId.set(group.id, raw);
+      } catch { /* ignore malformed legacy entries */ }
+    }
+    return [...byId.values()];
+  };
   const wxGroupStorageKey = "foundphone-wechat-groups-v1:" + (p.owner || "default");
   const wxGroupDataStorageKey = "foundphone-wechat-group-data-v2:" + (p.owner || "default");
   const browserSavedWxGroupData = (() => {
@@ -2283,16 +2293,6 @@ export function WeChatSkin(p: SkinProps) {
       );
     } catch { return browserSavedWxGroupData.groups; }
   })();
-  const mergeWxGroupChats = (...sources: string[][]): string[] => {
-    const byId = new Map<string, string>();
-    for (const source of sources) for (const raw of source) {
-      try {
-        const group = JSON.parse(raw) as { id?: string };
-        if (group.id) byId.set(group.id, raw);
-      } catch { /* ignore malformed legacy entries */ }
-    }
-    return [...byId.values()];
-  };
   const wxGroupChatsInitial = mergeWxGroupChats(normalizeWxGroupChats(storedWxGroupChats), browserSavedWxGroups);
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", wxGroupChatsInitial);
   const groupBackupRestoreApplied = useRef(false);
