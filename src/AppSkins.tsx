@@ -4271,7 +4271,7 @@ export function WeChatSkin(p: SkinProps) {
       ["我","我那时候哪有空注意这个啦……"],["西蓝花","噢。"],["西蓝花","懂了。"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
     { stage:606, chat:"西蓝花", id:"post-dinner-what-understand-606-v2", label:"你懂什么啦！", nextStage:607, lines:[
-      ["我","你懂什么啦！"],["西蓝花","没什么。"],["西蓝花","看来你当时挺忙的。"]
+      ["我","你懂什么啦！"],["西蓝花","没什么。"],["西蓝花","看来你当时挺忙的。"],["西蓝花","不过说真的，抱上的时候是什么感觉？"]
     ].map(([sender,body])=>({sender: sender as "我" | "西蓝花" | "大G",body,thread:"西蓝花"}))},
     { stage:607, chat:"西蓝花", id:"post-dinner-feeling-607-v2", label:"……\n有点开心。", nextStage:608, lines:[
       ["我","……"],["我","有点开心。"],["西蓝花","只有一点？"]
