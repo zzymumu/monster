@@ -693,7 +693,20 @@ function PhoneRuntime({
     const target = s.ui?.wechat?.openThread;
     if (typeof target !== "string" || !target) return;
     const isDaG = target === "大G" || target === "温尚翊" || target === "温尚翊（大G）";
-    update({ ...s, incomingCall: { caller: target, target, status: "ringing", direction: "outgoing", callType: request }, ui: { ...s.ui, wechat: { ...s.ui?.wechat, wxOutgoingCallRequest: "", wxOutgoingDaGCallV1: isDaG && request === "audio" } } });
+    const wx = s.ui?.wechat ?? {};
+    // The scripted Malaysia conversation is opt-in from its exact story node only.
+    // Ordinary/manual calls to DaG must always remain normal calls.
+    const scriptedDaGCall = isDaG && request === "audio" && wx.wxOutgoingDaGCallRequestedV1 === true && wx.wxOutgoingDaGCallFinishedV1 !== true;
+    update({
+      ...s,
+      incomingCall: { caller: target, target, status: "ringing", direction: "outgoing", callType: request },
+      ui: { ...s.ui, wechat: {
+        ...wx,
+        wxOutgoingCallRequest: "",
+        wxOutgoingDaGCallRequestedV1: false,
+        wxOutgoingDaGCallV1: scriptedDaGCall,
+      } },
+    });
   }, [s.incomingCall, s.ui?.wechat?.wxOutgoingCallRequest, s.ui?.wechat?.openThread, ready, locked, creator]);
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
