@@ -548,9 +548,17 @@ function PhoneRuntime({
       richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "13:14" }, time: new Date().toISOString(),
       sender: "大G", avatar: "", kind: "call" as const, media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
       outgoing: false, read: true, likes: 0, comments: [] };
+    const completedPostDinnerDialogue = postDinnerCallStep === 21;
     update({ ...current, incomingCall: null,
       messages: { ...current.messages, wechat: [...(current.messages.wechat ?? []).filter((item) => item.id !== record.id), record] },
-      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxPostDinnerCallRequestedV1: false, wxPostDinnerCallFinishedV1: true } } });
+      ui: { ...current.ui, wechat: {
+        ...(current.ui?.wechat ?? {}),
+        wxPostDinnerCallRequestedV1: false,
+        wxPostDinnerCallFinishedV1: true,
+        // Unlock the Malaysia outgoing call only after the complete 13:14 dialogue.
+        wxOutgoingDaGCallRequestedV1: completedPostDinnerDialogue,
+        wxOutgoingDaGCallFinishedV1: false,
+      } } });
     setPostDinnerCallStep(-1); setPostDinnerReplyReady(false);
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
   };
@@ -696,7 +704,7 @@ function PhoneRuntime({
     const wx = s.ui?.wechat ?? {};
     // The scripted Malaysia conversation is opt-in from its exact story node only.
     // Ordinary/manual calls to DaG must always remain normal calls.
-    const scriptedDaGCall = isDaG && request === "audio" && wx.wxOutgoingDaGCallRequestedV1 === true && wx.wxOutgoingDaGCallFinishedV1 !== true;
+    const scriptedDaGCall = isDaG && request === "audio" && wx.wxPostDinnerCallFinishedV1 === true && wx.wxOutgoingDaGCallRequestedV1 === true && wx.wxOutgoingDaGCallFinishedV1 !== true;
     update({
       ...s,
       incomingCall: { caller: target, target, status: "ringing", direction: "outgoing", callType: request },
