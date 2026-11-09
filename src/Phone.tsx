@@ -2126,6 +2126,7 @@ function PhoneRuntime({
                       if (call) {
                         if (call.caller === "外卖") setDeliveryCallReplySent(false);
                         if (call.caller === "大G" && runtimeRef.current.ui?.wechat?.wxDaGHotpotCallStartedV1 === true) { setDagHotpotCallStep(0); setDagHotpotReplyReady(false); }
+                        if (call.caller === "大G" && runtimeRef.current.ui?.wechat?.wxPostDinnerCallStartedV1 === true) { setPostDinnerCallStep(0); setPostDinnerReplyReady(false); }
                         update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller));
                       }
                     }}><PhoneIcon size={27}/><span>接听</span></button>
