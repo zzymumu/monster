@@ -159,7 +159,6 @@ function PhoneRuntime({
   const [postDinnerReplyReady, setPostDinnerReplyReady] = useState(false);
   const [outgoingDaGCallStep, setOutgoingDaGCallStep] = useState(-1);
   const [outgoingDaGReplyReady, setOutgoingDaGReplyReady] = useState(false);
-  const outgoingDaGCallActive = s?.ui?.wechat?.wxOutgoingDaGCallV1 === true && s?.incomingCall?.direction === "outgoing" && (s?.incomingCall?.caller === "大G" || s?.incomingCall?.caller === "温尚翊");
   const outgoingDaGCallAudio = Array.from({ length: 13 }, (_, index) => `./assets/dag-outgoing-call-${String(index + 1).padStart(2, "0")}.mp3`);
   const outgoingDaGCallLines = ["喂？怎么啦？","欸你等我一下，太吵了，我出去接哦。好啦，你说。","真的不来哦？我本来还想说演出结束后带你去吃好吃的。","白痴哦，这有什么好道歉的，下次再来看不就好了。","好啊你说的哦，等我回来请我吃饭。","才不要吃榴莲咧，臭死了。","原来你喜欢吃榴莲。","我记得我第一次吃榴莲好像是在录综艺，我以为我吃到屎了。","哈哈哈实话啊，真的很臭欸。","好啦不气不气，逗你玩的嘛。","好哦，那我先去忙了哦，晚点聊。","ok啦会记得吃饭，你也是。","拜拜~"];
   const outgoingDaGCallReplies = ["嗯...就是.....","我想了一下，大马我还是不去了。","嗯真的去不了啦，那几天有点事，对不起哦....","嗯嗯，等你回来我请你吃饭。","嗯哼，君子一言驷马难追。对了，大马的榴莲超好吃诶，帮我多吃点。","你放屁，明明那么好吃！","对啊，榴莲是世界上最完美的水果了~你到底有没有吃过，没吃过就在乱说。","...........",".............","赶紧去忙吧你。","要按时吃饭啊，别又不吃。","好，拜拜~"];
@@ -277,6 +276,7 @@ function PhoneRuntime({
     };
   }, [creator, ready]);
   const s = external ?? own;
+  const outgoingDaGCallActive = s?.ui?.wechat?.wxOutgoingDaGCallV1 === true && s?.incomingCall?.direction === "outgoing" && (s?.incomingCall?.caller === "大G" || s?.incomingCall?.caller === "温尚翊");
   const postDinnerCallActive = s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   // A later post-dinner call must never render/play the earlier hotpot-call subtitles.
@@ -1980,7 +1980,7 @@ function PhoneRuntime({
               )}
               {outgoingDaGCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
-                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>{displayName} · 语音字幕</div>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
                   <div style={{ fontSize: 16, lineHeight: 1.6 }}>{outgoingDaGCallLines[outgoingDaGCallStep] ?? "正在通话…"}</div>
                   {outgoingDaGReplyReady && outgoingDaGCallStep <= 11 && <button type="button" onClick={sendOutgoingDaGCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{outgoingDaGCallReplies[outgoingDaGCallStep]}</button>}
                 </div>
