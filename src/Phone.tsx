@@ -153,6 +153,25 @@ function PhoneRuntime({
   const [callTopNotice, setCallTopNotice] = useState("");
   const [milkTeaCallStep, setMilkTeaCallStep] = useState(-1);
   const [milkTeaCallReply, setMilkTeaCallReply] = useState(-1);
+  const [dagHotpotCallStep, setDagHotpotCallStep] = useState(-1);
+  const [dagHotpotReplyReady, setDagHotpotReplyReady] = useState(false);
+  const dagHotpotCallAudio = Array.from({ length: 9 }, (_, index) => `./assets/dag-wechat-call-${String(index + 1).padStart(2, "0")}.mp3`);
+  const dagHotpotCallLines = [
+    "喂？",
+    "喔，就是想問你晚上吃壽喜鍋嗎？",
+    "哈哈哈哈好啦不逗你了，我現在剛從錄音室出來喔，大概要20分鐘到你那邊。",
+    "靠北，有點堵車。",
+    "下午有沒有吃點東西墊墊肚子？我這邊還有一會才到。",
+    "那就好。好啦，你準備下樓吧，我在路邊喔，車牌號還記得嗎？",
+    "ok，那我樓下等你。不著急啦，你慢慢來。",
+    "那我先掛了喔，你好了跟我說一聲，我把車開近一點。",
+    "嗯呐，掰掰。",
+  ];
+  const dagHotpotCallReplies = [
+    "嗯嗯在呢。", "...........吃。", "哦哦那我现在去收拾一下。",
+    "你慢慢开啦，晚高峰就是这样。", "有啦。", "嗯嗯记得！",
+    "马上马上，很快啦！", "好~掰掰。", "嗯呐，掰掰。",
+  ];
   const milkTeaAudioRef = useRef<HTMLAudioElement | null>(null);
   const milkTeaCallAudio = ["./assets/audio/dag-call-01.mp3","./assets/audio/dag-call-02.mp3","./assets/audio/dag-call-03.mp3","./assets/audio/dag-call-04.mp3"];
   const milkTeaCallLines = ["你到了是不是？pai seh，我刚才在录音没听到，我现在去接你。","你在哪啦？我怎么没有看见你。","啊，我看到你了，怎么买那么多，不是叫你少买点嘛！","好啦好啦，我帮你拿，走吧。"];
@@ -248,6 +267,7 @@ function PhoneRuntime({
   }, [creator, ready]);
   const s = external ?? own;
   const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
+  const dagHotpotCallActive = s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const deliveryCallActive = s?.incomingCall?.caller === "外卖";
   const [deliveryCallReplySent, setDeliveryCallReplySent] = useState(false);
   const finishDeliveryCall = (outcome: "answered" | "missed") => {
@@ -429,6 +449,50 @@ function PhoneRuntime({
   }, [creator, ready, work.id, work.updatedAt]);
 
   useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const wx = runtimeRef.current.ui?.wechat ?? {};
+    if (wx.wxDaGHotpotCallRequestedV1 !== true || wx.wxDaGHotpotCallStartedV1 === true || wx.wxDaGHotpotCallFinishedV1 === true) return;
+    const current = runtimeRef.current;
+    update({ ...current, incomingCall: { caller: "大G", target: "大G", status: "ringing", callType: "audio" },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxDaGHotpotCallStartedV1: true } } });
+  }, [s.incomingCall, s.ui?.wechat?.wxDaGHotpotCallRequestedV1, s.ui?.wechat?.wxDaGHotpotCallStartedV1, s.ui?.wechat?.wxDaGHotpotCallFinishedV1, ready, locked, creator]);
+
+  useEffect(() => {
+    if (!dagHotpotCallActive || s.incomingCall?.status !== "answered" || dagHotpotCallStep < 0 || dagHotpotCallStep > 8) return;
+    const audio = milkTeaAudioRef.current;
+    if (!audio) return;
+    audio.src = dagHotpotCallAudio[dagHotpotCallStep];
+    audio.currentTime = 0;
+    setDagHotpotReplyReady(false);
+    void audio.play().catch(() => setCallTopNotice("语音播放失败，请检查设备音量"));
+  }, [dagHotpotCallActive, s.incomingCall?.status, dagHotpotCallStep]);
+
+  const sendDagHotpotCallReply = () => {
+    if (!runtimeRef.current.incomingCall || runtimeRef.current.incomingCall.status !== "answered" || !dagHotpotReplyReady) return;
+    setDagHotpotReplyReady(false);
+    if (dagHotpotCallStep < 8) setDagHotpotCallStep((step) => step + 1);
+    else setCallTopNotice("你们已经说完啦，可以挂断电话了");
+  };
+
+  const finishDagHotpotCall = () => {
+    const current = runtimeRef.current;
+    if (!current.incomingCall || current.incomingCall.status !== "answered") return;
+    const record = {
+      id: "dag-hotpot-wechat-call-duration-0531-v1", title: "大G", body: "通话时长：05:31",
+      richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "05:31" },
+      time: new Date().toISOString(), sender: "大G", avatar: "", kind: "call" as const,
+      media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
+      outgoing: false, read: true, likes: 0, comments: [],
+    };
+    update({ ...current, incomingCall: null,
+      messages: { ...current.messages, wechat: [...(current.messages.wechat ?? []).filter((item) => item.id !== record.id), record] },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxDaGHotpotCallRequestedV1: false, wxDaGHotpotCallFinishedV1: true } } });
+    setDagHotpotCallStep(-1);
+    setDagHotpotReplyReady(false);
+    if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
+  };
+
+  useEffect(() => {
     if (!milkTeaCallActive || s.incomingCall?.status !== "ringing" || s.incomingCall?.direction !== "outgoing") return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
@@ -472,6 +536,7 @@ function PhoneRuntime({
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
   };
   const onMilkTeaAudioEnded = () => {
+    if (dagHotpotCallActive && dagHotpotCallStep >= 0 && dagHotpotCallStep <= 8) { setDagHotpotReplyReady(true); return; }
     if (milkTeaCallStep === 3) finishMilkTeaCall();
     else if (milkTeaCallStep >= 0 && milkTeaCallStep <= 2) setMilkTeaCallReply(milkTeaCallStep);
   };
@@ -1805,6 +1870,13 @@ function PhoneRuntime({
                     : <button type="button" onClick={() => setDeliveryCallReplySent(true)} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>好，谢谢你！我现在去拿。</button>}
                 </div>
               )}
+              {dagHotpotCallActive && s.incomingCall.status === "answered" && (
+                <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
+                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>{dagHotpotCallLines[dagHotpotCallStep] ?? "正在通话…"}</div>
+                  {dagHotpotReplyReady && <button type="button" onClick={sendDagHotpotCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{dagHotpotCallReplies[dagHotpotCallStep]}</button>}
+                </div>
+              )}
               {milkTeaCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
                   <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
@@ -1825,6 +1897,7 @@ function PhoneRuntime({
                       // The milk-tea scripted call must finish through its own
                       // persisted completion path when the player taps hang up.
                       // Otherwise the Broccoli handoff flag is never written.
+                      if (dagHotpotCallActive && call.status === "answered") { finishDagHotpotCall(); return; }
                       if (milkTeaCallActive && call.status === "answered" &&
                           (call.caller === "大G" || call.caller === "温尚翊")) {
                         finishMilkTeaCall();
@@ -1988,6 +2061,7 @@ function PhoneRuntime({
                       const call = runtimeRef.current.incomingCall;
                       if (call) {
                         if (call.caller === "外卖") setDeliveryCallReplySent(false);
+                        if (call.caller === "大G" && runtimeRef.current.ui?.wechat?.wxDaGHotpotCallStartedV1 === true) { setDagHotpotCallStep(0); setDagHotpotReplyReady(false); }
                         update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller));
                       }
                     }}><PhoneIcon size={27}/><span>接听</span></button>
