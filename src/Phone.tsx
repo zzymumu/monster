@@ -1980,7 +1980,7 @@ function PhoneRuntime({
               )}
               {outgoingDaGCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
-                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>{contactRemarksForNotifications["大G"] || contactRemarksForNotifications["温尚翊"] || "大G"} · 语音字幕</div>
                   <div style={{ fontSize: 16, lineHeight: 1.6 }}>{outgoingDaGCallLines[outgoingDaGCallStep] ?? "正在通话…"}</div>
                   {outgoingDaGReplyReady && outgoingDaGCallStep <= 11 && <button type="button" onClick={sendOutgoingDaGCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{outgoingDaGCallReplies[outgoingDaGCallStep]}</button>}
                 </div>
