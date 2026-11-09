@@ -155,6 +155,12 @@ function PhoneRuntime({
   const [milkTeaCallReply, setMilkTeaCallReply] = useState(-1);
   const [dagHotpotCallStep, setDagHotpotCallStep] = useState(-1);
   const [dagHotpotReplyReady, setDagHotpotReplyReady] = useState(false);
+  const [postDinnerCallStep, setPostDinnerCallStep] = useState(-1);
+  const [postDinnerReplyReady, setPostDinnerReplyReady] = useState(false);
+  const postDinnerCallActive = s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
+  const postDinnerCallAudio = Array.from({ length: 21 }, (_, index) => `./assets/dag-wechat-call-${String(index + 10).padStart(2, "0")}.mp3`);
+  const postDinnerCallLines = ["喂？能听到我说话吗？","弹了一下午吉他晚上又开车，手很酸欸！","对啊，好心人给你点奶茶，晚上还请你吃饭，陪我聊聊天怎么啦？","嗯...不知道诶，随便说嘛！晚上的日料好吃吗？","好吃就好啦，下次还可以去。对啦突然想到，下周的演唱会要不要来？我可以给你留票。","没关系啦，这又不是什么麻烦事。","没有啊，你又不上台，怎么会打扰到我。","你考虑好了明天跟我说喔。","对啊就一直练团练团练团，手都要断了。","还好啦都习惯了。欸你声音怎么怪怪的，该不会是还在害羞？","没有吼？那怎么今晚这么安静啦？之前不是最喜欢改改叫的吗？","好啦不闹你。你有听到玩玩在叫吗？它刚吃完饭现在在家里跑酷。","是夜宵啦！会长不要那么警惕好不好？","好好好我的错我的错，你是不是该去洗洗睡？","我一会就睡了啦，还有点工作没忙完。","嗯嗯，晚安哦~","你怎么还不挂电话？舍不得哦？","对啊，我舍不得。","那我真不挂喽。","我哪有！好了好了，快去洗澡。","嗯哼，你快挂电话。"];
+  const postDinnerCallReplies = ["嗯嗯可以啦！干嘛不打字讲话哦？","喔...所以我现在是陪聊？","想聊什么？我陪你五块钱的。","好吃的！","啊，真的可以？","会不会打扰到你....","那我考虑一下啦，大马有点点远....","嗯呐~你今天就一直在练团吗？","真的好辛苦，我看你手上茧都练脱皮，会不会痛？","....你乱说什么！","偶尔安静一下不行吗？我很淑女的。","这么晚了才给玩玩吃饭！你要死啊！！","谁叫你不说清楚啊！","欸都这么晚了，是要睡了，你呢？还不睡吗？","好啦，那你早忙完早休息哦！","晚安~","你也没挂啊！",".......那你别挂。","你是不是想偷听我洗澡！","喔，那我去了哦...","掰掰。"];
   const dagHotpotCallAudio = Array.from({ length: 9 }, (_, index) => `./assets/dag-wechat-call-${String(index + 1).padStart(2, "0")}.mp3`);
   const dagHotpotCallLines = [
     "喂？",
@@ -492,6 +498,56 @@ function PhoneRuntime({
   };
 
   useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const wx = runtimeRef.current.ui?.wechat ?? {};
+    if (wx.wxPostDinnerCallRequestedV1 !== true || wx.wxPostDinnerCallStartedV1 === true || wx.wxPostDinnerCallFinishedV1 === true) return;
+    const current = runtimeRef.current;
+    update({ ...current, incomingCall: { caller: "大G", target: "大G", status: "ringing", callType: "audio" },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxPostDinnerCallStartedV1: true } } });
+  }, [s.incomingCall, s.ui?.wechat?.wxPostDinnerCallRequestedV1, s.ui?.wechat?.wxPostDinnerCallStartedV1, s.ui?.wechat?.wxPostDinnerCallFinishedV1, ready, locked, creator]);
+
+  useEffect(() => {
+    if (!postDinnerCallActive || s.incomingCall?.status !== "answered" || postDinnerCallStep < 0 ||
+        (postDinnerCallStep > 15 && (postDinnerCallStep < 17 || postDinnerCallStep > 21))) return;
+    const audio = milkTeaAudioRef.current;
+    if (!audio) return;
+    audio.src = postDinnerCallAudio[postDinnerCallStep <= 15 ? postDinnerCallStep : postDinnerCallStep - 1];
+    audio.currentTime = 0; setPostDinnerReplyReady(false);
+    void audio.play().catch(() => setCallTopNotice("语音播放失败，请检查设备音量"));
+  }, [postDinnerCallActive, s.incomingCall?.status, postDinnerCallStep]);
+
+  useEffect(() => {
+    if (!postDinnerCallActive || s.incomingCall?.status !== "answered" || postDinnerCallStep !== 16) return;
+    const timer = window.setTimeout(() => {
+      if (runtimeRef.current.incomingCall?.status === "answered") setPostDinnerCallStep(17);
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [postDinnerCallActive, s.incomingCall?.status, postDinnerCallStep]);
+
+  const sendPostDinnerCallReply = () => {
+    if (runtimeRef.current.incomingCall?.status !== "answered" || !postDinnerReplyReady) return;
+    setPostDinnerReplyReady(false);
+    if (postDinnerCallStep < 15) setPostDinnerCallStep((step) => step + 1);
+    else if (postDinnerCallStep === 15) setPostDinnerCallStep(16);
+    else if (postDinnerCallStep >= 17 && postDinnerCallStep < 21) setPostDinnerCallStep((step) => step + 1);
+    else if (postDinnerCallStep === 21) setCallTopNotice("晚安啦，可以挂断电话了");
+  };
+
+  const finishPostDinnerCall = () => {
+    const current = runtimeRef.current;
+    if (!current.incomingCall || current.incomingCall.status !== "answered") return;
+    const record = { id: "dag-post-dinner-wechat-call-duration-1314-v1", title: "大G", body: "通话时长：13:14",
+      richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "13:14" }, time: new Date().toISOString(),
+      sender: "大G", avatar: "", kind: "call" as const, media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
+      outgoing: false, read: true, likes: 0, comments: [] };
+    update({ ...current, incomingCall: null,
+      messages: { ...current.messages, wechat: [...(current.messages.wechat ?? []).filter((item) => item.id !== record.id), record] },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxPostDinnerCallRequestedV1: false, wxPostDinnerCallFinishedV1: true } } });
+    setPostDinnerCallStep(-1); setPostDinnerReplyReady(false);
+    if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
+  };
+
+  useEffect(() => {
     if (!milkTeaCallActive || s.incomingCall?.status !== "ringing" || s.incomingCall?.direction !== "outgoing") return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
@@ -535,6 +591,7 @@ function PhoneRuntime({
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
   };
   const onMilkTeaAudioEnded = () => {
+    if (postDinnerCallActive && ((postDinnerCallStep >= 0 && postDinnerCallStep <= 15) || (postDinnerCallStep >= 17 && postDinnerCallStep <= 21))) { setPostDinnerReplyReady(true); return; }
     if (dagHotpotCallActive && dagHotpotCallStep >= 0 && dagHotpotCallStep <= 8) { setDagHotpotReplyReady(true); return; }
     if (milkTeaCallStep === 3) finishMilkTeaCall();
     else if (milkTeaCallStep >= 0 && milkTeaCallStep <= 2) setMilkTeaCallReply(milkTeaCallStep);
@@ -1869,6 +1926,13 @@ function PhoneRuntime({
                     : <button type="button" onClick={() => setDeliveryCallReplySent(true)} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>好，谢谢你！我现在去拿。</button>}
                 </div>
               )}
+              {postDinnerCallActive && s.incomingCall.status === "answered" && (
+                <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
+                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>{postDinnerCallStep === 16 ? "……" : postDinnerCallLines[postDinnerCallStep <= 15 ? postDinnerCallStep : postDinnerCallStep - 1] ?? "正在通话…"}</div>
+                  {postDinnerReplyReady && <button type="button" onClick={sendPostDinnerCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{postDinnerCallReplies[postDinnerCallStep <= 15 ? postDinnerCallStep : postDinnerCallStep - 1]}</button>}
+                </div>
+              )}
               {dagHotpotCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
                   <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
@@ -1896,6 +1960,7 @@ function PhoneRuntime({
                       // The milk-tea scripted call must finish through its own
                       // persisted completion path when the player taps hang up.
                       // Otherwise the Broccoli handoff flag is never written.
+                      if (postDinnerCallActive && call.status === "answered") { finishPostDinnerCall(); return; }
                       if (dagHotpotCallActive && call.status === "answered") { finishDagHotpotCall(); return; }
                       if (milkTeaCallActive && call.status === "answered" &&
                           (call.caller === "大G" || call.caller === "温尚翊")) {
