@@ -4047,6 +4047,79 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 566, chat: "西蓝花", id: "broccoli-end-get-ready-566-v1", label: "哦....那我去了。", nextStage: 567, lines: [
       { sender: "我", body: "哦....那我去了。", thread: "西蓝花" },
     ]},
+
+    { stage: 567, chat: "大G", id: "dag-good-wont-forget-567-v1", label: "好啦，不会忘。\n但你那么关心好心人干什么？", nextStage: 568, lines: [
+      { sender: "我", body: "好啦，不会忘。", thread: "大G" },
+      { sender: "我", body: "但你那么关心好心人干什么？", thread: "大G" },
+      { sender: "大G", body: "喔？", thread: "大G" },
+      { sender: "大G", body: "我不能關心一下喔？", thread: "大G" },
+      { sender: "大G", body: "還是說，會長只准自己惦記好心人，不准別人問？", thread: "大G" },
+    ]},
+    { stage: 568, chat: "大G", id: "dag-not-thinking-about-him-568-v1", label: "谁惦记了！\n我就是觉得你很奇怪啊。", nextStage: 569, lines: [
+      { sender: "我", body: "谁惦记了！", thread: "大G" },
+      { sender: "我", body: "我就是觉得你很奇怪啊。", thread: "大G" },
+      { sender: "大G", body: "我哪裡奇怪？", thread: "大G" },
+      { sender: "大G", body: "提醒妳記得自己說過的話，也有問題喔？", thread: "大G" },
+    ]},
+    { stage: 569, chat: "大G", id: "dag-you-know-what-i-mean-569-v1", label: "你明明知道我在说什么！", nextStage: 570, lines: [
+      { sender: "我", body: "你明明知道我在说什么！", thread: "大G" },
+      { sender: "大G", body: "我知道什麼？", thread: "大G" },
+      { sender: "大G", body: "妳不是說要給人家一個大大的抱抱嗎？", thread: "大G" },
+      { sender: "大G", body: "我只是怕妳忙著吃飯，忘記這件事而已。", thread: "大G" },
+    ]},
+    { stage: 570, chat: "大G", id: "dag-you-are-so-annoying-570-v1", label: "温尚翊！！", nextStage: 571, lines: [
+      { sender: "我", body: "温尚翊！！", thread: "大G" },
+      { sender: "大G", body: "在。", thread: "大G" },
+      { sender: "大G", body: "會長，這麼激動做什麼？", thread: "大G" },
+      { sender: "大G", body: "我又沒有跟妳討債。", thread: "大G" },
+    ]},
+    { stage: 571, chat: "大G", id: "dag-why-so-concerned-571-v1", label: "你还说！\n那你干嘛这么关心？", nextStage: 572, lines: [
+      { sender: "我", body: "你还说！", thread: "大G" },
+      { sender: "我", body: "那你干嘛这么关心？", thread: "大G" },
+      { sender: "大G", body: "可能是因為……", thread: "大G" },
+      { sender: "大G", body: "我對這位好心人也有點好奇吧。", thread: "大G" },
+    ]},
+    { stage: 572, chat: "大G", id: "dag-hug-not-ordinary-572-v1", label: "？？？？？", nextStage: 573, lines: [
+      { sender: "我", body: "？？？？？", thread: "大G" },
+      { sender: "大G", body: "畢竟能讓會長親自承諾一個大大的抱抱。", thread: "大G" },
+      { sender: "大G", body: "應該不是普通人吧？", thread: "大G" },
+    ]},
+    { stage: 573, chat: "大G", id: "dag-president-hug-special-573-v1", label: "那当然！\n能拿到本会长抱抱的人，当然不普通！\n不过……\n你怎么好像很羡慕的样子？", nextStage: 574, lines: [
+      { sender: "我", body: "那当然！", thread: "大G" },
+      { sender: "我", body: "能拿到本会长抱抱的人，当然不普通！", thread: "大G" },
+      { sender: "我", body: "不过……", thread: "大G" },
+      { sender: "我", body: "你怎么好像很羡慕的样子？", thread: "大G" },
+      { sender: "大G", body: "羨慕喔？", thread: "大G" },
+      { sender: "大G", body: "有一點吧。", thread: "大G" },
+      { sender: "大G", body: "不知道要符合什麼條件才有機會？", thread: "大G" },
+    ]},
+    { stage: 574, chat: "大G", id: "dag-membership-conditions-574-v1", label: "首先要是好心人！\n其次要看本会长心情！", nextStage: 575, lines: [
+      { sender: "我", body: "首先要是好心人！", thread: "大G" },
+      { sender: "我", body: "其次要看本会长心情！", thread: "大G" },
+      { sender: "大G", body: "這樣啊。", thread: "大G" },
+      { sender: "大G", body: "那我是不是得先想辦法通過第一關？", thread: "大G" },
+    ]},
+    { stage: 575, chat: "大G", id: "dag-not-good-person-575-v1", label: "你又不是好心人，你凑什么热闹！", nextStage: 576, lines: [
+      { sender: "我", body: "你又不是好心人，你凑什么热闹！", thread: "大G" },
+      { sender: "大G", body: "欸，這麼快就把我排除在外了喔？", thread: "大G" },
+      { sender: "大G", body: "會長是不是有點偏心？", thread: "大G" },
+    ]},
+    { stage: 576, chat: "大G", id: "dag-fair-and-square-576-v1", label: "才没有，我这叫公平公正公开。", nextStage: 577, lines: [
+      { sender: "我", body: "才没有，我这叫公平公正公开。", thread: "大G" },
+      { sender: "大G", body: "那我再問一下，怎麼樣才能讓會長心情好？", thread: "大G" },
+    ]},
+    { stage: 577, chat: "大G", id: "dag-keep-it-secret-577-v1", label: "这个嘛……\n暂时保密！", nextStage: 578, lines: [
+      { sender: "我", body: "这个嘛……", thread: "大G" },
+      { sender: "我", body: "暂时保密！", thread: "大G" },
+      { sender: "大G", body: "還賣關子喔？", thread: "大G" },
+      { sender: "大G", body: "行，那我自己想辦法。", thread: "大G" },
+    ]},
+    { stage: 578, chat: "大G", id: "dag-you-figure-it-out-578-v1", label: "你慢慢想吧！", nextStage: 579, lines: [
+      { sender: "我", body: "你慢慢想吧！", thread: "大G" },
+      { sender: "大G", body: "好。", thread: "大G" },
+      { sender: "大G", body: "不過有件事，我想當面問妳。", thread: "大G" },
+      { sender: "大G", body: "方便接電話嗎？", thread: "大G" },
+    ]},
   ];
 
   // After the player says goodbye to Broccoli, DaG sends the check-in
@@ -5503,7 +5576,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 566)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 566) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
+              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 578)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
                     <button key={choice.id} onClick={() => {
