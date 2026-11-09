@@ -155,22 +155,55 @@ function PhoneRuntime({
   const [milkTeaCallReply, setMilkTeaCallReply] = useState(-1);
   const [dagHotpotCallStep, setDagHotpotCallStep] = useState(-1);
   const [dagHotpotReplyReady, setDagHotpotReplyReady] = useState(false);
-  const dagHotpotCallAudio = Array.from({ length: 9 }, (_, index) => `./assets/dag-wechat-call-${String(index + 1).padStart(2, "0")}.mp3`);
+  const dagHotpotCallAudio = [
+    ...Array.from({ length: 16 }, (_, index) => `./assets/dag-wechat-call-${String(index + 10).padStart(2, "0")}.mp3`),
+    ...Array.from({ length: 5 }, (_, index) => `./assets/dag-wechat-call-${String(index + 26).padStart(2, "0")}.mp3`),
+  ];
   const dagHotpotCallLines = [
-    "喂？",
-    "喔，就是想問你晚上吃壽喜鍋嗎？",
-    "哈哈哈哈好啦不逗你了，我現在剛從錄音室出來喔，大概要20分鐘到你那邊。",
-    "靠北，有點堵車。",
-    "下午有沒有吃點東西墊墊肚子？我這邊還有一會才到。",
-    "那就好。好啦，你準備下樓吧，我在路邊喔，車牌號還記得嗎？",
-    "ok，那我樓下等你。不著急啦，你慢慢來。",
-    "那我先掛了喔，你好了跟我說一聲，我把車開近一點。",
-    "嗯呐，掰掰。",
+    "喂？能听到我说话吗？",
+    "弹了一下午吉他晚上又开车，手很酸欸！",
+    "对啊，好心人给你点奶茶，晚上还请你吃饭，陪我聊聊天怎么啦？",
+    "嗯...不知道诶，随便说嘛！晚上的日料好吃吗？",
+    "好吃就好啦，下次还可以去。对啦突然想到，下周的演唱会要不要来？我可以给你留票。",
+    "没关系啦，这又不是什么麻烦事。",
+    "没有啊，你又不上台，怎么会打扰到我。",
+    "你考虑好了明天跟我说喔。",
+    "对啊就一直练团练团练团，手都要断了。",
+    "还好啦都习惯了。欸你声音怎么怪怪的，该不会是还在害羞？",
+    "没有吼？那怎么今晚这么安静啦？之前不是最喜欢改改叫的吗？",
+    "好啦不闹你。你有听到玩玩在叫吗？它刚吃完饭现在在家里跑酷。",
+    "是夜宵啦！会长不要那么警惕好不好？",
+    "好好好我的错我的错，你是不是该去洗洗睡？",
+    "我一会就睡了啦，还有点工作没忙完。",
+    "嗯嗯，晚安哦~",
+    "你怎么还不挂电话？舍不得哦？",
+    "对啊，我舍不得。",
+    "那我真不挂喽。",
+    "我哪有！好了好了，快去洗澡。",
+    "嗯哼，你快挂电话。",
   ];
   const dagHotpotCallReplies = [
-    "嗯嗯在呢。", "...........吃。", "哦哦那我现在去收拾一下。",
-    "你慢慢开啦，晚高峰就是这样。", "有啦。", "嗯嗯记得！",
-    "马上马上，很快啦！", "好~掰掰。", "嗯呐，掰掰。",
+    "嗯嗯可以啦！干嘛不打字讲话哦？",
+    "喔...所以我现在是陪聊？",
+    "想聊什么？我陪你五块钱的。",
+    "好吃的！",
+    "啊，真的可以？",
+    "会不会打扰到你....",
+    "那我考虑一下啦，大马有点点远....",
+    "嗯呐~你今天就一直在练团吗？",
+    "真的好辛苦，我看你手上茧都练脱皮，会不会痛？",
+    "....你乱说什么！",
+    "偶尔安静一下不行吗？我很淑女的。",
+    "这么晚了才给玩玩吃饭！你要死啊！！",
+    "谁叫你不说清楚啊！",
+    "欸都这么晚了，是要睡了，你呢？还不睡吗？",
+    "好啦，那你早忙完早休息哦！",
+    "晚安~",
+    "你也没挂啊！",
+    ".......那你别挂。",
+    "你是不是想偷听我洗澡！",
+    "喔，那我去了哦...",
+    "掰掰。",
   ];
   const milkTeaAudioRef = useRef<HTMLAudioElement | null>(null);
   const milkTeaCallAudio = ["./assets/audio/dag-call-01.mp3","./assets/audio/dag-call-02.mp3","./assets/audio/dag-call-03.mp3","./assets/audio/dag-call-04.mp3"];
@@ -458,28 +491,41 @@ function PhoneRuntime({
   }, [s.incomingCall, s.ui?.wechat?.wxDaGHotpotCallRequestedV1, s.ui?.wechat?.wxDaGHotpotCallStartedV1, s.ui?.wechat?.wxDaGHotpotCallFinishedV1, ready, locked, creator]);
 
   useEffect(() => {
-    if (!dagHotpotCallActive || s.incomingCall?.status !== "answered" || dagHotpotCallStep < 0 || dagHotpotCallStep > 8) return;
+    if (!dagHotpotCallActive || s.incomingCall?.status !== "answered" ||
+        dagHotpotCallStep < 0 || dagHotpotCallStep > 15 && (dagHotpotCallStep < 17 || dagHotpotCallStep > 21)) return;
     const audio = milkTeaAudioRef.current;
     if (!audio) return;
-    audio.src = dagHotpotCallAudio[dagHotpotCallStep];
+    audio.src = dagHotpotCallAudio[dagHotpotCallStep <= 15 ? dagHotpotCallStep : dagHotpotCallStep - 1];
     audio.currentTime = 0;
     setDagHotpotReplyReady(false);
     void audio.play().catch(() => setCallTopNotice("语音播放失败，请检查设备音量"));
   }, [dagHotpotCallActive, s.incomingCall?.status, dagHotpotCallStep]);
 
+  // After the ordinary "晚安~" reply, leave the call open for ten seconds.
+  // Only if the player has not hung up does the hidden 26–30 exchange begin.
+  useEffect(() => {
+    if (!dagHotpotCallActive || s.incomingCall?.status !== "answered" || dagHotpotCallStep !== 16) return;
+    const timer = window.setTimeout(() => {
+      if (runtimeRef.current.incomingCall?.status === "answered") setDagHotpotCallStep(17);
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [dagHotpotCallActive, s.incomingCall?.status, dagHotpotCallStep]);
+
   const sendDagHotpotCallReply = () => {
     if (!runtimeRef.current.incomingCall || runtimeRef.current.incomingCall.status !== "answered" || !dagHotpotReplyReady) return;
     setDagHotpotReplyReady(false);
-    if (dagHotpotCallStep < 8) setDagHotpotCallStep((step) => step + 1);
-    else setCallTopNotice("你们已经说完啦，可以挂断电话了");
+    if (dagHotpotCallStep < 15) setDagHotpotCallStep((step) => step + 1);
+    else if (dagHotpotCallStep === 15) setDagHotpotCallStep(16);
+    else if (dagHotpotCallStep >= 17 && dagHotpotCallStep < 21) setDagHotpotCallStep((step) => step + 1);
+    else if (dagHotpotCallStep === 21) setCallTopNotice("晚安啦，可以挂断电话了");
   };
 
   const finishDagHotpotCall = () => {
     const current = runtimeRef.current;
     if (!current.incomingCall || current.incomingCall.status !== "answered") return;
     const record = {
-      id: "dag-hotpot-wechat-call-duration-0531-v1", title: "大G", body: "通话时长：05:31",
-      richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "05:31" },
+      id: "dag-dinner-wechat-call-duration-1314-v1", title: "大G", body: "通话时长：13:14",
+      richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: "13:14" },
       time: new Date().toISOString(), sender: "大G", avatar: "", kind: "call" as const,
       media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
       outgoing: false, read: true, likes: 0, comments: [],
@@ -536,7 +582,7 @@ function PhoneRuntime({
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
   };
   const onMilkTeaAudioEnded = () => {
-    if (dagHotpotCallActive && dagHotpotCallStep >= 0 && dagHotpotCallStep <= 8) { setDagHotpotReplyReady(true); return; }
+    if (dagHotpotCallActive && (dagHotpotCallStep >= 0 && dagHotpotCallStep <= 15 || dagHotpotCallStep >= 17 && dagHotpotCallStep <= 21)) { setDagHotpotReplyReady(true); return; }
     if (milkTeaCallStep === 3) finishMilkTeaCall();
     else if (milkTeaCallStep >= 0 && milkTeaCallStep <= 2) setMilkTeaCallReply(milkTeaCallStep);
   };
@@ -1873,8 +1919,8 @@ function PhoneRuntime({
               {dagHotpotCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
                   <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
-                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>{dagHotpotCallLines[dagHotpotCallStep] ?? "正在通话…"}</div>
-                  {dagHotpotReplyReady && <button type="button" onClick={sendDagHotpotCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{dagHotpotCallReplies[dagHotpotCallStep]}</button>}
+                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>{dagHotpotCallStep === 16 ? "……" : dagHotpotCallLines[dagHotpotCallStep <= 15 ? dagHotpotCallStep : dagHotpotCallStep - 1] ?? "正在通话…"}</div>
+                  {dagHotpotReplyReady && <button type="button" onClick={sendDagHotpotCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{dagHotpotCallReplies[dagHotpotCallStep <= 15 ? dagHotpotCallStep : dagHotpotCallStep - 1]}</button>}
                 </div>
               )}
               {milkTeaCallActive && s.incomingCall.status === "answered" && (
