@@ -2316,12 +2316,26 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     if (!groupBackupRestoreApplied.current) {
       groupBackupRestoreApplied.current = true;
+      // useSkinState prefers the active save slot over its initializer. Explicitly
+      // merge the browser backup after mount so a stale-but-valid save cannot
+      // silently discard newer groups or group remarks.
+      const mergedGroups = mergeWxGroupChats(wxGroupChatsRaw, browserSavedWxGroups);
+      const groupDataChanged = mergedGroups.length !== wxGroupChatsRaw.length ||
+        mergedGroups.some((raw, index) => raw !== wxGroupChatsRaw[index]);
+      const restoredGroupRecords = mergedGroups.flatMap((raw) => {
+        try {
+          const group = JSON.parse(raw) as { name?: string };
+          return group.name ? [group.name] : [];
+        } catch { return []; }
+      });
       const knownIds = new Set(catRescue.messages.map((item) => item.id));
       const recovered = browserSavedWxGroupData.messages.filter((item) =>
-        !knownIds.has(item.id) && groupRecords.some((group) =>
-          group.name === (item.meta?.storyThread || item.title)
-        )
+        !knownIds.has(item.id) && restoredGroupRecords.includes(item.meta?.storyThread || item.title)
       );
+      if (groupDataChanged) {
+        setWxGroupChatsRaw(mergedGroups);
+        p.onUi?.("wxGroupChatsV1", mergedGroups);
+      }
       if (recovered.length) {
         const merged = [...catRescue.messages, ...recovered].map((item, index) => ({ item, index }))
           .sort((a, b) => {
@@ -2330,6 +2344,14 @@ export function WeChatSkin(p: SkinProps) {
             return (Number.isFinite(ao) ? ao : a.index) - (Number.isFinite(bo) ? bo : b.index);
           }).map(({ item }) => item);
         setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: merged }));
+      }
+      if (!groupDataChanged && !recovered.length) {
+        const groupNames = new Set(restoredGroupRecords);
+        const groupMessages = allItems.filter((item) => groupNames.has(item.meta?.storyThread || item.title));
+        try {
+          window.localStorage.setItem(wxGroupDataStorageKey, JSON.stringify({ version: 2, groups: mergedGroups, messages: groupMessages }));
+          window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(mergedGroups));
+        } catch { /* IndexedDB save remains the primary store. */ }
       }
       return;
     }
@@ -4906,7 +4928,7 @@ export function WeChatSkin(p: SkinProps) {
   }, [accidentalGroupStoryStep, accidentalGroupInvitePending, pendingCatLines.length]);
   const wxGroupChats = wxGroupChatsRaw.flatMap((raw) => {
     try {
-      const group = JSON.parse(raw) as { id: string; name: string; members: string[]; leftByMe?: boolean };
+      const group = JSON.parse(raw) as { id: string; name: string; members: string[]; remark?: string; leftByMe?: boolean };
       return group.id && group.name && Array.isArray(group.members) ? [group] : [];
     } catch { return []; }
   });
