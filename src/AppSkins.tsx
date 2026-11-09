@@ -2293,7 +2293,10 @@ export function WeChatSkin(p: SkinProps) {
       );
     } catch { return browserSavedWxGroupData.groups; }
   })();
-  const wxGroupChatsInitial = mergeWxGroupChats(normalizeWxGroupChats(storedWxGroupChats), browserSavedWxGroups);
+  // A browser backup is only a crash-recovery copy, not an independent source
+  // of truth for a newly loaded save. Restoring it unconditionally resurrected
+  // groups from an older playthrough after the player started over.
+  const wxGroupChatsInitial = normalizeWxGroupChats(storedWxGroupChats);
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", wxGroupChatsInitial);
   const groupBackupRestoreApplied = useRef(false);
   const persistWxGroupChats = (groups: string[]) => {
@@ -2327,7 +2330,9 @@ export function WeChatSkin(p: SkinProps) {
       // useSkinState prefers the active save slot over its initializer. Explicitly
       // merge the browser backup after mount so a stale-but-valid save cannot
       // silently discard newer groups or group remarks.
-      const mergedGroups = mergeWxGroupChats(wxGroupChatsRaw, browserSavedWxGroups);
+      // Restore only groups belonging to the active save slot. The localStorage
+      // backup may belong to an older/reset playthrough and must never create chats.
+      const mergedGroups = normalizeWxGroupChats(storedWxGroupChats);
       const groupDataChanged = mergedGroups.length !== wxGroupChatsRaw.length ||
         mergedGroups.some((raw, index) => raw !== wxGroupChatsRaw[index]);
       const restoredGroupRecords = mergedGroups.flatMap((raw) => {
@@ -2372,7 +2377,7 @@ export function WeChatSkin(p: SkinProps) {
     } catch { /* IndexedDB save remains the primary store. */ }
     const needsMigration = typeof storedWxGroupChats === "string" ||
       (Array.isArray(storedWxGroupChats) && storedWxGroupChats.some((entry) => typeof entry !== "string"));
-    if (needsMigration || browserSavedWxGroups.length > 0 && wxGroupChatsRaw.length > 0) {
+    if (needsMigration) {
       p.onUi?.("wxGroupChatsV1", wxGroupChatsRaw);
     }
   }, [wxGroupChatsRaw, wxGroupStorageKey, wxGroupDataStorageKey, storedWxGroupChats, p.onUi, catRescueRaw, allItems.length]);
