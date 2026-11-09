@@ -4408,6 +4408,20 @@ export function WeChatSkin(p: SkinProps) {
     p.onUi?.("wxDaGHotpotCallRequestedV1", true);
   }, [returnDinnerStage, p.thread, p.items, catRescue.messages, pendingCatLines.length, p.ui?.wxDaGHotpotCallRequestedV1, p.ui?.wxDaGHotpotCallStartedV1, p.ui?.wxDaGHotpotCallFinishedV1]);
 
+  // The later post-dinner call is a separate event from the earlier 01-09 call.
+  // It can only ring after Broccoli's 🙄 message has actually been delivered.
+  useEffect(() => {
+    if (returnDinnerStage !== 614 || p.thread !== "西蓝花" || pendingCatLines.length > 0) return;
+    const delivered = [...p.items, ...catRescue.messages];
+    const devilDelivered = delivered.some((item) =>
+      item.sender === "西蓝花" && item.body.trim() === "🙄" && item.thread === "西蓝花"
+    );
+    if (!devilDelivered || p.ui?.wxPostDinnerCallRequestedV1 === true ||
+        p.ui?.wxPostDinnerCallStartedV1 === true || p.ui?.wxPostDinnerCallFinishedV1 === true) return;
+    p.onUi?.("wxPostDinnerCallRequestedV1", true);
+  }, [returnDinnerStage, p.thread, p.items, catRescue.messages, pendingCatLines.length,
+      p.ui?.wxPostDinnerCallRequestedV1, p.ui?.wxPostDinnerCallStartedV1, p.ui?.wxPostDinnerCallFinishedV1]);
+
   // After the WeChat call ends, wait for the player to leave DaG's chat
   // and open Broccoli's thread. Deliver her single devil emoji only once.
   const [postDinnerBroccoliNudgeQueued, setPostDinnerBroccoliNudgeQueued] = useSkinState<boolean>(p, "wxPostDinnerBroccoliNudgeQueuedV1", false);
