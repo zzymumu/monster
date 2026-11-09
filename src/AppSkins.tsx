@@ -3896,6 +3896,36 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 511, chat: "西蓝花", id: "broccoli-signature-511-v1", label: "没什么啊。\n就是聊了几句。", nextStage: 512, lines: [{ sender: "我", body: "没什么啊。", thread: "西蓝花" }, { sender: "我", body: "就是聊了几句。", thread: "西蓝花" }, { sender: "西蓝花", body: "几句是几句？", thread: "西蓝花" }, { sender: "西蓝花", body: "三句还是三十句？", thread: "西蓝花" }] },
     { stage: 512, chat: "西蓝花", id: "broccoli-signature-512-v1", label: "……\n你怎么跟审犯人一样。", nextStage: 513, lines: [{ sender: "我", body: "……", thread: "西蓝花" }, { sender: "我", body: "你怎么跟审犯人一样。", thread: "西蓝花" }, { sender: "西蓝花", body: "因为我发现你最近很不对劲！", thread: "西蓝花" }, { sender: "西蓝花", body: "以前你跟我说怪兽都是隔着屏幕尖叫。", thread: "西蓝花" }, { sender: "西蓝花", body: "现在你居然能直接找他要签名了。", thread: "西蓝花" }, { sender: "西蓝花", body: "我真的有种不真实的感觉。", thread: "西蓝花" }] },
     { stage: 513, chat: "西蓝花", id: "broccoli-signature-513-v1", label: "我也觉得不真实啊……\n我到现在都觉得有点像做梦。", nextStage: 514, lines: [{ sender: "我", body: "我也觉得不真实啊……", thread: "西蓝花" }, { sender: "我", body: "我到现在都觉得有点像做梦。", thread: "西蓝花" }, { sender: "西蓝花", body: "不行不行，打字太慢了我必须给你打电话。", thread: "西蓝花" }] },
+    { stage: 515, chat: "大G", id: "dag-dinner-invite-tease-515-v1", label: "有啊！\n不过……\n你怎么突然想到找我呀？", nextStage: 516, lines: [{"sender":"我","body":"有啊！","thread":"大G"},{"sender":"我","body":"不过……","thread":"大G"},{"sender":"我","body":"你怎么突然想到找我呀？","thread":"大G"},{"sender":"大G","body":"怎麼？","thread":"大G"},{"sender":"大G","body":"找妳吃飯還要先寫申請書喔？","thread":"大G"}] },
+    { stage: 516, chat: "大G", id: "dag-dinner-association-reason-516-v1", label: "哈哈，不是啦！\n我就是好奇嘛。\n你平时不是都很忙吗？", nextStage: 517, lines: [{"sender":"我","body":"哈哈，不是啦！","thread":"大G"},{"sender":"我","body":"我就是好奇嘛。","thread":"大G"},{"sender":"我","body":"你平时不是都很忙吗？","thread":"大G"},{"sender":"大G","body":"這不是想跟玩玩保護協會會長搞好關係嗎？","thread":"大G"},{"sender":"大G","body":"總得找機會跟會長聯絡一下感情吧。","thread":"大G"}] },
+    { stage: 517, chat: "大G", id: "dag-dinner-association-serious-517-v1", label: "？？？？？\n你还真把这个协会当回事啦？", nextStage: 518, lines: [{"sender":"我","body":"？？？？？","thread":"大G"},{"sender":"我","body":"你还真把这个协会当回事啦？","thread":"大G"},{"sender":"大G","body":"當然啊。","thread":"大G"},{"sender":"大G","body":"我現在可是協會的重要觀察對象欸。","thread":"大G"}] },
+    { stage: 518, chat: "大G", id: "dag-dinner-membership-approval-518-v1", label: "谁批准你加入了！\n我怎么不知道？", nextStage: 519, lines: [{"sender":"我","body":"谁批准你加入了！","thread":"大G"},{"sender":"我","body":"我怎么不知道？","thread":"大G"},{"sender":"大G","body":"所以我這不是在努力爭取嗎？","thread":"大G"},{"sender":"大G","body":"連會長都約不出來，還怎麼改善關係？","thread":"大G"}] },
+    { stage: 519, chat: "大G", id: "dag-dinner-more-than-one-meal-519-v1", label: "你想得美！\n我才不会因为一顿饭就让你加入！", nextStage: 520, lines: [{"sender":"我","body":"你想得美！","thread":"大G"},{"sender":"我","body":"我才不会因为一顿饭就让你加入！","thread":"大G"},{"sender":"大G","body":"那看來一頓不夠。","thread":"大G"},{"sender":"大G","body":"還得多約幾次才行。","thread":"大G"}] },
+    { stage: 520, chat: "大G", id: "dag-dinner-president-instructions-520-v1", label: "温尚翊！！", nextStage: 521, lines: [{"sender":"我","body":"温尚翊！！","thread":"大G"},{"sender":"大G","body":"在。","thread":"大G"},{"sender":"大G","body":"會長還有什麼指示？","thread":"大G"}] },
+    { stage: 521, chat: "大G", id: "dag-dinner-restaurant-question-521-v1", label: "我们去吃什么？", nextStage: 522, lines: [{"sender":"我","body":"我们去吃什么？","thread":"大G"},{"sender":"大G","body":"今天冠佑推薦了一家日式料理。","thread":"大G"},{"sender":"大G","body":"他說有幾道菜還不錯。","thread":"大G"},{"sender":"大G","body":"我也還沒去過。","thread":"大G"}] },
+    { stage: 522, chat: "大G", id: "dag-dinner-likes-japanese-food-522-v1", label: "日料！！\n我喜欢！", nextStage: 523, lines: [{"sender":"我","body":"日料！！","thread":"大G"},{"sender":"我","body":"我喜欢！","thread":"大G"},{"sender":"大G","body":"那就好啊，去试试看。","thread":"大G"}] },
+    { stage: 523, chat: "大G", id: "dag-dinner-why-not-guan-you-523-v1", label: "你怎么不找冠佑一起去？", nextStage: 524, lines: [{"sender":"我","body":"你怎么不找冠佑一起去？","thread":"大G"},{"sender":"大G","body":"他都已經吃過了啊。","thread":"大G"},{"sender":"大G","body":"而且這次是我想跟會長培養一下感情。","thread":"大G"}] },
+    { stage: 524, chat: "大G", id: "dag-dinner-association-persistence-524-v1", label: "你又来了！\n你到底有多想加入这个协会啊？", nextStage: 525, lines: [{"sender":"我","body":"你又来了！","thread":"大G"},{"sender":"我","body":"你到底有多想加入这个协会啊？","thread":"大G"},{"sender":"大G","body":"就很想啊，而且目前看來，難度不低。","thread":"大G"},{"sender":"大G","body":"所以得積極一點。","thread":"大G"}] },
+    { stage: 525, chat: "大G", id: "dag-dinner-consider-membership-525-v1", label: "那我可要好好考虑了。\n毕竟我们协会也不是随便什么人都收的。", nextStage: 526, lines: [{"sender":"我","body":"那我可要好好考虑了。","thread":"大G"},{"sender":"我","body":"毕竟我们协会也不是随便什么人都收的。","thread":"大G"},{"sender":"大G","body":"知道。","thread":"大G"},{"sender":"大G","body":"會長慢慢考慮，我不催妳。","thread":"大G"}] },
+    { stage: 526, chat: "大G", id: "dag-dinner-book-restaurant-526-v1", label: "这还差不多！", nextStage: 527, lines: [{"sender":"我","body":"这还差不多！","thread":"大G"},{"sender":"大G","body":"不過餐廳還是可以先訂吧？","thread":"大G"}] },
+    { stage: 527, chat: "大G", id: "dag-dinner-food-restrictions-527-v1", label: "可以呀！", nextStage: 528, lines: [{"sender":"我","body":"可以呀！","thread":"大G"},{"sender":"大G","body":"行。","thread":"大G"},{"sender":"大G","body":"妳有沒有什麼不吃的？","thread":"大G"}] },
+    { stage: 528, chat: "大G", id: "dag-dinner-ankimo-joke-528-v1", label: "我不要吃安康鱼肝，那东西跟猫罐头一样。\nyue——", nextStage: 529, lines: [{"sender":"我","body":"我不要吃安康鱼肝，那东西跟猫罐头一样。","thread":"大G"},{"sender":"我","body":"yue——","thread":"大G"},{"sender":"大G","body":"你这是什么形容.....","thread":"大G"},{"sender":"大G","body":"其他的都可以？","thread":"大G"}] },
+    { stage: 529, chat: "大G", id: "dag-dinner-not-picky-529-v1", label: "嗯嗯！\n我没有那么挑食啦！", nextStage: 530, lines: [{"sender":"我","body":"嗯嗯！","thread":"大G"},{"sender":"我","body":"我没有那么挑食啦！","thread":"大G"},{"sender":"大G","body":"我又沒說妳挑食。","thread":"大G"},{"sender":"大G","body":"先問清楚比較好，免得到時候點了妳不吃。","thread":"大G"}] },
+    { stage: 530, chat: "大G", id: "dag-dinner-time-question-530-v1", label: "好~", nextStage: 531, lines: [{"sender":"我","body":"好~","thread":"大G"},{"sender":"大G","body":"那時間呢？","thread":"大G"},{"sender":"大G","body":"晚上七點方便嗎？","thread":"大G"}] },
+    { stage: 531, chat: "大G", id: "dag-dinner-time-confirm-531-v1", label: "嗯嗯，七点没问题！", nextStage: 532, lines: [{"sender":"我","body":"嗯嗯，七点没问题！","thread":"大G"},{"sender":"大G","body":"好，那就七點。","thread":"大G"}] },
+    { stage: 532, chat: "大G", id: "dag-dinner-restaurant-address-532-v1", label: "地址发我一下，我看要怎么过去。", nextStage: 533, lines: [{"sender":"我","body":"地址发我一下，我看要怎么过去。","thread":"大G"},{"sender":"大G","body":"鮨野村 Nomura","thread":"大G","kind":"event","meta":{"locationName":"鮨野村 Nomura","locationAddress":"台北市大安區仁愛路四段 300 巷 19 弄 4 號"}},{"sender":"大G","body":"這家。","thread":"大G"},{"sender":"大G","body":"位置妳看一下。","thread":"大G"}] },
+    { stage: 533, chat: "大G", id: "dag-dinner-address-received-533-v1", label: "收到！\n看起来不错啊！\n而且离我这里好像也不远。", nextStage: 534, lines: [{"sender":"我","body":"收到！","thread":"大G"},{"sender":"我","body":"看起来不错啊！","thread":"大G"},{"sender":"我","body":"而且离我这里好像也不远。","thread":"大G"},{"sender":"大G","body":"嗯，你不用提前过去，到时候我去接你。","thread":"大G"}] },
+    { stage: 534, chat: "大G", id: "dag-dinner-pickup-tease-534-v1", label: "为了入会这么积极哦？", nextStage: 535, lines: [{"sender":"我","body":"为了入会这么积极哦？","thread":"大G"},{"sender":"大G","body":"是啦，所以会长可以提前批准吗🥺","thread":"大G"}] },
+    { stage: 535, chat: "大G", id: "dag-dinner-no-early-approval-535-v1", label: "不可以哦~原则不能变~\n我先声明哦。\n这次我可是要认真吃的！", nextStage: 536, lines: [{"sender":"我","body":"不可以哦~原则不能变~","thread":"大G"},{"sender":"我","body":"我先声明哦。","thread":"大G"},{"sender":"我","body":"这次我可是要认真吃的！","thread":"大G"},{"sender":"大G","body":"好，吃不完就自动申请入会。","thread":"大G"}] },
+    { stage: 536, chat: "大G", id: "dag-dinner-automatic-membership-536-v1", label: "？？？？？\n你什么意思！", nextStage: 537, lines: [{"sender":"我","body":"？？？？？","thread":"大G"},{"sender":"我","body":"你什么意思！","thread":"大G"},{"sender":"大G","body":"沒什麼。","thread":"大G"},{"sender":"大G","body":"只是覺得今天可能要多點幾道菜。","thread":"大G"}] },
+    { stage: 537, chat: "大G", id: "dag-dinner-big-appetite-537-v1", label: "温尚翊！\n你作弊！", nextStage: 538, lines: [{"sender":"我","body":"温尚翊！","thread":"大G"},{"sender":"我","body":"你作弊！","thread":"大G"},{"sender":"大G","body":"我哪有。","thread":"大G"},{"sender":"大G","body":"你不是说自己饭量很大吗，我怕你饿着啊。","thread":"大G"}] },
+    { stage: 538, chat: "大G", id: "dag-dinner-menu-test-538-v1", label: "这还差不多！\n而且今晚的菜单好坏也决定了你是否可以入会哼哼哼~不好吃的话你完蛋了。", nextStage: 539, lines: [{"sender":"我","body":"这还差不多！","thread":"大G"},{"sender":"我","body":"而且今晚的菜单好坏也决定了你是否可以入会哼哼哼~不好吃的话你完蛋了。","thread":"大G"},{"sender":"大G","body":"壓力有點大欸。","thread":"大G"}] },
+    { stage: 539, chat: "大G", id: "dag-dinner-pressure-539-v1", label: "现在知道怕了吧！", nextStage: 540, lines: [{"sender":"我","body":"现在知道怕了吧！","thread":"大G"},{"sender":"大G","body":"有一點。","thread":"大G"},{"sender":"大G","body":"畢竟我還挺想拿到會員資格的。","thread":"大G"}] },
+    { stage: 540, chat: "大G", id: "dag-dinner-good-performance-540-v1", label: "那你今晚好好表现！", nextStage: 541, lines: [{"sender":"我","body":"那你今晚好好表现！","thread":"大G"},{"sender":"大G","body":"收到，會長。","thread":"大G"},{"sender":"大G","body":"對了，記得別餓著肚子等到晚上，奶茶不能當飯吃。","thread":"大G"}] },
+    { stage: 541, chat: "大G", id: "dag-dinner-care-reminder-541-v1", label: "知道啦！\n你也要记得吃饭！", nextStage: 542, lines: [{"sender":"我","body":"知道啦！","thread":"大G"},{"sender":"我","body":"你也要记得吃饭！","thread":"大G"},{"sender":"大G","body":"好。","thread":"大G"},{"sender":"大G","body":"聽會長的。","thread":"大G"}] },
+    { stage: 542, chat: "大G", id: "dag-dinner-good-girl-542-v1", label: "乖~", nextStage: 543, lines: [{"sender":"我","body":"乖~","thread":"大G"},{"sender":"大G","body":"……","thread":"大G"},{"sender":"大G","body":"這句話怎麼聽起來怪怪的？","thread":"大G"}] },
+    { stage: 543, chat: "大G", id: "dag-dinner-tease-543-v1", label: "哈哈哈哈哈哈！", nextStage: 544, lines: [{"sender":"我","body":"哈哈哈哈哈哈！","thread":"大G"},{"sender":"大G","body":"算了。","thread":"大G"},{"sender":"大G","body":"會長開心就好。","thread":"大G"}] },
+    { stage: 544, chat: "大G", id: "dag-dinner-moments-tease-544-v1", label: "还有，别忘了你在朋友圈说的话。", nextStage: 545, lines: [{"sender":"我","body":"还有，别忘了你在朋友圈说的话。","thread":"大G"}] },
   ];
 
   // After the player says goodbye to Broccoli, DaG sends the check-in
@@ -4525,6 +4555,7 @@ export function WeChatSkin(p: SkinProps) {
       comments: [],
     })]);
     setDeliveryCallMomentConsumed(true);
+    setReturnDinnerStage(515);
     p.onAppUi?.("phone", "wxDeliveryCallMomentsReadyV1", false);
     setPendingCatLines((current) => current.some((line) => line.id === "delivery-moments-dag-dinner-1-v1")
       ? current
@@ -4533,6 +4564,13 @@ export function WeChatSkin(p: SkinProps) {
           { id: "delivery-moments-dag-dinner-2-v1", sender: "大G", body: "出來吃飯嗎？", thread: "大G" },
         ]);
   };
+  // Resume the dinner invitation if a save was made after the one-time Moments post.
+  useEffect(() => {
+    if (returnDinnerStage === 514 && deliveryCallMomentConsumed) {
+      setReturnDinnerStage(515);
+    }
+  }, [returnDinnerStage, deliveryCallMomentConsumed]);
+
   const publishMoment = () => {
     const body = momentDraft.trim();
     if (!body) return;
