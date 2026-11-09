@@ -1550,6 +1550,20 @@ export function WeChatSkin(p: SkinProps) {
   const [vavaPlayStage, setVavaPlayStage] = useSkinState<number>(p, "wxVavaPlayStage", -1);
   const [vavaPlayCompleted, setVavaPlayCompleted] = useSkinState<boolean>(p, "wxVavaPlayCompleted", false);
   const [returnDinnerStage, setReturnDinnerStage] = useSkinState<number>(p, "wxReturnDinnerStage", 0);
+  const [postDinnerSequenceMigratedV2, setPostDinnerSequenceMigratedV2] = useSkinState<boolean>(p, "wxPostDinnerSequenceMigratedV2", false);
+  useEffect(() => {
+    if (postDinnerSequenceMigratedV2 || returnDinnerStage < 580 || returnDinnerStage > 605) return;
+    const legacyToCompleteSequence: Record<number, number> = {
+      580:580, 581:581, 582:582, 583:587, 584:589, 585:590,
+      586:592, 587:593, 588:594, 589:595, 590:597, 591:598,
+      592:599, 593:600, 594:601, 595:602, 596:603, 597:604,
+      598:605, 599:606, 600:607, 601:608, 602:609, 603:610,
+      604:611, 605:612,
+    };
+    setReturnDinnerStage(legacyToCompleteSequence[returnDinnerStage] ?? returnDinnerStage);
+    setPostDinnerSequenceMigratedV2(true);
+    p.onUi?.("wxPostDinnerSequenceMigratedV2", true);
+  }, [postDinnerSequenceMigratedV2, returnDinnerStage, setReturnDinnerStage, setPostDinnerSequenceMigratedV2, p.onUi]);
   const [milkTeaTransferStatus, setMilkTeaTransferStatus] = useSkinState<"pending" | "accepted" | "returned">(p, "wxMilkTeaTransferStatusV1", "pending");
   const [milkTeaArrivalWaitReady, setMilkTeaArrivalWaitReady] = useSkinState<boolean>(p, "wxMilkTeaArrivalWaitReadyV1", false);
   const [milkTeaCallPromptShown, setMilkTeaCallPromptShown] = useSkinState<boolean>(p, "wxMilkTeaCallPromptShownV1", false);
