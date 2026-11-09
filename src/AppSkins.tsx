@@ -2209,25 +2209,35 @@ export function WeChatSkin(p: SkinProps) {
   // Older builds accidentally wrote this array as a JSON string via p.onUi.
   // Recover that legacy representation before rendering the WeChat conversation list.
   const storedWxGroupChats = p.ui?.wxGroupChatsV1;
-  const legacyWxGroupChats = (() => {
-    if (typeof storedWxGroupChats !== "string") return [];
-    try {
-      const parsed: unknown = JSON.parse(storedWxGroupChats);
-      return Array.isArray(parsed) ? parsed.filter((entry): entry is string => typeof entry === "string") : [];
-    } catch {
-      return [];
+  const normalizeWxGroupChats = (value: unknown): string[] => {
+    let parsed: unknown = value;
+    if (typeof value === "string") {
+      try { parsed = JSON.parse(value); } catch { return []; }
     }
-  })();
-  const wxGroupChatsInitial = Array.isArray(storedWxGroupChats)
-    ? storedWxGroupChats.filter((entry): entry is string => typeof entry === "string")
-    : legacyWxGroupChats;
+    if (!Array.isArray(parsed)) return [];
+    return parsed.flatMap((entry) => {
+      let group: unknown = entry;
+      if (typeof entry === "string") {
+        try { group = JSON.parse(entry); } catch { return []; }
+      }
+      if (!group || typeof group !== "object" || Array.isArray(group)) return [];
+      const candidate = group as { id?: unknown; name?: unknown; members?: unknown; leftByMe?: unknown };
+      if (typeof candidate.id !== "string" || typeof candidate.name !== "string" ||
+          !Array.isArray(candidate.members) || !candidate.members.every((member) => typeof member === "string")) return [];
+      return [JSON.stringify(candidate)];
+    });
+  };
+  const wxGroupChatsInitial = normalizeWxGroupChats(storedWxGroupChats);
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", wxGroupChatsInitial);
+  const wxGroupChatsNeedMigration = typeof storedWxGroupChats === "string" ||
+    (Array.isArray(storedWxGroupChats) && storedWxGroupChats.some((entry) => typeof entry !== "string"));
   useEffect(() => {
-    if (typeof p.ui?.wxGroupChatsV1 === "string") {
-      // Persist the migrated array so future saves keep the correct data type.
+    if (wxGroupChatsNeedMigration) {
+      // Normalize legacy serialized strings and object-array saves without
+      // dropping existing group IDs, names, members, or message threads.
       p.onUi?.("wxGroupChatsV1", wxGroupChatsRaw);
     }
-  }, [p.ui?.wxGroupChatsV1, wxGroupChatsRaw, p.onUi]);
+  }, [wxGroupChatsNeedMigration, wxGroupChatsRaw, p.onUi]);
   const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
     try {
       const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
@@ -5763,7 +5773,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 578)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
+              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 605)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
                     <button key={choice.id} onClick={() => {
