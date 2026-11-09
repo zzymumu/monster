@@ -2147,22 +2147,42 @@ export function WeChatSkin(p: SkinProps) {
   }, [catRescueRaw, pendingCatLinesRaw]);
 
   const canonicalContactName = (name: string) => name === "温尚翊" ? "大G" : name;
+  const findGroupRecord = (name: string) => wxGroupChatsRaw.flatMap((raw) => {
+    try {
+      const group = JSON.parse(raw) as { id?: string; name?: string; remark?: string };
+      return group.id && group.name && (group.name === name || group.remark === name || contactRemarks[group.name] === name) ? [group] : [];
+    } catch { return []; }
+  })[0];
   const displayName = (name: string) => {
     const canonical = canonicalContactName(name);
-    return contactRemarks[canonical]?.trim() || canonical;
+    const group = findGroupRecord(canonical);
+    return (group?.remark || contactRemarks[group?.name || canonical] || contactRemarks[canonical] || canonical).trim();
   };
   const openRemarkEditor = (name: string) => {
     const canonical = canonicalContactName(name);
-    setRemarkEditorContact(canonical);
-    setRemarkDraft(contactRemarks[canonical] || canonical);
+    const group = findGroupRecord(canonical);
+    const key = group?.name || canonical;
+    setRemarkEditorContact(key);
+    setRemarkDraft(group?.remark || contactRemarks[key] || key);
   };
   const saveContactRemark = () => {
     const next = remarkDraft.trim();
     if (!next || !remarkEditorContact) return;
-    const updatedRemarks = { ...contactRemarks, [remarkEditorContact]: next };
-    const serializedRemarks = JSON.stringify(updatedRemarks);
-    setContactRemarksRaw(serializedRemarks);
-    p.onUi?.("wxContactRemarks", serializedRemarks);
+    const group = findGroupRecord(remarkEditorContact);
+    if (group?.id) {
+      const nextGroups = wxGroupChatsRaw.map((raw) => {
+        try {
+          const current = JSON.parse(raw) as { id?: string };
+          return current.id === group.id ? JSON.stringify({ ...current, remark: next }) : raw;
+        } catch { return raw; }
+      });
+      persistWxGroupChats(nextGroups);
+    } else {
+      const updatedRemarks = { ...contactRemarks, [remarkEditorContact]: next };
+      const serializedRemarks = JSON.stringify(updatedRemarks);
+      setContactRemarksRaw(serializedRemarks);
+      p.onUi?.("wxContactRemarks", serializedRemarks);
+    }
     setRemarkEditorContact("");
   };
   const resolveContactName = (visible: string) =>
@@ -2242,10 +2262,26 @@ export function WeChatSkin(p: SkinProps) {
     });
   };
   const wxGroupStorageKey = "foundphone-wechat-groups-v1:" + (p.owner || "default");
+  const wxGroupDataStorageKey = "foundphone-wechat-group-data-v2:" + (p.owner || "default");
+  const browserSavedWxGroupData = (() => {
+    if (typeof window === "undefined") return { groups: [] as string[], messages: [] as Item[] };
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(wxGroupDataStorageKey) || "{}") as { groups?: unknown; messages?: unknown };
+      const messages = Array.isArray(parsed.messages) ? parsed.messages.filter((item) =>
+        item && typeof item === "object" && typeof (item as Item).body === "string" &&
+        typeof (item as Item).title === "string"
+      ) as Item[] : [];
+      return { groups: normalizeWxGroupChats(parsed.groups), messages };
+    } catch { return { groups: [] as string[], messages: [] as Item[] }; }
+  })();
   const browserSavedWxGroups = (() => {
-    if (typeof window === "undefined") return [];
-    try { return normalizeWxGroupChats(window.localStorage.getItem(wxGroupStorageKey)); }
-    catch { return []; }
+    if (typeof window === "undefined") return browserSavedWxGroupData.groups;
+    try {
+      return mergeWxGroupChats(
+        normalizeWxGroupChats(window.localStorage.getItem(wxGroupStorageKey)),
+        browserSavedWxGroupData.groups,
+      );
+    } catch { return browserSavedWxGroupData.groups; }
   })();
   const mergeWxGroupChats = (...sources: string[][]): string[] => {
     const byId = new Map<string, string>();
@@ -2259,6 +2295,7 @@ export function WeChatSkin(p: SkinProps) {
   };
   const wxGroupChatsInitial = mergeWxGroupChats(normalizeWxGroupChats(storedWxGroupChats), browserSavedWxGroups);
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", wxGroupChatsInitial);
+  const groupBackupRestoreApplied = useRef(false);
   const persistWxGroupChats = (groups: string[]) => {
     // Keep a synchronous browser-side recovery copy as well as the normal
     // save-slot state. This protects group membership if a page refresh races
@@ -2266,24 +2303,52 @@ export function WeChatSkin(p: SkinProps) {
     try { window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(groups)); } catch { /* normal save remains available */ }
     setWxGroupChatsRaw(groups);
   };
+  const groupRecords = wxGroupChatsRaw.flatMap((raw) => {
+    try {
+      const group = JSON.parse(raw) as { id: string; name: string; members: string[]; remark?: string; leftByMe?: boolean };
+      return group.id && group.name && Array.isArray(group.members) ? [group] : [];
+    } catch { return []; }
+  });
+  const activeGroupRecord = groupRecords.find((group) =>
+    group.name === p.thread || group.remark === p.thread || contactRemarks[group.name] === p.thread
+  );
+  const activeGroupThreadName = activeGroupRecord?.name || "";
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      try { window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(wxGroupChatsRaw)); } catch { /* normal save remains available */ }
+    if (!groupBackupRestoreApplied.current) {
+      groupBackupRestoreApplied.current = true;
+      const knownIds = new Set(catRescue.messages.map((item) => item.id));
+      const recovered = browserSavedWxGroupData.messages.filter((item) =>
+        !knownIds.has(item.id) && groupRecords.some((group) =>
+          group.name === (item.meta?.storyThread || item.title)
+        )
+      );
+      if (recovered.length) {
+        const merged = [...catRescue.messages, ...recovered].map((item, index) => ({ item, index }))
+          .sort((a, b) => {
+            const ao = Number(a.item.meta?.storyOrderAt);
+            const bo = Number(b.item.meta?.storyOrderAt);
+            return (Number.isFinite(ao) ? ao : a.index) - (Number.isFinite(bo) ? bo : b.index);
+          }).map(({ item }) => item);
+        setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: merged }));
+      }
+      return;
     }
+    const groupNames = new Set(groupRecords.map((group) => group.name));
+    const groupMessages = allItems.filter((item) => groupNames.has(item.meta?.storyThread || item.title));
+    const backup = { version: 2, groups: wxGroupChatsRaw, messages: groupMessages };
+    try {
+      window.localStorage.setItem(wxGroupDataStorageKey, JSON.stringify(backup));
+      window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(wxGroupChatsRaw));
+    } catch { /* IndexedDB save remains the primary store. */ }
     const needsMigration = typeof storedWxGroupChats === "string" ||
       (Array.isArray(storedWxGroupChats) && storedWxGroupChats.some((entry) => typeof entry !== "string"));
     if (needsMigration || browserSavedWxGroups.length > 0 && wxGroupChatsRaw.length > 0) {
       p.onUi?.("wxGroupChatsV1", wxGroupChatsRaw);
     }
-  }, [wxGroupChatsRaw, wxGroupStorageKey, storedWxGroupChats, p.onUi]);
-  const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
-    try {
-      const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
-      return group.name === p.thread && group.leftByMe !== true &&
-        Array.isArray(group.members) && group.members.includes("我") &&
-        group.members.includes("大G") && group.members.includes("西蓝花");
-    } catch { return false; }
-  });
+  }, [wxGroupChatsRaw, wxGroupStorageKey, wxGroupDataStorageKey, storedWxGroupChats, p.onUi, catRescueRaw, allItems.length]);
+  const isThreeWayGroupThread = !!activeGroupRecord &&
+    Array.isArray(activeGroupRecord.members) && activeGroupRecord.members.includes("我") &&
+    activeGroupRecord.members.includes("大G") && activeGroupRecord.members.includes("西蓝花");
 
   // Keep the story UI active even before its first scripted message is saved.
   // The first choice is what starts the story, so requiring existing story
@@ -2396,10 +2461,12 @@ export function WeChatSkin(p: SkinProps) {
   // runtime.messages while older story lines live in catRescueState; relying
   // only on the branch-specific baseThreadItems filters could leave a preview
   // visible in the list but absent from the opened chat.
-  const activeThreadOwner = isBroccoliThread ? "西蓝花" : isMonsterThread ? "大G" : p.thread;
+  const activeThreadOwner = isBroccoliThread ? "西蓝花" : isMonsterThread ? "大G" : (activeGroupThreadName || p.thread);
   const belongsToActiveThread = (item: Item) => {
     const owner = item.meta?.storyThread || item.title;
-    return (owner === "温尚翊" ? "大G" : owner) === activeThreadOwner;
+    const canonicalOwner = owner === "温尚翊" ? "大G" : owner;
+    return canonicalOwner === activeThreadOwner ||
+      (!!activeGroupThreadName && (item.title === activeGroupThreadName || item.meta?.storyThread === activeGroupThreadName));
   };
   const orderedThreadItems = orderCatRescueThreadItems([
     ...baseThreadItems,
@@ -4843,7 +4910,7 @@ export function WeChatSkin(p: SkinProps) {
       return group.id && group.name && Array.isArray(group.members) ? [group] : [];
     } catch { return []; }
   });
-  const activeGroupChat = wxGroupChats.find((group) => group.name === p.thread);
+  const activeGroupChat = wxGroupChats.find((group) => group.name === p.thread || group.name === activeGroupThreadName || group.remark === p.thread);
   // After the final group-chat line has fully arrived, trigger Broccoli's
   // one-time incoming call. Keep it tied to this group so the fixed call
   // history is written back into the same conversation.
@@ -6014,7 +6081,7 @@ export function WeChatSkin(p: SkinProps) {
               </button>
               <div className="wx-conversation-list">
                 {filteredConversations.map((name) => {
-                  const list = allItems.filter((i) => i.title === name);
+                  const list = allItems.filter((i) => i.title === name || i.meta?.storyThread === name);
                   const last = list.at(-1) || { body: "群聊", time: "", avatar: "", read: true, title: name, sender: "" };
                   const unread = !readThreads.includes(name) && list.some((i) => !i.read);
                   return (
