@@ -157,7 +157,7 @@ function PhoneRuntime({
   const [dagHotpotReplyReady, setDagHotpotReplyReady] = useState(false);
   const [postDinnerCallStep, setPostDinnerCallStep] = useState(-1);
   const [postDinnerReplyReady, setPostDinnerReplyReady] = useState(false);
-  const postDinnerCallActive = s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
+
   const postDinnerCallAudio = Array.from({ length: 21 }, (_, index) => `./assets/dag-wechat-call-${String(index + 10).padStart(2, "0")}.mp3`);
   const postDinnerCallLines = ["喂？能听到我说话吗？","弹了一下午吉他晚上又开车，手很酸欸！","对啊，好心人给你点奶茶，晚上还请你吃饭，陪我聊聊天怎么啦？","嗯...不知道诶，随便说嘛！晚上的日料好吃吗？","好吃就好啦，下次还可以去。对啦突然想到，下周的演唱会要不要来？我可以给你留票。","没关系啦，这又不是什么麻烦事。","没有啊，你又不上台，怎么会打扰到我。","你考虑好了明天跟我说喔。","对啊就一直练团练团练团，手都要断了。","还好啦都习惯了。欸你声音怎么怪怪的，该不会是还在害羞？","没有吼？那怎么今晚这么安静啦？之前不是最喜欢改改叫的吗？","好啦不闹你。你有听到玩玩在叫吗？它刚吃完饭现在在家里跑酷。","是夜宵啦！会长不要那么警惕好不好？","好好好我的错我的错，你是不是该去洗洗睡？","我一会就睡了啦，还有点工作没忙完。","嗯嗯，晚安哦~","你怎么还不挂电话？舍不得哦？","对啊，我舍不得。","那我真不挂喽。","我哪有！好了好了，快去洗澡。","嗯哼，你快挂电话。"];
   const postDinnerCallReplies = ["嗯嗯可以啦！干嘛不打字讲话哦？","喔...所以我现在是陪聊？","想聊什么？我陪你五块钱的。","好吃的！","啊，真的可以？","会不会打扰到你....","那我考虑一下啦，大马有点点远....","嗯呐~你今天就一直在练团吗？","真的好辛苦，我看你手上茧都练脱皮，会不会痛？","....你乱说什么！","偶尔安静一下不行吗？我很淑女的。","这么晚了才给玩玩吃饭！你要死啊！！","谁叫你不说清楚啊！","欸都这么晚了，是要睡了，你呢？还不睡吗？","好啦，那你早忙完早休息哦！","晚安~","你也没挂啊！",".......那你别挂。","你是不是想偷听我洗澡！","喔，那我去了哦...","掰掰。"];
@@ -271,6 +271,7 @@ function PhoneRuntime({
     };
   }, [creator, ready]);
   const s = external ?? own;
+  const postDinnerCallActive = s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const milkTeaCallActive = s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   const dagHotpotCallActive = s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const deliveryCallActive = s?.incomingCall?.caller === "外卖";
