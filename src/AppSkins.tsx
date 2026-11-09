@@ -2206,7 +2206,28 @@ export function WeChatSkin(p: SkinProps) {
   const activeMilkTeaGiftStage = milkTeaGiftStage < 0 ? 0 : milkTeaGiftStage;
   const milkTeaGiftStoryActive = isBroccoliThread && milkTeaGiftUnlocked && activeMilkTeaGiftStage >= 0;
 
-  const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", []);
+  // Older builds accidentally wrote this array as a JSON string via p.onUi.
+  // Recover that legacy representation before rendering the WeChat conversation list.
+  const storedWxGroupChats = p.ui?.wxGroupChatsV1;
+  const legacyWxGroupChats = (() => {
+    if (typeof storedWxGroupChats !== "string") return [];
+    try {
+      const parsed: unknown = JSON.parse(storedWxGroupChats);
+      return Array.isArray(parsed) ? parsed.filter((entry): entry is string => typeof entry === "string") : [];
+    } catch {
+      return [];
+    }
+  })();
+  const wxGroupChatsInitial = Array.isArray(storedWxGroupChats)
+    ? storedWxGroupChats.filter((entry): entry is string => typeof entry === "string")
+    : legacyWxGroupChats;
+  const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", wxGroupChatsInitial);
+  useEffect(() => {
+    if (typeof p.ui?.wxGroupChatsV1 === "string") {
+      // Persist the migrated array so future saves keep the correct data type.
+      p.onUi?.("wxGroupChatsV1", wxGroupChatsRaw);
+    }
+  }, [p.ui?.wxGroupChatsV1, wxGroupChatsRaw, p.onUi]);
   const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
     try {
       const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
@@ -4677,7 +4698,7 @@ export function WeChatSkin(p: SkinProps) {
     const group = { id: `wx-group-${Date.now()}`, name: `${members.map(displayName).join("、")}的群聊`, members: [...members, "我"] };
     const next = [...wxGroupChatsRaw, JSON.stringify(group)];
     setWxGroupChatsRaw(next);
-    p.onUi?.("wxGroupChatsV1", JSON.stringify(next));
+
     setGroupPickerOpen(false);
     setSelectedGroupMembers([]);
     setUtility("");
@@ -5237,7 +5258,7 @@ export function WeChatSkin(p: SkinProps) {
                   } catch { return raw; }
                 });
                 setWxGroupChatsRaw(nextGroups);
-                p.onUi?.("wxGroupChatsV1", JSON.stringify(nextGroups));
+
                 p.onThread("");
                 setUtility("");
                 setAccidentalGroupStoryStep(0);
@@ -5311,7 +5332,7 @@ export function WeChatSkin(p: SkinProps) {
                         JSON.stringify(restoredGroup),
                       ];
                       setWxGroupChatsRaw(nextGroups);
-                      p.onUi?.("wxGroupChatsV1", JSON.stringify(nextGroups));
+
                       setAccidentalGroupInvitePending(false);
                       p.onUi?.("wxAccidentalGroupInvitePendingV1", false);
                       setThreeWayRejoinReplyPending(true);
