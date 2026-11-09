@@ -4129,7 +4129,7 @@ export function WeChatSkin(p: SkinProps) {
     if (returnDinnerStage !== 579 || (p.thread !== "大G" && p.thread !== "温尚翊") || pendingCatLines.length > 0) return;
     const delivered = [...p.items, ...catRescue.messages];
     const finalLineDelivered = delivered.some((item) =>
-      item.sender === "大G" && item.thread === "大G" && item.body.trim() === "方便接電話嗎？"
+      item.sender === "大G" && item.body.trim() === "方便接電話嗎？"
     );
     if (!finalLineDelivered || p.ui?.wxDaGHotpotCallRequestedV1 === true ||
         p.ui?.wxDaGHotpotCallStartedV1 === true || p.ui?.wxDaGHotpotCallFinishedV1 === true) return;
