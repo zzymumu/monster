@@ -2284,15 +2284,6 @@ export function WeChatSkin(p: SkinProps) {
       return { groups: normalizeWxGroupChats(parsed.groups), messages };
     } catch { return { groups: [] as string[], messages: [] as Item[] }; }
   })();
-  const browserSavedWxGroups = (() => {
-    if (typeof window === "undefined") return browserSavedWxGroupData.groups;
-    try {
-      return mergeWxGroupChats(
-        browserSavedWxGroupData.groups,
-        normalizeWxGroupChats(window.localStorage.getItem(wxGroupStorageKey)),
-      );
-    } catch { return browserSavedWxGroupData.groups; }
-  })();
   // A browser backup is only a crash-recovery copy, not an independent source
   // of truth for a newly loaded save. Restoring it unconditionally resurrected
   // groups from an older playthrough after the player started over.
