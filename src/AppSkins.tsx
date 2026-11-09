@@ -3925,6 +3925,128 @@ export function WeChatSkin(p: SkinProps) {
     { stage: 541, chat: "大G", id: "dag-dinner-care-reminder-541-v1", label: "知道啦！\n你也要记得吃饭！", nextStage: 542, lines: [{"sender":"我","body":"知道啦！","thread":"大G"},{"sender":"我","body":"你也要记得吃饭！","thread":"大G"},{"sender":"大G","body":"好。","thread":"大G"},{"sender":"大G","body":"聽會長的。","thread":"大G"}] },
     { stage: 542, chat: "大G", id: "dag-dinner-good-girl-542-v1", label: "乖~", nextStage: 543, lines: [{"sender":"我","body":"乖~","thread":"大G"},{"sender":"大G","body":"……","thread":"大G"},{"sender":"大G","body":"這句話怎麼聽起來怪怪的？","thread":"大G"}] },
     { stage: 543, chat: "大G", id: "dag-dinner-tease-543-v1", label: "哈哈哈哈哈哈！", nextStage: 544, lines: [{"sender":"我","body":"哈哈哈哈哈哈！","thread":"大G"},{"sender":"大G","body":"算了。","thread":"大G"},{"sender":"大G","body":"會長開心就好。","thread":"大G"},{"sender":"大G","body":"还有，别忘了你在朋友圈说的话。","thread":"大G"}] },
+    { stage: 544, chat: "西蓝花", id: "broccoli-dinner-meaning-open-544-v1", label: "出来出来，我问你件事。", nextStage: 545, lines: [
+      { sender: "我", body: "出来出来，我问你件事。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "干嘛？", thread: "西蓝花" },
+    ]},
+    { stage: 545, chat: "西蓝花", id: "broccoli-moment-posted-dag-contact-545-v1", label: "你不是叫我去发朋友圈吗？我发了。然后温尚翊有来找我。", nextStage: 546, lines: [
+      { sender: "我", body: "你不是叫我去发朋友圈吗？", thread: "西蓝花" },
+      { sender: "我", body: "我发了。", thread: "西蓝花" },
+      { sender: "我", body: "然后温尚翊有来找我。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他认领啦？", thread: "西蓝花" },
+    ]},
+    { stage: 546, chat: "西蓝花", id: "broccoli-no-milk-tea-confession-546-v1", label: "没有啊！他是约我晚上去吃饭来着。完全没提奶茶的事。", nextStage: 547, lines: [
+      { sender: "我", body: "没有啊！", thread: "西蓝花" },
+      { sender: "我", body: "他是约我晚上去吃饭来着。", thread: "西蓝花" },
+      { sender: "我", body: "完全没提奶茶的事。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "啊？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以不是他？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那他突然约你吃饭干嘛？", thread: "西蓝花" },
+    ]},
+    { stage: 547, chat: "西蓝花", id: "broccoli-dinner-reason-and-hug-reminder-547-v1", label: "他说冠佑推荐的店想找人去试试。哎呀重点不是这个，重点是他刚才说，让我别忘了朋友圈说的话。", nextStage: 548, lines: [
+      { sender: "我", body: "他说冠佑推荐的店想找人去试试。", thread: "西蓝花" },
+      { sender: "我", body: "哎呀重点不是这个，重点是他刚才说，让我别忘了朋友圈说的话。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "……？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你朋友圈说的话？要给好心人抱抱那个？", thread: "西蓝花" },
+    ]},
+    { stage: 548, chat: "西蓝花", id: "broccoli-why-remind-hug-548-v1", label: "对啊！所以我才觉得很奇怪。他又没说奶茶是他送的，干嘛特地提醒我这个？", nextStage: 549, lines: [
+      { sender: "我", body: "对啊！", thread: "西蓝花" },
+      { sender: "我", body: "所以我才觉得很奇怪。", thread: "西蓝花" },
+      { sender: "我", body: "他又没说奶茶是他送的，干嘛特地提醒我这个？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不是，你先等等。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我觉得你是不是把事情想复杂了？", thread: "西蓝花" },
+    ]},
+    { stage: 549, chat: "西蓝花", id: "broccoli-online-cant-hug-549-v1", label: "啊？", nextStage: 550, lines: [
+      { sender: "我", body: "啊？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你想想啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "如果奶茶真的是他送的，那你朋友圈说要给好心人一个大大的抱抱。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "他看到以后，不就知道你说的是他了吗？", thread: "西蓝花" },
+    ]},
+    { stage: 550, chat: "西蓝花", id: "broccoli-no-confirmation-550-v1", label: "可是他也没有承认啊……", nextStage: 551, lines: [
+      { sender: "我", body: "可是他也没有承认啊……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那他为什么要特地提醒你？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "而且你想想，线上怎么抱抱？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "隔着手机抱吗？", thread: "西蓝花" },
+    ]},
+    { stage: 551, chat: "西蓝花", id: "broccoli-meet-to-hug-551-v1", label: "…………", nextStage: 552, lines: [
+      { sender: "我", body: "…………", thread: "西蓝花" },
+      { sender: "西蓝花", body: "肯定得约线下啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以他这不就约你吃饭了吗？", thread: "西蓝花" },
+    ]},
+    { stage: 552, chat: "西蓝花", id: "broccoli-so-you-mean-552-v1", label: "！！！！\n你的意思是……", nextStage: 553, lines: [
+      { sender: "我", body: "！！！！", thread: "西蓝花" },
+      { sender: "我", body: "你的意思是……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "我只是说有这个可能啦！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "如果奶茶真的是他送的，那他约你吃饭，很可能就是想给你一个当面兑现承诺的机会啊。", thread: "西蓝花" },
+    ]},
+    { stage: 553, chat: "西蓝花", id: "broccoli-afraid-misread-553-v1", label: "可是万一不是他送的呢？\n那我岂不是自作多情了……", nextStage: 554, lines: [
+      { sender: "我", body: "可是万一不是他送的呢？", thread: "西蓝花" },
+      { sender: "我", body: "那我岂不是自作多情了……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "所以我才说是可能啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "不过说真的，我也觉得这件事越来越可疑了。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "之前我们就觉得奶茶很像是他送的，现在又突然提起抱抱。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你不觉得时间也太巧了吗？", thread: "西蓝花" },
+    ]},
+    { stage: 554, chat: "西蓝花", id: "broccoli-more-confused-554-v1", label: "啊啊啊啊啊！\n你这么一说我更不知道怎么办了！", nextStage: 555, lines: [
+      { sender: "我", body: "啊啊啊啊啊！", thread: "西蓝花" },
+      { sender: "我", body: "你这么一说我更不知道怎么办了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "怎么办？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "晚上去吃饭啊！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "到时候看看他会不会自己露馅。", thread: "西蓝花" },
+    ]},
+    { stage: 555, chat: "西蓝花", id: "broccoli-what-if-he-hugs-555-v1", label: "那如果他真的提抱抱呢？", nextStage: 556, lines: [
+      { sender: "我", body: "那如果他真的提抱抱呢？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那你就抱呗！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "反正是你自己答应的，又不是人家逼你的。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "抱五月天怪兽怎么了，横竖你都不吃亏。", thread: "西蓝花" },
+    ]},
+    { stage: 556, chat: "西蓝花", id: "broccoli-not-so-easy-556-v1", label: "你说得倒是轻松……", nextStage: 557, lines: [
+      { sender: "我", body: "你说得倒是轻松……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "哟。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "还没见面就开始紧张了？", thread: "西蓝花" },
+    ]},
+    { stage: 557, chat: "西蓝花", id: "broccoli-deny-nervous-557-v1", label: "我没有！！\n我只是觉得有点突然嘛……", nextStage: 558, lines: [
+      { sender: "我", body: "我没有！！", thread: "西蓝花" },
+      { sender: "我", body: "我只是觉得有点突然嘛……", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你回复他了吗？", thread: "西蓝花" },
+    ]},
+    { stage: 558, chat: "西蓝花", id: "broccoli-not-replied-yet-558-v1", label: "还没有呢，我不知道要说什么，就赶紧先来找你了。", nextStage: 559, lines: [
+      { sender: "我", body: "还没有呢，我不知道要说什么，就赶紧先来找你了。", thread: "西蓝花" },
+      { sender: "我", body: "你说……他是不是在暗示我主动一点啊？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "这个老狗男，我发现他特别会撩人还不直说。", thread: "西蓝花" },
+    ]},
+    { stage: 559, chat: "西蓝花", id: "broccoli-how-to-reply-559-v1", label: "快快快，我要怎么回？", nextStage: 560, lines: [
+      { sender: "我", body: "快快快，我要怎么回？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你别回了，装死，你不是最会装死了吗？", thread: "西蓝花" },
+    ]},
+    { stage: 560, chat: "西蓝花", id: "broccoli-not-polite-560-v1", label: "（；´д｀）ゞ这不礼貌。", nextStage: 561, lines: [
+      { sender: "我", body: "（；´д｀）ゞ这不礼貌。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那你就回哦哦好的。", thread: "西蓝花" },
+    ]},
+    { stage: 561, chat: "西蓝花", id: "broccoli-silly-reply-561-v1", label: "？这像个傻子。", nextStage: 562, lines: [
+      { sender: "我", body: "？这像个傻子。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "那你回 你什么意思？", thread: "西蓝花" },
+    ]},
+    { stage: 562, chat: "西蓝花", id: "broccoli-too-harsh-562-v1", label: "？好凶。", nextStage: 563, lines: [
+      { sender: "我", body: "？好凶。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "............我求求你了，你要不把手机给我，我回。", thread: "西蓝花" },
+    ]},
+    { stage: 563, chat: "西蓝花", id: "broccoli-refuse-phone-563-v1", label: "不要！", nextStage: 564, lines: [
+      { sender: "我", body: "不要！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "切，瞧你舍不得那样。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "行了，你就说好啦，不会忘。", thread: "西蓝花" },
+    ]},
+    { stage: 564, chat: "西蓝花", id: "broccoli-afraid-late-reply-564-v1", label: "那我隔这么久才回，他会不会觉得我有病？", nextStage: 565, lines: [
+      { sender: "我", body: "那我隔这么久才回，他会不会觉得我有病？", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你什么时候这么优柔寡断了啊！", thread: "西蓝花" },
+    ]},
+    { stage: 565, chat: "西蓝花", id: "broccoli-go-get-ready-565-v1", label: "不跟你说了！", nextStage: 566, lines: [
+      { sender: "我", body: "不跟你说了！", thread: "西蓝花" },
+      { sender: "西蓝花", body: "快去想想晚上要穿什么吧，别又蓬头垢面的。", thread: "西蓝花" },
+    ]},
+    { stage: 566, chat: "西蓝花", id: "broccoli-end-get-ready-566-v1", label: "哦....那我去了。", nextStage: 567, lines: [
+      { sender: "我", body: "哦....那我去了。", thread: "西蓝花" },
+    ]},
   ];
 
   // After the player says goodbye to Broccoli, DaG sends the check-in
