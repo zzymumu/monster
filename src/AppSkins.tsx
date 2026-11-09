@@ -2227,17 +2227,41 @@ export function WeChatSkin(p: SkinProps) {
       return [JSON.stringify(candidate)];
     });
   };
-  const wxGroupChatsInitial = normalizeWxGroupChats(storedWxGroupChats);
+  const wxGroupStorageKey = "foundphone-wechat-groups-v1:" + (p.owner || "default");
+  const browserSavedWxGroups = (() => {
+    if (typeof window === "undefined") return [];
+    try { return normalizeWxGroupChats(window.localStorage.getItem(wxGroupStorageKey)); }
+    catch { return []; }
+  })();
+  const mergeWxGroupChats = (...sources: string[][]): string[] => {
+    const byId = new Map<string, string>();
+    for (const source of sources) for (const raw of source) {
+      try {
+        const group = JSON.parse(raw) as { id?: string };
+        if (group.id) byId.set(group.id, raw);
+      } catch { /* ignore malformed legacy entries */ }
+    }
+    return [...byId.values()];
+  };
+  const wxGroupChatsInitial = mergeWxGroupChats(normalizeWxGroupChats(storedWxGroupChats), browserSavedWxGroups);
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", wxGroupChatsInitial);
-  const wxGroupChatsNeedMigration = typeof storedWxGroupChats === "string" ||
-    (Array.isArray(storedWxGroupChats) && storedWxGroupChats.some((entry) => typeof entry !== "string"));
+  const persistWxGroupChats = (groups: string[]) => {
+    // Keep a synchronous browser-side recovery copy as well as the normal
+    // save-slot state. This protects group membership if a page refresh races
+    // the IndexedDB autosave; group IDs and names remain unchanged.
+    try { window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(groups)); } catch { /* normal save remains available */ }
+    setWxGroupChatsRaw(groups);
+  };
   useEffect(() => {
-    if (wxGroupChatsNeedMigration) {
-      // Normalize legacy serialized strings and object-array saves without
-      // dropping existing group IDs, names, members, or message threads.
+    if (typeof window !== "undefined") {
+      try { window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(wxGroupChatsRaw)); } catch { /* normal save remains available */ }
+    }
+    const needsMigration = typeof storedWxGroupChats === "string" ||
+      (Array.isArray(storedWxGroupChats) && storedWxGroupChats.some((entry) => typeof entry !== "string"));
+    if (needsMigration || browserSavedWxGroups.length > 0 && wxGroupChatsRaw.length > 0) {
       p.onUi?.("wxGroupChatsV1", wxGroupChatsRaw);
     }
-  }, [wxGroupChatsNeedMigration, wxGroupChatsRaw, p.onUi]);
+  }, [wxGroupChatsRaw, wxGroupStorageKey, storedWxGroupChats, p.onUi]);
   const isThreeWayGroupThread = wxGroupChatsRaw.some((raw) => {
     try {
       const group = JSON.parse(raw) as { name?: string; members?: string[]; leftByMe?: boolean };
@@ -4859,7 +4883,7 @@ export function WeChatSkin(p: SkinProps) {
     if (members.length < 2) return;
     const group = { id: `wx-group-${Date.now()}`, name: `${members.map(displayName).join("、")}的群聊`, members: [...members, "我"] };
     const next = [...wxGroupChatsRaw, JSON.stringify(group)];
-    setWxGroupChatsRaw(next);
+    persistWxGroupChats(next);
 
     setGroupPickerOpen(false);
     setSelectedGroupMembers([]);
@@ -5419,7 +5443,7 @@ export function WeChatSkin(p: SkinProps) {
                     return group.id === activeGroupChat.id ? JSON.stringify({ ...group, leftByMe: true }) : raw;
                   } catch { return raw; }
                 });
-                setWxGroupChatsRaw(nextGroups);
+                persistWxGroupChats(nextGroups);
 
                 p.onThread("");
                 setUtility("");
@@ -5493,7 +5517,7 @@ export function WeChatSkin(p: SkinProps) {
                         }),
                         JSON.stringify(restoredGroup),
                       ];
-                      setWxGroupChatsRaw(nextGroups);
+                      persistWxGroupChats(nextGroups);
 
                       setAccidentalGroupInvitePending(false);
                       p.onUi?.("wxAccidentalGroupInvitePendingV1", false);
