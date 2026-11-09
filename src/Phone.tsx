@@ -157,6 +157,12 @@ function PhoneRuntime({
   const [dagHotpotReplyReady, setDagHotpotReplyReady] = useState(false);
   const [postDinnerCallStep, setPostDinnerCallStep] = useState(-1);
   const [postDinnerReplyReady, setPostDinnerReplyReady] = useState(false);
+  const [outgoingDaGCallStep, setOutgoingDaGCallStep] = useState(-1);
+  const [outgoingDaGReplyReady, setOutgoingDaGReplyReady] = useState(false);
+  const outgoingDaGCallActive = s?.ui?.wechat?.wxOutgoingDaGCallV1 === true && s?.incomingCall?.direction === "outgoing" && (s?.incomingCall?.caller === "大G" || s?.incomingCall?.caller === "温尚翊");
+  const outgoingDaGCallAudio = Array.from({ length: 13 }, (_, index) => `./assets/dag-outgoing-call-${String(index + 1).padStart(2, "0")}.mp3`);
+  const outgoingDaGCallLines = ["喂？怎么啦？","欸你等我一下，太吵了，我出去接哦。好啦，你说。","真的不来哦？我本来还想说演出结束后带你去吃好吃的。","白痴哦，这有什么好道歉的，下次再来看不就好了。","好啊你说的哦，等我回来请我吃饭。","才不要吃榴莲咧，臭死了。","原来你喜欢吃榴莲。","我记得我第一次吃榴莲好像是在录综艺，我以为我吃到屎了。","哈哈哈实话啊，真的很臭欸。","好啦不气不气，逗你玩的嘛。","好哦，那我先去忙了哦，晚点聊。","ok啦会记得吃饭，你也是。","拜拜~"];
+  const outgoingDaGCallReplies = ["嗯...就是.....","我想了一下，大马我还是不去了。","嗯真的去不了啦，那几天有点事，对不起哦....","嗯嗯，等你回来我请你吃饭。","嗯哼，君子一言驷马难追。对了，大马的榴莲超好吃诶，帮我多吃点。","你放屁，明明那么好吃！","对啊，榴莲是世界上最完美的水果了~你到底有没有吃过，没吃过就在乱说。","...........",".............","赶紧去忙吧你。","要按时吃饭啊，别又不吃。","好，拜拜~"];
 
   const postDinnerCallAudio = Array.from({ length: 21 }, (_, index) => `./assets/dag-wechat-call-${String(index + 10).padStart(2, "0")}.mp3`);
   const postDinnerCallLines = ["喂？能听到我说话吗？","弹了一下午吉他晚上又开车，手很酸欸！","对啊，好心人给你点奶茶，晚上还请你吃饭，陪我聊聊天怎么啦？","嗯...不知道诶，随便说嘛！晚上的日料好吃吗？","好吃就好啦，下次还可以去。对啦突然想到，下周的演唱会要不要来？我可以给你留票。","没关系啦，这又不是什么麻烦事。","没有啊，你又不上台，怎么会打扰到我。","你考虑好了明天跟我说喔。","对啊就一直练团练团练团，手都要断了。","还好啦都习惯了。欸你声音怎么怪怪的，该不会是还在害羞？","没有吼？那怎么今晚这么安静啦？之前不是最喜欢改改叫的吗？","好啦不闹你。你有听到玩玩在叫吗？它刚吃完饭现在在家里跑酷。","是夜宵啦！会长不要那么警惕好不好？","好好好我的错我的错，你是不是该去洗洗睡？","我一会就睡了啦，还有点工作没忙完。","嗯嗯，晚安哦~","你怎么还不挂电话？舍不得哦？","对啊，我舍不得。","那我真不挂喽。","我哪有！好了好了，快去洗澡。","嗯哼，你快挂电话。"];
@@ -550,6 +556,47 @@ function PhoneRuntime({
   };
 
   useEffect(() => {
+    if (!outgoingDaGCallActive || s.incomingCall?.status !== "ringing") return;
+    const timer = window.setTimeout(() => {
+      const current = runtimeRef.current;
+      if (!current.incomingCall || current.incomingCall.status !== "ringing") return;
+      setOutgoingDaGCallStep(0); setOutgoingDaGReplyReady(false);
+      update({ ...current, incomingCall: { ...current.incomingCall, status: "answered" } });
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [outgoingDaGCallActive, s.incomingCall?.status]);
+
+  useEffect(() => {
+    if (!outgoingDaGCallActive || s.incomingCall?.status !== "answered" || outgoingDaGCallStep < 0 || outgoingDaGCallStep > 12) return;
+    const audio = milkTeaAudioRef.current;
+    if (!audio) return;
+    audio.src = outgoingDaGCallAudio[outgoingDaGCallStep]; audio.currentTime = 0;
+    setOutgoingDaGReplyReady(false);
+    void audio.play().catch(() => setCallTopNotice("语音播放失败，请检查设备音量"));
+  }, [outgoingDaGCallActive, s.incomingCall?.status, outgoingDaGCallStep]);
+
+  const sendOutgoingDaGCallReply = () => {
+    if (runtimeRef.current.incomingCall?.status !== "answered" || !outgoingDaGReplyReady) return;
+    setOutgoingDaGReplyReady(false);
+    if (outgoingDaGCallStep < 11) setOutgoingDaGCallStep((step) => step + 1);
+  };
+
+  const finishOutgoingDaGCall = () => {
+    const current = runtimeRef.current;
+    if (!current.incomingCall || current.incomingCall.status !== "answered") return;
+    const duration = `${String(Math.floor(callElapsed / 60)).padStart(2,"0")}:${String(callElapsed % 60).padStart(2,"0")}`;
+    const record = { id: "dag-outgoing-wechat-call-v1", title: "大G", body: `通话时长：${duration}`,
+      richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: duration }, time: new Date().toISOString(),
+      sender: "大G", avatar: "", kind: "call" as const, media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
+      outgoing: true, read: true, likes: 0, comments: [] };
+    update({ ...current, incomingCall: null,
+      messages: { ...current.messages, wechat: [...(current.messages.wechat ?? []).filter((item) => item.id !== record.id), record] },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxOutgoingDaGCallV1: false, wxOutgoingDaGCallFinishedV1: true } } });
+    setOutgoingDaGCallStep(-1); setOutgoingDaGReplyReady(false);
+    if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
+  };
+
+  useEffect(() => {
     if (!milkTeaCallActive || s.incomingCall?.status !== "ringing" || s.incomingCall?.direction !== "outgoing") return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
@@ -593,6 +640,8 @@ function PhoneRuntime({
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
   };
   const onMilkTeaAudioEnded = () => {
+    if (outgoingDaGCallActive && outgoingDaGCallStep >= 0 && outgoingDaGCallStep <= 11) { setOutgoingDaGReplyReady(true); return; }
+    if (outgoingDaGCallActive && outgoingDaGCallStep === 12) { finishOutgoingDaGCall(); return; }
     if (postDinnerCallActive && ((postDinnerCallStep >= 0 && postDinnerCallStep <= 15) || (postDinnerCallStep >= 17 && postDinnerCallStep <= 21))) { setPostDinnerReplyReady(true); return; }
     if (dagHotpotCallActive && dagHotpotCallStep >= 0 && dagHotpotCallStep <= 8) { setDagHotpotReplyReady(true); return; }
     if (milkTeaCallStep === 3) finishMilkTeaCall();
@@ -643,7 +692,8 @@ function PhoneRuntime({
     if (request !== "audio" && request !== "video") return;
     const target = s.ui?.wechat?.openThread;
     if (typeof target !== "string" || !target) return;
-    update({ ...s, incomingCall: { caller: target, target, status: "ringing", direction: "outgoing", callType: request }, ui: { ...s.ui, wechat: { ...s.ui?.wechat, wxOutgoingCallRequest: "" } } });
+    const isDaG = target === "大G" || target === "温尚翊" || target === "温尚翊（大G）";
+    update({ ...s, incomingCall: { caller: target, target, status: "ringing", direction: "outgoing", callType: request }, ui: { ...s.ui, wechat: { ...s.ui?.wechat, wxOutgoingCallRequest: "", wxOutgoingDaGCallV1: isDaG && request === "audio" } } });
   }, [s.incomingCall, s.ui?.wechat?.wxOutgoingCallRequest, s.ui?.wechat?.openThread, ready, locked, creator]);
   useEffect(() => {
     if (creator || !ready || locked || s.incomingCall) return;
@@ -1928,6 +1978,13 @@ function PhoneRuntime({
                     : <button type="button" onClick={() => setDeliveryCallReplySent(true)} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>好，谢谢你！我现在去拿。</button>}
                 </div>
               )}
+              {outgoingDaGCallActive && s.incomingCall.status === "answered" && (
+                <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>{displayName} · 语音字幕</div>
+                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>{outgoingDaGCallLines[outgoingDaGCallStep] ?? "正在通话…"}</div>
+                  {outgoingDaGReplyReady && outgoingDaGCallStep <= 11 && <button type="button" onClick={sendOutgoingDaGCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{outgoingDaGCallReplies[outgoingDaGCallStep]}</button>}
+                </div>
+              )}
               {postDinnerCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
                   <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
@@ -1962,6 +2019,7 @@ function PhoneRuntime({
                       // The milk-tea scripted call must finish through its own
                       // persisted completion path when the player taps hang up.
                       // Otherwise the Broccoli handoff flag is never written.
+                      if (outgoingDaGCallActive && call.status === "answered") { finishOutgoingDaGCall(); return; }
                       if (postDinnerCallActive && call.status === "answered") { finishPostDinnerCall(); return; }
                       if (dagHotpotCallActive && call.status === "answered") { finishDagHotpotCall(); return; }
                       if (milkTeaCallActive && call.status === "answered" &&
