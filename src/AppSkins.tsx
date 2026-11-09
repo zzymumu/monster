@@ -4177,144 +4177,107 @@ export function WeChatSkin(p: SkinProps) {
       { sender: "大G", body: "不過有件事，我想當面問妳。", thread: "大G" },
       { sender: "大G", body: "方便接電話嗎？", thread: "大G" },
     ]},
-    { stage: 580, chat: "西蓝花", id: "post-dinner-broccoli-reply-580-v1", label: "干嘛啦！！", nextStage: 581, lines: [
-      { sender: "我", body: "干嘛啦！！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "终于舍得出现了？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我还以为你今晚要乐不思蜀了呢。", thread: "西蓝花" },
-    ]},
-    { stage: 581, chat: "西蓝花", id: "post-dinner-food-581-v1", label: "哪有！我这不是刚回来嘛。", nextStage: 582, lines: [
-      { sender: "我", body: "哪有！", thread: "西蓝花" }, { sender: "我", body: "我这不是刚回来嘛。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "嗯哼。", thread: "西蓝花" }, { sender: "西蓝花", body: "所以呢？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "怎么样？", thread: "西蓝花" },
-    ]},
-    { stage: 582, chat: "西蓝花", id: "post-dinner-hug-582-v1", label: "好吃啊！日料真的很好吃！", nextStage: 583, lines: [
-      { sender: "我", body: "好吃啊！", thread: "西蓝花" }, { sender: "我", body: "日料真的很好吃！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我问的是饭吗？", thread: "西蓝花" }, { sender: "西蓝花", body: "你少给我转移话题！", thread: "西蓝花" },
-      { sender: "我", body: "？？？？？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "抱抱！！！", thread: "西蓝花" }, { sender: "西蓝花", body: "抱了没有？", thread: "西蓝花" },
-    ]},
-    { stage: 583, chat: "西蓝花", id: "post-dinner-hug-admit-583-v1", label: "抱了啦……", nextStage: 584, lines: [
-      { sender: "我", body: "抱了啦……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "喔～～～", thread: "西蓝花" }, { sender: "西蓝花", body: "可以啊。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "所以是真的抱到了。", thread: "西蓝花" }, { sender: "我", body: "嗯……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "怎么抱的？", thread: "西蓝花" },
-    ]},
-    { stage: 584, chat: "西蓝花", id: "post-dinner-hug-details-584-v1", label: "就……抱了一下啊。", nextStage: 585, lines: [
-      { sender: "我", body: "就……抱了一下啊。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我知道是抱了一下。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我是问怎么抱的。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "他主动的还是你主动的？", thread: "西蓝花" },
-    ]},
-    { stage: 585, chat: "西蓝花", id: "post-dinner-hesitate-585-v1", label: "他……嗯....也..也不算。", nextStage: 586, lines: [
-      { sender: "我", body: "他……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "他主动的？", thread: "西蓝花" },
-      { sender: "我", body: "嗯....也..也不算。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "到底怎么抱上的？", thread: "西蓝花" },
-    ]},
-    { stage: 586, chat: "西蓝花", id: "post-dinner-parking-586-v1", label: "吃完饭去停车场的时候他突然问我.....", nextStage: 587, lines: [
-      { sender: "我", body: "就……", thread: "西蓝花" },
-      { sender: "我", body: "吃完饭去停车场的时候他突然问我.....", thread: "西蓝花" },
-      { sender: "西蓝花", body: "问你什么？", thread: "西蓝花" },
-    ]},
-    { stage: 587, chat: "西蓝花", id: "post-dinner-promise-587-v1", label: "朋友圈说的那句话，还作数吗？", nextStage: 588, lines: [
-      { sender: "我", body: "问我……", thread: "西蓝花" },
-      { sender: "我", body: "朋友圈说的那句话，还作数吗？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "然后呢？", thread: "西蓝花" },
-    ]},
-    { stage: 588, chat: "西蓝花", id: "post-dinner-hesitate-again-588-v1", label: "我当时愣了一下，还没反应过来他是什么意思。", nextStage: 589, lines: [
-      { sender: "我", body: "我当时愣了一下。", thread: "西蓝花" }, { sender: "我", body: "还没反应过来他是什么意思。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "你不会没回答吧？", thread: "西蓝花" },
-    ]},
-    { stage: 589, chat: "西蓝花", id: "post-dinner-second-ask-589-v1", label: "我哪有！我就是……有点不好意思嘛。", nextStage: 590, lines: [
-      { sender: "我", body: "我哪有！", thread: "西蓝花" }, { sender: "我", body: "我就是……有点不好意思嘛。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "然后他就抱你了？", thread: "西蓝花" },
-      { sender: "我", body: "没有啦......", thread: "西蓝花" },
-      { sender: "我", body: "我不是愣住了吗，然后他就又问了一遍....", thread: "西蓝花" },
-      { sender: "西蓝花", body: "然后呢？", thread: "西蓝花" },
-    ]},
-    { stage: 590, chat: "西蓝花", id: "post-dinner-yes-590-v1", label: "然后我反应过来说作数啊！", nextStage: 591, lines: [
-      { sender: "我", body: "然后我反应过来说作数啊！", thread: "西蓝花" },
-      { sender: "我", body: "然后他就张开了双臂.......", thread: "西蓝花" },
-      { sender: "西蓝花", body: "然后你就扑过去了？", thread: "西蓝花" },
-    ]},
-    { stage: 591, chat: "西蓝花", id: "post-dinner-milk-tea-reveal-591-v1", label: "哎呀没有！然后我说下午给我点奶茶的是你哦？", nextStage: 592, lines: [
-      { sender: "我", body: "哎呀没有！", thread: "西蓝花" },
-      { sender: "我", body: "然后我说下午给我点奶茶的是你哦？", thread: "西蓝花" },
-      { sender: "大G", body: "不然呢？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "那你怎么回他的？我就说点奶茶的是他吧！", thread: "西蓝花" },
-    ]},
-    { stage: 592, chat: "西蓝花", id: "post-dinner-thanks-592-v1", label: "我就说你怎么不早点告诉我！", nextStage: 593, lines: [
-      { sender: "我", body: "我就说你怎么不早点告诉我！", thread: "西蓝花" },
-      { sender: "大G", body: "我又沒問妳。", thread: "西蓝花" },
-    ]},
-    { stage: 593, chat: "西蓝花", id: "post-dinner-long-foreplay-593-v1", label: "然后然后，然后就……", nextStage: 594, lines: [
-      { sender: "西蓝花", body: "继续，你们这个抱抱前摇怎么这么长啊！", thread: "西蓝花" },
-    ]},
-    { stage: 594, chat: "西蓝花", id: "post-dinner-hug-deal-594-v1", label: "我说谢谢你哦。", nextStage: 595, lines: [
-      { sender: "我", body: "然后然后，然后就", thread: "西蓝花" }, { sender: "我", body: "我说谢谢你哦。", thread: "西蓝花" },
-      { sender: "大G", body: "謝謝就完了？不是說好要給好心人一個大大的抱抱嗎？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "噢～～～", thread: "西蓝花" },
-      { sender: "西蓝花", body: "所以他一直记得这件事欸。", thread: "西蓝花" },
-    ]},
-    { stage: 595, chat: "西蓝花", id: "post-dinner-hug-admit-595-v1", label: "嗯……然后我就抱上去了。", nextStage: 596, lines: [
-      { sender: "我", body: "嗯……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "然后你就抱上去了？", thread: "西蓝花" },
-      { sender: "我", body: "对啦……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "你说话怎么突然变得这么不流利？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "平常不是挺能说的吗？", thread: "西蓝花" },
-    ]},
-    { stage: 596, chat: "西蓝花", id: "post-dinner-hug-length-596-v1", label: "我哪有！", nextStage: 597, lines: [
-      { sender: "我", body: "我哪有！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "好，那继续。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "你们抱了多久？", thread: "西蓝花" },
-    ]},
-    { stage: 597, chat: "西蓝花", id: "post-dinner-no-idea-597-v1", label: "不知道……", nextStage: 598, lines: [
-      { sender: "我", body: "不知道……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "不知道？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "你连这个都没注意？", thread: "西蓝花" },
-    ]},
-    { stage: 598, chat: "西蓝花", id: "post-dinner-busy-598-v1", label: "我那时候哪有空注意这个啦……", nextStage: 599, lines: [
-      { sender: "我", body: "我那时候哪有空注意这个啦……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "噢。", thread: "西蓝花" }, { sender: "西蓝花", body: "懂了。", thread: "西蓝花" },
-      { sender: "我", body: "你懂什么啦！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "没什么。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "看来你当时挺忙的。", thread: "西蓝花" },
-    ]},
-    { stage: 599, chat: "西蓝花", id: "post-dinner-feeling-599-v1", label: "有点开心。", nextStage: 600, lines: [
-      { sender: "西蓝花", body: "不过说真的，抱上的时候是什么感觉？", thread: "西蓝花" },
-      { sender: "我", body: "……", thread: "西蓝花" }, { sender: "我", body: "有点开心。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "只有一点？", thread: "西蓝花" },
-    ]},
-    { stage: 600, chat: "西蓝花", id: "post-dinner-really-happy-600-v1", label: "好啦，是很开心。", nextStage: 601, lines: [
-      { sender: "我", body: "好啦，是很开心。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "这还差不多。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我就说嘛。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "你之前还一直纠结是不是自己想太多，现在人家都主动抱你了，你总不能还觉得人家只是出于礼貌吧。", thread: "西蓝花" },
-    ]},
-    { stage: 601, chat: "西蓝花", id: "post-dinner-not-said-601-v1", label: "可是……他也没有说什么特别的话。", nextStage: 602, lines: [
-      { sender: "我", body: "可是……", thread: "西蓝花" }, { sender: "我", body: "他也没有说什么特别的话。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "有些事情也不用非得马上说出来吧。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "至少今晚他确实抱你了，还是主动提出来的。", thread: "西蓝花" },
-      { sender: "西蓝花", body: "这人真的很会。", thread: "西蓝花" },
-    ]},
-    { stage: 602, chat: "西蓝花", id: "post-dinner-scent-602-v1", label: "嗯……", nextStage: 603, lines: [
-      { sender: "我", body: "嗯……", thread: "西蓝花" },
-      { sender: "西蓝花", body: "所以，他身上香不香！", thread: "西蓝花" },
-    ]},
-    { stage: 603, chat: "西蓝花", id: "post-dinner-scent-response-603-v1", label: "？你跳话题的速度也太快了吧？", nextStage: 604, lines: [
-      { sender: "我", body: "？你跳话题的速度也太快了吧？", thread: "西蓝花" },
-      { sender: "西蓝花", body: "哎呀快说啦！香不香？", thread: "西蓝花" },
-    ]},
-    { stage: 604, chat: "西蓝花", id: "post-dinner-laundry-604-v1", label: "就洗衣液的味道啦.......", nextStage: 605, lines: [
-      { sender: "我", body: "就洗衣液的味道啦.......", thread: "西蓝花" },
-      { sender: "西蓝花", body: "我靠，我一想被体温蒸的热乎乎....啊你好幸福！", thread: "西蓝花" },
-    ]},
-    { stage: 605, chat: "西蓝花", id: "post-dinner-giggle-605-v1", label: "嘿嘿嘿嘿嘿嘿嘿嘿", nextStage: 606, lines: [
-      { sender: "我", body: "嘿嘿嘿嘿嘿嘿嘿嘿", thread: "西蓝花" },
-      { sender: "我", body: "他给我打电话了！先不说了喔！", thread: "西蓝花" },
-      { sender: "西蓝花", body: "🙄", thread: "西蓝花" },
-    ]},
+
+    { stage: 580, chat:"西蓝花", id:"post-dinner-broccoli-reply-580-v2", label:"干嘛啦！！", nextStage:581, lines:[
+      ["我","干嘛啦！！"],["西蓝花","终于舍得出现了？"],["西蓝花","我还以为你今晚要乐不思蜀了呢。"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:581, chat:"西蓝花", id:"post-dinner-back-home-581-v2", label:"哪有！\n我这不是刚回来嘛。", nextStage:582, lines:[
+      ["我","哪有！"],["我","我这不是刚回来嘛。"],["西蓝花","嗯哼。"],["西蓝花","所以呢？"],["西蓝花","怎么样？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:582, chat:"西蓝花", id:"post-dinner-food-582-v2", label:"好吃啊！\n日料真的很好吃！", nextStage:583, lines:[
+      ["我","好吃啊！"],["我","日料真的很好吃！"],["西蓝花","我问的是饭吗？"],["西蓝花","你少给我转移话题！"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:583, chat:"西蓝花", id:"post-dinner-what-583-v2", label:"？？？？？", nextStage:584, lines:[
+      ["我","？？？？？"],["西蓝花","抱抱！！！"],["西蓝花","抱了没有？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:584, chat:"西蓝花", id:"post-dinner-silence-584-v2", label:"…………", nextStage:585, lines:[
+      ["我","…………"],["西蓝花","？？？？？"],["西蓝花","你这个沉默是什么意思？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:585, chat:"西蓝花", id:"post-dinner-why-585-v2", label:"你怎么一上来就问这个啦！", nextStage:586, lines:[
+      ["我","你怎么一上来就问这个啦！"],["西蓝花","不然呢？"],["西蓝花","我从下午等到现在欸！"],["西蓝花","你朋友圈都说了要给好心人一个大大的抱抱。"],["西蓝花","人家还特地提醒你别忘了。"],["西蓝花","现在人都送你回来了，你跟我说没这回事？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:586, chat:"西蓝花", id:"post-dinner-embarrassed-586-v2", label:"哎呀……", nextStage:587, lines:[
+      ["我","哎呀……"],["西蓝花","哎呀什么哎呀！"],["西蓝花","快说！"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:587, chat:"西蓝花", id:"post-dinner-admit-587-v2", label:"抱了啦……", nextStage:588, lines:[
+      ["我","抱了啦……"],["西蓝花","喔～～～"],["西蓝花","可以啊。"],["西蓝花","所以是真的抱到了。"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:588, chat:"西蓝花", id:"post-dinner-yes-588-v2", label:"嗯……", nextStage:589, lines:[
+      ["我","嗯……"],["西蓝花","怎么抱的？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:589, chat:"西蓝花", id:"post-dinner-how-589-v2", label:"就……抱了一下啊。", nextStage:590, lines:[
+      ["我","就……抱了一下啊。"],["西蓝花","我知道是抱了一下。"],["西蓝花","我是问怎么抱的。"],["西蓝花","他主动的还是你主动的？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:590, chat:"西蓝花", id:"post-dinner-him-590-v2", label:"他……", nextStage:591, lines:[
+      ["我","他……"],["西蓝花","他主动的？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:591, chat:"西蓝花", id:"post-dinner-not-exactly-591-v2", label:"嗯....也..也不算。", nextStage:592, lines:[
+      ["我","嗯....也..也不算。"],["西蓝花","？"],["西蓝花","到底怎么抱上的？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:592, chat:"西蓝花", id:"post-dinner-parking-592-v2", label:"就……\n吃完饭去停车场的时候他突然问我.....", nextStage:593, lines:[
+      ["我","就……"],["我","吃完饭去停车场的时候他突然问我....."],["西蓝花","问你什么？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:593, chat:"西蓝花", id:"post-dinner-promise-593-v2", label:"问我……\n朋友圈说的那句话，还作数吗？", nextStage:594, lines:[
+      ["我","问我……"],["我","朋友圈说的那句话，还作数吗？"],["西蓝花","然后呢？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:594, chat:"西蓝花", id:"post-dinner-stunned-594-v2", label:"我当时愣了一下。\n还没反应过来他是什么意思。", nextStage:595, lines:[
+      ["我","我当时愣了一下。"],["我","还没反应过来他是什么意思。"],["西蓝花","你不会没回答吧？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:595, chat:"西蓝花", id:"post-dinner-not-silent-595-v2", label:"我哪有！\n我就是……有点不好意思嘛。", nextStage:596, lines:[
+      ["我","我哪有！"],["我","我就是……有点不好意思嘛。"],["西蓝花","然后他就抱你了？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:596, chat:"西蓝花", id:"post-dinner-asked-again-596-v2", label:"没有啦......\n我不是愣住了吗，然后他就又问了一遍....", nextStage:597, lines:[
+      ["我","没有啦......"],["我","我不是愣住了吗，然后他就又问了一遍...."],["西蓝花","然后呢？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:597, chat:"西蓝花", id:"post-dinner-said-yes-597-v2", label:"然后我反应过来说作数啊！\n然后他就张开了双臂.......", nextStage:598, lines:[
+      ["我","然后我反应过来说作数啊！"],["我","然后他就张开了双臂......."],["西蓝花","然后你就扑过去了？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:598, chat:"西蓝花", id:"post-dinner-milk-tea-598-v2", label:"哎呀没有！\n然后我说下午给我点奶茶的是你哦？", nextStage:599, lines:[
+      ["我","哎呀没有！"],["我","然后我说下午给我点奶茶的是你哦？"],["我","他说，不然呢？"],["西蓝花","那你怎么回他的？我就说点奶茶的是他吧！"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:599, chat:"西蓝花", id:"post-dinner-he-didnt-ask-599-v2", label:"我就说你怎么不早点告诉我！\n他说我又没问他。", nextStage:600, lines:[
+      ["我","我就说你怎么不早点告诉我！"],["我","他说我又没问他。"],["西蓝花","继续，你们这个抱抱前摇怎么这么长啊！"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:600, chat:"西蓝花", id:"post-dinner-thank-you-600-v2", label:"然后然后，然后就\n我说谢谢你哦。", nextStage:601, lines:[
+      ["我","然后然后，然后就"],["我","我说谢谢你哦。"],["我","他说，谢谢就完了？不是说好要给好心人一个大大的抱抱吗？"],["西蓝花","噢～～～"],["西蓝花","所以他一直记得这件事欸。"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:601, chat:"西蓝花", id:"post-dinner-hug-question-601-v2", label:"嗯……", nextStage:602, lines:[
+      ["我","嗯……"],["西蓝花","然后你就抱上去了？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:602, chat:"西蓝花", id:"post-dinner-hug-yes-602-v2", label:"对啦……", nextStage:603, lines:[
+      ["我","对啦……"],["西蓝花","你说话怎么突然变得这么不流利？"],["西蓝花","平常不是挺能说的吗？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:603, chat:"西蓝花", id:"post-dinner-fluent-603-v2", label:"我哪有！", nextStage:604, lines:[
+      ["我","我哪有！"],["西蓝花","好，那继续。"],["西蓝花","你们抱了多久？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:604, chat:"西蓝花", id:"post-dinner-duration-604-v2", label:"不知道……", nextStage:605, lines:[
+      ["我","不知道……"],["西蓝花","不知道？"],["西蓝花","你连这个都没注意？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:605, chat:"西蓝花", id:"post-dinner-busy-605-v2", label:"我那时候哪有空注意这个啦……", nextStage:606, lines:[
+      ["我","我那时候哪有空注意这个啦……"],["西蓝花","噢。"],["西蓝花","懂了。"],["我","你懂什么啦！"],["西蓝花","没什么。"],["西蓝花","看来你当时挺忙的。"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:606, chat:"西蓝花", id:"post-dinner-feeling-606-v2", label:"……\n有点开心。", nextStage:607, lines:[
+      ["我","……"],["我","有点开心。"],["西蓝花","只有一点？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:607, chat:"西蓝花", id:"post-dinner-happy-607-v2", label:"好啦，是很开心。", nextStage:608, lines:[
+      ["我","好啦，是很开心。"],["西蓝花","这还差不多。"],["西蓝花","我就说嘛。"],["西蓝花","你之前还一直纠结是不是自己想太多，现在人家都主动抱你了，你总不能还觉得人家只是出于礼貌吧。"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:608, chat:"西蓝花", id:"post-dinner-special-words-608-v2", label:"可是……\n他也没有说什么特别的话。", nextStage:609, lines:[
+      ["我","可是……"],["我","他也没有说什么特别的话。"],["西蓝花","有些事情也不用非得马上说出来吧。"],["西蓝花","至少今晚他确实抱你了，还是主动提出来的。"],["西蓝花","这人真的很会。"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:609, chat:"西蓝花", id:"post-dinner-scent-609-v2", label:"嗯……", nextStage:610, lines:[
+      ["我","嗯……"],["西蓝花","所以，他身上香不香！"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:610, chat:"西蓝花", id:"post-dinner-topic-610-v2", label:"？你跳话题的速度也太快了吧？", nextStage:611, lines:[
+      ["我","？你跳话题的速度也太快了吧？"],["西蓝花","哎呀快说啦！香不香？"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:611, chat:"西蓝花", id:"post-dinner-laundry-611-v2", label:"就洗衣液的味道啦.......", nextStage:612, lines:[
+      ["我","就洗衣液的味道啦......."],["西蓝花","我靠，我一想被体温蒸的热乎乎....啊你好幸福！"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+    { stage:612, chat:"西蓝花", id:"post-dinner-giggle-612-v2", label:"嘿嘿嘿嘿嘿嘿嘿嘿", nextStage:613, lines:[
+      ["我","嘿嘿嘿嘿嘿嘿嘿嘿"],["我","他给我打电话了！先不说了喔！"],["西蓝花","🙄"]
+    ].map(([sender,body])=>({sender,body,thread:"西蓝花"}))},
+
   ];
 
   // Start the scripted WeChat call only after the final "方便接電話嗎？" bubble
@@ -5799,7 +5762,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 605)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
+              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 612)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
                   {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
                     <button key={choice.id} onClick={() => {
