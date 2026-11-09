@@ -1027,16 +1027,18 @@ function PhoneRuntime({
     onOpen?.(id);
     event("openApp", id);
   };
-  // After the scripted Broccoli call ends, the player must open Shopee
+  // After the 43:51 Broccoli signature call ends, the player must open Shopee
   // and remain there for ten uninterrupted seconds before HungryPanda pushes.
+  // Use the signature-call completion flag: the three-way group call is an
+  // earlier, separate scene and must not gate this milk-tea delivery chapter.
   useEffect(() => {
     if (creator || external || !ready || locked || app !== "shopee") return;
     const wx = s.ui?.wechat ?? {};
-    if (wx.wxThreeWayGroupCallFinishedV1 !== true || wx.wxHungryPandaDeliveryNoticeSentV1 === true) return;
+    if (wx.wxBroccoliSignatureCallFinishedV1 !== true || wx.wxHungryPandaDeliveryNoticeSentV1 === true) return;
     const timer = window.setTimeout(() => {
       const current = runtimeRef.current;
       const latestWx = current.ui?.wechat ?? {};
-      if (latestWx.wxThreeWayGroupCallFinishedV1 !== true || latestWx.wxHungryPandaDeliveryNoticeSentV1 === true) return;
+      if (latestWx.wxBroccoliSignatureCallFinishedV1 !== true || latestWx.wxHungryPandaDeliveryNoticeSentV1 === true) return;
       update({
         ...current,
         ui: {
@@ -1048,7 +1050,7 @@ function PhoneRuntime({
       });
     }, 10000);
     return () => window.clearTimeout(timer);
-  }, [app, locked, ready, creator, external, s.ui?.wechat?.wxThreeWayGroupCallFinishedV1, s.ui?.wechat?.wxHungryPandaDeliveryNoticeSentV1]);
+  }, [app, locked, ready, creator, external, s.ui?.wechat?.wxBroccoliSignatureCallFinishedV1, s.ui?.wechat?.wxHungryPandaDeliveryNoticeSentV1]);
 
   // The next DaG chapter is gated by the completed Moments/Vava exchange.
   // YouTube must remain the foreground app continuously for ten seconds.
