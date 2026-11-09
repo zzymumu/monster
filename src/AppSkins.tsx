@@ -2278,8 +2278,8 @@ export function WeChatSkin(p: SkinProps) {
     if (typeof window === "undefined") return browserSavedWxGroupData.groups;
     try {
       return mergeWxGroupChats(
-        normalizeWxGroupChats(window.localStorage.getItem(wxGroupStorageKey)),
         browserSavedWxGroupData.groups,
+        normalizeWxGroupChats(window.localStorage.getItem(wxGroupStorageKey)),
       );
     } catch { return browserSavedWxGroupData.groups; }
   })();
@@ -2297,10 +2297,17 @@ export function WeChatSkin(p: SkinProps) {
   const [wxGroupChatsRaw, setWxGroupChatsRaw] = useSkinState<string[]>(p, "wxGroupChatsV1", wxGroupChatsInitial);
   const groupBackupRestoreApplied = useRef(false);
   const persistWxGroupChats = (groups: string[]) => {
-    // Keep a synchronous browser-side recovery copy as well as the normal
-    // save-slot state. This protects group membership if a page refresh races
-    // the IndexedDB autosave; group IDs and names remain unchanged.
-    try { window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(groups)); } catch { /* normal save remains available */ }
+    // Synchronously persist both group metadata and the current group transcript
+    // before the browser can refresh or close the page.
+    try {
+      const names = new Set(groups.flatMap((raw) => {
+        try { const group = JSON.parse(raw) as { name?: string }; return group.name ? [group.name] : []; }
+        catch { return []; }
+      }));
+      const groupMessages = allItems.filter((item) => names.has(item.meta?.storyThread || item.title));
+      window.localStorage.setItem(wxGroupStorageKey, JSON.stringify(groups));
+      window.localStorage.setItem(wxGroupDataStorageKey, JSON.stringify({ version: 2, groups, messages: groupMessages }));
+    } catch { /* normal save remains available */ }
     setWxGroupChatsRaw(groups);
   };
   const groupRecords = wxGroupChatsRaw.flatMap((raw) => {
