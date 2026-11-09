@@ -4414,7 +4414,7 @@ export function WeChatSkin(p: SkinProps) {
     if (returnDinnerStage !== 614 || p.thread !== "西蓝花" || pendingCatLines.length > 0) return;
     const delivered = [...p.items, ...catRescue.messages];
     const devilDelivered = delivered.some((item) =>
-      item.sender === "西蓝花" && item.body.trim() === "🙄" && item.thread === "西蓝花"
+      item.sender === "西蓝花" && item.body.trim() === "🙄" && (item.meta?.storyThread === "西蓝花" || item.title === "西蓝花")
     );
     if (!devilDelivered || p.ui?.wxPostDinnerCallRequestedV1 === true ||
         p.ui?.wxPostDinnerCallStartedV1 === true || p.ui?.wxPostDinnerCallFinishedV1 === true) return;
