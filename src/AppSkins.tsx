@@ -2309,6 +2309,7 @@ export function WeChatSkin(p: SkinProps) {
       window.localStorage.setItem(wxGroupDataStorageKey, JSON.stringify({ version: 2, groups, messages: groupMessages }));
     } catch { /* normal save remains available */ }
     setWxGroupChatsRaw(groups);
+    p.onUi?.("wxGroupChatsV1", groups);
   };
   const groupRecords = wxGroupChatsRaw.flatMap((raw) => {
     try {
@@ -5213,7 +5214,7 @@ export function WeChatSkin(p: SkinProps) {
   };
 
   const conversations = Array.from(
-    new Set([...allItems.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title), ...wxGroupChats.map((group) => group.name)]),
+    new Set([...allItems.filter((i) => !["朋友圈", "我"].includes(i.folder)).map((i) => i.title), ...wxGroupChats.filter((group) => group.leftByMe !== true).map((group) => group.name)]),
   ).filter((name) => !(monsterRemoved && name === "大G")).sort((a, b) => {
     const aLast = allItems.filter((i) => i.title === a).at(-1)?.time ?? "";
     const bLast = allItems.filter((i) => i.title === b).at(-1)?.time ?? "";
