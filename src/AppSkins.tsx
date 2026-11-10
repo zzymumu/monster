@@ -2326,7 +2326,9 @@ export function WeChatSkin(p: SkinProps) {
     if (!alreadyAsked) {
       appendCatLines([{id:"malaysia-dag-after-share-question-v1",sender:"大G",body:"這款 Vava 喜歡嗎？玩玩有點挑食。",thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-after-share-question-v1");
     }
-    setMalaysiaDaGChatStage(44);
+    // Stage 42 is the player's reply to DaG's question. The choice itself
+    // stays hidden until that exact incoming message has actually been delivered.
+    setMalaysiaDaGChatStage(42);
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
   // DaG quietly buys the exact ZIWI item the player shared. The order is
   // created by Shopee itself, not by checkout, so no player payment is charged.
@@ -4790,15 +4792,13 @@ export function WeChatSkin(p: SkinProps) {
         meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productVariant: payload.variant || "", productImage: payload.image || "", productEmoji: payload.emoji || "🛍️", productCategory: payload.category || "" },
       };
       const isDaGStoryShare = payload.recipient === "大G" && payload.storyShare === true;
-      appendCatLines(
-        isDaGStoryShare
-          ? [sharedCard, { id: "malaysia-dag-after-share-question-v1", sender: "大G", body: "這款 Vava 喜歡嗎？玩玩有點挑食。", thread: "大G" }]
-          : [sharedCard],
-        catRescue.stage, catRescue.branch, payload.id
-      );
+      // The product card is the only outgoing bubble here. DaG's question
+      // is queued by the dedicated stage-999 effect after the card is saved,
+      // preventing the player's reply choice from appearing ahead of him.
+      appendCatLines([sharedCard], catRescue.stage, catRescue.branch, payload.id);
       if (isDaGStoryShare) {
         p.onUi?.("wxDaGShopeeSharePendingV1", false);
-        setMalaysiaDaGChatStage(42);
+        setMalaysiaDaGChatStage(999);
       }
       p.onUi?.("shopeeSharePayload", "");
     } catch { p.onUi?.("shopeeSharePayload", ""); }
