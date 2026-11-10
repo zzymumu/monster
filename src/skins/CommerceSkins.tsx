@@ -329,8 +329,8 @@ export function JkoPaySkin(p:Props){
   else if(paySource==="國泰世華 **** 6621")p.onUi?.("cathayBalance",String(cathayBalance-activePending.total));
   else p.onUi?.("esunBalance",String(esunBalance-activePending.total));
   if(isTripPayment){const tripOrders=(()=>{try{return JSON.parse(String(p.allUi?.trip?.tripOrders||"[]")) as any[]}catch{return[]}})();p.onAppUi?.("trip","tripOrders",JSON.stringify(tripOrders.map(order=>order.id===pendingTrip!.paymentId?{...order,status:"已付款"}:order)));p.onUi?.("pendingTripPayment","");}else{p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));p.onUi?.("pendingShopeePayment","");}
-  p.onUi?.("pendingShopeePayment","");
   setSuccessAmount(activePending.total);
+  setSuccessIsTrip(isTripPayment);
   setSuccess(true);
   window.setTimeout(()=>p.onOpenApp?.(isTripPayment?"trip":"shopee"),1100);
  };
@@ -343,9 +343,9 @@ export function JkoPaySkin(p:Props){
    </div>
    {paymentError&&<div className="jko-payment-error"><b>⚠ 餘額不足，無法付款</b><span>{paymentError}</span><small>請改用其他付款方式，或取消訂單稍後再試。</small></div>}
    <p className="jko-safe-note">🔒 此為遊戲內模擬付款，不會連接銀行或扣款</p>
-   <button className="jko-pay-confirm" onClick={confirmPayment}>{paymentError?"重新嘗試付款":"確認付款"} NT$ {pending.total.toLocaleString("zh-TW")}</button>
-   <button className="jko-pay-cancel" onClick={()=>{p.onUi?.(isTripPayment?"pendingTripPayment":"pendingShopeePayment","");p.onOpenApp?.(isTripPayment?"trip":"shopee")}}>取消付款，返回蝦皮</button>
-  </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給{successIsTrip?"Trip 旅行":"蝦皮購物"}</p><strong>NT$ {successAmount.toLocaleString("zh-TW")}</strong><small>正在返回蝦皮購物…</small><button onClick={()=>p.onOpenApp?.(successIsTrip?"trip":"shopee")}>立即返回</button></div>:<>
+   <button className="jko-pay-confirm" onClick={confirmPayment}>{paymentError?"重新嘗試付款":"確認付款"} NT$ {activePending.total.toLocaleString("zh-TW")}</button>
+   <button className="jko-pay-cancel" onClick={()=>{p.onUi?.(isTripPayment?"pendingTripPayment":"pendingShopeePayment","");p.onOpenApp?.(isTripPayment?"trip":"shopee")}}>取消付款，返回{isTripPayment?"Trip":"蝦皮"}</button>
+  </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給{successIsTrip?"Trip 旅行":"蝦皮購物"}</p><strong>NT$ {successAmount.toLocaleString("zh-TW")}</strong><small>正在返回{successIsTrip?"Trip":"蝦皮購物"}…</small><button onClick={()=>p.onOpenApp?.(successIsTrip?"trip":"shopee")}>立即返回</button></div>:<>
    <div className="jko-home-scroll">
     <div className="jko-balance"><small>街口帳戶餘額</small><strong>NT$ {balance.toLocaleString("zh-TW")}</strong><span>街口支付・讓生活更方便</span></div>
     <div className="jko-quick-actions"><button onClick={()=>setTab("付款碼")}><span>▦</span>付款碼</button><button onClick={()=>setTab("付款碼")}><span>⌗</span>掃碼付款</button><button onClick={()=>setTab("交易記錄")}><span>↗</span>轉帳</button><button onClick={()=>setTab("我的")}><span>＋</span>生活繳費</button></div>
