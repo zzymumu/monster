@@ -1967,10 +1967,8 @@ function PhoneRuntime({
             const next = queued[0];
             if (!next || next.sender !== "我" || !String(next.id || "").startsWith("malaysia-broccoli-invite-")) return null;
             return (
-              <div className="story-overlay" style={{ left: 18, right: 18, bottom: 12, padding: "10px 12px", borderRadius: 14, boxShadow: "0 -4px 18px #00000018" }}>
-                <span className="eyebrow" style={{ fontSize: 10 }}>轮到你回复了</span>
-                <h3 style={{ fontSize: 14, margin: "4px 0 6px" }}>点击发送</h3>
-                <button style={{ padding: "9px 11px", marginTop: 5, fontSize: 13, borderRadius: 10 }} onClick={() => {
+              <div className="story-overlay" style={{ left: 8, right: 8, bottom: 76, padding: "8px 10px 5px", borderRadius: 12, background: "#f8f8f6f2", boxShadow: "0 -2px 12px #00000012" }}>
+                <button style={{ padding: "10px 12px", margin: "0 0 7px", fontSize: 13, fontWeight: 500, color: "#71977a", background: "#ffffff", border: "1px solid #e2e9df", borderRadius: 9, justifyContent: "center", textAlign: "center" }} onClick={() => {
                   const current = runtimeRef.current;
                   const wx = current.ui?.wechat ?? {};
                   let lines: Array<{id?:string; sender:string; body:string; thread?:string}> = [];
@@ -2002,8 +2000,8 @@ function PhoneRuntime({
                   });
                 }}>
                   {next.body}
-                  <ArrowUp size={15} />
                 </button>
+                <div style={{ textAlign: "center", color: "#a3a3a3", fontSize: 10, padding: "3px 0 2px", borderTop: "1px solid #ececec" }}>选择一条回复发送</div>
               </div>
             );
           })()}
