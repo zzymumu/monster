@@ -207,14 +207,14 @@ export function ShopeeSkin(p:Props){
  useEffect(()=>{
   const raw=String(p.ui?.shopeeStoryShareProductV1||"");
   if(!raw)return;
-  let request:{productId?:string;recipient?:string}={};
+  let request:{productId?:string}={};
   try{request=JSON.parse(raw)}catch{return}
-  const target=shopeeProducts.find(v=>v.id===(request.productId||"ziwi-cat-cans"));
+  const target=shopeeProducts.find(v=>v.id===request.productId);
   if(!target)return;
   setTab("首頁");
   setProduct(target);
   setVariant(target.variants?.[0]||"");
-  setSharePickerOpen(true);
+  setSharePickerOpen(false);
   p.onUi?.("shopeeStoryShareProductV1","");
  },[p.ui?.shopeeStoryShareProductV1]);
 
@@ -227,15 +227,15 @@ export function ShopeeSkin(p:Props){
  useEffect(()=>{
   const raw=String(p.ui?.shopeeStoryOrderV1||"");
   if(!raw)return;
-  let request:{productId?:string;quantity?:number;buyer?:string}={};
+  let request:{productId?:string;name?:string;quantity?:number;buyer?:string;price?:number;variant?:string;image?:string}={};
   try{request=JSON.parse(raw)}catch{p.onUi?.("shopeeStoryOrderV1","");return}
-  const target=shopeeProducts.find(v=>v.id===(request.productId||"ziwi-cat-cans"));
+  const target=shopeeProducts.find(v=>v.id===request.productId);
   if(!target){p.onUi?.("shopeeStoryOrderV1","");return}
-  const orderId="SP-DAG-"+(request.productId||"ziwi-cat-cans")+"-v1";
+  const orderId="SP-DAG-"+request.productId+"-v1";
   if(!orders.some(order=>order.id===orderId)){
-   const qty=Math.max(1,Number(request.quantity)||1);
-   const unitPrice=target.price;
-   const next=[{id:orderId,name:target.name,price:unitPrice,qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:unitPrice*qty,shippingStep:1,trackingNo:"SP"+Date.now().toString().slice(-8),carrier:"蝦皮店到店",buyer:request.buyer||"大G",paymentId:"DAG-GIFT-"+orderId},...orders];
+   const qty=Math.max(1,Number(request.quantity)||24);
+   const unitPrice=Number(request.price)||target.variantPrices?.[request.variant||""]||target.price;
+   const next=[{id:orderId,name:request.name||target.name,price:unitPrice,qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:unitPrice*qty,shippingStep:1,trackingNo:"SP"+Date.now().toString().slice(-8),carrier:"蝦皮店到店",buyer:request.buyer||"大G",paymentId:"DAG-GIFT-"+orderId,variant:request.variant||"",image:request.image||target.image||""},...orders];
    saveOrders(next);
   }
   setOrderFilter("待出貨");
@@ -275,8 +275,14 @@ export function ShopeeSkin(p:Props){
   : "./assets/dag-new-avatar.jpg";
  const shareProductToWechat=(recipient:string)=>{
   if(!product)return;
-  const payload={id:"shopee-share-"+Date.now(),recipient,productId:product.id,name:product.name,price:product.variantPrices?.[variant]??product.price,variant,image:product.image||"",emoji:product.emoji};
+  const isCatCan=/罐頭|猫罐头|貓罐頭|cat\s*food|canned\s*cat/i.test(product.name);
+  if(recipient==="大G" && p.allUi?.wechat?.wxDaGShopeeSharePendingV1===true && !isCatCan){
+   p.onNotification?.("蝦皮購物：請選擇一款貓罐頭再分享給大G。");
+   return;
+  }
+  const payload={id:"shopee-share-"+Date.now(),recipient,productId:product.id,name:product.name,category:product.category,price:product.variantPrices?.[variant]??product.price,variant,image:product.image||"",emoji:product.emoji};
   p.onAppUi?.("wechat","shopeeSharePayload",JSON.stringify(payload));
+  if(recipient==="大G") p.onAppUi?.("wechat","wxDaGShopeeSharePendingV1",false);
   setSharePickerOpen(false);
   p.onOpenApp?.("wechat");
  };
