@@ -2394,8 +2394,12 @@ export function WeChatSkin(p: SkinProps) {
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
       (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G"))
     );
-    if (!acknowledgementArrived || !sharedProduct?.meta?.productId || p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1 === true) return;
-    p.onUi?.("wxDaGShopeeSurpriseOrderTriggeredV1", true);
+    if (!acknowledgementArrived || !sharedProduct?.meta?.productId || p.ui?.wxDaGShopeeSurpriseOrderTriggeredV2 === true) return;
+    p.onUi?.("wxDaGShopeeSurpriseOrderTriggeredV2", true);
+    // Clear stale view markers from earlier broken builds. The order-view
+    // gate is re-armed for this gift and only Shopee's order-page opening
+    // can set it true again.
+    p.onAppUi?.("shopee", "shopeeStoryOrderViewedV1", false);
     p.onAppUi?.("shopee", "shopeeStoryOrderV1", JSON.stringify({
       productId: sharedProduct.meta.productId,
       name: sharedProduct.meta.productName || sharedProduct.body,
@@ -2406,7 +2410,7 @@ export function WeChatSkin(p: SkinProps) {
       buyer: "大G"
     }));
     p.onNotification?.("蝦皮購物：大G已替你買下剛才分享的商品，共 24 罐，賣家正在備貨中。");
-  }, [p.items, catRescue.messages, p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1, contactRemarks]);
+  }, [p.items, catRescue.messages, p.ui?.wxDaGShopeeSurpriseOrderTriggeredV2, contactRemarks]);
   // Narrow repair for the one Malaysia Shopee-share scene in existing saves.
   // Remove the old instructional placeholder and place DaG's product question
   // before the player's reassurance, then shorten his acknowledgement to "好。".
