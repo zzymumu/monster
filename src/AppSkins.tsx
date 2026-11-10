@@ -4603,7 +4603,7 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     if (malaysiaTripTriggered) return;
     const parseOrders = (value: unknown) => {
-      try { const parsed = JSON.parse(String(value || "[]")); return Array.isArray(parsed) ? parsed : []; }
+      try { const parsed: unknown = JSON.parse(String(value || "[]")); return Array.isArray(parsed) ? parsed as Array<{ status?: string }> : []; }
       catch { return []; }
     };
     const tripPaid = parseOrders(p.allUi?.trip?.tripOrders).some((order: any) => order?.status === "已付款" || order?.status === "paid");
@@ -4626,7 +4626,7 @@ export function WeChatSkin(p: SkinProps) {
     const currentBalance = Number(p.allUi?.jkopay?.esunBalance ?? 50000);
     const nextBalance = currentBalance + 30000;
     const smsRecords = (() => {
-      try { const parsed = JSON.parse(String(p.allUi?.messages?.bankSmsRecords || "[]")); return Array.isArray(parsed) ? parsed : []; }
+      try { const parsed: unknown = JSON.parse(String(p.allUi?.messages?.bankSmsRecords || "[]")); return Array.isArray(parsed) ? parsed as Array<Record<string, unknown>> : []; }
       catch { return []; }
     })();
     const smsId = "bank-sms-broccoli-malaysia-transfer-v1";
@@ -4638,7 +4638,7 @@ export function WeChatSkin(p: SkinProps) {
       time: new Date().toLocaleString("zh-TW"), sender: "玉山銀行", avatar: "", kind: "text", media: "",
       hidden: false, unlock: "", password: "", folder: "銀行通知", favorite: false, outgoing: false, read: false, likes: 0, comments: [],
     };
-    if (!smsRecords.some((record: any) => record?.id === smsId)) {
+    if (!smsRecords.some((record) => record.id === smsId)) {
       p.onAppUi?.("jkopay", "esunBalance", String(nextBalance));
       p.onAppUi?.("messages", "bankSmsRecords", JSON.stringify([smsRecord, ...smsRecords]));
       p.onNotification?.("玉山銀行：" + smsRecord.body);
