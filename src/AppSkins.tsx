@@ -2319,7 +2319,7 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     const allStoryItems = [...p.items, ...catRescue.messages];
     const acknowledgementArrived = allStoryItems.some(item =>
-      item.id === "malaysia-dag-incoming-44-0" && item.sender === "大G" && item.body.trim() === "好。"
+      item.id === "malaysia-dag-incoming-43-0" && item.sender === "大G" && item.body.trim() === "好。"
     );
     const sharedProduct = [...allStoryItems].reverse().find(item =>
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
