@@ -2318,12 +2318,54 @@ export function WeChatSkin(p: SkinProps) {
     {user:["？？？","你幼不幼稚啊！"],incoming:["彼此彼此。"]},
     {user:["哦对，我在给vava买猫罐头，顺便也给玩玩带一点吧？"],incoming:["什麼罐頭？妳發給我看看。"]},
     {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["好。"]},
-    {user:["温尚翊！！"],incoming:["對啊。","怎麼了？"]},
+    {user:["温尚翊！！","你是不是买了那个罐头？"],incoming:["對啊。","怎麼了？"]},
     {user:["你怎么买这么快啊！！","我不是说我来买吗！"],incoming:["妳不是說要給玩玩帶一點？","那本來就是牠要吃的東西啊。"]},
     {user:["可是我说了我买呀！"],incoming:["那下次換妳買。"]},
     {user:["……","你怎么这样！"],incoming:["我怎樣？","幫自己的貓買罐頭也不行喔？"]},
     {user:["…………"],incoming:["好啦。","謝謝妳還記得玩玩喜歡吃什麼。","Vava 的份也一起買了，當作謝謝牠之前照顧玩玩。"]},
   ];
+
+  // Repair existing saves that already sent "温尚翊！！" before the missing
+  // follow-up question was added to this turn. Insert only that one message
+  // between the player's shout and DaG's existing two replies.
+  const [malaysiaDaGBuyQuestionMigratedV1, setMalaysiaDaGBuyQuestionMigratedV1] =
+    useSkinState<boolean>(p, "wxMalaysiaDaGBuyQuestionMigratedV1", false);
+  useEffect(() => {
+    if (malaysiaDaGBuyQuestionMigratedV1) return;
+    const messages = catRescue.messages;
+    const shoutIndex = messages.findIndex(item =>
+      item.id === "malaysia-dag-user-42-0" &&
+      item.sender === "我" &&
+      item.body.trim() === "温尚翊！！"
+    );
+    const questionExists = [...p.items, ...messages].some(item =>
+      item.id === "malaysia-dag-user-42-1" ||
+      (item.sender === "我" && item.body.trim() === "你是不是买了那个罐头？" &&
+       item.meta?.storyThread === "大G")
+    );
+    if (shoutIndex >= 0 && !questionExists) {
+      const shout = messages[shoutIndex];
+      const baseOrder = Number(shout.meta?.storyOrderAt);
+      const question = {
+        ...shout,
+        id: "malaysia-dag-user-42-1",
+        title: "我",
+        sender: "我",
+        body: "你是不是买了那个罐头？",
+        outgoing: true,
+        meta: {
+          ...shout.meta,
+          storyId: "cat-rescue",
+          storyThread: "大G",
+          storyOrderAt: String(Number.isFinite(baseOrder) ? baseOrder + 0.001 : Date.now() + 0.001),
+        },
+      };
+      const repaired = [...messages.slice(0, shoutIndex + 1), question, ...messages.slice(shoutIndex + 1)];
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repaired }));
+    }
+    setMalaysiaDaGBuyQuestionMigratedV1(true);
+  }, [malaysiaDaGBuyQuestionMigratedV1, catRescue.messages, p.items, catRescueRaw]);
+
   // Wait for the actual Shopee product card to arrive in DaG's chat.
   // Only then reveal his question about the exact product the player shared.
   useEffect(() => {
