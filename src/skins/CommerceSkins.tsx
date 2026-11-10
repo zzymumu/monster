@@ -262,7 +262,6 @@ export function ShopeeSkin(p:Props){
   }
   setOrderFilter("待出貨");
   setTab("訂單");
-  p.onUi?.("shopeeStoryOrderViewedV1",true);
   p.onUi?.("shopeeStoryOrderV1","");
  },[p.ui?.shopeeStoryOrderV1]);
  useEffect(()=>{
