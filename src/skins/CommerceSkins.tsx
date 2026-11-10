@@ -242,9 +242,19 @@ export function ShopeeSkin(p:Props){
  };
  const buyNow=(v:ShopeeProduct)=>{
   const chosenVariant=v.variants?.includes(variant)?variant:(v.variants?.[0]||"");
-  setCheckoutCart({[v.id]:1});
-  setCheckoutPrice(v.variantPrices?.[chosenVariant]??v.price);
-  setCheckoutVariant(chosenVariant);
+  // The in-story ZIWI purchase is a 24-can mixed-flavour order for both cats,
+  // not a single can or a single selected flavour.
+  if(v.id==="ziwi-cat-cans"){
+   const mixedQty=24;
+   const mixedUnitPrice=(6*109+6*109+6*119+6*119)/mixedQty;
+   setCheckoutCart({[v.id]:mixedQty});
+   setCheckoutPrice(mixedUnitPrice);
+   setCheckoutVariant("綜合口味：雞肉 85g ×6、牛肉 85g ×6、鹿肉 85g ×6、鯖魚羊肉 85g ×6");
+  }else{
+   setCheckoutCart({[v.id]:1});
+   setCheckoutPrice(v.variantPrices?.[chosenVariant]??v.price);
+   setCheckoutVariant(chosenVariant);
+  }
   setCheckoutReturnTab("首頁");
   setProduct(null);
   setTab("確認訂單");
