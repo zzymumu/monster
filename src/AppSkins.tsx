@@ -130,7 +130,7 @@ function VoiceMessage({ item, onRead }: { item: Item; onRead: (id: string) => vo
 function ItemMedia({ item }: { item: Item }) {
   // This local, repository-owned ticket artwork is a trusted SVG used by the Malaysia trip story.
   // Allow it explicitly here; safeMedia intentionally filters SVG elsewhere.
-  const src = item.media === "/assets/bookmyshow-mayday-ticket.svg" ? item.media : safeMedia(item.media);
+  const src = item.media === "./assets/bookmyshow-mayday-ticket.svg" ? item.media : safeMedia(item.media);
   return src ? (
     item.kind === "audio" ? (
       <audio controls src={src} />
@@ -5960,7 +5960,7 @@ export function WeChatSkin(p: SkinProps) {
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     if (malaysiaTripStage === 1) {
                       appendCatLines([
-                        { id: "malaysia-trip-ticket-image-v1", sender: "我", body: "噔噔蹬蹬~你看吧~", thread: "西蓝花", kind: "image", media: "/assets/bookmyshow-mayday-ticket.svg" },
+                        { id: "malaysia-trip-ticket-image-v1", sender: "我", body: "噔噔蹬蹬~你看吧~", thread: "西蓝花", kind: "image", media: "./assets/bookmyshow-mayday-ticket.svg" },
                         { id: "malaysia-trip-ticket-reaction-01-v1", sender: "西蓝花", body: "我靠一排还是小号！", thread: "西蓝花" },
                         { id: "malaysia-trip-ticket-reaction-02-v1", sender: "西蓝花", body: "我靠我靠，你跟温尚翊是真有缘，这都能给你刷到！", thread: "西蓝花" },
                       ], catRescue.stage, catRescue.branch, "malaysia-trip-ticket-image-v1");
