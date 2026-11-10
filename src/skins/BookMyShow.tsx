@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
-import { Ticket, Clock3, Users, ChevronLeft, CheckCircle2, CreditCard, QrCode, CalendarDays, MapPin, Armchair } from "lucide-react";
+import { Ticket, ChevronLeft, QrCode, CalendarDays, MapPin } from "lucide-react";
 import type { Props } from "./shared";
 
 type Zone = { id:string; name:string; price:number; color:string; desc:string };
@@ -29,7 +29,6 @@ export function BookMyShowSkin(p:Props){
  const [qty,setQty]=useState(2);
  const [elapsed,setElapsed]=useState(0);
  const [queueReady,setQueueReady]=useState(false);
- const [order,setOrder]=useState<TicketOrder|null>(null);
  const eventDate=useMemo(()=>upcomingSaturday(),[]);
  const dateText=dateLabel(eventDate);
  const orders=useMemo(()=>{try{return JSON.parse(String(p.ui?.bookmyshowOrders||"[]")) as TicketOrder[]}catch{return[]}},[p.ui?.bookmyshowOrders]);
@@ -54,7 +53,6 @@ export function BookMyShowSkin(p:Props){
   const nextOrders=[next,...orders];
   p.onUi?.("bookmyshowOrders",JSON.stringify(nextOrders));
   p.onAppUi?.("jkopay","pendingBookMyShowPayment",JSON.stringify({paymentId:id,total:totalNtd,note:next.event+" · "+dateText+" · "+zone+" · "+seats.join("、")+"（RM "+totalRm.toLocaleString("en-MY")+"）",order:next}));
-  setOrder(next);
   p.onOpenApp?.("jkopay");
  };
  const back=()=>{if(page==="home"||page==="ticket"){p.onBack();return;}setPage(page==="queue"?"home":page==="zone"?"home":page==="seats"?"zone":page==="confirm"?"seats":"home");};
