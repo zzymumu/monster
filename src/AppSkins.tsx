@@ -4619,7 +4619,7 @@ export function WeChatSkin(p: SkinProps) {
         thread: payload.recipient,
         kind: payload.image ? "image" : "text",
         media: payload.image || "",
-        meta: { shopeeProductShare: "true", productName: payload.name, productPrice: String(payload.price || 0), productEmoji: payload.emoji || "🛍️" },
+        meta: { shopeeProductShare: "true", photoCaption: "true", productName: payload.name, productPrice: String(payload.price || 0), productEmoji: payload.emoji || "🛍️" },
       }], catRescue.stage, catRescue.branch, payload.id);
       p.onUi?.("shopeeSharePayload", "");
     } catch { p.onUi?.("shopeeSharePayload", ""); }
