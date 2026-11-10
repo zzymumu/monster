@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="760" viewBox="0 0 1080 760">
+<rect width="1080" height="760" rx="34" fill="#f7f7f7"/>
+<rect x="28" y="28" width="1024" height="704" rx="28" fill="#fff" stroke="#e7e7e7" stroke-width="3"/>
+<text x="72" y="108" font-family="Arial,sans-serif" font-size="48" font-weight="800" fill="#d92732">bookmyshow</text>
+<text x="72" y="205" font-family="Arial,sans-serif" font-size="48" font-weight="800" fill="#171717">五月天《回到那一天》马来西亚站</text>
+<text x="72" y="270" font-family="Arial,sans-serif" font-size="30" fill="#777">2026/11/14（周六） · 20:00 · National Stadium Bukit Jalil</text>
+<text x="72" y="348" font-family="Arial,sans-serif" font-size="42" font-weight="800" fill="#d92732">VIP · A1 · 1排 · 9号、A1 · 1排 · 10号</text>
+<rect x="72" y="388" width="936" height="230" rx="22" fill="#fafafa" stroke="#e6e6e6" stroke-width="2"/>
+<g transform="translate(445 425)" fill="#111">
+<rect x="0" y="0" width="56" height="56" rx="5"/><rect x="14" y="14" width="28" height="28" fill="#fff"/>
+<rect x="126" y="0" width="56" height="56" rx="5"/><rect x="140" y="14" width="28" height="28" fill="#fff"/>
+<rect x="0" y="126" width="56" height="56" rx="5"/><rect x="14" y="140" width="28" height="28" fill="#fff"/>
+<rect x="70" y="0" width="14" height="14"/><rect x="84" y="28" width="14" height="14"/><rect x="70" y="56" width="14" height="14"/>
+<rect x="98" y="70" width="14" height="14"/><rect x="70" y="98" width="14" height="14"/><rect x="98" y="112" width="14" height="14"/>
+<rect x="126" y="84" width="14" height="14"/><rect x="154" y="70" width="14" height="14"/><rect x="70" y="154" width="14" height="14"/>
+<rect x="98" y="140" width="14" height="14"/><rect x="126" y="126" width="14" height="14"/><rect x="154" y="154" width="14" height="14"/>
+<rect x="42" y="70" width="14" height="14"/><rect x="28" y="98" width="14" height="14"/><rect x="56" y="126" width="14" height="14"/>
+<rect x="182" y="28" width="14" height="14"/><rect x="182" y="84" width="14" height="14"/><rect x="182" y="140" width="14" height="14"/>
+</g>
+<text x="72" y="684" font-family="Arial,sans-serif" font-size="28" fill="#888">订单编号：BMS300592331</text>
+<text x="1008" y="684" text-anchor="end" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#198754">已付款</text>
+</svg>
