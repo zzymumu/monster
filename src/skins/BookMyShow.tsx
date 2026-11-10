@@ -40,15 +40,13 @@ export function BookMyShowSkin(p:Props){
  const totalNtd=Math.round(totalRm*7.4);
  const seats=seatNames(zone,qty);
  useEffect(()=>{
-  if(page==="seats"){
-   // Seat allocation is a short transition only: lock, show success, then go straight to order confirmation.
-   setLockStage("locking");
-   const successTimer=window.setTimeout(()=>setLockStage("success"),900);
-   const confirmTimer=window.setTimeout(()=>setPage("confirm"),1550);
-   return()=>{window.clearTimeout(successTimer);window.clearTimeout(confirmTimer);};
-  }
-  setLockStage("idle");
+  if(page!=="seats") setLockStage("idle");
  },[page]);
+ const confirmSeats=()=>{
+  setLockStage("locking");
+  window.setTimeout(()=>setLockStage("success"),1100);
+  window.setTimeout(()=>setPage("confirm"),1950);
+ };
  useEffect(()=>{
   if(page!=="queue"){setElapsed(0);setQueueReady(false);return;}
   const started=Date.now();
@@ -133,11 +131,20 @@ export function BookMyShowSkin(p:Props){
     </div>
     <button onClick={()=>setPage("seats")} style={{width:"100%",border:0,borderRadius:10,background:"#e51b24",color:"#fff",padding:13,fontWeight:800,marginTop:12}}>确认票区，查看座位</button>
    </>}
-   {page==="seats"&&<div style={{background:"#fff",borderRadius:14,padding:18,marginTop:12,textAlign:"center"}}>
-    <b style={{fontSize:15}}>已为你分配连续座位</b>
-    <div style={{fontSize:22,fontWeight:900,color:"#e51b24",margin:"12px 0"}}>A1 区 · 第 1 排 · 9 号、10 号</div>
-    <p style={{fontSize:12,color:"#888",margin:0}}>座位锁定完成后将自动进入确认订单</p>
-   </div>}
+   {page==="seats"&&<>
+    <h2 style={{fontSize:20,margin:"5px 0"}}>座位选择</h2><p style={{fontSize:12,color:"#777"}}>票区：{zone} · {qty} 张 · RM {totalRm.toLocaleString("en-MY")}</p>
+    {renderSeatMap()}
+    <div style={{background:"#fff",borderRadius:13,padding:14}}>
+     <div style={{textAlign:"center",fontSize:12,color:"#777",marginBottom:10}}>A1 VIP · 第 1 排</div>
+     <div style={{display:"grid",gridTemplateColumns:"repeat(10,1fr)",gap:5}}>
+      {Array.from({length:10},(_,i)=>i+1).map(n=><div key={n} style={{height:30,borderRadius:6,display:"grid",placeItems:"center",fontSize:11,fontWeight:800,background:n===9||n===10?"#e51b24":"#eee",color:n===9||n===10?"#fff":"#777"}}>{n}</div>)}
+     </div>
+     <div style={{display:"flex",justifyContent:"space-between",marginTop:12,fontSize:11,color:"#666"}}><span>已为你分配的连续座位</span><b style={{color:"#e51b24"}}>9 号 · 10 号</b></div>
+     <h3 style={{textAlign:"center",fontSize:18,color:"#e51b24",margin:"12px 0 2px"}}>A1 区 · 第 1 排</h3>
+     <p style={{textAlign:"center",fontSize:12,color:"#666",margin:0}}>座位 {seats.join("、")}</p>
+    </div>
+    <button onClick={confirmSeats} style={{width:"100%",border:0,borderRadius:10,background:"#e51b24",color:"#fff",padding:13,fontWeight:800,marginTop:12}}>确认座位</button>
+   </>}
    {page==="confirm"&&<><h2 style={{fontSize:20}}>确认订单</h2><div style={{background:"#fff",borderRadius:14,padding:15,lineHeight:1.9,fontSize:12}}><b style={{fontSize:15}}>五月天《回到那一天》马来西亚站</b><p>{dateText} · 20:00</p><p>National Stadium Bukit Jalil</p><p>票区：{zone} · {qty} 张</p><p>座位：{seats.join("、")}</p><p>票价：RM {selectedZone.price.toLocaleString("en-MY")} × {qty}</p><hr/><b style={{fontSize:17,color:"#e51b24"}}>RM {totalRm.toLocaleString("en-MY")}</b><p style={{color:"#777"}}>折合约 {money(totalNtd)}</p></div><button onClick={createOrder} style={{width:"100%",border:0,borderRadius:10,background:"#e51b24",color:"#fff",padding:14,fontWeight:850,marginTop:14}}>提交订单并前往街口支付</button></>}
    {page==="ticket"&&<><h2 style={{fontSize:20}}>我的票夹</h2>{orders.length?orders.map(o=><div key={o.id} style={{background:"#fff",borderRadius:14,padding:14,marginBottom:10}}><div style={{display:"flex",justifyContent:"space-between"}}><b>{o.event}</b><small style={{color:o.status==="已付款"?"#16934a":"#e58b1a"}}>{o.status}</small></div><p style={{fontSize:11,color:"#777"}}>{o.date} · 20:00 · {o.venue}</p><h3 style={{color:"#e51b24"}}>{o.zone} · {o.seats.join("、")}</h3><div style={{height:94,background:"#fafafa",border:"1px solid #eee",borderRadius:8,display:"grid",placeItems:"center"}}><QrCode size={66}/></div><small style={{color:"#888"}}>订单编号：{o.id}</small></div>):<p style={{color:"#888"}}>还没有门票订单。</p>}</>}
   </main>
