@@ -1026,6 +1026,8 @@ function PhoneRuntime({
       );
     } catch { parsedQueue = []; }
     if (!parsedQueue.length) return;
+    // Malaysia trip dialogue: player-authored lines must wait for an explicit tap.
+    if (String(parsedQueue[0].id || "").startsWith("malaysia-broccoli-invite-") && parsedQueue[0].sender === "我") return;
 
     const timer = window.setTimeout(() => {
       const latest = runtimeRef.current;
@@ -1959,6 +1961,47 @@ function PhoneRuntime({
               )}
             </div>
           )}
+          {!creator && !locked && app === "wechat" && (s.ui?.wechat?.openThread === "西蓝花" || s.ui?.wechat?.openThread === "西兰花") && (() => {
+            let queued: Array<{id?:string; sender:string; body:string; thread?:string}> = [];
+            try { const parsed = JSON.parse(String(s.ui?.wechat?.wxCatPendingLines || "[]")); if (Array.isArray(parsed)) queued = parsed; } catch { queued = []; }
+            const next = queued[0];
+            if (!next || next.sender !== "我" || !String(next.id || "").startsWith("malaysia-broccoli-invite-")) return null;
+            return (
+              <div className="story-overlay">
+                <span className="eyebrow">轮到你回复了</span>
+                <h3>选择发送的消息</h3>
+                <button onClick={() => {
+                  const current = runtimeRef.current;
+                  const wx = current.ui?.wechat ?? {};
+                  let lines: Array<{id?:string; sender:string; body:string; thread?:string}> = [];
+                  try { const parsed = JSON.parse(String(wx.wxCatPendingLines || "[]")); if (Array.isArray(parsed)) lines = parsed; } catch { lines = []; }
+                  const head = lines[0];
+                  if (!head || head.id !== next.id || head.sender !== "我") return;
+                  let story: {version?:number; stage?:number; branch?:string; messages?:Item[]} = {};
+                  try { if (typeof wx.catRescueState === "string") story = JSON.parse(wx.catRescueState); } catch { story = {}; }
+                  const now = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
+                  const sent = makeItem({ id: head.id || "malaysia-broccoli-reply-" + Date.now(), title: "西蓝花", sender: "我", body: head.body, time: now, outgoing: true, meta: {storyId:"cat-rescue",storyThread:"西蓝花"} });
+                  const oldMessages = current.messages.wechat ?? [];
+                  const oldStory = Array.isArray(story.messages) ? story.messages : [];
+                  if (!oldMessages.some(item => item.id === sent.id) && !oldStory.some(item => item.id === sent.id)) {
+                    update({ ...current,
+                      messages: { ...current.messages, wechat: [...oldMessages, sent] },
+                      ui: { ...current.ui, wechat: {
+                        ...wx,
+                        wxCatPendingLines: JSON.stringify(lines.slice(1)),
+                        catRescueState: JSON.stringify({ ...story, messages: [...oldStory, sent] }),
+                      } },
+                    });
+                  } else {
+                    update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxCatPendingLines: JSON.stringify(lines.slice(1)) } } });
+                  }
+                }}>
+                  {next.body}
+                  <ArrowUp size={15} />
+                </button>
+              </div>
+            );
+          })()}
           {!creator && s.choices.length > 0 && !locked && (
             <div className="story-overlay">
               <span className="eyebrow">故事来到一个岔路口</span>
