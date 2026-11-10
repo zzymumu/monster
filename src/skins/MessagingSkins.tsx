@@ -44,7 +44,10 @@ function Bubbles({
           className={`catalog-message ${i.outgoing ? "outgoing" : ""}`}
           key={i.id}
         >
-          <button onClick={() => (p.creator ? p.onItem(i) : p.onRead(i.id))}>
+          <button
+            onClick={() => (p.creator ? p.onItem(i) : p.onRead(i.id))}
+            style={i.meta?.bankSms === "yes" ? { whiteSpace: "pre-line" } : undefined}
+          >
             {["image", "video", "audio"].includes(i.kind) ? (
               <Media item={i} />
             ) : (
