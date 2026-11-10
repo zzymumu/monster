@@ -2330,6 +2330,21 @@ export function WeChatSkin(p: SkinProps) {
     // stays hidden until that exact incoming message has actually been delivered.
     setMalaysiaDaGChatStage(42);
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
+  // Recover saves from the broken ordering: the share card may already exist
+  // while the old build left the conversation at stage 42 without DaG's reply.
+  useEffect(() => {
+    if (!isMonsterThread || malaysiaDaGChatStage !== 42) return;
+    const allMessages = [...p.items, ...catRescue.messages];
+    const sharedCatCan = allMessages.some((item) =>
+      (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
+      item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
+      /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(String(item.meta?.productName || ""))
+    );
+    const questionExists = [...allMessages, ...pendingCatLines].some((item) =>
+      item.id === "malaysia-dag-after-share-question-v1"
+    );
+    if (sharedCatCan && !questionExists) setMalaysiaDaGChatStage(999);
+  }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, contactRemarks]);
   // DaG quietly buys the exact ZIWI item the player shared. The order is
   // created by Shopee itself, not by checkout, so no player payment is charged.
   useEffect(() => {
