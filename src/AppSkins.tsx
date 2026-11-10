@@ -2283,7 +2283,8 @@ export function WeChatSkin(p: SkinProps) {
     if (!isMonsterThread || malaysiaDaGChatStage !== 43) return;
     const shared = [...p.items, ...catRescue.messages].some((item) =>
       (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
-      item.sender === "我" && item.meta?.shopeeProductShare === "true"
+      item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
+      /罐頭|猫罐头|貓罐頭|cat\s*food|canned\s*cat/i.test(String(item.meta?.productName || ""))
     );
     if (!shared) return;
     const alreadyAsked = [...p.items, ...catRescue.messages, ...pendingCatLines].some((item) =>
@@ -2297,14 +2298,27 @@ export function WeChatSkin(p: SkinProps) {
   // DaG quietly buys the exact ZIWI item the player shared. The order is
   // created by Shopee itself, not by checkout, so no player payment is charged.
   useEffect(() => {
-    const acknowledgementArrived = [...p.items, ...catRescue.messages].some(item =>
+    const allStoryItems = [...p.items, ...catRescue.messages];
+    const acknowledgementArrived = allStoryItems.some(item =>
       item.id === "malaysia-dag-incoming-44-0" && item.sender === "大G" && item.body.trim() === "好。"
     );
-    if (!acknowledgementArrived || p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1 === true) return;
+    const sharedProduct = [...allStoryItems].reverse().find(item =>
+      item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
+      (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G"))
+    );
+    if (!acknowledgementArrived || !sharedProduct?.meta?.productId || p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1 === true) return;
     p.onUi?.("wxDaGShopeeSurpriseOrderTriggeredV1", true);
-    p.onAppUi?.("shopee", "shopeeStoryOrderV1", JSON.stringify({ productId: "ziwi-cat-cans", quantity: 1, buyer: "大G" }));
-    p.onNotification?.("蝦皮購物：大G已替你買下剛才分享的 ZIWI 貓罐頭，賣家正在備貨中。");
-  }, [p.items, catRescue.messages, p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1]);
+    p.onAppUi?.("shopee", "shopeeStoryOrderV1", JSON.stringify({
+      productId: sharedProduct.meta.productId,
+      name: sharedProduct.meta.productName || sharedProduct.body,
+      price: Number(sharedProduct.meta.productPrice || 0),
+      variant: sharedProduct.meta.productVariant || "",
+      image: sharedProduct.meta.productImage || "",
+      quantity: 24,
+      buyer: "大G"
+    }));
+    p.onNotification?.("蝦皮購物：大G已替你買下剛才分享的商品，共 24 罐，賣家正在備貨中。");
+  }, [p.items, catRescue.messages, p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1, contactRemarks]);
   // Narrow repair for the one Malaysia Shopee-share scene in existing saves.
   // Remove the old instructional placeholder and place DaG's product question
   // before the player's reassurance, then shorten his acknowledgement to "好。".
@@ -4722,8 +4736,13 @@ export function WeChatSkin(p: SkinProps) {
     const raw = p.allUi?.wechat?.shopeeSharePayload;
     if (typeof raw !== "string" || !raw) return;
     try {
-      const payload = JSON.parse(raw) as { id?: string; recipient?: string; name?: string; price?: number; variant?: string; image?: string; emoji?: string };
+      const payload = JSON.parse(raw) as { id?: string; recipient?: string; productId?: string; name?: string; price?: number; variant?: string; image?: string; emoji?: string; category?: string };
       if (!payload.id || !payload.recipient || !payload.name) return;
+      const isCatCan = /罐頭|猫罐头|貓罐頭|cat\s*food|canned\s*cat/i.test(payload.name);
+      if (payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true && !isCatCan) {
+        p.onNotification?.("蝦皮購物：這段劇情請分享一款貓罐頭商品。");
+        return;
+      }
       if (catRescue.messages.some((item) => item.id === payload.id)) {
         p.onUi?.("shopeeSharePayload", "");
         return;
@@ -4735,7 +4754,7 @@ export function WeChatSkin(p: SkinProps) {
         thread: payload.recipient,
         kind: "text",
         media: "",
-        meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productImage: payload.image || "", productEmoji: payload.emoji || "🛍️" },
+        meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productVariant: payload.variant || "", productImage: payload.image || "", productEmoji: payload.emoji || "🛍️", productCategory: payload.category || "" },
       }], catRescue.stage, catRescue.branch, payload.id);
       p.onUi?.("shopeeSharePayload", "");
     } catch { p.onUi?.("shopeeSharePayload", ""); }
@@ -5818,7 +5837,7 @@ export function WeChatSkin(p: SkinProps) {
                   </div>
                 </div>
               )}
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} onProductOpen={(item)=>{p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:item.meta?.productId||"ziwi-cat-cans",recipient:"大G"}));p.onOpenApp?.("shopee");}} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} onProductOpen={(item)=>{p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:item.meta?.productId||"",recipient:"大G"}));p.onOpenApp?.("shopee");}} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {activeGroupChat && threeWayRejoinReplyPending && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="重新加入群聊后的回复选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
@@ -6098,8 +6117,10 @@ export function WeChatSkin(p: SkinProps) {
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
                     if(malaysiaDaGChatStage===43){
-                      p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:"ziwi-cat-cans",recipient:"大G"}));
-                      p.onOpenApp?.("shopee");
+                      // Do not launch Shopee or preselect a product. The player
+                      // leaves WeChat, browses Shopee, and shares any cat-can
+                      // product manually through its own product page.
+                      p.onUi?.("wxDaGShopeeSharePendingV1", true);
                       return;
                     }
                     const lines:CatLine[]=[
@@ -6188,7 +6209,7 @@ export function WeChatSkin(p: SkinProps) {
             </div>
           ) : (
             <>
-              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} onProductOpen={(item)=>{p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:item.meta?.productId||"ziwi-cat-cans",recipient:"大G"}));p.onOpenApp?.("shopee");}} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} onProductOpen={(item)=>{p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:item.meta?.productId||"",recipient:"大G"}));p.onOpenApp?.("shopee");}} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
               {isMonsterThread && monsterRemoved && catRescue.stage === 13 && monsterSendFailed && (
                 <div className="wx-send-failed" role="status" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", color: "#d93025", fontSize: 12 }}>
                   <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 16, height: 16, borderRadius: "50%", background: "#d93025", color: "#fff", fontWeight: 700 }}>!</span>
