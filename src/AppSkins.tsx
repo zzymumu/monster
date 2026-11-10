@@ -2201,15 +2201,14 @@ export function WeChatSkin(p: SkinProps) {
   const [malaysiaTripTriggered, setMalaysiaTripTriggered] = useSkinState<boolean>(p, "wxMalaysiaTripTriggeredV1", false);
   const [malaysiaTransferCredited, setMalaysiaTransferCredited] = useSkinState<boolean>(p, "wxMalaysiaTransferCreditedV1", false);
 
-  // Malaysia-trip handoff: the player must finish every Broccoli itinerary
-  // reply first, then manually open DaG's chat. Only that contact switch
-  // unlocks stage 567. Release the Malaysia-specific choice renderer at the
-  // same time so DaG's normal reply option can appear.
+  // Separate Malaysia follow-up story. Never reuse returnDinnerStage: that
+  // state drives older scenes and must remain untouched.
+  const [malaysiaDaGChatStage, setMalaysiaDaGChatStage] = useSkinState<number>(p, "wxMalaysiaDaGChatStageV1", -1);
   useEffect(() => {
-    if (!isMonsterThread || malaysiaTripStage < 11) return;
-    setMalaysiaTripStage(-1);
-    setReturnDinnerStage(567);
-  }, [isMonsterThread, malaysiaTripStage, setMalaysiaTripStage, setReturnDinnerStage]);
+    if (!isMonsterThread || malaysiaTripStage !== 11 || malaysiaDaGChatStage >= 0) return;
+    setMalaysiaDaGChatStage(0);
+    setMalaysiaTripStage(12);
+  }, [isMonsterThread, malaysiaTripStage, malaysiaDaGChatStage, setMalaysiaDaGChatStage, setMalaysiaTripStage]);
   const malaysiaTripTurns: Array<{ user: string[]; incoming: string[] }> = [
     { user: ["都搞定~", "机酒和票都买好了。", "你敢信！！我去 app 刷票刷着刷着出了两张大舞台哈哈哈哈！"], incoming: ["！！啥位置啊？"] },
     { user: ["我觉得应该是演唱会临近了哈哈卖不掉的黄牛票会票池了吧，就很顺利~"], incoming: ["太好了啊啊啊我还没坐过这么近的位置！", "爱你爱你爱你爱你我爱死你了！"] },
@@ -2221,6 +2220,51 @@ export function WeChatSkin(p: SkinProps) {
     { user: ["行~"], incoming: ["转你尾号3188的卡对吧？"] },
     { user: ["嗯呐嗯呐"], incoming: ["好，我转啦，你看一下。"] },
     { user: ["收到啦！那我现在去看看包车的事情噢！"], incoming: ["去吧去吧~"] },
+  ];
+  const malaysiaDaGChatTurns: Array<{user:string[];incoming:string[]}> = [
+    {user:["欸欸欸！","温尚翊！"],incoming:["嗯？","怎麼啦？"]},
+    {user:["你在干嘛呀？"],incoming:["剛忙完一點事情。","現在休息一下。","怎麼突然找我？"]},
+    {user:["没事呀！","就是想找你聊天嘛～"],incoming:["喔～","今天這麼主動？"]},
+    {user:["什么叫这么主动！！"],incoming:["哈哈哈哈哈。","沒有啦，開玩笑的。","今天心情很好？"]},
+    {user:["嘿嘿嘿嘿嘿。"],incoming:["妳笑什麼啦。","早上電話裡還在跟我說不能來大馬。","現在怎麼這麼開心？"]},
+    {user:["…………"],incoming:["怎麼？","去不了大馬就這麼開心喔？"]},
+    {user:["？？？？？","你怎么还记仇啊！"],incoming:["哪有。","我只是有點難過而已。"]},
+    {user:["你少来！"],incoming:["真的啊。","本來還想說演出結束帶妳去吃好吃的。","結果某人不來。"]},
+    {user:["哎呀……","我是真的没办法嘛。"],incoming:["知道啦。","又沒有怪妳。","只是少了一個可以請吃飯的人而已。"]},
+    {user:["温尚翊！！！"],incoming:["怎樣？","這樣也不行？"]},
+    {user:["你回来再请我吃不就好了！"],incoming:["這麼理所當然？"]},
+    {user:["不然呢！","你自己说要请我的！"],incoming:["好啦，記得。","欠妳一頓飯。"]},
+    {user:["这还差不多~"],incoming:["不過妳今天真的很開心欸。","是不是有什麼好事？"]},
+    {user:["就是开心呀！"],incoming:["撿到錢喔？"]},
+    {user:["没有！！"],incoming:["那不然是怎樣？","感覺妳今天講話都帶著笑。"]},
+    {user:["不告诉你～"],incoming:["好喔。","還有秘密不能跟我說了是不是？"]},
+    {user:["哎呀哎呀不说这个了。","你去大马的东西都收拾好了吗？"],incoming:["還沒完全整理好。","差不多了啦。"]},
+    {user:["你怎么还没收拾！","我记得之前看你们综艺采访，你不是说自己出门只带一个包吗？","什么东西都往里面塞。","这次不会又是这样吧？"],incoming:["差不多啊，一個包很方便。"]},
+    {user:["温尚翊，你是去演出还是去逃难啊？"],incoming:["有需要帶這麼多東西嗎？"]},
+    {user:["当然需要啊！","衣服、充电器、洗漱用品，不用带吗？"],incoming:["都有啦。","妳不要把我想得這麼沒有生活能力好不好。"]},
+    {user:["那我可要检查一下。"],incoming:["妳要怎麼檢查？"]},
+    {user:["隔空检查！"],incoming:["那妳檢查得還挺方便的。"]},
+    {user:["所以你这次带几个包？"],incoming:["可能一個吧。"]},
+    {user:["…………","温尚翊。","我真的服了你。"],incoming:["哈哈哈哈哈。","好啦好啦。","這次會稍微整理一下啦。"]},
+    {user:["真的？"],incoming:["真的啦。","至少不會把所有東西都塞在一起。"]},
+    {user:["我不信。"],incoming:["妳怎麼這麼難取信喔哈哈哈。"]},
+    {user:["因为你看起来就很像会在出发前十分钟才开始收拾的人！"],incoming:["欸，這個倒是真的……"]},
+    {user:["哈哈哈哈哈哈哈哈哈哈！"],incoming:["很好笑是不是？"]},
+    {user:["超好笑！！"],incoming:["那下次讓妳看看我怎麼收。"]},
+    {user:["你们这次去大马呆几天呀？"],incoming:["演出結束就回台北了。"]},
+    {user:["这么赶？"],incoming:["對啊，沒辦法，還有事情要忙。"]},
+    {user:["那你们演出结束还要马上赶飞机？"],incoming:["差不多吧。","所以行李真的不用帶太多。"]},
+    {user:["……","我感觉你又在给自己找借口。"],incoming:["被妳發現了喔？"]},
+    {user:["我宁愿不发现。","那你最近是不是都很忙？"],incoming:["還好。","就是事情比較多一點。"]},
+    {user:["要记得吃饭！"],incoming:["知道啦。","妳怎麼跟我媽一樣。"]},
+    {user:["我这是关心你！"],incoming:["好，知道妳關心我。","那妳今天吃飯了沒？"]},
+    {user:["吃了！"],incoming:["吃什麼？"]},
+    {user:["不告诉你。"],incoming:["又來了。","今天到底有多少秘密不能說？"]},
+    {user:["很多！"],incoming:["行吧。","那我也不告訴妳我今天吃什麼了。"]},
+    {user:["？？？","你幼不幼稚啊！"],incoming:["彼此彼此。"]},
+    {user:["哦对，我在给vava买猫罐头，顺便也给玩玩带一点吧？"],incoming:["什麼罐頭？妳發給我看看。"]},
+    {user:["（打开蝦皮，把想分享的猫罐头商品卡片分享给大G）"],incoming:["SHARE_WAIT"]},
+    {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["這款 Vava 喜歡嗎？玩玩有點挑食。"]},
   ];
   const milkTeaGiftTurns: Array<{ user: string[]; incoming: string[]; orderDelivered?: boolean; externalCall?: boolean }> = [
     { user: ["欸，问你一件事。"], incoming: ["干嘛？"] },
@@ -5985,6 +6029,21 @@ export function WeChatSkin(p: SkinProps) {
                     }}>{isBroccoliThread ? simplifyBroccoliText(choice.label) : choice.label}</button>
                   ))}
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
+                </div>
+              )}
+              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (
+                <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
+                  <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
+                    const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
+                    if(turn.incoming[0]==="SHARE_WAIT"){p.onAppUi?.("wechat","shopeeSharePromptV1","大G");setMalaysiaDaGChatStage(malaysiaDaGChatStage+1);return;}
+                    const lines:CatLine[]=[
+                      ...turn.user.map((body,index)=>({id:"malaysia-dag-user-"+malaysiaDaGChatStage+"-"+index,sender:"我" as const,body,thread:"大G" as const})),
+                      ...turn.incoming.map((body,index)=>({id:"malaysia-dag-incoming-"+malaysiaDaGChatStage+"-"+index,sender:"大G" as const,body,thread:"大G" as const})),
+                    ];
+                    appendCatLines(lines,catRescue.stage,catRescue.branch,"malaysia-dag-chat-"+malaysiaDaGChatStage);
+                    setMalaysiaDaGChatStage(malaysiaDaGChatStage+1);
+                  }}>{malaysiaDaGChatTurns[malaysiaDaGChatStage].user.join(" ")}</button>
+                  <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
               {malaysiaTripStage >= 0 && malaysiaTripStage < 11 && pendingCatLines.filter((line) => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
