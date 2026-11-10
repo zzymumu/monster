@@ -2338,20 +2338,23 @@ export function WeChatSkin(p: SkinProps) {
     if (questionQueued) return;
     appendCatLines([{id:"malaysia-dag-after-share-question-v1",sender:"大G",body:"這款 Vava 喜歡嗎？玩玩有點挑食。",thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-after-share-question-v1");
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
-  // Recover saves from the broken ordering: the share card may already exist
-  // while the old build left the conversation at stage 42 without DaG's reply.
+  // Recover older saves that exposed the reply option before DaG's
+  // question was actually delivered. A stale message elsewhere in WeChat
+  // must not count as this conversation's reply.
   useEffect(() => {
     if (!isMonsterThread || malaysiaDaGChatStage !== 42) return;
     const allMessages = [...p.items, ...catRescue.messages];
     const sharedCatCan = allMessages.some((item) =>
       (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
-      /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(String(item.meta?.productName || ""))
+      /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(String(item.meta?.productName || ""))
     );
-    const questionExists = [...allMessages, ...pendingCatLines].some((item) =>
-      item.id === "malaysia-dag-after-share-question-v1"
+    const questionDelivered = catRescue.messages.some((item) =>
+      item.id === "malaysia-dag-after-share-question-v1" &&
+      item.sender === "大G" &&
+      item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
     );
-    if (sharedCatCan && !questionExists) setMalaysiaDaGChatStage(999);
+    if (sharedCatCan && !questionDelivered) setMalaysiaDaGChatStage(999);
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, contactRemarks]);
   // DaG quietly buys the exact ZIWI item the player shared. The order is
   // created by Shopee itself, not by checkout, so no player payment is charged.
