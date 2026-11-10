@@ -2232,6 +2232,21 @@ export function WeChatSkin(p: SkinProps) {
     { user: ["嗯呐嗯呐"], incoming: ["好，我转啦，你看一下。"] },
     { user: ["收到啦！那我现在去看看包车的事情噢！"], incoming: ["去吧去吧~"] },
   ];
+  const [malaysiaDaGShareStageMigratedV2, setMalaysiaDaGShareStageMigratedV2] = useSkinState<boolean>(p, "wxMalaysiaDaGShareStageMigratedV2", false);
+  useEffect(() => {
+    if (malaysiaDaGShareStageMigratedV2) return;
+    const sharedCatCan = [...p.items, ...catRescue.messages].some((item) =>
+      item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
+      (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
+      /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(String(item.meta?.productName || ""))
+    );
+    const reassuranceSent = [...p.items, ...catRescue.messages].some((item) =>
+      item.sender === "我" && item.body.trim() === "放心啦，玩玩在我家吃的就是这个~很爱吃！"
+    );
+    if (sharedCatCan && !reassuranceSent && malaysiaDaGChatStage === 43) setMalaysiaDaGChatStage(42);
+    setMalaysiaDaGShareStageMigratedV2(true);
+  }, [malaysiaDaGShareStageMigratedV2, malaysiaDaGChatStage, p.items, catRescue.messages, contactRemarks]);
+
   const malaysiaDaGShareQuestionDelivered = [...p.items, ...catRescue.messages].some((item) =>
     item.id === "malaysia-dag-after-share-question-v1" &&
     item.sender === "大G" &&
@@ -2293,7 +2308,6 @@ export function WeChatSkin(p: SkinProps) {
     {user:["很多！"],incoming:["行吧。","那我也不告訴妳我今天吃什麼了。"]},
     {user:["？？？","你幼不幼稚啊！"],incoming:["彼此彼此。"]},
     {user:["哦对，我在给vava买猫罐头，顺便也给玩玩带一点吧？"],incoming:["什麼罐頭？妳發給我看看。"]},
-    {user:["我去蝦皮找一款貓罐頭給你看"],incoming:[]},
     {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["好。"]},
   ];
   // Wait for the actual Shopee product card to arrive in DaG's chat.
@@ -2319,7 +2333,7 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     const allStoryItems = [...p.items, ...catRescue.messages];
     const acknowledgementArrived = allStoryItems.some(item =>
-      item.id === "malaysia-dag-incoming-43-0" && item.sender === "大G" && item.body.trim() === "好。"
+      item.id === "malaysia-dag-incoming-42-0" && item.sender === "大G" && item.body.trim() === "好。"
     );
     const sharedProduct = [...allStoryItems].reverse().find(item =>
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
@@ -4784,7 +4798,7 @@ export function WeChatSkin(p: SkinProps) {
       );
       if (isDaGStoryShare) {
         p.onUi?.("wxDaGShopeeSharePendingV1", false);
-        setMalaysiaDaGChatStage(43);
+        setMalaysiaDaGChatStage(42);
       }
       p.onUi?.("shopeeSharePayload", "");
     } catch { p.onUi?.("shopeeSharePayload", ""); }
@@ -6142,11 +6156,11 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 43 || malaysiaDaGShareQuestionDelivered) && (
+              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 42 || malaysiaDaGShareQuestionDelivered) && (
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
-                    if(malaysiaDaGChatStage===42){
+                    if(malaysiaDaGChatStage===41){
                       // No narration bubble: arm the share flow and let the
                       // player leave WeChat and choose any cat-can product.
                       p.onUi?.("wxDaGShopeeSharePendingV1", true);
