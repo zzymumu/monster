@@ -222,7 +222,9 @@ export function ShopeeSkin(p:Props){
  try {
   const parsed=JSON.parse(String(wechatUi.wxContactRemarks||"{}"));
   if(parsed&&typeof parsed==="object"&&!Array.isArray(parsed)) wechatRemarks=parsed as Record<string,string>;
- } catch {}
+ } catch {
+  // Ignore malformed saved contact remarks and fall back to default names.
+ }
  const wechatDisplayName=(canonical:string)=>{
   const key=canonical==="温尚翊"?"大G":canonical;
   return String(wechatRemarks[key]||key).trim()||key;
