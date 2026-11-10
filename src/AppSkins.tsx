@@ -5312,6 +5312,28 @@ export function WeChatSkin(p: SkinProps) {
       return [];
     }
   });
+  // Recover the one-shot Moments trigger from the persistent call history.
+  // Older builds cleared the flag when another app was opened, which could
+  // permanently lose the post even though the delivery call was answered.
+  useEffect(() => {
+    if (deliveryCallMomentConsumed) return;
+    const alreadyPosted = momentPostData.some((raw) => {
+      try { return JSON.parse(raw).id === "moment-delivery-thanks-v1"; } catch { return false; }
+    });
+    if (alreadyPosted) return;
+    let history: Array<Record<string, unknown>> = [];
+    try {
+      const raw = p.allUi?.phone?.phoneCallHistory;
+      const parsed = typeof raw === "string" ? JSON.parse(raw) : [];
+      if (Array.isArray(parsed)) history = parsed.filter((item) => item && typeof item === "object");
+    } catch { history = []; }
+    const answeredDeliveryCall = history.some((item) =>
+      item.number === "0972518369" && item.status === "已接" && item.direction === "incoming"
+    );
+    if (answeredDeliveryCall && p.allUi?.phone?.wxDeliveryCallMomentsReadyV1 !== true) {
+      p.onAppUi?.("phone", "wxDeliveryCallMomentsReadyV1", true);
+    }
+  }, [deliveryCallMomentConsumed, momentPostData, p.allUi?.phone?.phoneCallHistory, p.allUi?.phone?.wxDeliveryCallMomentsReadyV1]);
   const openMoments = () => {
     setMoments(true);
     const deliveryMomentWindowOpen = p.allUi?.phone?.wxDeliveryCallMomentsReadyV1 === true;
