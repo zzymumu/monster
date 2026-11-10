@@ -1754,6 +1754,10 @@ function PhoneRuntime({
                 origin={launchOrigin}
               >
                 <AppContent
+                  onNotification={(notice) => {
+                    const current = runtimeRef.current;
+                    update({ ...current, notifications: [...current.notifications, notice].slice(-60) });
+                  }}
                   app={plugin}
                   name={
                     work.apps.find((a) => a.id === app)?.name ?? plugin.name
