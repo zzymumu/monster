@@ -204,6 +204,20 @@ export function ShopeeSkin(p:Props){
  const [paymentMethod,setPaymentMethod]=useState("街口支付");
  const [product,setProduct]=useState<ShopeeProduct|null>(null),[variant,setVariant]=useState("");
  const [sharePickerOpen,setSharePickerOpen]=useState(false);
+ useEffect(()=>{
+  const raw=String(p.ui?.shopeeStoryShareProductV1||"");
+  if(!raw)return;
+  let request:{productId?:string;recipient?:string}={};
+  try{request=JSON.parse(raw)}catch{return}
+  const target=shopeeProducts.find(v=>v.id===(request.productId||"ziwi-cat-cans"));
+  if(!target)return;
+  setTab("首頁");
+  setProduct(target);
+  setVariant(target.variants?.[0]||"");
+  setSharePickerOpen(true);
+  p.onUi?.("shopeeStoryShareProductV1","");
+ },[p.ui?.shopeeStoryShareProductV1]);
+
  const [cart,setCart]=useState<ShopeeCart>(()=>{try{return JSON.parse(String(p.ui?.shopeeCart||"{}"))}catch{return{}}});
  const [checkoutCart,setCheckoutCart]=useState<ShopeeCart>({});
  const [checkoutPrice,setCheckoutPrice]=useState<number|null>(null);
@@ -235,7 +249,7 @@ export function ShopeeSkin(p:Props){
   : "./assets/dag-new-avatar.jpg";
  const shareProductToWechat=(recipient:string)=>{
   if(!product)return;
-  const payload={id:"shopee-share-"+Date.now(),recipient,name:product.name,price:product.variantPrices?.[variant]??product.price,variant,image:product.image||"",emoji:product.emoji};
+  const payload={id:"shopee-share-"+Date.now(),recipient,productId:product.id,name:product.name,price:product.variantPrices?.[variant]??product.price,variant,image:product.image||"",emoji:product.emoji};
   p.onAppUi?.("wechat","shopeeSharePayload",JSON.stringify(payload));
   setSharePickerOpen(false);
   p.onOpenApp?.("wechat");
