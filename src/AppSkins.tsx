@@ -2195,6 +2195,21 @@ export function WeChatSkin(p: SkinProps) {
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
   const [milkTeaGiftStage, setMilkTeaGiftStage] = useSkinState<number>(p, "wxMilkTeaGiftStageV1", -1);
+  const [malaysiaTripStage, setMalaysiaTripStage] = useSkinState<number>(p, "wxMalaysiaTripStageV1", -1);
+  const [malaysiaTripTriggered, setMalaysiaTripTriggered] = useSkinState<boolean>(p, "wxMalaysiaTripTriggeredV1", false);
+  const [malaysiaTransferCredited, setMalaysiaTransferCredited] = useSkinState<boolean>(p, "wxMalaysiaTransferCreditedV1", false);
+  const malaysiaTripTurns: Array<{ user: string[]; incoming: string[] }> = [
+    { user: ["都搞定~", "机酒和票都买好了。", "你敢信！！我去 app 刷票刷着刷着出了两张大舞台哈哈哈哈！"], incoming: ["！！啥位置啊？"] },
+    { user: ["我觉得应该是演唱会临近了哈哈卖不掉的黄牛票会票池了吧，就很顺利~"], incoming: ["太好了啊啊啊我还没坐过这么近的位置！", "爱你爱你爱你爱你我爱死你了！"] },
+    { user: ["哼哼，到大马后我们去吃榴莲自助，你请客！"], incoming: ["这还用说吗？包在我身上啊😘", "对了，机酒也定了是吗？我们什么时候出发？"] },
+    { user: ["我看看哦......周五走周日回来，你没问题吧？"], incoming: ["没问题~我假一直请到了周一。"] },
+    { user: ["那就行，我想的是我们周六白天可以去马六甲玩玩，回来后晚上去看演唱会。"], incoming: ["可以啊，我们是跟团还是自己包车？"] },
+    { user: ["包车吧，我这边有朋友在那边做导游，我问问哈，到时候还可以把我们送到场馆。"], incoming: ["好啊好啊，那就太方便了！", "对了，我要转你多少钱呀？"] },
+    { user: ["我算算啊....."], incoming: ["我直接给你转3w吧，你还要包车。"] },
+    { user: ["行~"], incoming: ["转你尾号3188的卡对吧？"] },
+    { user: ["嗯呐嗯呐"], incoming: ["好，我转啦，你看一下。"] },
+    { user: ["收到啦！那我现在去看看包车的事情噢！"], incoming: ["去吧去吧~"] },
+  ];
   const milkTeaGiftTurns: Array<{ user: string[]; incoming: string[]; orderDelivered?: boolean; externalCall?: boolean }> = [
     { user: ["欸，问你一件事。"], incoming: ["干嘛？"] },
     { user: ["你是不是给我点奶茶了？"], incoming: ["啊？没有啊。", "怎么突然问这个？"] },
@@ -2578,7 +2593,7 @@ export function WeChatSkin(p: SkinProps) {
   const isRestaurantPlanningFlow =
     returnDinnerStage === 37 || returnDinnerStage === 1370 ||
     (returnDinnerStage >= 38 && returnDinnerStage <= 80);
-  const catChoices = milkTeaGiftStoryActive || isRestaurantPlanningFlow || vavaPlayStage >= 0 ? [] :
+  const catChoices = malaysiaTripStage >= 0 || milkTeaGiftStoryActive || isRestaurantPlanningFlow || vavaPlayStage >= 0 ? [] :
     // Stage 53 is the explicit DaG follow-up after "妳？？？怎麼啦？".
     // Keep its two replies visible in DaG's own chat even if an unrelated
     // stale queue entry remains from the previous contact.
@@ -4586,6 +4601,51 @@ export function WeChatSkin(p: SkinProps) {
     setPendingCatLines((current) => [...current, ...queuedLines]);
   };
   useEffect(() => {
+    if (malaysiaTripTriggered) return;
+    const parseOrders = (value: unknown) => {
+      try { const parsed = JSON.parse(String(value || "[]")); return Array.isArray(parsed) ? parsed : []; }
+      catch { return []; }
+    };
+    const tripPaid = parseOrders(p.allUi?.trip?.tripOrders).some((order: any) => order?.status === "已付款" || order?.status === "paid");
+    const ticketPaid = parseOrders(p.allUi?.bookmyshow?.bookmyshowOrders).some((order: any) => order?.status === "已付款" || order?.status === "paid");
+    if (!tripPaid || !ticketPaid) return;
+    setMalaysiaTripTriggered(true);
+    setMalaysiaTripStage(0);
+    const opening: CatLine = { id: "malaysia-trip-broccoli-opening-v1", sender: "西蓝花", body: "我请好假啦！你那边怎么样了？", thread: "西蓝花" };
+    setPendingCatLines((current) => current.some((line) => line.id === opening.id) ? current : [...current, opening]);
+    p.onNotification?.("西蓝花：" + opening.body);
+  }, [malaysiaTripTriggered, p.allUi?.trip?.tripOrders, p.allUi?.bookmyshow?.bookmyshowOrders]);
+  useEffect(() => {
+    if (malaysiaTransferCredited) return;
+    const delivered = [...p.items, ...catRescue.messages];
+    const transferMessageArrived = delivered.some((item) =>
+      (item.title === "西蓝花" || item.meta?.storyThread === "西蓝花") &&
+      item.sender === "西蓝花" && item.body.trim() === "好，我转啦，你看一下。"
+    );
+    if (!transferMessageArrived) return;
+    const currentBalance = Number(p.allUi?.jkopay?.esunBalance ?? 50000);
+    const nextBalance = currentBalance + 30000;
+    const smsRecords = (() => {
+      try { const parsed = JSON.parse(String(p.allUi?.messages?.bankSmsRecords || "[]")); return Array.isArray(parsed) ? parsed : []; }
+      catch { return []; }
+    })();
+    const smsId = "bank-sms-broccoli-malaysia-transfer-v1";
+    const smsRecord = {
+      id: smsId, title: "玉山銀行",
+      body: "【玉山銀行】轉帳入帳通知\n" + new Date().toLocaleString("zh-TW") + "\n轉入金額：NT$ 30,000\n轉出帳戶：西藍花\n入帳帳戶：3188\n可用餘額：NT$ " + nextBalance.toLocaleString("zh-TW"),
+      richText: "",
+      meta: { bankSms: "yes", transferId: smsId, amount: "30000", balance: String(nextBalance), account: "3188" },
+      time: new Date().toLocaleString("zh-TW"), sender: "玉山銀行", avatar: "", kind: "text", media: "",
+      hidden: false, unlock: "", password: "", folder: "銀行通知", favorite: false, outgoing: false, read: false, likes: 0, comments: [],
+    };
+    if (!smsRecords.some((record: any) => record?.id === smsId)) {
+      p.onAppUi?.("jkopay", "esunBalance", String(nextBalance));
+      p.onAppUi?.("messages", "bankSmsRecords", JSON.stringify([smsRecord, ...smsRecords]));
+      p.onNotification?.("玉山銀行：" + smsRecord.body);
+    }
+    setMalaysiaTransferCredited(true);
+  }, [malaysiaTransferCredited, p.items, catRescue.messages, p.allUi?.jkopay?.esunBalance, p.allUi?.messages?.bankSmsRecords]);
+  useEffect(() => {
     const delivered = [...p.items, ...parsedCatRescue.messages];
     const photoExists = delivered.some((item) =>
       item.kind === "image" && item.media.includes("wannwan-sleeping-cat")
@@ -5879,7 +5939,7 @@ export function WeChatSkin(p: SkinProps) {
               )}
               {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 613)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
                 <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
-                  {returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
+                  {malaysiaTripStage < 0 && returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
                     <button key={choice.id} onClick={() => {
                       const choiceKey = returnDinnerStage + ":" + choice.id;
                       if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
@@ -5891,6 +5951,29 @@ export function WeChatSkin(p: SkinProps) {
                     }}>{isBroccoliThread ? simplifyBroccoliText(choice.label) : choice.label}</button>
                   ))}
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
+                </div>
+              )}
+              {malaysiaTripStage >= 0 && malaysiaTripStage < 10 && pendingCatLines.filter((line) => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
+                <div className="cat-rescue-choices" aria-label="马来西亚演唱会行程剧情回复选项">
+                  <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
+                    if (malaysiaTripStage === 1) {
+                      appendCatLines([
+                        { id: "malaysia-trip-ticket-image-v1", sender: "我", body: "噔噔蹬蹬~你看吧~", thread: "西蓝花", kind: "image", media: "/assets/bookmyshow-mayday-ticket.svg" },
+                        { id: "malaysia-trip-ticket-reaction-01-v1", sender: "西蓝花", body: "我靠一排还是小号！", thread: "西蓝花" },
+                        { id: "malaysia-trip-ticket-reaction-02-v1", sender: "西蓝花", body: "我靠我靠，你跟温尚翊是真有缘，这都能给你刷到！", thread: "西蓝花" },
+                      ], catRescue.stage, catRescue.branch, "malaysia-trip-ticket-image-v1");
+                      setMalaysiaTripStage(2);
+                      return;
+                    }
+                    const turn = malaysiaTripTurns[malaysiaTripStage === 0 ? 0 : malaysiaTripStage - 1];
+                    const lines: CatLine[] = [
+                      ...turn.user.map((body, index) => ({ id: "malaysia-trip-user-" + malaysiaTripStage + "-" + index, sender: "我" as const, body, thread: "西蓝花" as const })),
+                      ...turn.incoming.map((body, index) => ({ id: "malaysia-trip-broccoli-" + malaysiaTripStage + "-" + index, sender: "西蓝花" as const, body, thread: "西蓝花" as const })),
+                    ];
+                    appendCatLines(lines, catRescue.stage, catRescue.branch, "malaysia-trip-turn-" + malaysiaTripStage);
+                    setMalaysiaTripStage(malaysiaTripStage === 0 ? 1 : malaysiaTripStage + 1);
+                  }}>{malaysiaTripStage === 1 ? "发送电子票截图" : malaysiaTripTurns[malaysiaTripStage === 0 ? 0 : malaysiaTripStage - 1]?.user.join(" ")}</button>
+                  <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
               {milkTeaGiftStoryActive && activeMilkTeaGiftStage < milkTeaGiftTurns.length && pendingCatLines.filter((line) => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
