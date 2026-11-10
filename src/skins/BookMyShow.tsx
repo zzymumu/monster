@@ -31,6 +31,7 @@ export function BookMyShowSkin(p:Props){
  const [queueReady,setQueueReady]=useState(false);
  const [quantityOpen,setQuantityOpen]=useState(false);
  const [lockStage,setLockStage]=useState<"idle"|"locking"|"success"|"details">("idle");
+ const [systemBusy,setSystemBusy]=useState(false);
  const eventDate=useMemo(()=>upcomingSaturday(),[]);
  const dateText=dateLabel(eventDate);
  const orders=useMemo(()=>{try{return JSON.parse(String(p.ui?.bookmyshowOrders||"[]")) as TicketOrder[]}catch{return[]}},[p.ui?.bookmyshowOrders]);
@@ -57,8 +58,9 @@ export function BookMyShowSkin(p:Props){
   },100);
   return()=>window.clearInterval(timer);
  },[page]);
- const startQueue=()=>{setElapsed(0);setQueueReady(false);setPage("queue");};
+ const startQueue=()=>{if(orders.some(order=>order.status==="已付款")){setSystemBusy(true);return;}setElapsed(0);setQueueReady(false);setPage("queue");};
  const createOrder=()=>{
+  if(orders.some(order=>order.status==="已付款")){setSystemBusy(true);return;}
   const id="BMS"+Date.now().toString().slice(-9);
   const next:TicketOrder={id,status:"待付款",event:"五月天《回到那一天》马来西亚站",date:dateText,venue:"National Stadium Bukit Jalil",zone,seats,quantity:qty,totalRm,totalNtd,createdAt:new Date().toLocaleString("zh-TW")};
   const nextOrders=[next,...orders];
@@ -147,6 +149,7 @@ export function BookMyShowSkin(p:Props){
    {page==="confirm"&&<><h2 style={{fontSize:20}}>确认订单</h2><div style={{background:"#fff",borderRadius:14,padding:15,lineHeight:1.9,fontSize:12}}><b style={{fontSize:15}}>五月天《回到那一天》马来西亚站</b><p>{dateText} · 20:00</p><p>National Stadium Bukit Jalil</p><p>票区：{zone} · {qty} 张</p><p>座位：{seats.join("、")}</p><p>票价：RM {selectedZone.price.toLocaleString("en-MY")} × {qty}</p><hr/><b style={{fontSize:17,color:"#e51b24"}}>RM {totalRm.toLocaleString("en-MY")}</b><p style={{color:"#777"}}>折合约 {money(totalNtd)}</p></div><button onClick={createOrder} style={{width:"100%",border:0,borderRadius:10,background:"#e51b24",color:"#fff",padding:14,fontWeight:850,marginTop:14}}>提交订单并前往街口支付</button></>}
    {page==="ticket"&&<><h2 style={{fontSize:20}}>我的票夹</h2>{orders.length?orders.map(o=><div key={o.id} style={{background:"#fff",borderRadius:14,padding:14,marginBottom:10}}><div style={{display:"flex",justifyContent:"space-between"}}><b>{o.event}</b><small style={{color:o.status==="已付款"?"#16934a":"#e58b1a"}}>{o.status}</small></div><p style={{fontSize:11,color:"#777"}}>{o.date} · 20:00 · {o.venue}</p><h3 style={{color:"#e51b24"}}>{o.zone} · {o.seats.join("、")}</h3><div style={{height:94,background:"#fafafa",border:"1px solid #eee",borderRadius:8,display:"grid",placeItems:"center"}}><QrCode size={66}/></div><small style={{color:"#888"}}>订单编号：{o.id}</small></div>):<p style={{color:"#888"}}>还没有门票订单。</p>}</>}
   </main>
+  {systemBusy&&<div role="dialog" aria-modal="true" style={{position:"absolute",inset:48,zIndex:40,display:"grid",placeItems:"center",padding:22,pointerEvents:"auto"}}><div style={{width:"100%",maxWidth:320,background:"#fff",borderRadius:16,padding:22,textAlign:"center",boxShadow:"0 8px 28px rgba(20,30,50,.14)"}}><div style={{fontSize:34,marginBottom:8,color:"#e51b24"}}>!</div><b style={{fontSize:18}}>目前系统繁忙</b><p style={{fontSize:13,color:"#777",lineHeight:1.6,margin:"10px 0 18px"}}>目前购票系统繁忙，暂时无法再次进入购票流程，请稍后再试。</p><button onClick={()=>setSystemBusy(false)} style={{width:"100%",border:0,borderRadius:9,background:"#e51b24",color:"#fff",padding:12,fontWeight:800}}>我知道了</button></div></div>}
   {page==="seats"&&lockStage!=="idle"&&<div role="dialog" aria-modal="true" style={{position:"absolute",inset:48,zIndex:30,background:"transparent",pointerEvents:"none",display:"grid",placeItems:"center",padding:20}}>
    <div style={{width:"100%",maxWidth:340,background:"#fff",borderRadius:18,padding:22,textAlign:"center",boxShadow:"0 10px 30px rgba(20,30,50,.12)",pointerEvents:"auto"}}>
     {lockStage==="locking"&&<><div style={{width:42,height:42,border:"4px solid #f5d5d5",borderTopColor:"#e51b24",borderRadius:"50%",margin:"0 auto 14px",animation:"bms-spin .8s linear infinite"}}/><b style={{fontSize:17}}>正在锁定座位…</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>请稍候，系统正在为你保留所选座位</p></>}
