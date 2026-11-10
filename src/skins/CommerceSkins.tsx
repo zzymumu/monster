@@ -305,6 +305,7 @@ export function JkoPaySkin(p:Props){
  const [success,setSuccess]=useState(false);
  const [successAmount,setSuccessAmount]=useState(0);
  const [successIsTrip,setSuccessIsTrip]=useState(false);
+ const [successMerchant,setSuccessMerchant]=useState("蝦皮購物");
  const [paySource,setPaySource]=useState("玉山銀行 **** 3188");
  const [paymentError,setPaymentError]=useState("");
  const pending=(()=>{try{return JSON.parse(String(p.ui?.pendingShopeePayment||"null")) as JkoPendingPayment|null}catch{return null}})();
@@ -333,21 +334,22 @@ export function JkoPaySkin(p:Props){
   if(isBookMyShowPayment){const orders=(()=>{try{return JSON.parse(String(p.allUi?.bookmyshow?.bookmyshowOrders||"[]")) as {id:string;status:string;[key:string]:unknown}[]}catch{return[]}})();p.onAppUi?.("bookmyshow","bookmyshowOrders",JSON.stringify(orders.map(order=>order.id===pendingBms!.paymentId?{...order,status:"已付款"}:order)));p.onUi?.("pendingBookMyShowPayment","");}else if(isTripPayment){const tripOrders=(()=>{try{return JSON.parse(String(p.allUi?.trip?.tripOrders||"[]")) as {id:string;status:string;[key:string]:unknown}[]}catch{return[]}})();p.onAppUi?.("trip","tripOrders",JSON.stringify(tripOrders.map(order=>order.id===pendingTrip!.paymentId?{...order,status:"已付款"}:order)));p.onUi?.("pendingTripPayment","");}else{p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));p.onUi?.("pendingShopeePayment","");}
   setSuccessAmount(activePending.total);
   setSuccessIsTrip(isTripPayment);
+  setSuccessMerchant(isBookMyShowPayment?"BookMyShow":isTripPayment?"Trip 旅行":"蝦皮購物");
   setSuccess(true);
-  window.setTimeout(()=>p.onOpenApp?.(isBookMyShowPayment?"bookmyshow":isBookMyShowPayment?"bookmyshow":isTripPayment?"trip":"shopee"),1100);
+  window.setTimeout(()=>p.onOpenApp?.(isBookMyShowPayment?"bookmyshow":isTripPayment?"trip":"shopee"),1100);
  };
  return <div className="catalog-skin jkopay-ui">
   <header className="jko-header"><button onClick={p.onBack} aria-label="返回">‹</button><strong>街口支付</strong><button onClick={()=>setTab("我的")}>⋯</button></header>
   {activePending&&!success?<div className="jko-payment-page">
    <div className="jko-payment-brand"><span>街口支付</span><small>安全付款確認</small></div>
-   <div className="jko-pay-card"><small>付款商店</small><h2>{isBookMyShowPayment?"BookMyShow":isTripPayment?"Trip 旅行":"蝦皮購物"}</h2><small>訂單內容</small><p>{isBookMyShowPayment?pendingBms!.note:isTripPayment?pendingTrip!.note:pending!.items.map(v=>v.name+" × "+v.qty).join("、")}</p><div className="jko-amount"><small>本次應付金額</small><strong>NT$ {activePending.total.toLocaleString("zh-TW")}</strong></div><div className="jko-pay-row"><span>付款方式</span><select value={paySource} onChange={e=>{setPaySource(e.target.value);setPaymentError("");}}><option>玉山銀行 **** 3188</option><option>街口帳戶餘額</option><option>國泰世華 **** 6621</option></select></div>{!isTripPayment&&<div className="jko-pay-row"><span>配送方式</span><b>{pending!.pickup}</b></div>}
+   <div className="jko-pay-card"><small>付款商店</small><h2>{isBookMyShowPayment?"BookMyShow":isTripPayment?"Trip 旅行":"蝦皮購物"}</h2><small>訂單內容</small><p>{isBookMyShowPayment?pendingBms!.note:isTripPayment?pendingTrip!.note:pending!.items.map(v=>v.name+" × "+v.qty).join("、")}</p><div className="jko-amount"><small>本次應付金額</small><strong>NT$ {activePending.total.toLocaleString("zh-TW")}</strong></div><div className="jko-pay-row"><span>付款方式</span><select value={paySource} onChange={e=>{setPaySource(e.target.value);setPaymentError("");}}><option>玉山銀行 **** 3188</option><option>街口帳戶餘額</option><option>國泰世華 **** 6621</option></select></div>{!isTripPayment&&!isBookMyShowPayment&&<div className="jko-pay-row"><span>配送方式</span><b>{pending!.pickup}</b></div>}
     {paySource==="街口帳戶餘額"&&<div className="jko-available-balance"><span>街口帳戶可用餘額</span><strong>NT$ {balance.toLocaleString("zh-TW")}</strong></div>}
    </div>
    {paymentError&&<div className="jko-payment-error"><b>⚠ 餘額不足，無法付款</b><span>{paymentError}</span><small>請改用其他付款方式，或取消訂單稍後再試。</small></div>}
    <p className="jko-safe-note">🔒 此為遊戲內模擬付款，不會連接銀行或扣款</p>
    <button className="jko-pay-confirm" onClick={confirmPayment}>{paymentError?"重新嘗試付款":"確認付款"} NT$ {activePending.total.toLocaleString("zh-TW")}</button>
-   <button className="jko-pay-cancel" onClick={()=>{p.onUi?.(isTripPayment?"pendingTripPayment":"pendingShopeePayment","");p.onOpenApp?.(isTripPayment?"trip":"shopee")}}>取消付款，返回{isBookMyShowPayment?"BookMyShow":isTripPayment?"Trip":"蝦皮"}</button>
-  </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給{successIsTrip?"Trip 旅行":"蝦皮購物"}</p><strong>NT$ {successAmount.toLocaleString("zh-TW")}</strong><small>正在返回{successIsTrip?"Trip":"蝦皮購物"}…</small><button onClick={()=>p.onOpenApp?.(successIsTrip?"trip":"shopee")}>立即返回</button></div>:<>
+   <button className="jko-pay-cancel" onClick={()=>{p.onUi?.(isBookMyShowPayment?"pendingBookMyShowPayment":isTripPayment?"pendingTripPayment":"pendingShopeePayment","");p.onOpenApp?.(isBookMyShowPayment?"bookmyshow":isTripPayment?"trip":"shopee")}}>取消付款，返回{isBookMyShowPayment?"BookMyShow":isTripPayment?"Trip":"蝦皮"}</button>
+  </div>:success?<div className="jko-success"><div>✓</div><h2>付款成功</h2><p>已成功支付給{successMerchant}</p><strong>NT$ {successAmount.toLocaleString("zh-TW")}</strong><small>正在返回{successMerchant}…</small><button onClick={()=>p.onOpenApp?.(successMerchant==="BookMyShow"?"bookmyshow":successIsTrip?"trip":"shopee")}>立即返回</button></div>:<>
    <div className="jko-home-scroll">
     <div className="jko-balance"><small>街口帳戶餘額</small><strong>NT$ {balance.toLocaleString("zh-TW")}</strong><span>街口支付・讓生活更方便</span></div>
     <div className="jko-quick-actions"><button onClick={()=>setTab("付款碼")}><span>▦</span>付款碼</button><button onClick={()=>setTab("付款碼")}><span>⌗</span>掃碼付款</button><button onClick={()=>setTab("交易記錄")}><span>↗</span>轉帳</button><button onClick={()=>setTab("我的")}><span>＋</span>生活繳費</button></div>
