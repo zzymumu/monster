@@ -2387,7 +2387,8 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     const allStoryItems = [...p.items, ...catRescue.messages];
     const acknowledgementArrived = allStoryItems.some(item =>
-      item.id === "malaysia-dag-incoming-41-0" && item.sender === "大G" && item.body.trim() === "好。"
+      item.sender === "大G" && item.body.trim() === "好。" &&
+      (item.id === "malaysia-dag-incoming-41-0" || (item.meta?.storyThread === "大G" || item.title === "大G"))
     );
     const sharedProduct = [...allStoryItems].reverse().find(item =>
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
@@ -6234,6 +6235,32 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
+                    // This specific reply is a hand-off into Shopee's gift-order
+                    // flow. Persist the player's bubble with a stable ID and
+                    // queue DaG's acknowledgement explicitly, rather than
+                    // relying on the generic mixed-chat append path.
+                    if(malaysiaDaGChatStage===41){
+                      const replyId="malaysia-dag-user-41-0";
+                      const acknowledgementId="malaysia-dag-incoming-41-0";
+                      const replyExists=[...p.items,...catRescue.messages].some(item=>item.id===replyId);
+                      if(!replyExists){
+                        const replyItem=makeItem({
+                          id:replyId,title:"大G",sender:"我",body:turn.user[0],
+                          time:"2026-11-02 "+(storyClockRef.current||"14:24"),
+                          outgoing:true,avatar:"",kind:"text",media:"",
+                          meta:{storyId:"cat-rescue",storyThread:"大G",storyOrderAt:String(Date.now())}
+                        });
+                        setCatRescueRaw(JSON.stringify({...catRescue,version:2,messages:[...catRescue.messages,replyItem]}));
+                      }
+                      const acknowledgementExists=[...p.items,...catRescue.messages,...pendingCatLines].some(item=>
+                        item.id===acknowledgementId || (item.sender==="大G" && item.body.trim()==="好。" && (item.meta?.storyThread==="大G"||item.title==="大G"))
+                      );
+                      if(!acknowledgementExists){
+                        setPendingCatLines(current=>[...current,{id:acknowledgementId,sender:"大G",body:"好。",thread:"大G"}]);
+                      }
+                      setMalaysiaDaGChatStage(42);
+                      return;
+                    }
                     const lines:CatLine[]=[
                       ...turn.user.map((body,index)=>({id:"malaysia-dag-user-"+malaysiaDaGChatStage+"-"+index,sender:"我" as const,body,thread:"大G" as const})),
                       ...turn.incoming.map((body,index)=>({id:"malaysia-dag-incoming-"+malaysiaDaGChatStage+"-"+index,sender:"大G" as const,body,thread:"大G" as const})),
