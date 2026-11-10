@@ -2274,7 +2274,7 @@ export function WeChatSkin(p: SkinProps) {
     {user:["很多！"],incoming:["行吧。","那我也不告訴妳我今天吃什麼了。"]},
     {user:["？？？","你幼不幼稚啊！"],incoming:["彼此彼此。"]},
     {user:["哦对，我在给vava买猫罐头，顺便也给玩玩带一点吧？"],incoming:["什麼罐頭？妳發給我看看。"]},
-    {user:[],incoming:[]},
+    {user:["我去蝦皮找一款貓罐頭給你看"],incoming:[]},
     {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["好。"]},
   ];
   // Wait for the actual Shopee product card to arrive in DaG's chat.
@@ -4736,7 +4736,7 @@ export function WeChatSkin(p: SkinProps) {
     const raw = p.allUi?.wechat?.shopeeSharePayload;
     if (typeof raw !== "string" || !raw) return;
     try {
-      const payload = JSON.parse(raw) as { id?: string; recipient?: string; productId?: string; name?: string; price?: number; variant?: string; image?: string; emoji?: string; category?: string };
+      const payload = JSON.parse(raw) as { id?: string; recipient?: string; productId?: string; name?: string; price?: number; variant?: string; image?: string; emoji?: string; category?: string; storyShare?: boolean };
       if (!payload.id || !payload.recipient || !payload.name) return;
       const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(payload.name);
       if (payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true && !isCatCan) {
@@ -4756,7 +4756,7 @@ export function WeChatSkin(p: SkinProps) {
         media: "",
         meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productVariant: payload.variant || "", productImage: payload.image || "", productEmoji: payload.emoji || "🛍️", productCategory: payload.category || "" },
       };
-      const isDaGStoryShare = payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true;
+      const isDaGStoryShare = payload.recipient === "大G" && payload.storyShare === true;
       appendCatLines(
         isDaGStoryShare
           ? [sharedCard, { id: "malaysia-dag-after-share-question-v1", sender: "大G", body: "這款 Vava 喜歡嗎？玩玩有點挑食。", thread: "大G" }]
