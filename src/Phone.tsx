@@ -102,6 +102,8 @@ export function AppIcon({
           ) : (
             <span>{custom.slice(0, 2)}</span>
           )
+        ) : id === "trip" ? (
+          <img src="https://img1.paisawapas.com/images/2025/01/04165310/logo-1.png" alt="Trip" />
         ) : hasNativeArtwork(id) ? (
           <AppArtwork id={id} date={date} time={time} />
         ) : (
