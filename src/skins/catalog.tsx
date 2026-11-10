@@ -60,4 +60,5 @@ export const catalogSkins = {
   taobao: skin(commerce, "TaobaoSkin"),
   shopee: skin(commerce, "ShopeeSkin"),
   delivery: skin(commerce, "DeliverySkin"),
+  trip: skin(() => import("./Trip"), "TripSkin"),
 };
