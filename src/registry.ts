@@ -33,6 +33,7 @@ import {
   Tv,
   Save,
   Plane,
+  Ticket,
   type LucideIcon,
 } from "lucide-react";
 export type EngineKind =
@@ -121,6 +122,7 @@ const definitions: [
   ["netease", "网易云音乐", "media", "#cd5659", Headphones, ["发现", "歌单"]],
   ["delivery", "HungryPanda", "records", "#2385c6", Utensils, ["首页", "订单", "我的"]],
   ["trip", "Trip", "records", "#2f8cc9", Plane, ["首页", "机票", "酒店", "订单"]],
+  ["bookmyshow", "BookMyShow", "records", "#e51b24", Ticket, ["演唱会", "票夹"]],
   ["shopee", "蝦皮購物", "records", "#ee4d2d", ShoppingBag, ["首頁", "分類", "購物車", "我的"]],
   ["forum", "论坛", "social", "#8b9776", Hash, ["帖子", "版块"]],
   [
