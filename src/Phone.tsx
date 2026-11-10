@@ -597,9 +597,16 @@ function PhoneRuntime({
       richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: duration }, time: new Date().toISOString(),
       sender: "大G", avatar: "", kind: "call" as const, media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
       outgoing: true, read: true, likes: 0, comments: [] };
+    const completedMalaysiaCall = outgoingDaGCallStep === 12;
     update({ ...current, incomingCall: null,
       messages: { ...current.messages, wechat: [...(current.messages.wechat ?? []).filter((item) => item.id !== record.id), record] },
-      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxOutgoingDaGCallV1: false, wxOutgoingDaGCallFinishedV1: true } } });
+      ui: { ...current.ui, wechat: {
+        ...(current.ui?.wechat ?? {}),
+        wxOutgoingDaGCallV1: false,
+        wxOutgoingDaGCallFinishedV1: true,
+        wxMalaysiaCallCompletedV1: completedMalaysiaCall,
+        wxMalaysiaBroccoliInvitePendingV1: completedMalaysiaCall,
+      } } });
     setOutgoingDaGCallStep(-1); setOutgoingDaGReplyReady(false);
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
   };
@@ -1456,8 +1463,83 @@ function PhoneRuntime({
       let nextStory: { version?: number; stage?: number; branch?: string; messages?: Item[] } = {};
       try { if (typeof currentWx.catRescueState === "string") nextStory = JSON.parse(currentWx.catRescueState); } catch { nextStory = {}; }
       const storyMessages = Array.isArray(nextStory.messages) ? nextStory.messages : [];
-      if ((targetContact === "西蓝花" || targetContact === "西兰花") &&
-          currentWx.wxPostDrunkBroccoliCheckInV1 === true) {
+      const isBroccoliThread = targetContact === "西蓝花" || targetContact === "西兰花";
+      if (isBroccoliThread && currentWx.wxMalaysiaCallCompletedV1 === true &&
+          currentWx.wxMalaysiaBroccoliInvitePendingV1 === true &&
+          currentWx.wxMalaysiaBroccoliInviteStartedV1 !== true) {
+        const inviteLines = [
+          { id: "malaysia-broccoli-invite-01", sender: "我", body: "下周末有空吗？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-02", sender: "西蓝花", body: "怎么啦？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-03", sender: "我", body: "能不能陪我去一趟大马？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-04", sender: "西蓝花", body: "马来西亚？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-05", sender: "西蓝花", body: "你怎么突然要去马来西亚？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-06", sender: "我", body: "嗯嗯……", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-07", sender: "西蓝花", body: "你要去看演唱会啊？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-08", sender: "我", body: "嗯嗯……", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-09", sender: "我", body: "就是温尚翊本来跟我说可以帮我留票的。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-10", sender: "我", body: "但是我拒绝了。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-11", sender: "西蓝花", body: "？？？？？？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-12", sender: "西蓝花", body: "不是。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-13", sender: "西蓝花", body: "你拒绝了？？？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-14", sender: "西蓝花", body: "人家都说要帮你留票了你居然拒绝？？？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-15", sender: "我", body: "哎呀……", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-16", sender: "我", body: "我就是想突然跑过去给他一个惊喜嘛。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-17", sender: "西蓝花", body: "…………", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-18", sender: "西蓝花", body: "你有没有想过其实你可以先把票收下。我们再卖掉。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-19", sender: "西蓝花", body: "然后拿卖掉的钱再去买新票？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-20", sender: "西蓝花", body: "这样他看到本来应该是你的位置结果是别人哈哈哈，效果不是更好吗？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-21", sender: "西蓝花", body: "又省钱又能有惊喜。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-22", sender: "我", body: "我把他给我的票卖了不好吧......万一他生气了怎么办？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-23", sender: "西蓝花", body: "嗯...你说的有道理。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-24", sender: "我", body: "对呀对呀！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-25", sender: "西蓝花", body: "你真的……", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-26", sender: "西蓝花", body: "哎呦，我现在都不知道该说你什么好了。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-27", sender: "西蓝花", body: "你这是准备给他惊喜，还是准备给我惊吓？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-28", sender: "我", body: "嘿嘿，陪我去嘛陪我去嘛，我一个人去大马我害怕🥺", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-29", sender: "西蓝花", body: "那你票买了吗？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-30", sender: "西蓝花", body: "机票呢？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-31", sender: "西蓝花", body: "酒店订了吗？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-32", sender: "西蓝花", body: "你不会什么都还没准备吧？？？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-33", sender: "我", body: "……", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-34", sender: "我", body: "我这不是先来找你了嘛。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-35", sender: "西蓝花", body: "？？？？？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-36", sender: "西蓝花", body: "合着你连计划都没有就准备把我拐去马来西亚？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-37", sender: "我", body: "你就说陪不陪我嘛！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-38", sender: "西蓝花", body: "哈哈哈哈哈哈。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-39", sender: "西蓝花", body: "陪陪陪！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-40", sender: "我", body: "我就知道你最好了！！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-41", sender: "西蓝花", body: "既然都要特地飞去马来西亚了。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-42", sender: "西蓝花", body: "那我们不得买大舞台？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-43", sender: "西蓝花", body: "不然你跑那么远，结果离他十万八千里？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-44", sender: "我", body: "嘿嘿，我也是这么想的，我在想第一排应该可以看到我吧？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-45", sender: "西蓝花", body: "你现在有钱吗？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-46", sender: "西蓝花", body: "第一排欸！！不是随便买买就好！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-47", sender: "我", body: "有啦！！！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-48", sender: "西蓝花", body: "真的假的？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-49", sender: "西蓝花", body: "你什么时候这么有钱了？", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-50", sender: "我", body: "我也是有存款的好吗！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-51", sender: "西蓝花", body: "行，那我就放心了。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-52", sender: "西蓝花", body: "不过机票、酒店、门票，这些加起来可不少哦。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-53", sender: "我", body: "没关系！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-54", sender: "我", body: "难得去一次嘛！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-55", sender: "西蓝花", body: "好啦，那我先去请假，你可以先去看看机酒，合适的话你就一起买，然后我转账给你~", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-56", sender: "我", body: "好~我现在去看。", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-57", sender: "我", body: "对了！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-58", sender: "我", body: "你千万不能跟他说我们要去啊！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-59", sender: "西蓝花", body: "我才不会说！你以为我漏勺啊！", thread: "西蓝花" },
+          { id: "malaysia-broccoli-invite-60", sender: "我", body: "相信你相信你啦~", thread: "西蓝花" },
+        ];
+        const deliveredIds = new Set([...nextMessages, ...storyMessages].map((item) => item.id));
+        const unseenInviteLines = inviteLines.filter((line) => !deliveredIds.has(line.id));
+        update({ ...current, messages: { ...current.messages, wechat: nextMessages }, ui: { ...current.ui,
+          wechat: { ...currentWx, wxMalaysiaBroccoliInvitePendingV1: false, wxMalaysiaBroccoliInviteStartedV1: true,
+            wxCatPendingLines: JSON.stringify([...(Array.isArray((() => { try { return JSON.parse(String(currentWx.wxCatPendingLines || "[]")); } catch { return []; } })()) ? (() => { try { return JSON.parse(String(currentWx.wxCatPendingLines || "[]")); } catch { return []; } })() : []), ...unseenInviteLines]),
+            openThread: targetContact, catRescueState: JSON.stringify({ ...nextStory, messages: storyMessages }) } } });
+        open("wechat");
+        if (locked) setPinOpen(true);
+        return;
+      }
+      if (isBroccoliThread && currentWx.wxPostDrunkBroccoliCheckInV1 === true) {
         const checkIn = makeItem({
           id: "drunk-post-door-broccoli-checkin-v1",
           title: "西蓝花",
