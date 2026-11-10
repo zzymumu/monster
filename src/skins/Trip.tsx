@@ -3,7 +3,7 @@ import { Plane, Hotel, CalendarDays, ChevronLeft, ArrowRight, MapPin, BedDouble 
 import type { Props } from "./shared";
 
 type Flight = { id:string; airline:string; depart:string; arrive:string; returnDepart:string; returnArrive:string; duration:string; baggage:string; price:number; };
-type TripOrder = {id:string;status:string;hotel:string;room:string;checkIn:string;checkOut:string;total:number;flight:Flight;concert?:string;seats?:string[];};
+type TripOrder = {id:string;status:string;hotel:string;room:string;checkIn:string;checkOut:string;total:number;flight:Flight;guests?:number;concert?:string;seats?:string[];};
 type HotelOption = { id:string; name:string; area:string; stars:number; price:number; image:string; imageUrl:string; coverUrl:string; blurb:string; rooms:{name:string;price:number;desc:string}[]; };
 const flights:Flight[]=[
  {id:"airasia",airline:"AirAsia 亞洲航空",depart:"06:45",arrive:"11:35",returnDepart:"20:10",returnArrive:"01:00+1",duration:"4 小時 50 分",baggage:"手提行李 7kg",price:8990},
