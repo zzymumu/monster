@@ -27,6 +27,19 @@ import {
   useContent,
   type Props,
 } from "./shared";
+function formatMessageTime(value: string) {
+  const raw = String(value || "").trim();
+  const localized = raw.match(/(?:上午|下午)?\s*(\d{1,2}):(\d{2})(?::\d{2})?\s*$/);
+  if (localized) {
+    let hour = Number(localized[1]);
+    if (raw.includes("下午") && hour < 12) hour += 12;
+    if (raw.includes("上午") && hour === 12) hour = 0;
+    return `${String(hour).padStart(2, "0")}:${localized[2]}`;
+  }
+  const iso = raw.match(/[T ](\d{2}):(\d{2})(?::\d{2})?/);
+  if (iso) return `${iso[1]}:${iso[2]}`;
+  return raw.slice(-5);
+}
 function Bubbles({
   p,
   items,
@@ -58,7 +71,7 @@ function Bubbles({
               i.body
             )}
             <small>
-              {i.time.slice(-5)}
+              {formatMessageTime(i.time)}
               {i.read && <CheckCheck size={10} />}
             </small>
           </button>
@@ -106,7 +119,7 @@ function ChatRows({
               <strong>{name}</strong>
               <p>{last.body}</p>
             </span>
-            <time>{last.time.slice(-5)}</time>
+            <time>{formatMessageTime(last.time)}</time>
           </button>
         );
       })}
