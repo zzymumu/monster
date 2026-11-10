@@ -2217,7 +2217,7 @@ export function WeChatSkin(p: SkinProps) {
   const [malaysiaDaGChatStage, setMalaysiaDaGChatStage] = useSkinState<number>(p, "wxMalaysiaDaGChatStageV1", -1);
   const [malaysiaDaGPostOrderUnlocked, setMalaysiaDaGPostOrderUnlocked] = useSkinState<boolean>(p, "wxMalaysiaDaGPostOrderUnlockedV1", false);
   useEffect(() => {
-    if (!isMonsterThread || malaysiaDaGChatStage !== 43 || p.allUi?.shopee?.shopeeStoryOrderViewedV1 !== true) return;
+    if (!isMonsterThread || malaysiaDaGChatStage !== 42 || p.allUi?.shopee?.shopeeStoryOrderViewedV1 !== true) return;
     // The follow-up becomes available only after the player has actually
     // opened the Shopee order notification and then returned to DaG's chat.
     setMalaysiaDaGPostOrderUnlocked(true);
@@ -2251,7 +2251,7 @@ export function WeChatSkin(p: SkinProps) {
     const reassuranceSent = [...p.items, ...catRescue.messages].some((item) =>
       item.sender === "我" && item.body.trim() === "放心啦，玩玩在我家吃的就是这个~很爱吃！"
     );
-    if (sharedCatCan && !reassuranceSent && malaysiaDaGChatStage === 43) setMalaysiaDaGChatStage(42);
+    if (sharedCatCan && !reassuranceSent && malaysiaDaGShareQuestionDelivered && malaysiaDaGChatStage !== 41) setMalaysiaDaGChatStage(41);
     setMalaysiaDaGShareStageMigratedV2(true);
   }, [malaysiaDaGShareStageMigratedV2, malaysiaDaGChatStage, p.items, catRescue.messages, contactRemarks]);
 
@@ -2340,7 +2340,7 @@ export function WeChatSkin(p: SkinProps) {
       item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
     );
     if (questionDelivered) {
-      setMalaysiaDaGChatStage(42);
+      setMalaysiaDaGChatStage(41);
       return;
     }
     const questionQueued = pendingCatLines.some((item) =>
@@ -2371,13 +2371,13 @@ export function WeChatSkin(p: SkinProps) {
     // Existing saves may already have advanced to the next turn because the
     // order-view flag was previously set at order creation. Roll those saves
     // back to the reassurance choice unless the player really sent it.
-    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage > 42) {
-      setMalaysiaDaGChatStage(42);
+    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage !== 41) {
+      setMalaysiaDaGChatStage(41);
       setMalaysiaDaGPostOrderUnlocked(false);
       return;
     }
-    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage < 42) {
-      setMalaysiaDaGChatStage(42);
+    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage !== 41) {
+      setMalaysiaDaGChatStage(41);
       return;
     }
     if (!questionDelivered && malaysiaDaGChatStage === 42) setMalaysiaDaGChatStage(999);
@@ -2387,7 +2387,7 @@ export function WeChatSkin(p: SkinProps) {
   useEffect(() => {
     const allStoryItems = [...p.items, ...catRescue.messages];
     const acknowledgementArrived = allStoryItems.some(item =>
-      item.id === "malaysia-dag-incoming-42-0" && item.sender === "大G" && item.body.trim() === "好。"
+      item.id === "malaysia-dag-incoming-41-0" && item.sender === "大G" && item.body.trim() === "好。"
     );
     const sharedProduct = [...allStoryItems].reverse().find(item =>
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
@@ -6230,7 +6230,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 42 || malaysiaDaGShareQuestionDelivered) && (malaysiaDaGChatStage < 43 || malaysiaDaGPostOrderUnlocked) && (
+              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 41 || malaysiaDaGShareQuestionDelivered) && (malaysiaDaGChatStage < 42 || malaysiaDaGPostOrderUnlocked) && (
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
