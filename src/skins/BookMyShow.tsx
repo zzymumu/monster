@@ -30,7 +30,8 @@ export function BookMyShowSkin(p:Props){
  const [elapsed,setElapsed]=useState(0);
  const [queueReady,setQueueReady]=useState(false);
  const [quantityOpen,setQuantityOpen]=useState(false);
- const [lockStage,setLockStage]=useState<"idle"|"locking"|"success">("idle");
+ const [lockStage,setLockStage]=useState<"idle"|"locking"|"failed"|"success">("idle");
+ const [lockAttempts,setLockAttempts]=useState(0);
  const [systemBusy,setSystemBusy]=useState(false);
  const eventDate=useMemo(()=>upcomingSaturday(),[]);
  const dateText=dateLabel(eventDate);
@@ -43,9 +44,19 @@ export function BookMyShowSkin(p:Props){
   if(page!=="seats") setLockStage("idle");
  },[page]);
  const confirmSeats=()=>{
+  if(lockStage!=="idle") return;
+  const attempt=lockAttempts+1;
+  setLockAttempts(attempt);
   setLockStage("locking");
-  window.setTimeout(()=>setLockStage("success"),1100);
-  window.setTimeout(()=>setPage("confirm"),1950);
+  window.setTimeout(()=>{
+   if(attempt<5){
+    setLockStage("failed");
+    window.setTimeout(()=>setLockStage(current=>current==="failed"?"idle":current),1700);
+   }else{
+    setLockStage("success");
+    window.setTimeout(()=>setPage("confirm"),850);
+   }
+  },1100);
  };
  useEffect(()=>{
   if(page!=="queue"){setElapsed(0);setQueueReady(false);return;}
@@ -152,6 +163,7 @@ export function BookMyShowSkin(p:Props){
   {page==="seats"&&lockStage!=="idle"&&<div role="dialog" aria-modal="true" style={{position:"absolute",inset:48,zIndex:30,background:"transparent",pointerEvents:"none",display:"grid",placeItems:"center",padding:20}}>
    <div style={{width:"100%",maxWidth:340,background:"#fff",borderRadius:18,padding:22,textAlign:"center",boxShadow:"0 10px 30px rgba(20,30,50,.12)",pointerEvents:"auto"}}>
     {lockStage==="locking"&&<><div style={{width:42,height:42,border:"4px solid #f5d5d5",borderTopColor:"#e51b24",borderRadius:"50%",margin:"0 auto 14px",animation:"bms-spin .8s linear infinite"}}/><b style={{fontSize:17}}>正在锁定座位…</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>请稍候，系统正在为你保留所选座位</p></>}
+    {lockStage==="failed"&&<><div style={{width:48,height:48,borderRadius:24,background:"#fff0f0",color:"#e51b24",display:"grid",placeItems:"center",fontSize:28,margin:"0 auto 12px"}}>!</div><b style={{fontSize:18,color:"#e51b24"}}>座位锁定失败</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>目前系统繁忙，座位暂时无法锁定，请重试。</p><small style={{display:"block",fontSize:11,color:"#aaa",marginTop:9}}>尝试 {lockAttempts} / 5</small></>}
     {lockStage==="success"&&<><div style={{width:48,height:48,borderRadius:24,background:"#e8f7ed",color:"#159447",display:"grid",placeItems:"center",fontSize:28,margin:"0 auto 12px"}}>✓</div><b style={{fontSize:18,color:"#159447"}}>座位锁定成功！</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>已为你保留连续座位</p></>}
 
    </div>
