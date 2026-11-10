@@ -6234,12 +6234,6 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
-                    if(malaysiaDaGChatStage===41){
-                      // No narration bubble: arm the share flow and let the
-                      // player leave WeChat and choose any cat-can product.
-                      p.onUi?.("wxDaGShopeeSharePendingV1", true);
-                      return;
-                    }
                     const lines:CatLine[]=[
                       ...turn.user.map((body,index)=>({id:"malaysia-dag-user-"+malaysiaDaGChatStage+"-"+index,sender:"我" as const,body,thread:"大G" as const})),
                       ...turn.incoming.map((body,index)=>({id:"malaysia-dag-incoming-"+malaysiaDaGChatStage+"-"+index,sender:"大G" as const,body,thread:"大G" as const})),
