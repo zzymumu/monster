@@ -6248,3 +6248,7 @@
 .shopee-share-contacts button span{width:52px;height:52px;border-radius:14px;background:#f4f4f4;display:grid;place-items:center;font-size:27px}
 
 .shopee-detail-actions button:nth-child(3){flex:0 0 72px;background:#fff;color:#666;border:1px solid #eee;display:flex;align-items:center;justify-content:center;gap:4px}
+
+.shopee-share-contacts button{min-width:72px}
+.shopee-share-contacts button img{width:52px;height:52px;border-radius:14px;object-fit:cover;background:#f4f4f4;display:block}
+.shopee-share-contacts button span{width:auto;height:auto;border-radius:0;background:transparent;display:block;place-items:initial;font-size:13px;color:#333;white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis}
