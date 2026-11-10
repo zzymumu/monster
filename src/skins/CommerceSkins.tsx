@@ -217,7 +217,7 @@ export function ShopeeSkin(p:Props){
  const saveCart=(v:ShopeeCart)=>{setCart(v);p.onUi?.("shopeeCart",JSON.stringify(v))};
  const saveOrders=(v:typeof orders)=>{setOrders(v);p.onUi?.("shopeeOrders",JSON.stringify(v))};
  const add=(v:ShopeeProduct)=>saveCart({...cart,[v.id]:(cart[v.id]||0)+1});
- const wechatUi=p.allUi?.wechat||{};
+ const wechatUi: NonNullable<Props["allUi"]>[string] = p.allUi?.wechat ?? {};
  let wechatRemarks:Record<string,string>={};
  try {
   const parsed=JSON.parse(String(wechatUi.wxContactRemarks||"{}"));
