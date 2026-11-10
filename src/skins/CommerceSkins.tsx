@@ -296,6 +296,9 @@ export function ShopeeSkin(p:Props){
 
 
 type JkoPendingPayment={paymentId:string;total:number;subtotal:number;couponDiscount:number;items:Array<{id:string;name:string;price:number;qty:number;discountedTotal:number}>;pickup:string;address:string;createdAt:number};
+
+// Trip travel booking uses the same in-game JKoPay balance and transaction ledger.
+
 type JkoTransaction={id:string;merchant:string;amount:number;date:string;note:string;status:string};
 export function JkoPaySkin(p:Props){
  const [tab,setTab]=useState("首頁");
