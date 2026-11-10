@@ -48,6 +48,7 @@ export type SkinProps = {
   onUi?: (key: string, value: UiValue) => void;
   onAppUi?: (appId: string, key: string, value: UiValue) => void;
   onOpenApp?: (appId: string) => void;
+  onNotification?: (text: string) => void;
   appId?: string;
   owner?: string;
   virtualTime?: string;
