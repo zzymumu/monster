@@ -2218,6 +2218,8 @@ export function WeChatSkin(p: SkinProps) {
   const [malaysiaDaGPostOrderUnlocked, setMalaysiaDaGPostOrderUnlocked] = useSkinState<boolean>(p, "wxMalaysiaDaGPostOrderUnlockedV1", false);
   useEffect(() => {
     if (!isMonsterThread || malaysiaDaGChatStage !== 43 || p.allUi?.shopee?.shopeeStoryOrderViewedV1 !== true) return;
+    // The follow-up becomes available only after the player has actually
+    // opened the Shopee order notification and then returned to DaG's chat.
     setMalaysiaDaGPostOrderUnlocked(true);
     p.onAppUi?.("shopee", "shopeeStoryOrderViewedV1", false);
   }, [isMonsterThread, malaysiaDaGChatStage, p.allUi?.shopee?.shopeeStoryOrderViewedV1]);
@@ -2351,7 +2353,6 @@ export function WeChatSkin(p: SkinProps) {
   // question was delivered to the global WeChat transcript rather than the
   // local cat-rescue cache.
   useEffect(() => {
-    if (!isMonsterThread || malaysiaDaGChatStage !== 42) return;
     const allMessages = [...p.items, ...catRescue.messages];
     const sharedCatCan = allMessages.some((item) =>
       (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
@@ -2363,7 +2364,23 @@ export function WeChatSkin(p: SkinProps) {
       item.sender === "大G" &&
       item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
     );
-    if (sharedCatCan && !questionDelivered) setMalaysiaDaGChatStage(999);
+    const reassuranceSent = allMessages.some((item) =>
+      item.sender === "我" && item.body.trim() === "放心啦，玩玩在我家吃的就是这个~很爱吃！"
+    );
+    if (!sharedCatCan) return;
+    // Existing saves may already have advanced to the next turn because the
+    // order-view flag was previously set at order creation. Roll those saves
+    // back to the reassurance choice unless the player really sent it.
+    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage > 42) {
+      setMalaysiaDaGChatStage(42);
+      setMalaysiaDaGPostOrderUnlocked(false);
+      return;
+    }
+    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage < 42) {
+      setMalaysiaDaGChatStage(42);
+      return;
+    }
+    if (!questionDelivered && malaysiaDaGChatStage === 42) setMalaysiaDaGChatStage(999);
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, contactRemarks]);
   // DaG quietly buys the exact ZIWI item the player shared. The order is
   // created by Shopee itself, not by checkout, so no player payment is charged.
