@@ -2200,6 +2200,16 @@ export function WeChatSkin(p: SkinProps) {
   const [malaysiaTripStage, setMalaysiaTripStage] = useSkinState<number>(p, "wxMalaysiaTripStageV1", -1);
   const [malaysiaTripTriggered, setMalaysiaTripTriggered] = useSkinState<boolean>(p, "wxMalaysiaTripTriggeredV1", false);
   const [malaysiaTransferCredited, setMalaysiaTransferCredited] = useSkinState<boolean>(p, "wxMalaysiaTransferCreditedV1", false);
+
+  // Malaysia-trip handoff: the player must finish every Broccoli itinerary
+  // reply first, then manually open DaG's chat. Only that contact switch
+  // unlocks stage 567. Release the Malaysia-specific choice renderer at the
+  // same time so DaG's normal reply option can appear.
+  useEffect(() => {
+    if (!isMonsterThread || malaysiaTripStage < 11) return;
+    setMalaysiaTripStage(-1);
+    setReturnDinnerStage(567);
+  }, [isMonsterThread, malaysiaTripStage, setMalaysiaTripStage, setReturnDinnerStage]);
   const malaysiaTripTurns: Array<{ user: string[]; incoming: string[] }> = [
     { user: ["都搞定~", "机酒和票都买好了。", "你敢信！！我去 app 刷票刷着刷着出了两张大舞台哈哈哈哈！"], incoming: ["！！啥位置啊？"] },
     { user: ["我觉得应该是演唱会临近了哈哈卖不掉的黄牛票会票池了吧，就很顺利~"], incoming: ["太好了啊啊啊我还没坐过这么近的位置！", "爱你爱你爱你爱你我爱死你了！"] },
