@@ -110,7 +110,7 @@ describe("import and schema safety", () => {
   });
   it("registers all built-in apps with editable story data", () => {
     const w = createWork();
-    expect(registry).toHaveLength(53);
+    expect(registry).toHaveLength(54);
     for (const a of registry) {
       expect(w.apps.some((x) => x.id === a.id)).toBe(true);
       expect(w.data[a.id].length).toBeGreaterThan(0);
