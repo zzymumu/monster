@@ -13,7 +13,7 @@ describe("optional app lifecycle", () => {
   it("starts newly authored projects without seeded optional content or story", () => {
     const w = createEmptyWork();
     expect(w.nodes).toEqual([]);
-    expect(Object.keys(w.data).sort()).toEqual([...essentialApps, "redbook"].sort());
+    expect(Object.keys(w.data).sort()).toEqual([...essentialApps, "redbook", "trip"].sort());
     expect(Object.values(w.data).every((items) => items.length === 0)).toBe(
       true,
     );
@@ -32,7 +32,7 @@ describe("optional app lifecycle", () => {
       folder: "",
     });
     expect(w.data.redbook).toHaveLength(6);
-    expect(w.apps).toHaveLength(52);
+    expect(w.apps).toHaveLength(53);
   });
   it("upgrades old format v1 app records without uninstalling existing apps", () => {
     const old = createWork();
