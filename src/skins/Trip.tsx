@@ -32,7 +32,7 @@ function nextWeekend(dateText:string){
 export function TripSkin(p:Props){
  const dates=useMemo(()=>nextWeekend(p.virtualDate||new Date().toISOString().slice(0,10)),[p.virtualDate]);
  const [tab,setTab]=useState("首頁");
- const [flight,setFlight]=useState<Flight|null>(null);
+ const [flight,setFlight]=useState<Flight|null>(flights[0]);
  const [hotel,setHotel]=useState<HotelOption|null>(null);
  const [room,setRoom]=useState(0);
  const [guests,setGuests]=useState(2);
