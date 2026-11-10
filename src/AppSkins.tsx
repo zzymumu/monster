@@ -2247,7 +2247,8 @@ export function WeChatSkin(p: SkinProps) {
     setMalaysiaDaGShareStageMigratedV2(true);
   }, [malaysiaDaGShareStageMigratedV2, malaysiaDaGChatStage, p.items, catRescue.messages, contactRemarks]);
 
-  const malaysiaDaGShareQuestionDelivered = [...p.items, ...catRescue.messages].some((item) =>
+  // Only unlock the reply after DaG's question is in this chat transcript.
+  const malaysiaDaGShareQuestionDelivered = catRescue.messages.some((item) =>
     item.id === "malaysia-dag-after-share-question-v1" &&
     item.sender === "大G" &&
     item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
@@ -2320,15 +2321,22 @@ export function WeChatSkin(p: SkinProps) {
       /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(String(item.meta?.productName || ""))
     );
     if (!shared) return;
-    const alreadyAsked = [...p.items, ...catRescue.messages, ...pendingCatLines].some((item) =>
+    // Do not advance to the player's reply stage while DaG's incoming line
+    // is merely queued. Advance only after it is saved in this conversation.
+    const questionDelivered = catRescue.messages.some((item) =>
+      item.id === "malaysia-dag-after-share-question-v1" &&
+      item.sender === "大G" &&
+      item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
+    );
+    if (questionDelivered) {
+      setMalaysiaDaGChatStage(42);
+      return;
+    }
+    const questionQueued = pendingCatLines.some((item) =>
       item.id === "malaysia-dag-after-share-question-v1"
     );
-    if (!alreadyAsked) {
-      appendCatLines([{id:"malaysia-dag-after-share-question-v1",sender:"大G",body:"這款 Vava 喜歡嗎？玩玩有點挑食。",thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-after-share-question-v1");
-    }
-    // Stage 42 is the player's reply to DaG's question. The choice itself
-    // stays hidden until that exact incoming message has actually been delivered.
-    setMalaysiaDaGChatStage(42);
+    if (questionQueued) return;
+    appendCatLines([{id:"malaysia-dag-after-share-question-v1",sender:"大G",body:"這款 Vava 喜歡嗎？玩玩有點挑食。",thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-after-share-question-v1");
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
   // Recover saves from the broken ordering: the share card may already exist
   // while the old build left the conversation at stage 42 without DaG's reply.
