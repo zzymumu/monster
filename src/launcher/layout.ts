@@ -15,6 +15,7 @@ export const layoutSchema = z
     workId: z.string(),
     previewLayoutRevision: z.number().int().min(0).default(0),
     widgetSeedRevision: z.number().int().min(0).default(0),
+    tripSeedRevision: z.number().int().min(0).default(0),
     apps: workSchema.shape.apps,
     widgets: z.array(widgetSchema).max(24),
     order: z.array(z.string().max(150)).max(500),
@@ -67,6 +68,7 @@ export function defaultLayout(input: Work): DeviceLayout {
     workId: w.id,
     previewLayoutRevision: w.id === "ui-test-phone-v2" ? 1 : 0,
     widgetSeedRevision: 1,
+    tripSeedRevision: 1,
     apps: structuredClone(w.apps)
       .sort((a, b) => (a.id === "appstore" ? -1 : b.id === "appstore" ? 1 : a.id === "gamesave" ? -1 : b.id === "gamesave" ? 1 : 0))
       .map((a) =>
@@ -114,6 +116,18 @@ export function validateLayout(raw: unknown, input: Work) {
     gameSave.dock = false;
     delete layout.positions[gameSave.id];
     if (!layout.order.includes(gameSave.id)) layout.order.push(gameSave.id);
+  }
+  if (layout.tripSeedRevision < 1) {
+    const trip = layout.apps.find((app) => app.id === "trip");
+    if (trip) {
+      trip.installed = true;
+      trip.visible = true;
+      trip.folder = "";
+      trip.dock = false;
+      delete layout.positions.trip;
+      if (!layout.order.includes("trip")) layout.order.push("trip");
+    }
+    layout.tripSeedRevision = 1;
   }
   if (layout.widgetSeedRevision < 1) {
     if (layout.widgets.length === 0) {
