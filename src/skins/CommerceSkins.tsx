@@ -224,6 +224,32 @@ export function ShopeeSkin(p:Props){
  const [checkoutVariant,setCheckoutVariant]=useState("");
  const [checkoutReturnTab,setCheckoutReturnTab]=useState("首頁");
  const [orders,setOrders]=useState<Array<{id:string;name:string;price:number;qty:number;status:string;date:string;discountedTotal?:number;shippingStep?:number;trackingNo?:string;carrier?:string;nextUpdateAt?:number;arrivalNotified?:boolean;paymentId?:string}>>(()=>{try{return JSON.parse(String(p.ui?.shopeeOrders||"[]"))}catch{return[]}});
+ useEffect(()=>{
+  const raw=String(p.ui?.shopeeStoryOrderV1||"");
+  if(!raw)return;
+  let request:{productId?:string;quantity?:number;buyer?:string}={};
+  try{request=JSON.parse(raw)}catch{p.onUi?.("shopeeStoryOrderV1","");return}
+  const target=shopeeProducts.find(v=>v.id===(request.productId||"ziwi-cat-cans"));
+  if(!target){p.onUi?.("shopeeStoryOrderV1","");return}
+  const orderId="SP-DAG-"+(request.productId||"ziwi-cat-cans")+"-v1";
+  if(!orders.some(order=>order.id===orderId)){
+   const qty=Math.max(1,Number(request.quantity)||1);
+   const unitPrice=target.price;
+   const next=[{id:orderId,name:target.name,price:unitPrice,qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:unitPrice*qty,shippingStep:1,trackingNo:"SP"+Date.now().toString().slice(-8),carrier:"蝦皮店到店",buyer:request.buyer||"大G",paymentId:"DAG-GIFT-"+orderId},...orders];
+   saveOrders(next);
+  }
+  setOrderFilter("待出貨");
+  setTab("我的");
+  p.onUi?.("shopeeStoryOrderV1","");
+ },[p.ui?.shopeeStoryOrderV1]);
+ useEffect(()=>{
+  if(p.ui?.shopeeStoryOpenOrdersV1!==true)return;
+  setProduct(null);
+  setTab("我的");
+  setOrderFilter("待出貨");
+  p.onUi?.("shopeeStoryOpenOrdersV1",false);
+ },[p.ui?.shopeeStoryOpenOrdersV1]);
+
  const [modal,setModal]=useState<"checkout"|"coupon"|"tracking"|null>(null),[pickup,setPickup]=useState("7-ELEVEN"),[address,setAddress]=useState("台北市信義區（示意地址）");
  const [trackingOrder,setTrackingOrder]=useState<string|null>(null);
  const [couponClaimed,setCouponClaimed]=useState(()=>String(p.ui?.shopeeCouponClaimed||"false")==="true"),[couponSuccess,setCouponSuccess]=useState(false);
