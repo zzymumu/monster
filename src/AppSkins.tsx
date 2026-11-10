@@ -6257,7 +6257,7 @@ export function WeChatSkin(p: SkinProps) {
                         setCatRescueRaw(JSON.stringify({...catRescue,version:2,messages:[...catRescue.messages,replyItem]}));
                       }
                       const acknowledgementExists=[...p.items,...catRescue.messages,...pendingCatLines].some(item=>
-                        item.id===acknowledgementId || (item.sender==="大G" && item.body.trim()==="好。" && (item.meta?.storyThread==="大G"||item.title==="大G"))
+                        item.id===acknowledgementId || (item.sender==="大G" && item.body.trim()==="好。" && (item.meta?.storyThread==="大G"||("title" in item && item.title==="大G")))
                       );
                       if(!acknowledgementExists){
                         setPendingCatLines(current=>[...current,{id:acknowledgementId,sender:"大G",body:"好。",thread:"大G"}]);
