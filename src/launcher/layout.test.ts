@@ -11,9 +11,9 @@ import {
 } from "./layout";
 const work = () => compileStory(blank).work;
 describe("device layout", () => {
-  it("keeps all 53 apps and required defaults installed", () => {
+  it("keeps all 54 apps and required defaults installed", () => {
     const l = defaultLayout(work());
-    expect(l.apps).toHaveLength(53);
+    expect(l.apps).toHaveLength(54);
     expect(l.apps.filter((a) => a.installed)).toHaveLength(8);
   });
   it("packs different widget sizes and pages without overlap", () => {
