@@ -36,10 +36,14 @@ function Bubbles({
   items: Item[];
   className?: string;
 }) {
+  const orderedItems =
+    items.length > 0 && items.every((item) => item.meta?.bankSms === "yes")
+      ? [...items].reverse()
+      : items;
   return (
     <div className={`catalog-bubbles ${className}`}>
-      <time className="bubble-date">{items[0]?.time.slice(0, 10)}</time>
-      {items.map((i) => (
+      <time className="bubble-date">{orderedItems[0]?.time.slice(0, 10)}</time>
+      {orderedItems.map((i) => (
         <div
           className={`catalog-message ${i.outgoing ? "outgoing" : ""}`}
           key={i.id}
