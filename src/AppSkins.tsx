@@ -2294,6 +2294,17 @@ export function WeChatSkin(p: SkinProps) {
     }
     setMalaysiaDaGChatStage(44);
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
+  // DaG quietly buys the exact ZIWI item the player shared. The order is
+  // created by Shopee itself, not by checkout, so no player payment is charged.
+  useEffect(() => {
+    const acknowledgementArrived = [...p.items, ...catRescue.messages].some(item =>
+      item.id === "malaysia-dag-incoming-44-0" && item.sender === "大G" && item.body.trim() === "好。"
+    );
+    if (!acknowledgementArrived || p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1 === true) return;
+    p.onUi?.("wxDaGShopeeSurpriseOrderTriggeredV1", true);
+    p.onAppUi?.("shopee", "shopeeStoryOrderV1", JSON.stringify({ productId: "ziwi-cat-cans", quantity: 1, buyer: "大G" }));
+    p.onNotification?.("蝦皮購物：大G已替你買下剛才分享的 ZIWI 貓罐頭，賣家正在備貨中。");
+  }, [p.items, catRescue.messages, p.ui?.wxDaGShopeeSurpriseOrderTriggeredV1]);
   // Narrow repair for the one Malaysia Shopee-share scene in existing saves.
   // Remove the old instructional placeholder and place DaG's product question
   // before the player's reassurance, then shorten his acknowledgement to "好。".
