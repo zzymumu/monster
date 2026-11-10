@@ -2232,6 +2232,25 @@ export function WeChatSkin(p: SkinProps) {
     { user: ["嗯呐嗯呐"], incoming: ["好，我转啦，你看一下。"] },
     { user: ["收到啦！那我现在去看看包车的事情噢！"], incoming: ["去吧去吧~"] },
   ];
+  const malaysiaDaGShareQuestionDelivered = [...p.items, ...catRescue.messages].some((item) =>
+    item.id === "malaysia-dag-after-share-question-v1" &&
+    item.sender === "大G" &&
+    item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
+  );
+  const [malaysiaDaGSharePlaceholderMigrated, setMalaysiaDaGSharePlaceholderMigrated] = useSkinState<boolean>(p, "wxMalaysiaDaGSharePlaceholderMigratedV1", false);
+  useEffect(() => {
+    if (malaysiaDaGSharePlaceholderMigrated) return;
+    const placeholder = "我去蝦皮找一款貓罐頭給你看";
+    const repaired = catRescue.messages.filter((item) =>
+      !(item.sender === "我" && item.body.trim() === placeholder &&
+        (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")))
+    );
+    if (repaired.length !== catRescue.messages.length) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repaired }));
+    }
+    setMalaysiaDaGSharePlaceholderMigrated(true);
+  }, [malaysiaDaGSharePlaceholderMigrated, catRescue.messages, catRescue, contactRemarks]);
+
   const malaysiaDaGChatTurns: Array<{user:string[];incoming:string[]}> = [
     {user:["欸欸欸！","温尚翊！"],incoming:["嗯？","怎麼啦？"]},
     {user:["你在干嘛呀？"],incoming:["剛忙完一點事情。","現在休息一下。","怎麼突然找我？"]},
@@ -6123,7 +6142,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (
+              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 43 || malaysiaDaGShareQuestionDelivered) && (
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
