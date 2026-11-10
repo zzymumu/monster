@@ -1967,10 +1967,10 @@ function PhoneRuntime({
             const next = queued[0];
             if (!next || next.sender !== "我" || !String(next.id || "").startsWith("malaysia-broccoli-invite-")) return null;
             return (
-              <div className="story-overlay">
-                <span className="eyebrow">轮到你回复了</span>
-                <h3>选择发送的消息</h3>
-                <button onClick={() => {
+              <div className="story-overlay" style={{ left: 18, right: 18, bottom: 12, padding: "10px 12px", borderRadius: 14, boxShadow: "0 -4px 18px #00000018" }}>
+                <span className="eyebrow" style={{ fontSize: 10 }}>轮到你回复了</span>
+                <h3 style={{ fontSize: 14, margin: "4px 0 6px" }}>点击发送</h3>
+                <button style={{ padding: "9px 11px", marginTop: 5, fontSize: 13, borderRadius: 10 }} onClick={() => {
                   const current = runtimeRef.current;
                   const wx = current.ui?.wechat ?? {};
                   let lines: Array<{id?:string; sender:string; body:string; thread?:string}> = [];
@@ -1979,22 +1979,27 @@ function PhoneRuntime({
                   if (!head || head.id !== next.id || head.sender !== "我") return;
                   let story: {version?:number; stage?:number; branch?:string; messages?:Item[]} = {};
                   try { if (typeof wx.catRescueState === "string") story = JSON.parse(wx.catRescueState); } catch { story = {}; }
+                  const orderAt = Date.now();
                   const now = (current.date || work.phone.date) + " " + (current.time || work.phone.time);
-                  const sent = makeItem({ id: head.id || "malaysia-broccoli-reply-" + Date.now(), title: "西蓝花", sender: "我", body: head.body, time: now, outgoing: true, meta: {storyId:"cat-rescue",storyThread:"西蓝花"} });
+                  const sent = makeItem({
+                    id: head.id || "malaysia-broccoli-reply-" + orderAt,
+                    title: "西蓝花", sender: "我", body: head.body, time: now,
+                    outgoing: true,
+                    meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(orderAt) },
+                  });
                   const oldMessages = current.messages.wechat ?? [];
                   const oldStory = Array.isArray(story.messages) ? story.messages : [];
-                  if (!oldMessages.some(item => item.id === sent.id) && !oldStory.some(item => item.id === sent.id)) {
-                    update({ ...current,
-                      messages: { ...current.messages, wechat: [...oldMessages, sent] },
-                      ui: { ...current.ui, wechat: {
-                        ...wx,
-                        wxCatPendingLines: JSON.stringify(lines.slice(1)),
-                        catRescueState: JSON.stringify({ ...story, messages: [...oldStory, sent] }),
-                      } },
-                    });
-                  } else {
-                    update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxCatPendingLines: JSON.stringify(lines.slice(1)) } } });
-                  }
+                  const alreadyStored = oldMessages.some(item => item.id === sent.id) || oldStory.some(item => item.id === sent.id);
+                  const nextStored = alreadyStored ? oldMessages : [...oldMessages, sent];
+                  const nextStory = alreadyStored ? oldStory : [...oldStory, sent];
+                  update({ ...current,
+                    messages: { ...current.messages, wechat: nextStored },
+                    ui: { ...current.ui, wechat: {
+                      ...wx,
+                      wxCatPendingLines: JSON.stringify(lines.slice(1)),
+                      catRescueState: JSON.stringify({ ...story, messages: nextStory }),
+                    } },
+                  });
                 }}>
                   {next.body}
                   <ArrowUp size={15} />
