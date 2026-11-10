@@ -793,6 +793,29 @@ function PhoneRuntime({
     return () => window.clearTimeout(timer);
   }, [s.incomingCall, s.ui?.wechat?.wxBroccoliAfterDoorCallV1, s.ui?.wechat?.wxBroccoliAfterDoorCallDeclinedV1, ready, creator, work.id]);
 
+  const malaysiaInviteThreadRef = useRef(String(s.ui?.wechat?.openThread ?? ""));
+  useEffect(() => {
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    const opened = String(wx.openThread ?? "");
+    const previous = malaysiaInviteThreadRef.current;
+    if (opened) malaysiaInviteThreadRef.current = opened;
+    const isBroccoli = opened === "西蓝花" || opened === "西兰花";
+    const justOpenedBroccoli = isBroccoli && previous !== opened;
+    if (creator || !ready || locked || !justOpenedBroccoli ||
+        wx.wxMalaysiaCallCompletedV1 !== true ||
+        wx.wxMalaysiaBroccoliInvitePendingV1 !== true ||
+        wx.wxMalaysiaBroccoliInviteStartedV1 === true) return;
+    const raw = wx.wxCatPendingLines;
+    let pending: Array<{id?: string; sender: string; body: string; thread?: string}> = [];
+    try { const parsed = typeof raw === "string" ? JSON.parse(raw) : []; if (Array.isArray(parsed)) pending = parsed; } catch { pending = []; }
+    const rows: Array<[string,string]> = [
+      ["我","下周末有空吗？"],["西蓝花","怎么啦？"],["我","能不能陪我去一趟大马？"],["西蓝花","马来西亚？"],["西蓝花","你怎么突然要去马来西亚？"],["我","嗯嗯……"],["西蓝花","你要去看演唱会啊？"],["我","嗯嗯……"],["我","就是温尚翊本来跟我说可以帮我留票的。"],["我","但是我拒绝了。"],["西蓝花","？？？？？？"],["西蓝花","不是。"],["西蓝花","你拒绝了？？？"],["西蓝花","人家都说要帮你留票了你居然拒绝？？？"],["我","哎呀……"],["我","我就是想突然跑过去给他一个惊喜嘛。"],["西蓝花","…………"],["西蓝花","你有没有想过其实你可以先把票收下。我们再卖掉。"],["西蓝花","然后拿卖掉的钱再去买新票？"],["西蓝花","这样他看到本来应该是你的位置结果是别人哈哈哈，效果不是更好吗？"],["西蓝花","又省钱又能有惊喜。"],["我","我把他给我的票卖了不好吧......万一他生气了怎么办？"],["西蓝花","嗯...你说的有道理。"],["我","对呀对呀！"],["西蓝花","你真的……"],["西蓝花","哎呦，我现在都不知道该说你什么好了。"],["西蓝花","你这是准备给他惊喜，还是准备给我惊吓？"],["我","嘿嘿，陪我去嘛陪我去嘛，我一个人去大马我害怕🥺"],["西蓝花","那你票买了吗？"],["西蓝花","机票呢？"],["西蓝花","酒店订了吗？"],["西蓝花","你不会什么都还没准备吧？？？"],["我","……"],["我","我这不是先来找你了嘛。"],["西蓝花","？？？？？"],["西蓝花","合着你连计划都没有就准备把我拐去马来西亚？"],["我","你就说陪不陪我嘛！"],["西蓝花","哈哈哈哈哈哈。"],["西蓝花","陪陪陪！"],["我","我就知道你最好了！！"],["西蓝花","既然都要特地飞去马来西亚了。"],["西蓝花","那我们不得买大舞台？"],["西蓝花","不然你跑那么远，结果离他十万八千里？"],["我","嘿嘿，我也是这么想的，我在想第一排应该可以看到我吧？"],["西蓝花","你现在有钱吗？"],["西蓝花","第一排欸！！不是随便买买就好！"],["我","有啦！！！"],["西蓝花","真的假的？"],["西蓝花","你什么时候这么有钱了？"],["我","我也是有存款的好吗！"],["西蓝花","行，那我就放心了。"],["西蓝花","不过机票、酒店、门票，这些加起来可不少哦。"],["我","没关系！"],["我","难得去一次嘛！"],["西蓝花","好啦，那我先去请假，你可以先去看看机酒，合适的话你就一起买，然后我转账给你~"],["我","好~我现在去看。"],["我","对了！"],["我","你千万不能跟他说我们要去啊！"],["西蓝花","我才不会说！你以为我漏勺啊！"],["我","相信你相信你啦~"]
+    ];
+    const delivered = new Set([...(current.messages.wechat ?? []), ...((() => { try { const st = typeof wx.catRescueState === "string" ? JSON.parse(wx.catRescueState) : {}; return Array.isArray(st.messages) ? st.messages : []; } catch { return []; } })())].map(item => item.id));
+    const lines = rows.map(([sender,body],i)=>({id:"malaysia-broccoli-invite-"+String(i+1).padStart(2,"0"),sender,body,thread:"西蓝花"})).filter(line=>!delivered.has(line.id));
+    update({...current,ui:{...current.ui,wechat:{...wx,wxMalaysiaBroccoliInvitePendingV1:false,wxMalaysiaBroccoliInviteStartedV1:true,wxCatPendingLines:JSON.stringify([...pending,...lines])}}});
+  }, [s.ui?.wechat?.openThread, s.ui?.wechat?.wxMalaysiaCallCompletedV1, s.ui?.wechat?.wxMalaysiaBroccoliInvitePendingV1, ready, locked, creator, work.id]);
   const postDrunkThreadRef = useRef(String(s.ui?.wechat?.openThread ?? ""));
   useEffect(() => {
     const current = runtimeRef.current;
