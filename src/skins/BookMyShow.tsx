@@ -30,7 +30,7 @@ export function BookMyShowSkin(p:Props){
  const [elapsed,setElapsed]=useState(0);
  const [queueReady,setQueueReady]=useState(false);
  const [quantityOpen,setQuantityOpen]=useState(false);
- const [lockStage,setLockStage]=useState<"idle"|"locking"|"success"|"details">("idle");
+ const [lockStage,setLockStage]=useState<"idle"|"locking"|"success">("idle");
  const [systemBusy,setSystemBusy]=useState(false);
  const eventDate=useMemo(()=>upcomingSaturday(),[]);
  const dateText=dateLabel(eventDate);
@@ -43,8 +43,8 @@ export function BookMyShowSkin(p:Props){
   if(page==="seats"){
    setLockStage("locking");
    const successTimer=window.setTimeout(()=>setLockStage("success"),1100);
-   const detailsTimer=window.setTimeout(()=>setLockStage("details"),2200);
-   return()=>{window.clearTimeout(successTimer);window.clearTimeout(detailsTimer);};
+   const confirmTimer=window.setTimeout(()=>setPage("confirm"),1950);
+   return()=>{window.clearTimeout(successTimer);window.clearTimeout(confirmTimer);};
   }
   setLockStage("idle");
  },[page]);
@@ -154,7 +154,7 @@ export function BookMyShowSkin(p:Props){
    <div style={{width:"100%",maxWidth:340,background:"#fff",borderRadius:18,padding:22,textAlign:"center",boxShadow:"0 10px 30px rgba(20,30,50,.12)",pointerEvents:"auto"}}>
     {lockStage==="locking"&&<><div style={{width:42,height:42,border:"4px solid #f5d5d5",borderTopColor:"#e51b24",borderRadius:"50%",margin:"0 auto 14px",animation:"bms-spin .8s linear infinite"}}/><b style={{fontSize:17}}>正在锁定座位…</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>请稍候，系统正在为你保留所选座位</p></>}
     {lockStage==="success"&&<><div style={{width:48,height:48,borderRadius:24,background:"#e8f7ed",color:"#159447",display:"grid",placeItems:"center",fontSize:28,margin:"0 auto 12px"}}>✓</div><b style={{fontSize:18,color:"#159447"}}>座位锁定成功！</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>已为你保留连续座位</p></>}
-    {lockStage==="details"&&<><b style={{fontSize:18}}>座位详情</b><div style={{background:"#fff5f5",border:"1px solid #f1c6c6",borderRadius:12,padding:14,margin:"14px 0"}}><div style={{fontSize:12,color:"#777"}}>VIP 区 · A1 · 第 1 排</div><div style={{fontSize:26,fontWeight:900,color:"#e51b24",margin:"8px 0"}}>9 号、10 号</div><div style={{fontSize:12,color:"#666"}}>{qty} 张连续座位</div></div><button onClick={()=>setLockStage("idle")} style={{width:"100%",border:0,borderRadius:9,background:"#e51b24",color:"#fff",padding:12,fontWeight:800}}>确认座位</button></>}
+
    </div>
   </div>}
   <style>{'@keyframes bms-spin{to{transform:rotate(360deg)}}'}</style>
