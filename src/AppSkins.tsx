@@ -130,7 +130,7 @@ function VoiceMessage({ item, onRead }: { item: Item; onRead: (id: string) => vo
 function ItemMedia({ item }: { item: Item }) {
   // This local, repository-owned ticket artwork is a trusted SVG used by the Malaysia trip story.
   // Allow it explicitly here; safeMedia intentionally filters SVG elsewhere.
-  const src = item.media === "/assets/bookmyshow-mayday-ticket.svg" || item.media === "./assets/bookmyshow-mayday-ticket.svg" ? "./assets/bookmyshow-mayday-ticket.svg" : safeMedia(item.media);
+  const src = item.meta?.shopeeProductShare === "true" && /^https:\/\//.test(item.media) ? item.media : item.media === "/assets/bookmyshow-mayday-ticket.svg" || item.media === "./assets/bookmyshow-mayday-ticket.svg" ? "./assets/bookmyshow-mayday-ticket.svg" : safeMedia(item.media);
   return src ? (
     item.kind === "audio" ? (
       <audio controls src={src} />
@@ -4602,6 +4602,28 @@ export function WeChatSkin(p: SkinProps) {
     }));
     setPendingCatLines((current) => [...current, ...queuedLines]);
   };
+  useEffect(() => {
+    const raw = p.allUi?.wechat?.shopeeSharePayload;
+    if (typeof raw !== "string" || !raw) return;
+    try {
+      const payload = JSON.parse(raw) as { id?: string; recipient?: string; name?: string; price?: number; variant?: string; image?: string; emoji?: string };
+      if (!payload.id || !payload.recipient || !payload.name) return;
+      if (catRescue.messages.some((item) => item.id === payload.id)) {
+        p.onUi?.("shopeeSharePayload", "");
+        return;
+      }
+      appendCatLines([{
+        id: payload.id,
+        sender: "我",
+        body: `${payload.name}${payload.variant ? "（" + payload.variant + "）" : ""} · NT$ ${Number(payload.price || 0).toLocaleString("zh-TW")}`,
+        thread: payload.recipient,
+        kind: payload.image ? "image" : "text",
+        media: payload.image || "",
+        meta: { shopeeProductShare: "true", productName: payload.name, productPrice: String(payload.price || 0), productEmoji: payload.emoji || "🛍️" },
+      }], catRescue.stage, catRescue.branch, payload.id);
+      p.onUi?.("shopeeSharePayload", "");
+    } catch { p.onUi?.("shopeeSharePayload", ""); }
+  }, [p.allUi?.wechat?.shopeeSharePayload]);
   useEffect(() => {
     if (malaysiaTripTriggered) return;
     const parseOrders = (value: unknown) => {
