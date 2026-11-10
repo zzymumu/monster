@@ -2215,6 +2215,12 @@ export function WeChatSkin(p: SkinProps) {
   // Separate Malaysia follow-up story. Never reuse returnDinnerStage: that
   // state drives older scenes and must remain untouched.
   const [malaysiaDaGChatStage, setMalaysiaDaGChatStage] = useSkinState<number>(p, "wxMalaysiaDaGChatStageV1", -1);
+  const [malaysiaDaGPostOrderUnlocked, setMalaysiaDaGPostOrderUnlocked] = useSkinState<boolean>(p, "wxMalaysiaDaGPostOrderUnlockedV1", false);
+  useEffect(() => {
+    if (!isMonsterThread || malaysiaDaGChatStage !== 43 || p.allUi?.shopee?.shopeeStoryOrderViewedV1 !== true) return;
+    setMalaysiaDaGPostOrderUnlocked(true);
+    p.onAppUi?.("shopee", "shopeeStoryOrderViewedV1", false);
+  }, [isMonsterThread, malaysiaDaGChatStage, p.allUi?.shopee?.shopeeStoryOrderViewedV1]);
   useEffect(() => {
     if (!isMonsterThread || malaysiaTripStage !== 11 || malaysiaDaGChatStage >= 0) return;
     setMalaysiaDaGChatStage(0);
@@ -2248,7 +2254,7 @@ export function WeChatSkin(p: SkinProps) {
   }, [malaysiaDaGShareStageMigratedV2, malaysiaDaGChatStage, p.items, catRescue.messages, contactRemarks]);
 
   // Only unlock the reply after DaG's question is in this chat transcript.
-  const malaysiaDaGShareQuestionDelivered = catRescue.messages.some((item) =>
+  const malaysiaDaGShareQuestionDelivered = [...p.items, ...catRescue.messages].some((item) =>
     item.id === "malaysia-dag-after-share-question-v1" &&
     item.sender === "大G" &&
     item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
@@ -2310,6 +2316,11 @@ export function WeChatSkin(p: SkinProps) {
     {user:["？？？","你幼不幼稚啊！"],incoming:["彼此彼此。"]},
     {user:["哦对，我在给vava买猫罐头，顺便也给玩玩带一点吧？"],incoming:["什麼罐頭？妳發給我看看。"]},
     {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["好。"]},
+    {user:["温尚翊！！"],incoming:["對啊。","怎麼了？"]},
+    {user:["你怎么买这么快啊！！","我不是说我来买吗！"],incoming:["妳不是說要給玩玩帶一點？","那本來就是牠要吃的東西啊。"]},
+    {user:["可是我说了我买呀！"],incoming:["那下次換妳買。"]},
+    {user:["……","你怎么这样！"],incoming:["我怎樣？","幫自己的貓買罐頭也不行喔？"]},
+    {user:["…………"],incoming:["好啦。","謝謝妳還記得玩玩喜歡吃什麼。","Vava 的份也一起買了，當作謝謝牠之前照顧玩玩。"]},
   ];
   // Wait for the actual Shopee product card to arrive in DaG's chat.
   // Only then reveal his question about the exact product the player shared.
@@ -2321,9 +2332,7 @@ export function WeChatSkin(p: SkinProps) {
       /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(String(item.meta?.productName || ""))
     );
     if (!shared) return;
-    // Do not advance to the player's reply stage while DaG's incoming line
-    // is merely queued. Advance only after it is saved in this conversation.
-    const questionDelivered = catRescue.messages.some((item) =>
+    const questionDelivered = [...p.items, ...catRescue.messages].some((item) =>
       item.id === "malaysia-dag-after-share-question-v1" &&
       item.sender === "大G" &&
       item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
@@ -2338,9 +2347,9 @@ export function WeChatSkin(p: SkinProps) {
     if (questionQueued) return;
     appendCatLines([{id:"malaysia-dag-after-share-question-v1",sender:"大G",body:"這款 Vava 喜歡嗎？玩玩有點挑食。",thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-after-share-question-v1");
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
-  // Recover older saves that exposed the reply option before DaG's
-  // question was actually delivered. A stale message elsewhere in WeChat
-  // must not count as this conversation's reply.
+  // Recover older saves where the reply choice was hidden because the
+  // question was delivered to the global WeChat transcript rather than the
+  // local cat-rescue cache.
   useEffect(() => {
     if (!isMonsterThread || malaysiaDaGChatStage !== 42) return;
     const allMessages = [...p.items, ...catRescue.messages];
@@ -2349,7 +2358,7 @@ export function WeChatSkin(p: SkinProps) {
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
       /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(String(item.meta?.productName || ""))
     );
-    const questionDelivered = catRescue.messages.some((item) =>
+    const questionDelivered = allMessages.some((item) =>
       item.id === "malaysia-dag-after-share-question-v1" &&
       item.sender === "大G" &&
       item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
@@ -6204,7 +6213,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 42 || malaysiaDaGShareQuestionDelivered) && (
+              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 42 || malaysiaDaGShareQuestionDelivered) && (malaysiaDaGChatStage < 43 || malaysiaDaGPostOrderUnlocked) && (
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
