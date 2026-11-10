@@ -61,4 +61,5 @@ export const catalogSkins = {
   shopee: skin(commerce, "ShopeeSkin"),
   delivery: skin(commerce, "DeliverySkin"),
   trip: skin(() => import("./Trip"), "TripSkin"),
+  bookmyshow: skin(() => import("./BookMyShow"), "BookMyShowSkin"),
 };
