@@ -33,6 +33,7 @@ export function createWork(title = "雨停之前"): Work {
         "safari",
         "settings",
         "redbook",
+        "trip",
       ].includes(a.id),
       visible: true,
       dock: ["phone", "messages", "safari", "music"].includes(a.id),
