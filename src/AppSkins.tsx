@@ -239,7 +239,7 @@ function MessageList({
           >
             {i.meta?.shopeeProductShare === "true" ? (
               <div style={{width:250,maxWidth:"68vw",background:"#fff",color:"#222",borderRadius:9,overflow:"hidden",textAlign:"left",boxShadow:"0 1px 3px rgba(0,0,0,.12)"}}>
-                {i.meta.productImage && <img src={i.meta.productImage} alt={i.meta.productName || "蝦皮商品"} style={{display:"block",width:"100%",height:170,objectFit:"contain",background:"#f7f7f7"}}/>}
+                {(i.meta.productImage || i.media) && <img src={i.meta.productImage || i.media} alt={i.meta.productName || "蝦皮商品"} style={{display:"block",width:"100%",height:170,objectFit:"contain",background:"#f7f7f7"}}/>}
                 <div style={{padding:"10px 12px"}}>
                   <div style={{fontSize:14,fontWeight:600,lineHeight:1.35}}>{i.meta.productName || body}</div>
                   <div style={{fontSize:16,color:"#ee4d2d",fontWeight:700,marginTop:6}}>NT$ {Number(i.meta.productPrice || 0).toLocaleString("zh-TW")}</div>
