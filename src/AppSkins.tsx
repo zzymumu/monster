@@ -5953,7 +5953,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {malaysiaTripStage >= 0 && malaysiaTripStage < 10 && pendingCatLines.filter((line) => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
+              {malaysiaTripStage >= 0 && malaysiaTripStage < 11 && pendingCatLines.filter((line) => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="马来西亚演唱会行程剧情回复选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
                     if (malaysiaTripStage === 1) {
