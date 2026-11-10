@@ -275,7 +275,7 @@ export function ShopeeSkin(p:Props){
   : "./assets/dag-new-avatar.jpg";
  const shareProductToWechat=(recipient:string)=>{
   if(!product)return;
-  const isCatCan=/罐頭|猫罐头|貓罐頭|cat\s*food|canned\s*cat/i.test(product.name);
+  const isCatCan=/罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(product.name);
   if(recipient==="大G" && p.allUi?.wechat?.wxDaGShopeeSharePendingV1===true && !isCatCan){
    p.onNotification?.("蝦皮購物：請選擇一款貓罐頭再分享給大G。");
    return;
