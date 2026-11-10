@@ -223,7 +223,7 @@ export function ShopeeSkin(p:Props){
  const [checkoutPrice,setCheckoutPrice]=useState<number|null>(null);
  const [checkoutVariant,setCheckoutVariant]=useState("");
  const [checkoutReturnTab,setCheckoutReturnTab]=useState("首頁");
- const [orders,setOrders]=useState<Array<{id:string;name:string;price:number;qty:number;status:string;date:string;discountedTotal?:number;shippingStep?:number;trackingNo?:string;carrier?:string;nextUpdateAt?:number;arrivalNotified?:boolean;paymentId?:string}>>(()=>{try{return JSON.parse(String(p.ui?.shopeeOrders||"[]"))}catch{return[]}});
+ const [orders,setOrders]=useState<Array<{id:string;name:string;price:number;qty:number;status:string;date:string;discountedTotal?:number;shippingStep?:number;trackingNo?:string;carrier?:string;nextUpdateAt?:number;arrivalNotified?:boolean;paymentId?:string;variant?:string;flavorBreakdown?:string;buyer?:string;image?:string}>>(()=>{try{return JSON.parse(String(p.ui?.shopeeOrders||"[]"))}catch{return[]}});
  useEffect(()=>{
   const raw=String(p.ui?.shopeeStoryOrderV1||"");
   if(!raw)return;
@@ -232,21 +232,45 @@ export function ShopeeSkin(p:Props){
   const target=shopeeProducts.find(v=>v.id===request.productId);
   if(!target){p.onUi?.("shopeeStoryOrderV1","");return}
   const orderId="SP-DAG-"+request.productId+"-v1";
-  if(!orders.some(order=>order.id===orderId)){
-   const qty=Math.max(1,Number(request.quantity)||24);
-   const unitPrice=Number(request.price)||target.variantPrices?.[request.variant||""]||target.price;
-   const next=[{id:orderId,name:request.name||target.name,price:unitPrice,qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:unitPrice*qty,shippingStep:1,trackingNo:"SP"+Date.now().toString().slice(-8),carrier:"蝦皮店到店",buyer:request.buyer||"大G",paymentId:"DAG-GIFT-"+orderId,variant:request.variant||"",image:request.image||target.image||""},...orders];
-   saveOrders(next);
+  const qty=24;
+  // Mix flavors actually offered by this exact product. If a size was shared,
+  // preserve it across every flavor (e.g. all cans stay 85g).
+  const sizeMatch=String(request.variant||"").match(/\b\d+\s*g\b/i)?.[0]?.toLowerCase();
+  const compatibleVariants=(target.variants||[]).filter(v=>!sizeMatch||v.toLowerCase().includes(sizeMatch));
+  const flavorGroups=[
+   {pattern:/雞肉|鸡肉|雞/i},
+   {pattern:/牛肉|牛/i},
+   {pattern:/鹿肉|鹿/i},
+   {pattern:/魚|鱼|鮪魚|鮭魚|鯖魚/i},
+  ];
+  const chosenFlavors=flavorGroups.map(group=>compatibleVariants.find(v=>group.pattern.test(v))).filter((v):v is string=>Boolean(v));
+  const variantsToBuy=chosenFlavors.length>=2?chosenFlavors:(compatibleVariants.length?[String(request.variant&&compatibleVariants.includes(request.variant)?request.variant:compatibleVariants[0])]:[]);
+  const basePrice=Number(request.price)||target.price;
+  const unitPrices=variantsToBuy.map(v=>target.variantPrices?.[v]??basePrice);
+  const counts=variantsToBuy.map((_,i)=>Math.floor(qty/variantsToBuy.length)+(i<qty%variantsToBuy.length?1:0));
+  const total=variantsToBuy.length?unitPrices.reduce((sum,price,i)=>sum+price*counts[i],0):basePrice*qty;
+  const breakdown=variantsToBuy.length
+   ?variantsToBuy.map((v,i)=>v+" × "+counts[i]).join("、")
+   :(request.variant||"依商品原規格")+" × "+qty;
+  const order={id:orderId,name:request.name||target.name,price:Math.round(total/qty),qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:total,shippingStep:1,trackingNo:"SP"+Date.now().toString().slice(-8),carrier:"蝦皮店到店",buyer:request.buyer||"大G",paymentId:"DAG-GIFT-"+orderId,variant:breakdown,flavorBreakdown:breakdown,image:request.image||target.image||""};
+  const existing=orders.find(item=>item.id===orderId);
+  if(!existing){
+   saveOrders([order,...orders]);
+  }else{
+   const repaired=orders.map(item=>item.id===orderId?{...item,...order,date:item.date||order.date,trackingNo:item.trackingNo||order.trackingNo}:item);
+   if(repaired.some((item,index)=>item!==orders[index]))saveOrders(repaired);
   }
   setOrderFilter("待出貨");
-  setTab("我的");
+  setTab("訂單");
+  p.onUi?.("shopeeStoryOrderViewedV1",true);
   p.onUi?.("shopeeStoryOrderV1","");
  },[p.ui?.shopeeStoryOrderV1]);
  useEffect(()=>{
   if(p.ui?.shopeeStoryOpenOrdersV1!==true)return;
   setProduct(null);
-  setTab("我的");
+  setTab("訂單");
   setOrderFilter("待出貨");
+  p.onUi?.("shopeeStoryOrderViewedV1",true);
   p.onUi?.("shopeeStoryOpenOrdersV1",false);
  },[p.ui?.shopeeStoryOpenOrdersV1]);
 
@@ -369,7 +393,7 @@ export function ShopeeSkin(p:Props){
    :tab==="分類"?<><div className="shopee-category-chips">{shopeeCategories.map(v=><button className={category===v?"selected":""} key={v} onClick={()=>setCategory(v)}>{v}</button>)}</div><div className="shopee-product-grid">{filtered.map(v=><button key={v.id} onClick={()=>{setProduct(v);setVariant(v.variants?.[0]||"")}}><div className="shopee-product-art" style={{background:v.color}}>{v.image?<img src={v.image} alt={v.name}/>:<span>{v.emoji}</span>}<small>{v.badge}</small></div><strong>{v.name}</strong><p><b>NT$ {v.price.toLocaleString("zh-TW")}</b><del>{v.oldPrice}</del></p><small>{v.sold}</small></button>)}</div></>
    :tab==="購物車"?<div className="shopee-cart"><h2>購物車</h2>{shopeeProducts.filter(v=>cart[v.id]).map(v=><div className="shopee-cart-item" key={v.id}><span style={{background:v.color}}>{v.image?<img src={v.image} alt={v.name}/>:v.emoji}</span><div><strong>{v.name}</strong><b>NT$ {v.price}</b><div><button onClick={()=>remove(v)}>−</button><small>{cart[v.id]}</small><button onClick={()=>add(v)}>＋</button></div></div></div>)}{!count&&<p className="shopee-empty">🛒 購物車還是空的，去逛逛吧！</p>}<footer><span>合計 <b>NT$ {total.toLocaleString("zh-TW")}</b></span><button disabled={!count} onClick={()=>{setCheckoutCart({...cart});setCheckoutReturnTab("購物車");setTab("確認訂單")}}>去買單（{count}）</button></footer></div>
    :tab==="我的"?<div className="shopee-account"><div className="shopee-profile"><span>🐱</span><div><strong>蝦皮購物會員</strong><small>嗨，今天想買點什麼？</small></div></div><div className="shopee-order-shortcuts">{["待付款","待出貨","待收貨","已完成"].map(v=><button key={v} onClick={()=>{setOrderFilter(v);setTab("訂單")}}>📦<small>{v}</small></button>)}</div><h3>我的訂單</h3>{orders.map(v=><div className="shopee-order-line" key={v.id}><span>{v.name} × {v.qty}</span><b>NT$ {(v.discountedTotal??v.price*v.qty).toLocaleString("zh-TW")}</b><small>{v.status} · {v.date}</small><button className="shopee-track-button" onClick={()=>{setTrackingOrder(v.id);setModal("tracking")}}>查看物流 ›</button></div>)}<button className="shopee-outline" onClick={()=>setModal("coupon")}>🎟️ 我的優惠券</button></div>
-   :<div className="shopee-orders"><div className="shopee-orders-heading"><h2>我的訂單</h2><button type="button" onClick={()=>setOrderFilter("全部")}>全部</button></div><div className="shopee-order-filters">{["全部","待付款","待出貨","待收貨","已完成"].map(v=><button type="button" className={orderFilter===v?"selected":""} key={v} onClick={()=>setOrderFilter(v)}>{v}</button>)}</div>{visibleOrders.map(v=><div className="shopee-order-line" key={v.id}><span>{v.name} × {v.qty}</span><b>NT$ {(v.discountedTotal??v.price*v.qty).toLocaleString("zh-TW")}</b><small>{v.status} · {v.date}</small>{orderCategory(v)==="待付款"?<div className="shopee-pending-actions"><button className="shopee-cancel-order" onClick={()=>{if(window.confirm("確定要取消這筆訂單嗎？")){saveOrders(orders.map(order=>order.id===v.id?{...order,status:"已取消",shippingStep:0}:order));const raw=String(p.allUi?.jkopay?.pendingShopeePayment||"");try{const pending=JSON.parse(raw);if(pending.paymentId===v.paymentId)p.onAppUi?.("jkopay","pendingShopeePayment","")}catch{/* ignore an empty or malformed pending payment record */}}}}>取消訂單</button><button className="shopee-track-button" onClick={()=>{const raw=String(p.allUi?.jkopay?.pendingShopeePayment||"");if(raw){setTab("我的");p.onOpenApp?.("jkopay")}else{setModal("checkout")}}}>重新付款</button></div>:orderCategory(v)==="已完成"||v.status==="已取消"?null:<button className="shopee-track-button" onClick={()=>{setTrackingOrder(v.id);setModal("tracking")}}>查看物流 ›</button>}</div>)}{!visibleOrders.length&&<p className="shopee-empty">{orderFilter==="全部"?"目前沒有訂單":`目前沒有「${orderFilter}」訂單`}</p>}</div>}
+   :<div className="shopee-orders"><div className="shopee-orders-heading"><h2>我的訂單</h2><button type="button" onClick={()=>setOrderFilter("全部")}>全部</button></div><div className="shopee-order-filters">{["全部","待付款","待出貨","待收貨","已完成"].map(v=><button type="button" className={orderFilter===v?"selected":""} key={v} onClick={()=>setOrderFilter(v)}>{v}</button>)}</div>{visibleOrders.map(v=><div className="shopee-order-line" key={v.id}><span>{v.name} × {v.qty}</span><b>NT$ {(v.discountedTotal??v.price*v.qty).toLocaleString("zh-TW")}</b><small>{v.status} · {v.date}</small>{v.variant&&<small>規格／口味：{v.variant}</small>}{v.buyer&&<small>購買人：{v.buyer}</small>}{orderCategory(v)==="待付款"?<div className="shopee-pending-actions"><button className="shopee-cancel-order" onClick={()=>{if(window.confirm("確定要取消這筆訂單嗎？")){saveOrders(orders.map(order=>order.id===v.id?{...order,status:"已取消",shippingStep:0}:order));const raw=String(p.allUi?.jkopay?.pendingShopeePayment||"");try{const pending=JSON.parse(raw);if(pending.paymentId===v.paymentId)p.onAppUi?.("jkopay","pendingShopeePayment","")}catch{/* ignore an empty or malformed pending payment record */}}}}>取消訂單</button><button className="shopee-track-button" onClick={()=>{const raw=String(p.allUi?.jkopay?.pendingShopeePayment||"");if(raw){setTab("我的");p.onOpenApp?.("jkopay")}else{setModal("checkout")}}}>重新付款</button></div>:orderCategory(v)==="已完成"||v.status==="已取消"?null:<button className="shopee-track-button" onClick={()=>{setTrackingOrder(v.id);setModal("tracking")}}>查看物流 ›</button>}</div>)}{!visibleOrders.length&&<p className="shopee-empty">{orderFilter==="全部"?"目前沒有訂單":`目前沒有「${orderFilter}」訂單`}</p>}</div>}
   </div>
 
   {modal==="coupon"&&<div className="shopee-modal-shade" onClick={()=>setModal(null)}><div className="shopee-coupon" onClick={e=>e.stopPropagation()}><button onClick={()=>setModal(null)}>✕</button><h2>🎟️ 優惠券</h2><strong>滿 NT$ 599 折 NT$ 50</strong><p>{couponSuccess?"🎉 領取成功！優惠券已放入你的帳戶。":couponClaimed?"這張優惠券已經領取，可以在結帳時自動折抵。":"新會員限定優惠（模擬）"}</p><button className="shopee-confirm" disabled={couponClaimed} onClick={()=>{setCouponClaimed(true);p.onUi?.("shopeeCouponClaimed","true");setCouponSuccess(true)}}>{couponClaimed?"已領取 ✓":"立即領取"}</button></div></div>}
