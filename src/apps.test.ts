@@ -25,7 +25,7 @@ describe("optional app lifecycle", () => {
         .filter((a) => a.installed)
         .map((a) => a.id)
         .sort(),
-    ).toEqual([...essentialApps, "redbook"].sort());
+    ).toEqual([...essentialApps, "redbook", "trip"].sort());
     expect(w.apps.find((a) => a.id === "redbook")).toMatchObject({
       installed: true,
       visible: true,
