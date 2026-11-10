@@ -6233,3 +6233,5 @@
 .trip-primary{width:100%;padding:14px;background:#167dc0;color:white;border-radius:13px;font-size:13px;font-weight:750;margin:14px 0}.trip-primary:disabled{opacity:.4}.trip-back{color:#277bb5;font-size:12px;padding:7px 0;margin-bottom:6px}
 .trip-order{display:flex;flex-direction:column;gap:7px;background:white;border:1px solid #e7edf2;border-radius:13px;padding:14px;margin:10px 0;font-size:12px}.trip-order small{color:#768494}.trip-order strong{font-size:16px;color:#247bb8}.trip-order span{align-self:flex-start;background:#fff2d8;color:#94651a;padding:4px 8px;border-radius:10px;font-size:10px}.trip-empty{padding:40px 10px;text-align:center;color:#8793a0;font-size:12px}
 .trip-tabs{height:57px;flex:none;background:#fff;border-top:1px solid #e7edf2;display:flex;justify-content:space-around}.trip-tabs button{display:flex;flex-direction:column;gap:3px;color:#8794a2;font-size:10px;min-width:55px}.trip-tabs button svg{width:18px;height:18px}.trip-tabs button.active{color:#187dbd;font-weight:700}
+
+.trip-itinerary{font-size:10px!important;opacity:.9;margin-top:8px!important;line-height:1.5}
