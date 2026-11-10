@@ -308,7 +308,7 @@ export function JkoPaySkin(p:Props){
  const [paySource,setPaySource]=useState("玉山銀行 **** 3188");
  const [paymentError,setPaymentError]=useState("");
  const pending=(()=>{try{return JSON.parse(String(p.ui?.pendingShopeePayment||"null")) as JkoPendingPayment|null}catch{return null}})();
- const pendingTrip=(()=>{try{return JSON.parse(String(p.ui?.pendingTripPayment||"null")) as {paymentId:string;total:number;merchant:string;note:string;order:any}|null}catch{return null}})();
+ const pendingTrip=(()=>{try{return JSON.parse(String(p.ui?.pendingTripPayment||"null")) as {paymentId:string;total:number;merchant:string;note:string;order:{id:string;status:string;[key:string]:unknown}}|null}catch{return null}})();
  const activePending=pendingTrip||pending;
  const isTripPayment=!!pendingTrip;
  const transactions=(()=>{try{return JSON.parse(String(p.ui?.transactions||"[]")) as JkoTransaction[]}catch{return[]}})();
@@ -328,7 +328,7 @@ export function JkoPaySkin(p:Props){
   if(paySource==="街口帳戶餘額")p.onUi?.("balance",String(balance-activePending.total));
   else if(paySource==="國泰世華 **** 6621")p.onUi?.("cathayBalance",String(cathayBalance-activePending.total));
   else p.onUi?.("esunBalance",String(esunBalance-activePending.total));
-  if(isTripPayment){const tripOrders=(()=>{try{return JSON.parse(String(p.allUi?.trip?.tripOrders||"[]")) as any[]}catch{return[]}})();p.onAppUi?.("trip","tripOrders",JSON.stringify(tripOrders.map(order=>order.id===pendingTrip!.paymentId?{...order,status:"已付款"}:order)));p.onUi?.("pendingTripPayment","");}else{p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));p.onUi?.("pendingShopeePayment","");}
+  if(isTripPayment){const tripOrders=(()=>{try{return JSON.parse(String(p.allUi?.trip?.tripOrders||"[]")) as {id:string;status:string;[key:string]:unknown}[]}catch{return[]}})();p.onAppUi?.("trip","tripOrders",JSON.stringify(tripOrders.map(order=>order.id===pendingTrip!.paymentId?{...order,status:"已付款"}:order)));p.onUi?.("pendingTripPayment","");}else{p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));p.onUi?.("pendingShopeePayment","");}
   setSuccessAmount(activePending.total);
   setSuccessIsTrip(isTripPayment);
   setSuccess(true);
