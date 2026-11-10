@@ -356,7 +356,14 @@ function PhoneRuntime({
         let nextAt = order.nextUpdateAt;
         let notified = order.arrivalNotified ?? false;
         let orderChanged = false;
-        if (!nextAt || step >= 4) return order;
+        if (step >= 4) return order;
+        // Older story-gift orders were created without nextUpdateAt, so they
+        // stayed forever at "賣家備貨中". Give those existing orders a first
+        // 30-second deadline and persist it; subsequent stages advance normally.
+        if (!nextAt) {
+          nextAt = now + 30000;
+          orderChanged = true;
+        }
         while (now >= nextAt && step < 4) {
           step += 1;
           nextAt += 30000;
