@@ -125,7 +125,12 @@ export function validateLayout(raw: unknown, input: Work) {
       trip.folder = "";
       trip.dock = false;
       delete layout.positions.trip;
-      if (!layout.order.includes("trip")) layout.order.push("trip");
+      layout.order = layout.order.filter((id) => id !== "trip");
+      const lastWidget = Math.max(
+        -1,
+        ...layout.widgets.map((widget) => layout.order.indexOf(widget.id)),
+      );
+      layout.order.splice(lastWidget + 1, 0, "trip");
     }
     layout.tripSeedRevision = 1;
   }
