@@ -2263,15 +2263,16 @@ export function WeChatSkin(p: SkinProps) {
     {user:["很多！"],incoming:["行吧。","那我也不告訴妳我今天吃什麼了。"]},
     {user:["？？？","你幼不幼稚啊！"],incoming:["彼此彼此。"]},
     {user:["哦对，我在给vava买猫罐头，顺便也给玩玩带一点吧？"],incoming:["什麼罐頭？妳發給我看看。"]},
-    {user:["（打开蝦皮，把想分享的猫罐头商品卡片分享给大G）"],incoming:[]},
-    {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["好，那我就放心了。那我也給牠多準備一點。"]},
+    {user:["分享蝦皮商品給大G"],incoming:[]},
+    {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["好。"]},
   ];
   // Wait for the actual Shopee product card to arrive in DaG's chat.
   // Only then reveal his question about the exact product the player shared.
   useEffect(() => {
     if (!isMonsterThread || malaysiaDaGChatStage !== 43) return;
     const shared = [...p.items, ...catRescue.messages].some((item) =>
-      item.title === "大G" && item.sender === "我" && item.meta?.shopeeProductShare === "true"
+      (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
+      item.sender === "我" && item.meta?.shopeeProductShare === "true"
     );
     if (!shared) return;
     const alreadyAsked = [...p.items, ...catRescue.messages, ...pendingCatLines].some((item) =>
@@ -2281,7 +2282,7 @@ export function WeChatSkin(p: SkinProps) {
       appendCatLines([{id:"malaysia-dag-after-share-question-v1",sender:"大G",body:"這款 Vava 喜歡嗎？玩玩有點挑食。",thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-after-share-question-v1");
     }
     setMalaysiaDaGChatStage(44);
-  }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch]);
+  }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
   const milkTeaGiftTurns: Array<{ user: string[]; incoming: string[]; orderDelivered?: boolean; externalCall?: boolean }> = [
     { user: ["欸，问你一件事。"], incoming: ["干嘛？"] },
     { user: ["你是不是给我点奶茶了？"], incoming: ["啊？没有啊。", "怎么突然问这个？"] },
@@ -4687,9 +4688,9 @@ export function WeChatSkin(p: SkinProps) {
         sender: "我",
         body: `${payload.name}${payload.variant ? "（" + payload.variant + "）" : ""} · NT$ ${Number(payload.price || 0).toLocaleString("zh-TW")}`,
         thread: payload.recipient,
-        kind: payload.image ? "image" : "text",
-        media: payload.image || "",
-        meta: { shopeeProductShare: "true", photoCaption: "true", productName: payload.name, productPrice: String(payload.price || 0), productEmoji: payload.emoji || "🛍️" },
+        kind: "text",
+        media: "",
+        meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productEmoji: payload.emoji || "🛍️" },
       }], catRescue.stage, catRescue.branch, payload.id);
       p.onUi?.("shopeeSharePayload", "");
     } catch { p.onUi?.("shopeeSharePayload", ""); }
@@ -6051,7 +6052,11 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
-                    if(malaysiaDaGChatStage===43){p.onOpenApp?.("shopee");return;}
+                    if(malaysiaDaGChatStage===43){
+                      p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:"ziwi-cat-cans",recipient:"大G"}));
+                      p.onOpenApp?.("shopee");
+                      return;
+                    }
                     const lines:CatLine[]=[
                       ...turn.user.map((body,index)=>({id:"malaysia-dag-user-"+malaysiaDaGChatStage+"-"+index,sender:"我" as const,body,thread:"大G" as const})),
                       ...turn.incoming.map((body,index)=>({id:"malaysia-dag-incoming-"+malaysiaDaGChatStage+"-"+index,sender:"大G" as const,body,thread:"大G" as const})),
