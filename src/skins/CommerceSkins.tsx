@@ -327,7 +327,7 @@ export function JkoPaySkin(p:Props){
   if(paySource==="街口帳戶餘額")p.onUi?.("balance",String(balance-activePending.total));
   else if(paySource==="國泰世華 **** 6621")p.onUi?.("cathayBalance",String(cathayBalance-activePending.total));
   else p.onUi?.("esunBalance",String(esunBalance-activePending.total));
-  if(isTripPayment){const tripOrders=(()=>{try{return JSON.parse(String(p.allUi?.trip?.tripOrders||"[]")) as any[]}catch{return[]}})();p.onAppUi?.("trip","tripOrders",JSON.stringify([{...pendingTrip!.order,status:"已付款"},...tripOrders]));p.onUi?.("pendingTripPayment","");}else{p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));p.onUi?.("pendingShopeePayment","");}
+  if(isTripPayment){const tripOrders=(()=>{try{return JSON.parse(String(p.allUi?.trip?.tripOrders||"[]")) as any[]}catch{return[]}})();p.onAppUi?.("trip","tripOrders",JSON.stringify(tripOrders.map(order=>order.id===pendingTrip!.paymentId?{...order,status:"已付款"}:order)));p.onUi?.("pendingTripPayment","");}else{p.onAppUi?.("shopee","shopeePaymentResult",JSON.stringify({...pending,status:"paid"}));p.onUi?.("pendingShopeePayment","");}
   p.onUi?.("pendingShopeePayment","");
   setSuccessAmount(activePending.total);
   setSuccess(true);
