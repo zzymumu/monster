@@ -16,6 +16,7 @@ export const layoutSchema = z
     previewLayoutRevision: z.number().int().min(0).default(0),
     widgetSeedRevision: z.number().int().min(0).default(0),
     tripSeedRevision: z.number().int().min(0).default(0),
+    bookmyshowSeedRevision: z.number().int().min(0).default(0),
     apps: workSchema.shape.apps,
     widgets: z.array(widgetSchema).max(24),
     order: z.array(z.string().max(150)).max(500),
@@ -48,6 +49,9 @@ export function ensureAppStore(work: Work): Work {
       icon: "",
     });
   }
+  if (!work.apps.some((a) => a.id === "bookmyshow")) {
+    additions.push({ id:"bookmyshow", name:"BookMyShow", installed:true, visible:true, dock:false, folder:"", icon:"" });
+  }
   if (!work.apps.some((a) => a.id === "gamesave")) {
     additions.push({
       id: "gamesave",
@@ -69,6 +73,7 @@ export function defaultLayout(input: Work): DeviceLayout {
     previewLayoutRevision: w.id === "ui-test-phone-v2" ? 1 : 0,
     widgetSeedRevision: 1,
     tripSeedRevision: 1,
+    bookmyshowSeedRevision: 1,
     apps: structuredClone(w.apps)
       .sort((a, b) => (a.id === "appstore" ? -1 : b.id === "appstore" ? 1 : a.id === "gamesave" ? -1 : b.id === "gamesave" ? 1 : 0))
       .map((a) =>
@@ -116,6 +121,11 @@ export function validateLayout(raw: unknown, input: Work) {
     gameSave.dock = false;
     delete layout.positions[gameSave.id];
     if (!layout.order.includes(gameSave.id)) layout.order.push(gameSave.id);
+  }
+  if (layout.bookmyshowSeedRevision < 1) {
+    const bms = layout.apps.find((app) => app.id === "bookmyshow");
+    if (bms) { bms.installed=true; bms.visible=true; bms.folder=""; bms.dock=false; delete layout.positions.bookmyshow; layout.order=layout.order.filter(id=>id!=="bookmyshow"); const lastWidget=Math.max(-1,...layout.widgets.map(widget=>layout.order.indexOf(widget.id))); const tripIndex=layout.order.indexOf("trip"); layout.order.splice(tripIndex>=0?tripIndex+1:lastWidget+1,0,"bookmyshow"); }
+    layout.bookmyshowSeedRevision=1;
   }
   if (layout.tripSeedRevision < 1) {
     const trip = layout.apps.find((app) => app.id === "trip");
