@@ -257,7 +257,7 @@ export function ShopeeSkin(p:Props){
    ?variantsToBuy.map((v,i)=>v+" × "+counts[i]).join("、")
    :(request.variant||"依商品原規格")+" × "+qty;
   const flavorItems=variantsToBuy.length?variantsToBuy.map((v,i)=>({variant:v,qty:counts[i],unitPrice:unitPrices[i],subtotal:unitPrices[i]*counts[i]})):[{variant:request.variant||"依商品原規格",qty,unitPrice:basePrice,subtotal:basePrice*qty}];
-  const order={id:orderId,name:request.name||target.name,price:Math.round(total/qty),qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:total,shippingStep:1,trackingNo:"SP"+Date.now().toString().slice(-8),carrier:"蝦皮店到店",buyer:request.buyer||"大G",paymentId:"DAG-GIFT-"+orderId,variant:breakdown,flavorBreakdown:breakdown,flavorItems,image:request.image||target.image||""};
+  const order={id:orderId,name:request.name||target.name,price:Math.round(total/qty),qty,status:"賣家備貨中",date:new Date().toLocaleString("zh-TW"),discountedTotal:total,shippingStep:1,nextUpdateAt:Date.now()+30000,arrivalNotified:false,trackingNo:"SP"+Date.now().toString().slice(-8),carrier:"蝦皮店到店",buyer:request.buyer||"大G",paymentId:"DAG-GIFT-"+orderId,variant:breakdown,flavorBreakdown:breakdown,flavorItems,image:request.image||target.image||""};
   const existing=orders.find(item=>item.id===orderId);
   if(!existing){
    saveOrders([order,...orders]);
