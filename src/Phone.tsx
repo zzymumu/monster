@@ -1469,6 +1469,19 @@ function PhoneRuntime({
   const openNotification = (notice: ReturnType<typeof notificationContent>) => {
     setPanel("");
     const targetContact = resolveWeChatNotificationContact(notice);
+    if (notice.appId === "shopee") {
+      const current = runtimeRef.current;
+      update({
+        ...current,
+        ui: {
+          ...current.ui,
+          shopee: { ...current.ui?.shopee, shopeeStoryOpenOrdersV1: true },
+        },
+      });
+      open("shopee");
+      if (locked) setPinOpen(true);
+      return;
+    }
     if (notice.appId === "delivery") {
       const current = runtimeRef.current;
       update({
