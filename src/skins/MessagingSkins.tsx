@@ -108,7 +108,8 @@ function ChatRows({
   );
 }
 export function MessagesSkin(p: Props) {
-  const { q, setQ, items } = useContent(p, "信息");
+  const bankSmsRecords = (() => { try { return JSON.parse(String(p.ui?.bankSmsRecords || "[]")) as Item[]; } catch { return []; } })();
+  const { q, setQ, items } = useContent({ ...p, items: [...p.items, ...bankSmsRecords.filter(record => !p.items.some(item => item.id === record.id))] }, "信息");
   const [unread, setUnread] = useState(false);
   return (
     <div className="catalog-skin native-messages">
