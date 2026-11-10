@@ -2295,6 +2295,23 @@ export function WeChatSkin(p: SkinProps) {
     setMalaysiaDaGSharePlaceholderMigrated(true);
   }, [malaysiaDaGSharePlaceholderMigrated, catRescue.messages, catRescue, contactRemarks]);
 
+  // One-time save migration: replace the old "想我了吧" prompt with the new
+  // text-only guitar-teaching conversation, without disturbing earlier chat history.
+  const [malaysiaDaGGuitarChatMigratedV1, setMalaysiaDaGGuitarChatMigratedV1] =
+    useSkinState<boolean>(p, "wxMalaysiaDaGGuitarChatMigratedV1", false);
+  useEffect(() => {
+    if (malaysiaDaGGuitarChatMigratedV1) return;
+    const oldPrompt = "你该不会是想我了吧？😏";
+    const repairedMessages = catRescue.messages.filter(item =>
+      !(item.sender === "我" && item.body.trim() === oldPrompt &&
+        (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")))
+    );
+    if (repairedMessages.length !== catRescue.messages.length) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repairedMessages }));
+    }
+    if (malaysiaDaGChatStage > 52) setMalaysiaDaGChatStage(52);
+    setMalaysiaDaGGuitarChatMigratedV1(true);
+  }, [malaysiaDaGGuitarChatMigratedV1, catRescue.messages, catRescue, malaysiaDaGChatStage]);
   const malaysiaDaGChatTurns: Array<{user:string[];incoming:string[]}> = [
     {user:["欸欸欸！","温尚翊！"],incoming:["嗯？","怎麼啦？"]},
     {user:["你在干嘛呀？"],incoming:["剛忙完一點事情。","現在休息一下。","怎麼突然找我？"]},
@@ -2349,7 +2366,40 @@ export function WeChatSkin(p: SkinProps) {
     {user:["原来你打的是这个主意！"],incoming:["对啊，不然呢？"]},
     {user:["那你要不要也跟我打好关系？","毕竟我是vava的主人啊，你送来我家要先经过我同意。"],incoming:["蛤？","我跟妳的關係還不夠好喔？"]},
     {user:["…………","我就随口说说啦！"],incoming:["哈哈哈哈哈。","好啦，知道了。","那我也要努力一下。","所以現在要不要打電話？"]},
-    {user:["你该不会是想我了吧？😏"],incoming:[]},
+    {"user":["欸？怎么突然要打电话啦？","你说要努力一下，这么快就开始行动了喔？"],"incoming":["不然咧？說要努力總不能只是說說吧。"]},
+    {"user":["可是我现在不太方便接电话欸。","我们先打字聊嘛～"],"incoming":["好啊，沒關係。","妳現在在忙喔？"]},
+    {"user":["也没有啦，就是现在不太方便讲话。","而且打字也挺好的啊，我可以给你展示我的打字速度！"],"incoming":["嗯？什么？"]},
+    {"user":["我跟你说！！","我以前上学的时候超会偷偷玩手机的😎","我可以把手机藏在袖子里面！","然后整只手放在桌子下面，偷偷打字。"],"incoming":["哇塞。","這樣也可以喔？"]},
+    {"user":["当然可以！！","我练到后来都不用看手机了！","真的可以盲打欸！！！"],"incoming":["哈哈哈哈哈哈哈。","妳這個手速不拿來彈吉他有點可惜欸。"]},
+    {"user":["什么啦哈哈哈哈哈哈。","所以你是在夸我很有天赋吗？"],"incoming":["可以這麼說啊。","至少手指應該蠻靈活的。"]},
+    {"user":["那你教我哦？","我也想学弹吉他！"],"incoming":["妳想學吉他喔？"]},
+    {"user":["对啊！","不过我完全不会。","你要从最基础的开始教我！"],"incoming":["可以啊。","不過吉他跟手機不太一樣喔。","手指會痛的。"]},
+    {"user":["我不怕！","我可是有盲打功底的人！","这点困难难不倒我！"],"incoming":["這麼有信心？"]},
+    {"user":["当然！","而且你可是五月天团长欸！！","让团长亲自教我弹吉他，这是什么待遇！"],"incoming":["蛤哈哈哈哈哈。","怎麼突然把團長搬出來了啦。"]},
+    {"user":["不然呢！","别人想学还不一定有机会呢！","我这可是直接拥有团长一对一教学！"],"incoming":["妳倒是很會替自己安排喔。"]},
+    {"user":["那你到底教不教嘛！"],"incoming":["教啊。","妳都開口了。","不過到時候不要嫌手指痛就好了。"]},
+    {"user":["成交！！","那我以后就是你的学生了！"],"incoming":["好啊。","那學生要乖乖上課，不可以上課偷玩手機。"]},
+    {"user":["…………","你怎么还记得这件事啦！"],"incoming":["畢竟剛剛才聽妳說自己以前上課都在偷玩手機。","我得先確認一下學生的學習態度吧。"]},
+    {"user":["温尚翊！！","我现在已经改邪归正了好吗！"],"incoming":["好，我相信妳。","等有機會教妳。"]},
+    {"user":["一言为定！"],"incoming":["一言為定。"]},
+    {"user":["那我第一首要学五月天的歌~","你不可以嫌弃我弹得难听喔。"],"incoming":["還沒開始學就先擔心這個了？","放心啦，剛開始本來就不會彈得多好。"]},
+    {"user":["你觉得我第一首学什么比较好？","要简单一点的！"],"incoming":["嗯……可以先從簡單一點的和弦開始。","等妳熟悉了，再挑自己喜歡的歌。"]},
+    {"user":["你是不是已经在认真规划课程了？","温老师还挺负责的嘛。"],"incoming":["不然呢？","都答應要教妳了，總不能隨便教吧。"]},
+    {"user":["我是不是还要准备一把吉他？"],"incoming":["不用啊。","工作室裡有很多把，妳到時候自己挑一把喜歡的就好。"]},
+    {"user":["有很多把？有几把啊？"],"incoming":["哈哈哈哈哈哈哈哈哈哈哈哈。"]},
+    {"user":["你笑什么！！"],"incoming":["没有啊哈哈哈哈哈哈哈我有七把。"]},
+    {"user":["…………","怎么听起来怪怪的。"],"incoming":["哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"]},
+    {"user":["你在想什么！！不准笑！！！！"],"incoming":["我还没问妳這個腦袋到底都在想什麼啦！"]},
+    {"user":["？？？？？","我什么都没想！！"],"incoming":["喔，那我也什么都沒想啊。"]},
+    {"user":["温尚翊！！！！！！"],"incoming":["又干嘛？","我還沒說什麼欸。","是妳自己先覺得奇怪的喔。"]},
+    {"user":["我不要跟你说话了啊啊啊啊！！你这个........你你你！！","你明明就知道我不是那个意思！！"],"incoming":["那个意思是哪个意思？这个那个的，听不懂欸。"]},
+    {"user":["？？反正不是你想的那个意思！！！"],"incoming":["我想的是什么意思？"]},
+    {"user":["...............你自己心里清楚！！！"],"incoming":["哈哈哈哈哈哈。","好啦好啦，不鬧妳了。","真的只是七把吉他。"]},
+    {"user":["…………","我现在不想学了。"],"incoming":["蛤？怎麼突然不學了？","老師都還沒開始教，學生就要跑了喔？"]},
+    {"user":["谁叫你一直欺负我！"],"incoming":["好啦，不欺負妳了。","吉他還是留給妳挑，說好了喔。"]},
+    {"user":["....哦！！！！那我要再买一把！凑八把！！！"],"incoming":["哈哈哈哈哈哈哈哈哈哈哈哈哈哈"]},
+    {"user":["啊啊啊啊啊啊不准再笑了！！！"],"incoming":["哎呦，都怪你，我手机都摔了。"]},
+    {"user":["活该！不跟你说了我要去洗澡，债见！"],"incoming":[]},
   ];
 
   // Repair existing saves that already sent "温尚翊！！" before the missing
