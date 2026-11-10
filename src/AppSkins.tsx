@@ -233,8 +233,8 @@ function MessageList({
             <Avatar name={i.sender} src={wechat && monsterMessage ? (monsterAvatar || i.avatar) : i.outgoing ? selfAvatar : i.avatar} />
           )}
           <button
-            className={i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? "skin-bubble wx-card-only-bubble" : "skin-bubble"}
-            style={i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? { background: "transparent", border: 0, boxShadow: "none", padding: 0, borderRadius: 0, minWidth: 0, maxWidth: "min(285px, 72vw)", overflow: "visible" } : undefined}
+            className={i.meta?.shopeeProductShare === "true" || i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? "skin-bubble wx-card-only-bubble" : "skin-bubble"}
+            style={i.meta?.shopeeProductShare === "true" || i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? { background: "transparent", border: 0, boxShadow: "none", padding: 0, borderRadius: 0, minWidth: 0, maxWidth: "min(285px, 72vw)", overflow: "visible" } : undefined}
             onClick={() => { if (i.meta?.shopeeProductShare === "true") { onProductOpen?.(i); return; } if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } if (creator) { onItem(i); } else { onRead(i.id); } }}
           >
             {i.meta?.shopeeProductShare === "true" ? (
@@ -2274,13 +2274,13 @@ export function WeChatSkin(p: SkinProps) {
     {user:["很多！"],incoming:["行吧。","那我也不告訴妳我今天吃什麼了。"]},
     {user:["？？？","你幼不幼稚啊！"],incoming:["彼此彼此。"]},
     {user:["哦对，我在给vava买猫罐头，顺便也给玩玩带一点吧？"],incoming:["什麼罐頭？妳發給我看看。"]},
-    {user:["我去蝦皮找一款貓罐頭給你看"],incoming:[]},
+    {user:[],incoming:[]},
     {user:["放心啦，玩玩在我家吃的就是这个~很爱吃！"],incoming:["好。"]},
   ];
   // Wait for the actual Shopee product card to arrive in DaG's chat.
   // Only then reveal his question about the exact product the player shared.
   useEffect(() => {
-    if (!isMonsterThread || malaysiaDaGChatStage !== 43) return;
+    if (!isMonsterThread || malaysiaDaGChatStage !== 999) return;
     const shared = [...p.items, ...catRescue.messages].some((item) =>
       (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
@@ -4747,7 +4747,7 @@ export function WeChatSkin(p: SkinProps) {
         p.onUi?.("shopeeSharePayload", "");
         return;
       }
-      appendCatLines([{
+      const sharedCard: CatLine = {
         id: payload.id,
         sender: "我",
         body: `${payload.name}${payload.variant ? "（" + payload.variant + "）" : ""} · NT$ ${Number(payload.price || 0).toLocaleString("zh-TW")}`,
@@ -4755,7 +4755,18 @@ export function WeChatSkin(p: SkinProps) {
         kind: "text",
         media: "",
         meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productVariant: payload.variant || "", productImage: payload.image || "", productEmoji: payload.emoji || "🛍️", productCategory: payload.category || "" },
-      }], catRescue.stage, catRescue.branch, payload.id);
+      };
+      const isDaGStoryShare = payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true;
+      appendCatLines(
+        isDaGStoryShare
+          ? [sharedCard, { id: "malaysia-dag-after-share-question-v1", sender: "大G", body: "這款 Vava 喜歡嗎？玩玩有點挑食。", thread: "大G" }]
+          : [sharedCard],
+        catRescue.stage, catRescue.branch, payload.id
+      );
+      if (isDaGStoryShare) {
+        p.onUi?.("wxDaGShopeeSharePendingV1", false);
+        setMalaysiaDaGChatStage(43);
+      }
       p.onUi?.("shopeeSharePayload", "");
     } catch { p.onUi?.("shopeeSharePayload", ""); }
   }, [p.allUi?.wechat?.shopeeSharePayload]);
@@ -6116,10 +6127,9 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
-                    if(malaysiaDaGChatStage===43){
-                      // Do not launch Shopee or preselect a product. The player
-                      // leaves WeChat, browses Shopee, and shares any cat-can
-                      // product manually through its own product page.
+                    if(malaysiaDaGChatStage===42){
+                      // No narration bubble: arm the share flow and let the
+                      // player leave WeChat and choose any cat-can product.
                       p.onUi?.("wxDaGShopeeSharePendingV1", true);
                       return;
                     }
