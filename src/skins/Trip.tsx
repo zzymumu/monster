@@ -38,19 +38,20 @@ export function TripSkin(p:Props){
  const [guests,setGuests]=useState(2);
  const [stage,setStage]=useState<"list"|"detail"|"checkout">("list");
  const orders=(()=>{try{return JSON.parse(String(p.ui?.tripOrders||"[]")) as any[]}catch{return[]}})();
- const orderTotal=(flight?.price||0)+(hotel?(hotel.price+hotel.rooms[room].price):0);
+ const orderTotal=(flight?.price||0)+(hotel?(hotel.price+hotel.rooms[room].price)*2:0);
  const startHotel=(h:HotelOption)=>{setHotel(h);setRoom(0);setStage("detail");};
  const placeOrder=()=>{
   if(!flight||!hotel)return;
   const id="TR"+Date.now().toString().slice(-8);
   const order={id,status:"待付款",flight,hotel:hotel.name,room:hotel.rooms[room].name,guests,checkIn:dates.out,checkOut:dates.back,nights:2,total:orderTotal,createdAt:Date.now()};
+  p.onUi?.("tripOrders",JSON.stringify([order,...orders]));
   p.onAppUi?.("jkopay","pendingTripPayment",JSON.stringify({paymentId:id,total:orderTotal,merchant:"Trip 旅行",note:flight.airline+" 往返機票、"+hotel.name+" "+hotel.rooms[room].name,order}));
   setStage("list");setTab("訂單");p.onOpenApp?.("jkopay");
  };
  return <div className="catalog-skin trip-ui">
   <header className="trip-header"><div><small>YOUR WEEKEND GETAWAY</small><h1>Trip <span>✈</span></h1></div><button onClick={()=>setTab("訂單")}>我的訂單</button></header>
   <div className="trip-scroll">
-   {stage==="checkout"? <><button className="trip-back" onClick={()=>setStage("detail")}><ChevronLeft size={17}/> 返回</button><h2>確認旅行訂單</h2><div className="trip-summary"><b>{dates.out} – {dates.back}</b><p>桃園 TPE ⇄ 吉隆坡 KUL · {guests} 位成人</p><p>{flight?.airline}</p><p>{hotel?.name} · {hotel?.rooms[room].name}</p><strong>{money(orderTotal)}</strong></div><button className="trip-primary" onClick={placeOrder}>提交訂單並前往街口支付</button></> :
+   {stage==="checkout"? <><button className="trip-back" onClick={()=>setStage("detail")}><ChevronLeft size={17}/> 返回</button><h2>確認旅行訂單</h2><div className="trip-summary"><b>{dates.out} – {dates.back} · 2 晚</b><p>桃園 TPE ⇄ 吉隆坡 KUL · {guests} 位成人</p><p>{flight?.airline}</p><p>{hotel?.name} · {hotel?.rooms[room].name} × 2 晚</p><strong>{money(orderTotal)}</strong></div><button className="trip-primary" onClick={placeOrder}>提交訂單並前往街口支付</button></> :
    tab==="訂單"? <><h2>我的旅行訂單</h2>{orders.length?orders.map(o=><article className="trip-order" key={o.id}><b>{o.hotel}</b><small>{o.checkIn} – {o.checkOut} · {o.room}</small><strong>{money(o.total)}</strong><span>{o.status}</span></article>):<p className="trip-empty">還沒有旅行訂單，先規劃一趟週末旅行吧。</p>}</> :
    stage==="detail"&&hotel?<><button className="trip-back" onClick={()=>setStage("list")}><ChevronLeft size={17}/> 返回酒店列表</button><div className={"trip-hotel-art "+hotel.image}><span>吉隆坡 · MALAYSIA</span></div><h2>{hotel.name}</h2><p className="trip-muted">{hotel.area} · {"★".repeat(hotel.stars)}</p><p>{hotel.blurb}</p><div className="trip-price">{money(hotel.price)} <small>/ 晚起</small></div><h3>選擇房型</h3>{hotel.rooms.map((r,i)=><button className={"trip-room "+(room===i?"selected":"")} key={r.name} onClick={()=>setRoom(i)}><span><b>{r.name}</b><small>{r.desc}</small></span><strong>{money(hotel.price+r.price)}</strong></button>)}<label>入住人數<select value={guests} onChange={e=>setGuests(Number(e.target.value))}><option value={1}>1 位成人</option><option value={2}>2 位成人</option></select></label><div className="trip-dates">入住 {dates.out}（五）　退房 {dates.back}（日）</div><button className="trip-primary" onClick={()=>setStage("checkout")}>確認房型</button></> :
    tab==="機票"? <><h2>桃園 ⇄ 吉隆坡</h2><div className="trip-route"><b>TPE</b><Plane/><b>KUL</b><small>{dates.out} 出發 · {dates.back} 回程</small></div>{flights.map(f=><button className={"trip-flight "+(flight?.id===f.id?"selected":"")} key={f.id} onClick={()=>setFlight(f)}><span><b>{f.airline}</b><small>去程 {f.depart} → {f.arrive}　回程 {f.returnDepart} → {f.returnArrive}</small><small>{f.duration} · {f.baggage}</small></span><strong>{money(f.price)}</strong></button>)}<button className="trip-primary" disabled={!flight} onClick={()=>setTab("酒店")}>選好機票，挑選酒店</button></> :
