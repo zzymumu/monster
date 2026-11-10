@@ -280,7 +280,8 @@ export function ShopeeSkin(p:Props){
    p.onNotification?.("蝦皮購物：請選擇一款貓罐頭再分享給大G。");
    return;
   }
-  const payload={id:"shopee-share-"+Date.now(),recipient,productId:product.id,name:product.name,category:product.category,price:product.variantPrices?.[variant]??product.price,variant,image:product.image||"",emoji:product.emoji};
+  const storyShare=recipient==="大G" && p.allUi?.wechat?.wxDaGShopeeSharePendingV1===true;
+  const payload={id:"shopee-share-"+Date.now(),recipient,productId:product.id,name:product.name,category:product.category,price:product.variantPrices?.[variant]??product.price,variant,image:product.image||"",emoji:product.emoji,storyShare};
   p.onAppUi?.("wechat","shopeeSharePayload",JSON.stringify(payload));
   if(recipient==="大G") p.onAppUi?.("wechat","wxDaGShopeeSharePendingV1",false);
   setSharePickerOpen(false);
