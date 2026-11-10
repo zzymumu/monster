@@ -2294,6 +2294,29 @@ export function WeChatSkin(p: SkinProps) {
     }
     setMalaysiaDaGChatStage(44);
   }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, catRescue.stage, catRescue.branch, contactRemarks]);
+  // Narrow repair for the one Malaysia Shopee-share scene in existing saves.
+  // Remove the old instructional placeholder and place DaG's product question
+  // before the player's reassurance, then shorten his acknowledgement to "好。".
+  useEffect(() => {
+    const placeholder = "（打开蝦皮，把想分享的猫罐头商品卡片分享给大G）";
+    const original = catRescue.messages;
+    let next = original.filter(item => item.body.trim() !== placeholder);
+    const questionIndex = next.findIndex(item => item.id === "malaysia-dag-after-share-question-v1" || (item.sender === "大G" && item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"));
+    const reassuranceIndex = next.findIndex(item => item.sender === "我" && item.body.trim() === "放心啦，玩玩在我家吃的就是这个~很爱吃！");
+    if (questionIndex >= 0 && reassuranceIndex >= 0 && questionIndex > reassuranceIndex) {
+      const [question] = next.splice(questionIndex, 1);
+      const adjustedReassurance = next.findIndex(item => item.sender === "我" && item.body.trim() === "放心啦，玩玩在我家吃的就是这个~很爱吃！");
+      next.splice(adjustedReassurance, 0, question);
+    }
+    next = next.map(item =>
+      item.sender === "大G" && item.body.trim() === "好，那我就放心了。那我也給牠多準備一點。"
+        ? { ...item, body: "好。" }
+        : item
+    );
+    if (next.length !== original.length || next.some((item,index)=>item!==original[index])) {
+      setCatRescueRaw(JSON.stringify({ ...catRescue, messages: next }));
+    }
+  }, [catRescueRaw]);
   const milkTeaGiftTurns: Array<{ user: string[]; incoming: string[]; orderDelivered?: boolean; externalCall?: boolean }> = [
     { user: ["欸，问你一件事。"], incoming: ["干嘛？"] },
     { user: ["你是不是给我点奶茶了？"], incoming: ["啊？没有啊。", "怎么突然问这个？"] },
