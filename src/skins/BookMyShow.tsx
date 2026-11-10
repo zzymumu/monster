@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Ticket, Clock3, Users, ChevronLeft, CheckCircle2, CreditCard, QrCode, CalendarDays, MapPin, Armchair } from "lucide-react";
 import type { Props } from "./shared";
 
@@ -74,7 +74,7 @@ export function BookMyShowSkin(p:Props){
    <p style={{fontSize:10,textAlign:"center",opacity:.8,margin:"10px 0 0"}}>座位分区示意图 · 非实际比例</p>
   </div>
  );
- return <div className="catalog-skin" style={{"--app-accent":"#e51b24",background:"#f6f6f7"} as React.CSSProperties}>
+ return <div className="catalog-skin" style={{"--app-accent":"#e51b24",background:"#f6f6f7"} as CSSProperties}>
   <header style={{height:48,flexShrink:0,background:"#fff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 15px",borderBottom:"1px solid #eee"}}>
    <button onClick={back} aria-label="返回" style={{border:0,background:"none",fontSize:22,color:"#222"}}>{page==="home"||page==="ticket"?"‹":<ChevronLeft/>}</button>
    <strong style={{fontSize:16,color:"#e51b24",fontWeight:900,letterSpacing:-.4}}>bookmyshow</strong>
