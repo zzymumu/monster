@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+<rect width="800" height="800" fill="#e8e4d8"/>
+<ellipse cx="400" cy="640" rx="230" ry="34" fill="#c9c2b2" opacity=".45"/>
+<g>
+<path d="M190 250 Q400 205 610 250 L580 590 Q400 635 220 590 Z" fill="#b9a77c" stroke="#85754e" stroke-width="8"/>
+<path d="M210 265 Q400 225 590 265 L565 570 Q400 610 235 570 Z" fill="#f4f0df"/>
+<ellipse cx="400" cy="250" rx="210" ry="48" fill="#d8d0b7" stroke="#8c805e" stroke-width="10"/>
+<ellipse cx="400" cy="242" rx="185" ry="30" fill="#eee8d4" stroke="#b4a987" stroke-width="5"/>
+<path d="M350 215 Q400 180 450 215" fill="none" stroke="#9c906e" stroke-width="8" stroke-linecap="round"/>
+<rect x="235" y="325" width="330" height="170" rx="16" fill="#6f7950"/>
+<text x="400" y="390" font-family="Georgia,serif" font-size="54" font-weight="bold" text-anchor="middle" fill="#fff8e7">ZIWI</text>
+<text x="400" y="435" font-family="Arial,sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#fff8e7">PEAK</text>
+<text x="400" y="535" font-family="Arial,sans-serif" font-size="25" font-weight="bold" text-anchor="middle" fill="#514a38">CANNED CAT FOOD</text>
+<text x="400" y="570" font-family="Arial,sans-serif" font-size="18" text-anchor="middle" fill="#6d624b">NEW ZEALAND</text>
+<path d="M300 495 Q400 465 500 495" fill="none" stroke="#c9b98e" stroke-width="5"/>
+</g>
+</svg>
