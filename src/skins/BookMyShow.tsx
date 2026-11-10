@@ -58,9 +58,9 @@ export function BookMyShowSkin(p:Props){
   },100);
   return()=>window.clearInterval(timer);
  },[page]);
- const startQueue=()=>{if(orders.some(order=>order.status==="已付款")){setSystemBusy(true);return;}setElapsed(0);setQueueReady(false);setPage("queue");};
+ const startQueue=()=>{if(p.ui?.bookmyshowSoldOut===true||orders.some(order=>order.status==="已付款")){setSystemBusy(true);return;}setElapsed(0);setQueueReady(false);setPage("queue");};
  const createOrder=()=>{
-  if(orders.some(order=>order.status==="已付款")){setSystemBusy(true);return;}
+  if(p.ui?.bookmyshowSoldOut===true||orders.some(order=>order.status==="已付款")){setSystemBusy(true);return;}
   const id="BMS"+Date.now().toString().slice(-9);
   const next:TicketOrder={id,status:"待付款",event:"五月天《回到那一天》马来西亚站",date:dateText,venue:"National Stadium Bukit Jalil",zone,seats,quantity:qty,totalRm,totalNtd,createdAt:new Date().toLocaleString("zh-TW")};
   const nextOrders=[next,...orders];
