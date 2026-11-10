@@ -128,7 +128,9 @@ function VoiceMessage({ item, onRead }: { item: Item; onRead: (id: string) => vo
   );
 }
 function ItemMedia({ item }: { item: Item }) {
-  const src = safeMedia(item.media);
+  // This local, repository-owned ticket artwork is a trusted SVG used by the Malaysia trip story.
+  // Allow it explicitly here; safeMedia intentionally filters SVG elsewhere.
+  const src = item.media === "/assets/bookmyshow-mayday-ticket.svg" ? item.media : safeMedia(item.media);
   return src ? (
     item.kind === "audio" ? (
       <audio controls src={src} />
