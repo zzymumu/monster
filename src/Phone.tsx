@@ -2612,6 +2612,7 @@ function AppContent({
   onUi,
   onAppUi,
   onOpenApp,
+  onNotification,
   work,
   saveInfo,
   saveReady,
@@ -2639,6 +2640,7 @@ function AppContent({
   onUi?: (key: string, value: UiValue) => void;
   onAppUi?: (appId: string, key: string, value: UiValue) => void;
   onOpenApp?: (appId: string) => void;
+  onNotification?: (text: string) => void;
   work: Work;
   saveInfo: { hasSave: boolean; savedAt: number | null; slots: Array<{ id: string; name: string; savedAt: number }>; activeSaveId: string };
   saveReady: boolean;
@@ -2787,6 +2789,7 @@ function AppContent({
         <div className="catalog-slot" hidden={!!detail}>
           <Suspense fallback={<div className="catalog-loading">正在打开…</div>}>
             <Skin
+              onNotification={onNotification}
               appId={app.id}
               owner={work.phone.owner}
               virtualTime={virtualTime}
