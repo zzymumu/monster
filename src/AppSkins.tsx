@@ -2242,18 +2242,38 @@ export function WeChatSkin(p: SkinProps) {
   ];
   const [malaysiaDaGShareStageMigratedV2, setMalaysiaDaGShareStageMigratedV2] = useSkinState<boolean>(p, "wxMalaysiaDaGShareStageMigratedV2", false);
   useEffect(() => {
-    if (malaysiaDaGShareStageMigratedV2) return;
-    const sharedCatCan = [...p.items, ...catRescue.messages].some((item) =>
+    const allMessages = [...p.items, ...catRescue.messages];
+    const sharedCatCan = allMessages.some((item) =>
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
       (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
       /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(String(item.meta?.productName || ""))
     );
-    const reassuranceSent = [...p.items, ...catRescue.messages].some((item) =>
+    const reassuranceSent = allMessages.some((item) =>
       item.sender === "我" && item.body.trim() === "放心啦，玩玩在我家吃的就是这个~很爱吃！"
     );
-    if (sharedCatCan && !reassuranceSent && malaysiaDaGShareQuestionDelivered && malaysiaDaGChatStage !== 41) setMalaysiaDaGChatStage(41);
-    setMalaysiaDaGShareStageMigratedV2(true);
-  }, [malaysiaDaGShareStageMigratedV2, malaysiaDaGChatStage, p.items, catRescue.messages, contactRemarks]);
+    const questionDelivered = allMessages.some((item) =>
+      item.id === "malaysia-dag-after-share-question-v1" &&
+      item.sender === "大G" &&
+      item.body.trim() === "這款 Vava 喜歡嗎？玩玩有點挑食。"
+    );
+    const questionQueued = pendingCatLines.some(item => item.id === "malaysia-dag-after-share-question-v1");
+
+    // This is a recovery guard, not a one-time migration: saves can be opened
+    // on different screens and the shared card may arrive after the first render.
+    // Keep the scene parked at the product-question handoff until the question
+    // is actually delivered, then expose the reassurance reply.
+    if (sharedCatCan && !reassuranceSent) {
+      if (questionDelivered) {
+        if (malaysiaDaGChatStage !== 41) setMalaysiaDaGChatStage(41);
+      } else if (malaysiaDaGChatStage !== 999) {
+        setMalaysiaDaGChatStage(999);
+      } else if (!questionQueued && isMonsterThread) {
+        // The dedicated stage-999 effect will enqueue the missing question.
+        setMalaysiaDaGChatStage(999);
+      }
+    }
+    if (!malaysiaDaGShareStageMigratedV2) setMalaysiaDaGShareStageMigratedV2(true);
+  }, [malaysiaDaGShareStageMigratedV2, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, isMonsterThread, contactRemarks]);
 
   // Only unlock the reply after DaG's question is in this chat transcript.
   const malaysiaDaGShareQuestionDelivered = [...p.items, ...catRescue.messages].some((item) =>
