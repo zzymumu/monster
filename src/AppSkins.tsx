@@ -2386,9 +2386,13 @@ export function WeChatSkin(p: SkinProps) {
   // created by Shopee itself, not by checkout, so no player payment is charged.
   useEffect(() => {
     const allStoryItems = [...p.items, ...catRescue.messages];
+    // Only this exact acknowledgement from the current cat-can share may
+    // create the order. Historical "好。" messages elsewhere in the chat
+    // must never unlock the Shopee notification.
     const acknowledgementArrived = allStoryItems.some(item =>
-      item.sender === "大G" && item.body.trim() === "好。" &&
-      (item.id === "malaysia-dag-incoming-41-0" || (item.meta?.storyThread === "大G" || item.title === "大G"))
+      item.id === "malaysia-dag-incoming-41-0" &&
+      item.sender === "大G" &&
+      item.body.trim() === "好。"
     );
     const sharedProduct = [...allStoryItems].reverse().find(item =>
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
@@ -6257,7 +6261,7 @@ export function WeChatSkin(p: SkinProps) {
                         setCatRescueRaw(JSON.stringify({...catRescue,version:2,messages:[...catRescue.messages,replyItem]}));
                       }
                       const acknowledgementExists=[...p.items,...catRescue.messages,...pendingCatLines].some(item=>
-                        item.id===acknowledgementId || (item.sender==="大G" && item.body.trim()==="好。" && (item.meta?.storyThread==="大G"||("title" in item && item.title==="大G")))
+                        item.id===acknowledgementId
                       );
                       if(!acknowledgementExists){
                         setPendingCatLines(current=>[...current,{id:acknowledgementId,sender:"大G",body:"好。",thread:"大G"}]);
