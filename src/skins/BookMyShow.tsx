@@ -29,6 +29,8 @@ export function BookMyShowSkin(p:Props){
  const [qty,setQty]=useState(2);
  const [elapsed,setElapsed]=useState(0);
  const [queueReady,setQueueReady]=useState(false);
+ const [quantityOpen,setQuantityOpen]=useState(false);
+ const [lockStage,setLockStage]=useState<"idle"|"locking"|"success"|"details">("idle");
  const eventDate=useMemo(()=>upcomingSaturday(),[]);
  const dateText=dateLabel(eventDate);
  const orders=useMemo(()=>{try{return JSON.parse(String(p.ui?.bookmyshowOrders||"[]")) as TicketOrder[]}catch{return[]}},[p.ui?.bookmyshowOrders]);
@@ -36,6 +38,15 @@ export function BookMyShowSkin(p:Props){
  const totalRm=selectedZone.price*qty;
  const totalNtd=Math.round(totalRm*7.4);
  const seats=seatNames(zone,qty);
+ useEffect(()=>{
+  if(page==="seats"){
+   setLockStage("locking");
+   const successTimer=window.setTimeout(()=>setLockStage("success"),1100);
+   const detailsTimer=window.setTimeout(()=>setLockStage("details"),2200);
+   return()=>{window.clearTimeout(successTimer);window.clearTimeout(detailsTimer);};
+  }
+  setLockStage("idle");
+ },[page]);
  useEffect(()=>{
   if(page!=="queue"){setElapsed(0);setQueueReady(false);return;}
   const started=Date.now();
@@ -102,7 +113,7 @@ export function BookMyShowSkin(p:Props){
     <h2 style={{fontSize:20,margin:"4px 0"}}>正在排队等候</h2><b style={{fontSize:13}}>五月天《回到那一天》马来西亚站</b>
     <p style={{fontSize:12,color:"#777",lineHeight:1.6}}>请勿关闭或刷新页面，系统正在为你取得购票资格。</p>
     <div style={{height:12,background:"#eee",borderRadius:20,overflow:"hidden",margin:"22px 0 10px"}}><div style={{height:"100%",width:(elapsed/20*100)+"%",background:"linear-gradient(90deg,#e51b24,#ff7a45)",transition:"width .1s"}}/></div>
-    <div style={{fontSize:24,fontWeight:900,color:"#e51b24",fontVariantNumeric:"tabular-nums"}}>{Math.floor(elapsed).toString().padStart(2,"0")} / 20 秒</div>
+    <div style={{fontSize:15,fontWeight:800,color:"#e51b24",marginTop:12}}>系统正在为你安排购票顺序</div>
     <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#888",marginTop:15}}><span>目前排队人数</span><b style={{color:"#333"}}>{queueReady?"0":Math.max(0,1286-Math.floor(elapsed*64)).toLocaleString("en-US")} 人</b></div>
     <p style={{fontSize:12,color:queueReady?"#159447":"#888",marginTop:18}}>{queueReady?"排队完成！已取得购票资格":"正在确认排队状态…"}</p>
     <button disabled={!queueReady} onClick={()=>setPage("zone")} style={{width:"100%",border:0,borderRadius:10,background:queueReady?"#e51b24":"#ccc",color:"#fff",fontWeight:800,padding:13,marginTop:8}}>进入选票</button>
@@ -111,7 +122,12 @@ export function BookMyShowSkin(p:Props){
     <h2 style={{fontSize:20,margin:"5px 0"}}>选择票区与票价</h2><p style={{color:"#777",fontSize:12}}>票价以马币 RM 显示，座位依票区安排。</p>
     {renderSeatMap()}
     {zones.map(z=><button key={z.id} onClick={()=>setZone(z.id)} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",border:zone===z.id?"2px solid #e51b24":"1px solid #e5e5e5",background:zone===z.id?"#fff5f5":"#fff",borderRadius:11,padding:12,marginBottom:7,textAlign:"left"}}><span style={{display:"flex",alignItems:"center",gap:9}}><i style={{width:13,height:13,borderRadius:4,background:z.color}}/><span><b>{z.name} 区</b><small style={{display:"block",color:"#888",fontSize:11}}>{z.desc}</small></span></span><strong>RM {z.price.toLocaleString("en-MY")}</strong></button>)}
-    <label style={{display:"block",background:"#fff",padding:12,borderRadius:10,fontSize:12}}>购买张数 <select value={qty} onChange={e=>setQty(Number(e.target.value))} style={{float:"right",border:0,background:"#f5f5f5",padding:6,borderRadius:6}}><option value={1}>1 张</option><option value={2}>2 张（连号）</option><option value={3}>3 张</option><option value={4}>4 张</option></select></label>
+    <div style={{background:"#fff",borderRadius:10,marginTop:10,overflow:"hidden"}}>
+     <button onClick={()=>setQuantityOpen(v=>!v)} aria-expanded={quantityOpen} style={{width:"100%",border:0,background:"#fff",padding:"12px 14px",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:12,textAlign:"left"}}>
+      <span><b>购买张数</b><small style={{display:"block",color:"#888",marginTop:4}}>目前选择：{qty} 张{qty>1?"（连号）":""}</small></span><span style={{color:"#777",fontSize:17}}>{quantityOpen?"⌃":"⌄"}</span>
+     </button>
+     {quantityOpen&&<div style={{padding:"0 12px 12px"}}><select value={qty} onChange={e=>setQty(Number(e.target.value))} style={{width:"100%",border:0,background:"#f5f5f5",padding:10,borderRadius:7}}><option value={1}>1 张</option><option value={2}>2 张（连号）</option><option value={3}>3 张</option><option value={4}>4 张</option></select></div>}
+    </div>
     <button onClick={()=>setPage("seats")} style={{width:"100%",border:0,borderRadius:10,background:"#e51b24",color:"#fff",padding:13,fontWeight:800,marginTop:12}}>确认票区，查看座位</button>
    </>}
    {page==="seats"&&<>
@@ -131,6 +147,14 @@ export function BookMyShowSkin(p:Props){
    {page==="confirm"&&<><h2 style={{fontSize:20}}>确认订单</h2><div style={{background:"#fff",borderRadius:14,padding:15,lineHeight:1.9,fontSize:12}}><b style={{fontSize:15}}>五月天《回到那一天》马来西亚站</b><p>{dateText} · 20:00</p><p>National Stadium Bukit Jalil</p><p>票区：{zone} · {qty} 张</p><p>座位：{seats.join("、")}</p><p>票价：RM {selectedZone.price.toLocaleString("en-MY")} × {qty}</p><hr/><b style={{fontSize:17,color:"#e51b24"}}>RM {totalRm.toLocaleString("en-MY")}</b><p style={{color:"#777"}}>折合约 {money(totalNtd)}</p></div><button onClick={createOrder} style={{width:"100%",border:0,borderRadius:10,background:"#e51b24",color:"#fff",padding:14,fontWeight:850,marginTop:14}}>提交订单并前往街口支付</button></>}
    {page==="ticket"&&<><h2 style={{fontSize:20}}>我的票夹</h2>{orders.length?orders.map(o=><div key={o.id} style={{background:"#fff",borderRadius:14,padding:14,marginBottom:10}}><div style={{display:"flex",justifyContent:"space-between"}}><b>{o.event}</b><small style={{color:o.status==="已付款"?"#16934a":"#e58b1a"}}>{o.status}</small></div><p style={{fontSize:11,color:"#777"}}>{o.date} · 20:00 · {o.venue}</p><h3 style={{color:"#e51b24"}}>{o.zone} · {o.seats.join("、")}</h3><div style={{height:94,background:"#fafafa",border:"1px solid #eee",borderRadius:8,display:"grid",placeItems:"center"}}><QrCode size={66}/></div><small style={{color:"#888"}}>订单编号：{o.id}</small></div>):<p style={{color:"#888"}}>还没有门票订单。</p>}</>}
   </main>
+  {page==="seats"&&lockStage!=="idle"&&<div role="dialog" aria-modal="true" style={{position:"absolute",inset:48,zIndex:30,background:"rgba(0,0,0,.42)",display:"grid",placeItems:"center",padding:20}}>
+   <div style={{width:"100%",maxWidth:340,background:"#fff",borderRadius:18,padding:22,textAlign:"center",boxShadow:"0 12px 40px rgba(0,0,0,.2)"}}>
+    {lockStage==="locking"&&<><div style={{width:42,height:42,border:"4px solid #f5d5d5",borderTopColor:"#e51b24",borderRadius:"50%",margin:"0 auto 14px",animation:"bms-spin .8s linear infinite"}}/><b style={{fontSize:17}}>正在锁定座位…</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>请稍候，系统正在为你保留所选座位</p></>}
+    {lockStage==="success"&&<><div style={{width:48,height:48,borderRadius:24,background:"#e8f7ed",color:"#159447",display:"grid",placeItems:"center",fontSize:28,margin:"0 auto 12px"}}>✓</div><b style={{fontSize:18,color:"#159447"}}>座位锁定成功！</b><p style={{fontSize:12,color:"#888",marginBottom:0}}>已为你保留连续座位</p></>}
+    {lockStage==="details"&&<><b style={{fontSize:18}}>座位详情</b><div style={{background:"#fff5f5",border:"1px solid #f1c6c6",borderRadius:12,padding:14,margin:"14px 0"}}><div style={{fontSize:12,color:"#777"}}>VIP 区 · A1 · 第 1 排</div><div style={{fontSize:26,fontWeight:900,color:"#e51b24",margin:"8px 0"}}>9 号、10 号</div><div style={{fontSize:12,color:"#666"}}>{qty} 张连续座位</div></div><button onClick={()=>setLockStage("idle")} style={{width:"100%",border:0,borderRadius:9,background:"#e51b24",color:"#fff",padding:12,fontWeight:800}}>确认座位</button></>}
+   </div>
+  </div>}
+  <style>{'@keyframes bms-spin{to{transform:rotate(360deg)}}'}</style>
   <nav style={{height:54,flexShrink:0,background:"#fff",borderTop:"1px solid #eee",display:"flex",justifyContent:"space-around",alignItems:"center"}}><button onClick={()=>setPage("home")} style={{border:0,background:"none",color:page==="home"?"#e51b24":"#888",fontSize:11}}>⌂<br/>首页</button><button onClick={()=>setPage("ticket")} style={{border:0,background:"none",color:page==="ticket"?"#e51b24":"#888",fontSize:11}}>▣<br/>我的票夹</button></nav>
  </div>;
 }
