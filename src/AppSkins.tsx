@@ -161,11 +161,13 @@ function MessageList({
   monsterName = "大G",
   transferStatus = "pending",
   onTransferStatusChange,
+  onProductOpen,
 }: {
   items: Item[];
   creator: boolean;
   onItem: (i: Item) => void;
   onRead: (id: string) => void;
+  onProductOpen?: (item: Item) => void;
   whatsapp?: boolean;
   wechat?: boolean;
   wallpaper?: string;
@@ -233,9 +235,18 @@ function MessageList({
           <button
             className={i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? "skin-bubble wx-card-only-bubble" : "skin-bubble"}
             style={i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? { background: "transparent", border: 0, boxShadow: "none", padding: 0, borderRadius: 0, minWidth: 0, maxWidth: "min(285px, 72vw)", overflow: "visible" } : undefined}
-            onClick={() => { if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } if (creator) { onItem(i); } else { onRead(i.id); } }}
+            onClick={() => { if (i.meta?.shopeeProductShare === "true") { onProductOpen?.(i); return; } if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } if (creator) { onItem(i); } else { onRead(i.id); } }}
           >
-            {i.kind === "call" ? (
+            {i.meta?.shopeeProductShare === "true" ? (
+              <div style={{width:250,maxWidth:"68vw",background:"#fff",color:"#222",borderRadius:9,overflow:"hidden",textAlign:"left",boxShadow:"0 1px 3px rgba(0,0,0,.12)"}}>
+                {i.meta.productImage && <img src={i.meta.productImage} alt={i.meta.productName || "蝦皮商品"} style={{display:"block",width:"100%",height:170,objectFit:"contain",background:"#f7f7f7"}}/>}
+                <div style={{padding:"10px 12px"}}>
+                  <div style={{fontSize:14,fontWeight:600,lineHeight:1.35}}>{i.meta.productName || body}</div>
+                  <div style={{fontSize:16,color:"#ee4d2d",fontWeight:700,marginTop:6}}>NT$ {Number(i.meta.productPrice || 0).toLocaleString("zh-TW")}</div>
+                  <div style={{fontSize:11,color:"#888",marginTop:7,borderTop:"1px solid #eee",paddingTop:7}}>🟠 蝦皮購物 · 點擊查看商品</div>
+                </div>
+              </div>
+            ) : i.kind === "call" ? (
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "#777" }}>
                 <Phone size={15} style={{ transform: "rotate(135deg)" }} />
                 {body}
@@ -4690,7 +4701,7 @@ export function WeChatSkin(p: SkinProps) {
         thread: payload.recipient,
         kind: "text",
         media: "",
-        meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productEmoji: payload.emoji || "🛍️" },
+        meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productImage: payload.image || "", productEmoji: payload.emoji || "🛍️" },
       }], catRescue.stage, catRescue.branch, payload.id);
       p.onUi?.("shopeeSharePayload", "");
     } catch { p.onUi?.("shopeeSharePayload", ""); }
@@ -5773,7 +5784,7 @@ export function WeChatSkin(p: SkinProps) {
                   </div>
                 </div>
               )}
-              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
+              <MessageList items={threadItems} creator={p.creator} onItem={p.onItem} onRead={p.onRead} onProductOpen={(item)=>{p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:item.meta?.productId||"ziwi-cat-cans",recipient:"大G"}));p.onOpenApp?.("shopee");}} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} transferStatus={milkTeaTransferStatus} onTransferStatusChange={setMilkTeaTransferStatus} />
               {activeGroupChat && threeWayRejoinReplyPending && pendingCatLines.length === 0 && (
                 <div className="cat-rescue-choices" aria-label="重新加入群聊后的回复选项">
                   <button style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 14px", borderRadius: 10, background: "#07c160", color: "#102010", fontSize: 15, fontWeight: 600, whiteSpace: "normal", textAlign: "left" }} onClick={() => {
@@ -6143,7 +6154,7 @@ export function WeChatSkin(p: SkinProps) {
             </div>
           ) : (
             <>
-              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
+              <MessageList items={allItems.filter((i) => i.title === p.thread)} creator={p.creator} onItem={p.onItem} onRead={p.onRead} onProductOpen={(item)=>{p.onAppUi?.("shopee","shopeeStoryShareProductV1",JSON.stringify({productId:item.meta?.productId||"ziwi-cat-cans",recipient:"大G"}));p.onOpenApp?.("shopee");}} wechat monsterAvatar={getDaGAvatar()} monsterName={displayName("大G")} wallpaper={activeChatSettings.wallpaper || "https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg"} selfAvatar={ownerAvatar} />
               {isMonsterThread && monsterRemoved && catRescue.stage === 13 && monsterSendFailed && (
                 <div className="wx-send-failed" role="status" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", color: "#d93025", fontSize: 12 }}>
                   <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 16, height: 16, borderRadius: "50%", background: "#d93025", color: "#fff", fontWeight: 700 }}>!</span>
