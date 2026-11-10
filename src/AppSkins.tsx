@@ -4606,8 +4606,8 @@ export function WeChatSkin(p: SkinProps) {
       try { const parsed: unknown = JSON.parse(String(value || "[]")); return Array.isArray(parsed) ? parsed as Array<{ status?: string }> : []; }
       catch { return []; }
     };
-    const tripPaid = parseOrders(p.allUi?.trip?.tripOrders).some((order: any) => order?.status === "已付款" || order?.status === "paid");
-    const ticketPaid = parseOrders(p.allUi?.bookmyshow?.bookmyshowOrders).some((order: any) => order?.status === "已付款" || order?.status === "paid");
+    const tripPaid = parseOrders(p.allUi?.trip?.tripOrders).some((order) => order.status === "已付款" || order.status === "paid");
+    const ticketPaid = parseOrders(p.allUi?.bookmyshow?.bookmyshowOrders).some((order) => order.status === "已付款" || order.status === "paid");
     if (!tripPaid || !ticketPaid) return;
     setMalaysiaTripTriggered(true);
     setMalaysiaTripStage(0);
