@@ -2284,7 +2284,7 @@ export function WeChatSkin(p: SkinProps) {
     const shared = [...p.items, ...catRescue.messages].some((item) =>
       (item.meta?.storyThread === "大G" || item.title === "大G" || item.title === displayName("大G")) &&
       item.sender === "我" && item.meta?.shopeeProductShare === "true" &&
-      /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(String(item.meta?.productName || ""))
+      /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(String(item.meta?.productName || ""))
     );
     if (!shared) return;
     const alreadyAsked = [...p.items, ...catRescue.messages, ...pendingCatLines].some((item) =>
@@ -4738,7 +4738,7 @@ export function WeChatSkin(p: SkinProps) {
     try {
       const payload = JSON.parse(raw) as { id?: string; recipient?: string; productId?: string; name?: string; price?: number; variant?: string; image?: string; emoji?: string; category?: string };
       if (!payload.id || !payload.recipient || !payload.name) return;
-      const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(payload.name);
+      const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(payload.name);
       if (payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true && !isCatCan) {
         p.onNotification?.("蝦皮購物：這段劇情請分享一款貓罐頭商品。");
         return;
