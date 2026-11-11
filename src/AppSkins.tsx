@@ -706,45 +706,45 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   4: [
-    { id: "notice-tag", label: "欸，等一下！我好像发现了什么", nextStage: 2207, lines: [
+    { id: "notice-tag", label: "欸，等一下！我好像发现了什么", nextStage: 2200, lines: [
       { sender: "我", body: "欸，等一下！！", thread: "西蓝花" },
       { sender: "我", body: "我刚刚好像发现了什么！", thread: "西蓝花" },
       { sender: "西蓝花", body: "怎么了？", thread: "西蓝花" },
       { sender: "西蓝花", body: "医生说什么了吗？", thread: "西蓝花" },
     ]},
   ],
-  2207: [
-    { id: "show-cat-tag", label: "不是医生！是它脖子上有个小牌子！", nextStage: 2207, lines: [
+  2200: [
+    { id: "show-cat-tag", label: "不是医生！是它脖子上有个小牌子！", nextStage: 2201, lines: [
       { sender: "我", body: "不是医生！", thread: "西蓝花" },
       { sender: "我", body: "是它脖子上有个小牌子！", thread: "西蓝花" },
       { sender: "西蓝花", body: "你刚刚怎么没发现？", thread: "西蓝花" },
     ]},
   ],
-  2207: [
-    { id: "noticed-tag-now", label: "我光顾着抓它了嘛🥺我现在才看到！", nextStage: 2207, lines: [
+  2201: [
+    { id: "noticed-tag-now", label: "我光顾着抓它了嘛🥺我现在才看到！", nextStage: 2202, lines: [
       { sender: "我", body: "我光顾着抓它了嘛🥺", thread: "西蓝花" },
       { sender: "我", body: "我现在才看到！", thread: "西蓝花" },
       { sender: "我", body: "我靠！！！我靠我靠我靠我靠！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "？你咋了？", thread: "西蓝花" },
     ]},
   ],
-  2207: [
-    { id: "read-name-on-tag", label: "我靠，牌子上怎么写着温尚翊？？", nextStage: 2207, lines: [
+  2202: [
+    { id: "read-name-on-tag", label: "我靠，牌子上怎么写着温尚翊？？", nextStage: 2203, lines: [
       { sender: "我", body: "我靠，牌子上怎么写着温尚翊？？", thread: "西蓝花" },
       { sender: "西蓝花", body: "？？？？？", thread: "西蓝花" },
       { sender: "西蓝花", body: "你说谁？？？", thread: "西蓝花" },
     ]},
   ],
-  2207: [
-    { id: "confirm-name", label: "温尚翊！我说温尚翊！温尚翊！！！！", nextStage: 2207, lines: [
+  2203: [
+    { id: "confirm-name", label: "温尚翊！我说温尚翊！温尚翊！！！！", nextStage: 2204, lines: [
       { sender: "我", body: "温尚翊！我说温尚翊！温尚翊！！！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "等一下等一下。", thread: "西蓝花" },
       { sender: "西蓝花", body: "哪个温尚翊？？？", thread: "西蓝花" },
       { sender: "西蓝花", body: "五月天怪兽？？？", thread: "西蓝花" },
     ]},
   ],
-  2207: [
-    { id: "react-to-identity", label: "我也想问啊！！！不会吧？？？我是不是眼花了？？？", nextStage: 2207, lines: [
+  2204: [
+    { id: "react-to-identity", label: "我也想问啊！！！不会吧？？？我是不是眼花了？？？", nextStage: 2205, lines: [
       { sender: "我", body: "我也想问啊！！！", thread: "西蓝花" },
       { sender: "我", body: "不会吧？？？", thread: "西蓝花" },
       { sender: "我", body: "我是不是眼花了？？？", thread: "西蓝花" },
@@ -754,8 +754,8 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "又不是只有他一个人叫这个名字，世界上同名同姓的人那么多......", thread: "西蓝花" },
     ]},
   ],
-  2207: [
-    { id: "consider-same-name", label: "也是……怎么可能这么巧啊！！", nextStage: 2207, lines: [
+  2205: [
+    { id: "consider-same-name", label: "也是……怎么可能这么巧啊！！", nextStage: 2206, lines: [
       { sender: "我", body: "也是……", thread: "西蓝花" },
       { sender: "我", body: "而且怎么可能这么巧啊！！", thread: "西蓝花" },
       { sender: "我", body: "我随便捡只猫都能捡到怪兽的猫？？？", thread: "西蓝花" },
@@ -763,7 +763,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "你看看旁边有没有其他信息？", thread: "西蓝花" },
     ]},
   ],
-  2207: [
+  2206: [
     { id: "find-contact-info", label: "嗯……有电话！还有个类似于微信号的。", nextStage: 2207, lines: [
       { sender: "我", body: "嗯....有电话！还有个类似于微信号的。", thread: "西蓝花" },
       { sender: "西蓝花", body: "你先打个电话看看，不管是不是真的温尚翊都得联系主人啦！", thread: "西蓝花" },
