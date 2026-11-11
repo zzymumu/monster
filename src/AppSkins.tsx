@@ -5548,8 +5548,20 @@ export function WeChatSkin(p: SkinProps) {
     const raw = p.allUi?.wechat?.shopeeSharePayload;
     if (typeof raw !== "string" || !raw) return;
     try {
-      const payload = JSON.parse(raw) as { id?: string; recipient?: string; productId?: string; name?: string; price?: number; variant?: string; image?: string; emoji?: string; category?: string; storyShare?: boolean };
-      if (!payload.id || !payload.recipient || !payload.name) return;
+      const payload = JSON.parse(raw) as { id?: string; type?: string; recipient?: string; productId?: string; name?: string; title?: string; price?: number; variant?: string; image?: string; url?: string; emoji?: string; category?: string; storyShare?: boolean };
+      if (!payload.id || !payload.recipient || !(payload.name || payload.title)) return;
+      if (payload.type === "redbookPost") {
+        if (catRescue.messages.some((item) => item.id === payload.id)) { p.onUi?.("shopeeSharePayload", ""); return; }
+        const sharedPostCard: CatLine = {
+          id: payload.id, sender: "我", body: payload.title || payload.name || "小红书笔记",
+          thread: payload.recipient, kind: "text", media: payload.image || "",
+          meta: { redbookShare: "true", redbookPostTitle: payload.title || payload.name || "", redbookPostUrl: payload.url || "monster://redbook/malaysia-encounter" },
+        };
+        appendCatLines([sharedPostCard], catRescue.stage, catRescue.branch, payload.id);
+        p.onUi?.("shopeeSharePayload", "");
+        return;
+      }
+      const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(payload.name || "");
       const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(payload.name);
       if (payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true && !isCatCan) {
         p.onNotification?.("蝦皮購物：這段劇情請分享一款貓罐頭商品。");
