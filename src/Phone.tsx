@@ -160,7 +160,8 @@ function PhoneRuntime({
   const [postDinnerCallStep, setPostDinnerCallStep] = useState(-1);
   const [postDinnerReplyReady, setPostDinnerReplyReady] = useState(false);
   const [outgoingDaGCallStep, setOutgoingDaGCallStep] = useState(-1);
-  const [outgoingDaGReplyReady, setOutgoingDaGReplyReady] = useState(false);
+  const [malaysiaAftershowCallStep, setMalaysiaAftershowCallStep] = useState(-1);
+  const [malaysiaAftershowReplyReady, setMalaysiaAftershowReplyReady] = useState(false);
   const outgoingDaGCallAudio = Array.from({ length: 13 }, (_, index) => `./assets/dag-outgoing-call-${String(index + 1).padStart(2, "0")}.mp3`);
   const outgoingDaGCallLines = ["喂？怎么啦？","欸你等我一下，太吵了，我出去接哦。好啦，你说。","真的不来哦？我本来还想说演出结束后带你去吃好吃的。","白痴哦，这有什么好道歉的，下次再来看不就好了。","好啊你说的哦，等我回来请我吃饭。","才不要吃榴莲咧，臭死了。","原来你喜欢吃榴莲。","我记得我第一次吃榴莲好像是在录综艺，我以为我吃到屎了。","哈哈哈实话啊，真的很臭欸。","好啦不气不气，逗你玩的嘛。","好哦，那我先去忙了哦，晚点聊。","ok啦会记得吃饭，你也是。","拜拜~"];
   const outgoingDaGCallReplies = ["嗯...就是.....","我想了一下，大马我还是不去了。","嗯真的去不了啦，那几天有点事，对不起哦....","嗯嗯，等你回来我请你吃饭。","嗯哼，君子一言驷马难追。对了，大马的榴莲超好吃诶，帮我多吃点。","你放屁，明明那么好吃！","对啊，榴莲是世界上最完美的水果了~你到底有没有吃过，没吃过就在乱说。","...........",".............","赶紧去忙吧你。","要按时吃饭啊，别又不吃。","好，拜拜~"];
@@ -282,7 +283,7 @@ function PhoneRuntime({
   const postDinnerCallActive = !outgoingDaGCallActive && s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const milkTeaCallActive = !outgoingDaGCallActive && s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   // A later post-dinner call must never render/play the earlier hotpot-call subtitles.
-  const dagHotpotCallActive = !outgoingDaGCallActive && !postDinnerCallActive && s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
+  const malaysiaAftershowCallActive = !outgoingDaGCallActive && !postDinnerCallActive && !dagHotpotCallActive && s?.ui?.wechat?.wxMalaysiaAftershowCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const deliveryCallActive = s?.incomingCall?.caller === "外卖";
   const [deliveryCallReplySent, setDeliveryCallReplySent] = useState(false);
   const finishDeliveryCall = (outcome: "answered" | "missed") => {
@@ -598,6 +599,81 @@ function PhoneRuntime({
     if (outgoingDaGCallStep < 12) setOutgoingDaGCallStep((step) => step + 1);
   };
 
+  const malaysiaAftershowCallAudio = Array.from({ length: 7 }, (_, index) => `./assets/audio/dag-malaysia-aftershow-call-${String(index + 1).padStart(2, "0")}.mp3`);
+  const malaysiaAftershowCallLines = [
+    "喂？散场了是不是？你先不要走啦，我带你去吃宵夜。",
+    "我已经跟西蓝花说好了啦，不信你问她。",
+    "哪有什么秘密啦，我就是让她把你借我一会而已。",
+    "嗯....我现在还在后台喔，你要不要直接来后台找我？我让工作人员带你进来。",
+    "那这样好了，你们先出去，然后你找个路边给我发定位，我去接你。",
+    "ok，那就这么说定。我先去换衣服喔，你到了跟我说。",
+    "拜拜~",
+  ];
+  const malaysiaAftershowCallReplies = [
+    "啊？去吃宵夜吗，但是西蓝花跟我一起来的欸。",
+    "你们又背着我有什么秘密！",
+    "最好是。你现在在哪？我去哪找你？",
+    "不太好吧，这么多人万一被看到就不好了。",
+    "好，我现在往外走。",
+    "好，知道啦。",
+    "拜拜。",
+  ];
+  const sendMalaysiaAftershowCallReply = () => {
+    if (runtimeRef.current.incomingCall?.status !== "answered" || !malaysiaAftershowReplyReady) return;
+    setMalaysiaAftershowReplyReady(false);
+    if (malaysiaAftershowCallStep < 6) setMalaysiaAftershowCallStep(step => step + 1);
+    else setCallTopNotice("你们已经说完啦，可以挂断电话了");
+  };
+  const finishMalaysiaAftershowCall = () => {
+    const current = runtimeRef.current;
+    if (!current.incomingCall || current.incomingCall.status !== "answered") return;
+    const duration = `${String(Math.floor(callElapsed / 60)).padStart(2,"0")}:${String(callElapsed % 60).padStart(2,"0")}`;
+    const record = {
+      id: "dag-malaysia-aftershow-wechat-call-v1", title: "大G", body: `通话时长：${duration}`,
+      richText: "", meta: { thread: "大G", callStatus: "ended", callDuration: duration },
+      time: new Date().toISOString(), sender: "大G", avatar: "", kind: "call" as const,
+      media: "", hidden: false, unlock: "", password: "", folder: "", favorite: false,
+      outgoing: false, read: true, likes: 0, comments: [],
+    };
+    update({ ...current, incomingCall: null,
+      messages: { ...current.messages, wechat: [...(current.messages.wechat ?? []).filter(item => item.id !== record.id), record] },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxMalaysiaAftershowCallRequestedV1: false, wxMalaysiaAftershowCallFinishedV1: true } } });
+    setMalaysiaAftershowCallStep(-1);
+    setMalaysiaAftershowReplyReady(false);
+    if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
+  };
+
+  useEffect(() => {
+    if (creator || !ready || locked || s.incomingCall) return;
+    const wx = runtimeRef.current.ui?.wechat ?? {};
+    if (wx.wxMalaysiaAftershowCallRequestedV1 !== true || wx.wxMalaysiaAftershowCallStartedV1 === true || wx.wxMalaysiaAftershowCallFinishedV1 === true) return;
+    const current = runtimeRef.current;
+    update({ ...current, incomingCall: { caller: "大G", target: "大G", status: "ringing", callType: "audio" },
+      ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxMalaysiaAftershowCallStartedV1: true } } });
+  }, [s.incomingCall, s.ui?.wechat?.wxMalaysiaAftershowCallRequestedV1, s.ui?.wechat?.wxMalaysiaAftershowCallStartedV1, s.ui?.wechat?.wxMalaysiaAftershowCallFinishedV1, ready, locked, creator]);
+
+  useEffect(() => {
+    if (creator || !ready || locked) return;
+    const current = runtimeRef.current;
+    const wx = current.ui?.wechat ?? {};
+    if (wx.wxMalaysiaAftershowCallRequestedV1 === true || wx.wxMalaysiaAftershowCallStartedV1 === true || wx.wxMalaysiaAftershowCallFinishedV1 === true) return;
+    let story: { messages?: Array<{id?:string}> } = {};
+    try { if (typeof wx.catRescueState === "string") story = JSON.parse(wx.catRescueState); } catch { story = {}; }
+    const transcript = [...(current.messages.wechat ?? []), ...(Array.isArray(story.messages) ? story.messages : [])];
+    if (!transcript.some(item => item.id === "malaysia-patrick-after-show-rush-v1")) return;
+    update({ ...current, ui: { ...current.ui, wechat: { ...wx, wxMalaysiaAftershowCallRequestedV1: true } } });
+  }, [s.messages.wechat, s.ui?.wechat?.catRescueState, s.ui?.wechat?.wxMalaysiaAftershowCallRequestedV1, s.ui?.wechat?.wxMalaysiaAftershowCallStartedV1, s.ui?.wechat?.wxMalaysiaAftershowCallFinishedV1, ready, locked, creator, work.id]);
+
+  useEffect(() => {
+    if (!malaysiaAftershowCallActive || s.incomingCall?.status !== "answered" || malaysiaAftershowCallStep < 0 || malaysiaAftershowCallStep > 6) return;
+    const audio = milkTeaAudioRef.current;
+    if (!audio) return;
+    audio.src = malaysiaAftershowCallAudio[malaysiaAftershowCallStep];
+    audio.currentTime = 0;
+    setMalaysiaAftershowReplyReady(false);
+    void audio.play().catch(() => setCallTopNotice("语音播放失败，请检查设备音量"));
+  }, [malaysiaAftershowCallActive, s.incomingCall?.status, malaysiaAftershowCallStep]);
+
   const finishOutgoingDaGCall = () => {
     const current = runtimeRef.current;
     if (!current.incomingCall || current.incomingCall.status !== "answered") return;
@@ -664,6 +740,7 @@ function PhoneRuntime({
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
   };
   const onMilkTeaAudioEnded = () => {
+    if (malaysiaAftershowCallActive && malaysiaAftershowCallStep >= 0 && malaysiaAftershowCallStep <= 6) { setMalaysiaAftershowReplyReady(true); return; }
     if (outgoingDaGCallActive && outgoingDaGCallStep >= 0 && outgoingDaGCallStep <= 11) { setOutgoingDaGReplyReady(true); return; }
     if (outgoingDaGCallActive && outgoingDaGCallStep === 12) { finishOutgoingDaGCall(); return; }
     if (postDinnerCallActive && ((postDinnerCallStep >= 0 && postDinnerCallStep <= 15) || (postDinnerCallStep >= 17 && postDinnerCallStep <= 21))) { setPostDinnerReplyReady(true); return; }
@@ -2199,6 +2276,13 @@ function PhoneRuntime({
                   {postDinnerReplyReady && <button type="button" onClick={sendPostDinnerCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{postDinnerCallReplies[postDinnerCallStep <= 15 ? postDinnerCallStep : postDinnerCallStep - 1]}</button>}
                 </div>
               )}
+              {malaysiaAftershowCallActive && s.incomingCall.status === "answered" && (
+                <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>{contactRemarksForNotifications["大G"] || contactRemarksForNotifications["温尚翊"] || "大G"} · 语音字幕</div>
+                  <div style={{ fontSize: 16, lineHeight: 1.6 }}>{malaysiaAftershowCallLines[malaysiaAftershowCallStep] ?? "正在通话…"}</div>
+                  {malaysiaAftershowReplyReady && <button type="button" onClick={sendMalaysiaAftershowCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{malaysiaAftershowCallReplies[malaysiaAftershowCallStep]}</button>}
+                </div>
+              )}
               {dagHotpotCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
                   <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>大G · 语音字幕</div>
@@ -2228,6 +2312,7 @@ function PhoneRuntime({
                       // Otherwise the Broccoli handoff flag is never written.
                       if (outgoingDaGCallActive && call.status === "answered") { finishOutgoingDaGCall(); return; }
                       if (postDinnerCallActive && call.status === "answered") { finishPostDinnerCall(); return; }
+                      if (malaysiaAftershowCallActive && call.status === "answered") { finishMalaysiaAftershowCall(); return; }
                       if (dagHotpotCallActive && call.status === "answered") { finishDagHotpotCall(); return; }
                       if (milkTeaCallActive && call.status === "answered" &&
                           (call.caller === "大G" || call.caller === "温尚翊")) {
@@ -2392,6 +2477,7 @@ function PhoneRuntime({
                       const call = runtimeRef.current.incomingCall;
                       if (call) {
                         if (call.caller === "外卖") setDeliveryCallReplySent(false);
+                        if (call.caller === "大G" && runtimeRef.current.ui?.wechat?.wxMalaysiaAftershowCallStartedV1 === true) { setMalaysiaAftershowCallStep(0); setMalaysiaAftershowReplyReady(false); }
                         if (call.caller === "大G" && runtimeRef.current.ui?.wechat?.wxDaGHotpotCallStartedV1 === true) { setDagHotpotCallStep(0); setDagHotpotReplyReady(false); }
                         if (call.caller === "大G" && runtimeRef.current.ui?.wechat?.wxPostDinnerCallStartedV1 === true) { setPostDinnerCallStep(0); setPostDinnerReplyReady(false); }
                         update(dispatch(work, { ...runtimeRef.current, incomingCall: { ...call, status: "answered" } }, "callAnswered", call.target || call.caller));
