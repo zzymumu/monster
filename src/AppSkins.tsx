@@ -7138,6 +7138,20 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
+              {p.thread === "大G" &&
+                p.ui?.wxMalaysiaAftershowCallFinishedV1 === true &&
+                !allItems.some(item => item.id === "malaysia-aftershow-player-location-v1") &&
+                pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
+                <div className="cat-rescue-choices" aria-label="发送演唱会散场定位">
+                  <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
+                    appendCatLines([
+                      {id:"malaysia-aftershow-player-location-v1",sender:"我",body:"Jalan Barat, Bukit Jalil, Kuala Lumpur, 57000, Malaysia",thread:"大G",kind:"event",meta:{locationName:"Jalan Barat",locationAddress:"Jalan Barat, Bukit Jalil, Kuala Lumpur, 57000, Malaysia"}},
+                      {id:"malaysia-aftershow-dag-coming-v1",sender:"大G",body:"好，我馬上來。",thread:"大G"},
+                    ],catRescue.stage,catRescue.branch,"malaysia-aftershow-player-location-v1");
+                  }}>发送我的位置</button>
+                  <div className="cat-rescue-option-hint">点击发送附近的真实定位</div>
+                </div>
+              )}
               {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 18 &&
                 malaysiaConcertChatStage === malaysiaConcertTurns.length &&
                 allItems.some(item => /^malaysia-concert-midshow-incoming-(?:8|12)-0$/.test(item.id) && item.sender === "大G" && item.body.trim() === "嗯，等一下見。") &&
