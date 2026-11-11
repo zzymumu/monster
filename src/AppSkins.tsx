@@ -2519,12 +2519,18 @@ export function WeChatSkin(p: SkinProps) {
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
   // Separate mid-show DaG chat, unlocked only after Patrick's final pickup instruction.
   const [malaysiaConcertChatStage, setMalaysiaConcertChatStage] = useSkinState<number>(p, "wxMalaysiaConcertChatStageV1", -1);
+  const malaysiaConcertOpeningDelivered = allItems.some(item =>
+    item.id === "malaysia-concert-midshow-opening-01" || item.id === "malaysia-concert-midshow-opening-02"
+  );
+  const malaysiaConcertOpeningPending = pendingCatLines.some(line =>
+    line.id === "malaysia-concert-midshow-opening-01" || line.id === "malaysia-concert-midshow-opening-02"
+  );
   useEffect(() => {
-    // Start the ten-second delay as soon as Patrick's pickup instruction is
-    // delivered. Do not depend on the currently open chat: Phone.tsx's global
-    // incoming-message scheduler will create the notification if DaG's chat
-    // is not already open when these messages arrive.
-    if (!malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
+    // Recover saves where an earlier build advanced the chat stage to 0
+    // without actually delivering the opening bubbles. Only this scene's
+    // stable IDs are checked; all older story stages and messages stay intact.
+    if (!malaysiaPickupInstructionDelivered || malaysiaConcertChatStage > 0 ||
+        malaysiaConcertOpeningDelivered || malaysiaConcertOpeningPending) return;
     const timer = window.setTimeout(() => {
       setPendingCatLines(current => [
         ...current.filter(line => line.id !== "malaysia-concert-midshow-opening-01" && line.id !== "malaysia-concert-midshow-opening-02"),
@@ -2534,7 +2540,7 @@ export function WeChatSkin(p: SkinProps) {
       setMalaysiaConcertChatStage(0);
     }, 10000);
     return () => window.clearTimeout(timer);
-  }, [malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
+  }, [malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, malaysiaConcertOpeningDelivered, malaysiaConcertOpeningPending, pendingCatLinesRaw]);
   const malaysiaConcertTurns: Array<{user:string[]; incoming:string[]}> = [
     {user:["嘻嘻~","被你发现了。"],incoming:["妳喔……","我之前說要給妳票，妳又不要。","現在倒好，偷偷跑來了。"]},
     {user:["嘿嘿。","我这不是想给你一个惊喜嘛！","怎么样？惊不惊喜？"],incoming:["妳真的很會。","不過這算什麼驚喜，根本是突然襲擊吧。"]},
