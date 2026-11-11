@@ -282,11 +282,12 @@ function PhoneRuntime({
   }, [creator, ready]);
   const s = external ?? own;
   const outgoingDaGCallActive = s?.ui?.wechat?.wxOutgoingDaGCallV1 === true && s?.incomingCall?.direction === "outgoing" && (s?.incomingCall?.caller === "大G" || s?.incomingCall?.caller === "温尚翊");
-  const postDinnerCallActive = !outgoingDaGCallActive && s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
-  const milkTeaCallActive = !outgoingDaGCallActive && s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
+  // The Malaysia after-show call has priority over legacy DaG call flags that may remain in an existing save.
+  const malaysiaAftershowCallActive = !outgoingDaGCallActive && s?.ui?.wechat?.wxMalaysiaAftershowCallStartedV1 === true && s?.incomingCall?.caller === "大G";
+  const postDinnerCallActive = !outgoingDaGCallActive && !malaysiaAftershowCallActive && s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
+  const milkTeaCallActive = !outgoingDaGCallActive && !malaysiaAftershowCallActive && s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   // A later post-dinner call must never render/play the earlier hotpot-call subtitles.
-  const dagHotpotCallActive = !outgoingDaGCallActive && !postDinnerCallActive && s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
-  const malaysiaAftershowCallActive = !outgoingDaGCallActive && !postDinnerCallActive && !dagHotpotCallActive && s?.ui?.wechat?.wxMalaysiaAftershowCallStartedV1 === true && s?.incomingCall?.caller === "大G";
+  const dagHotpotCallActive = !outgoingDaGCallActive && !malaysiaAftershowCallActive && !postDinnerCallActive && s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const deliveryCallActive = s?.incomingCall?.caller === "外卖";
   const [deliveryCallReplySent, setDeliveryCallReplySent] = useState(false);
   const finishDeliveryCall = (outcome: "answered" | "missed") => {
