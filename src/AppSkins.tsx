@@ -2544,9 +2544,18 @@ export function WeChatSkin(p: SkinProps) {
   // One new player-response beat was inserted after DaG's surprised reaction.
   // Migrate only this scene's saved stage index so existing progress stays aligned.
   const [malaysiaConcertStageExpandedV1, setMalaysiaConcertStageExpandedV1] = useSkinState<boolean>(p, "wxMalaysiaConcertStageExpandedV1", false);
+  // Run the legacy stage migration once when this scene first becomes active.
+  // Mark stage 0 as migrated immediately, before the player can click the first
+  // reply; otherwise the effect can mistake the player's move to stage 1 for an
+  // old save and skip the newly inserted protest turn.
+  const malaysiaConcertStageMigrationRan = useRef(false);
   useEffect(() => {
-    if (malaysiaConcertStageExpandedV1 || malaysiaConcertChatStage <= 0) return;
-    setMalaysiaConcertChatStage(malaysiaConcertChatStage + 1);
+    if (malaysiaConcertStageMigrationRan.current || malaysiaConcertChatStage < 0) return;
+    malaysiaConcertStageMigrationRan.current = true;
+    if (malaysiaConcertStageExpandedV1) return;
+    if (malaysiaConcertChatStage > 0) {
+      setMalaysiaConcertChatStage(malaysiaConcertChatStage + 1);
+    }
     setMalaysiaConcertStageExpandedV1(true);
   }, [malaysiaConcertStageExpandedV1, malaysiaConcertChatStage, setMalaysiaConcertChatStage, setMalaysiaConcertStageExpandedV1]);
   const malaysiaConcertTurns: Array<{user:string[]; incoming:string[]}> = [
