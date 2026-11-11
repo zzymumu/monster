@@ -6804,7 +6804,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && patrickFriendAccepted && malaysiaCoordinationStage === 0 && (
+              {resolveContactName(p.thread) === "Patrick 小杨" && (patrickFriendAccepted || addedFriends.includes("Patrick 小杨")) && !malaysiaPatrickContactReplySent && (
                 <div className="cat-rescue-choices" aria-label="Patrick 行程确认回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
