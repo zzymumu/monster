@@ -439,7 +439,7 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
       meta: { storyId: "cat-rescue", storyThread: "西蓝花", storyOrderAt: String(anchorTime + 6) },
     }));
   }
-  return [...transformed, ...additions]
+  const ordered = [...transformed, ...additions]
     .map((item, index) => {
       const precise = Number(item.meta?.storyOrderAt);
       const hasPrecise = Number.isFinite(precise) && precise > 0;
@@ -459,6 +459,40 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
       return a.index - b.index;
     })
     .map(({ item }) => item);
+
+  // The Malaysia durian exchange is a strict turn-by-turn conversation.
+  // Legacy saves may have the repaired second reply with a stale timestamp,
+  // which can sort it below the player's next choice. Pin it directly after
+  // "我真的不懂。" and before "你不懂欣赏！" regardless of legacy clocks.
+  const durianDisbeliefIndex = ordered.findIndex(item =>
+    item.sender === "大G" && item.body.trim() === "我真的不懂。"
+  );
+  if (durianDisbeliefIndex >= 0) {
+    const existingTasteLineIndex = ordered.findIndex(item =>
+      item.sender === "大G" && /那個味道……|那个味道……/.test(item.body.trim())
+    );
+    const tasteLine = existingTasteLineIndex >= 0
+      ? ordered[existingTasteLineIndex]
+      : {
+          ...ordered[durianDisbeliefIndex],
+          id: "malaysia-dag-durian-11-i-1",
+          title: "大G",
+          sender: "大G",
+          body: "那個味道……",
+          outgoing: false,
+          meta: {
+            ...(ordered[durianDisbeliefIndex].meta || {}),
+            storyId: "cat-rescue",
+            storyThread: "大G",
+          },
+        };
+    if (existingTasteLineIndex >= 0) ordered.splice(existingTasteLineIndex, 1);
+    const refreshedDisbeliefIndex = ordered.findIndex(item =>
+      item.sender === "大G" && item.body.trim() === "我真的不懂。"
+    );
+    ordered.splice(refreshedDisbeliefIndex + 1, 0, tasteLine);
+  }
+  return ordered;
 }
 type CatLine = { id?: string; sender: "我" | "西蓝花" | "大G" | "Patrick 小杨"; body: string; thread?: string; kind?: Item["kind"]; media?: string; meta?: Record<string, string> };
 type CatChoice = {
