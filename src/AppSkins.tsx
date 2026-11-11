@@ -2451,6 +2451,7 @@ export function WeChatSkin(p: SkinProps) {
   // line. Render it directly in that contact's conversation; do not infer
   // ownership from sender text (the player's lines otherwise get misplaced).
   const isBroccoliThread = p.thread === "西蓝花" || p.thread === "西兰花";
+  const isPatrickThread = p.thread.includes("Patrick") || p.thread.includes("小杨");
   const isMonsterThread = p.thread === "大G" || p.thread === "温尚翊";
   const [milkTeaGiftStage, setMilkTeaGiftStage] = useSkinState<number>(p, "wxMilkTeaGiftStageV1", -1);
   const [malaysiaTripStage, setMalaysiaTripStage] = useSkinState<number>(p, "wxMalaysiaTripStageV1", -1);
@@ -3144,7 +3145,7 @@ export function WeChatSkin(p: SkinProps) {
     ("title" in item ? item.title : item.thread) === "大G" && item.body.trim() === "喂！你怎么不说话！"
   );
   const catRescueActive =
-    isBroccoliThread || isThreeWayGroupThread ||
+    isBroccoliThread || isPatrickThread || isThreeWayGroupThread ||
     (isMonsterThread && (
       monsterFriendAccepted || ownerChatStarted || catRescue.stage === 53 ||
       vavaPlayActive || hasDrunkStoryInMonsterChat ||
@@ -6809,7 +6810,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(p.thread.includes("Patrick") || p.thread.includes("小杨")) && ![...p.items, ...catRescue.messages].some(item => item.id === "malaysia-patrick-contact-user-v2") && (
+              {isPatrickThread && ![...p.items, ...catRescue.messages].some(item => item.id === "malaysia-patrick-contact-user-v2") && (
                 <div className="cat-rescue-choices" aria-label="Patrick 行程确认回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
