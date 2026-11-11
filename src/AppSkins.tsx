@@ -580,6 +580,7 @@ export function splitCatRescueMessages(messages: Item[]): { broccoli: Item[]; ow
 export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
     { id: "opening-found-kitten", label: "告诉西蓝花小猫就在我回家的路上", nextStage: 1, lines: [
+      { sender: "西蓝花", body: "你在哪里碰到的？", thread: "西蓝花" },
       { sender: "我", body: "就在我回家的路上！", thread: "西蓝花" },
       { sender: "我", body: "它自己蹲在路边。", thread: "西蓝花" },
       { sender: "我", body: "我本来只是想过去看看它。", thread: "西蓝花" },
