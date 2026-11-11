@@ -46,7 +46,10 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => /传染病/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[2][0].nextStage).toBe(3);
     expect(CAT_RESCUE_CHOICES[2][0].lines.some((line) => line.body.includes("不是简单关个门就好的事情"))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[3][0].nextStage).toBe(12);
+    expect(CAT_RESCUE_CHOICES[3][0].nextStage).toBe(34);
+    expect(CAT_RESCUE_CHOICES[3][0].lines.some((line) => line.body === "要不然先带它去医院检查一下？")).toBe(true);
+    expect(CAT_RESCUE_CHOICES[34][0].nextStage).toBe(12);
+    expect(CAT_RESCUE_CHOICES[34][0].lines.map((line) => line.body)).toContain("知道啦！");
     expect(CAT_RESCUE_CHOICES[3][0].lines.some((line) => /带它去医院/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[12][0].nextStage).toBe(30);
     expect(CAT_RESCUE_CHOICES[30][0].nextStage).toBe(31);
@@ -112,7 +115,7 @@ describe("WeChat cat-rescue story configuration", () => {
 
   it("offers player-controlled replies at every active story turn", () => {
     const systemOrTerminalStages = new Set([8, 13, 57, 66]);
-    const intentionalSingleChoiceStages = new Set([0, 1, 2, 3, 4, 5, 12, 30, 31, 25, 82, 85, 86, 87]);
+    const intentionalSingleChoiceStages = new Set([0, 1, 2, 3, 4, 5, 12, 30, 31, 34, 25, 82, 85, 86, 87]);
     for (const [stage, choices] of Object.entries(CAT_RESCUE_CHOICES)) {
       if (systemOrTerminalStages.has(Number(stage))) continue;
       const expectedCount = intentionalSingleChoiceStages.has(Number(stage)) ? 1 : 2;
