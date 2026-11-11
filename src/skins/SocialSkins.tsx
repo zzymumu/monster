@@ -450,7 +450,7 @@ export function RedbookSkin(p: Props) {
     {"user":"不许开盒谢谢","avatar":16,"location":"云南","body":"提醒一下，别去扒女生账号、学校公司，也别跑去问餐厅。她可能只是一个来听歌的wmls。","likes":9230,"replies":["这条支持","别把喜欢变成打扰","尊重普通人的生活边界"]},
     {"user":"键盘比拨片快","avatar":17,"location":"江苏","body":"目前评论区：A1集合、今天怪兽心情好、有人好像认识女生、有人第一次见。信息量有点大哈哈哈哈","likes":6127,"replies":["你是今晚评论区播报员吗","哈哈哈哈总结得很到位","但别把猜测当实锤哦"]},
     {"user":"凌晨三点还没睡","avatar":18,"location":"广东","body":"有没有人跟我一样，演唱会结束了还在回味今天他笑的那几次……现在刷到这帖又开始激动","likes":7349,"replies":["我也是！！根本睡不着","今天真的值得反复回忆","明天上班的我先哭了"]}
-  ];  ];
+  ];
   if (p.ui?.redbookMalaysiaEncounterPostV1 === "show") {
     return (
       <div className="catalog-skin redbook-ui redbook-dark redbook-encounter-detail" style={{background:"#111116",color:"#f4f4f5",height:"100%",minHeight:0,width:"100%",margin:0,padding:0,border:0,outline:0,boxSizing:"border-box",overflow:"hidden",display:"flex",flexDirection:"column"}}>
