@@ -409,51 +409,51 @@ export function RedbookSkin(p: Props) {
     hidden:false,unlock:"",password:"",folder:"推荐",favorite:false,outgoing:false,read:false
   };
   const encounterAvatars = [
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=MaydayGuitar&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=StarConcert&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=RabbitFan&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=BlueStage&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=PandaMusic&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=LittleMonster&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=GuitarPick&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=PinkRock&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=MoonlightFan&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=DrumKit&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=CloudSinger&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=TinyBear&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=MusicNote&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=StageLight&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=RockRabbit&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=ConcertGirl&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=GuitarCat&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=LittleStar&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=StagePanda&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9"
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1552053831-71594a27632d?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1535713875002-d1d0cf377,?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&h=120&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120&h=120&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=120&h=120&fit=crop&sat=-40",
+    "https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1504593811423-6dd665756598?w=120&h=120&fit=crop&crop=faces",
+    "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=120&h=120&fit=crop"
   ];
   const encounterComments = [
-    {user:"今天也要听五月天",avatar:0,body:"？？？？我靠真的假的啊啊啊啊！！！吉隆坡这是什么隐藏地图？？？",likes:1286,replies:["今天也要听五月天：真的！！本人超级帅！！我们散场后一起去吃饭，看到的时候差点没认出来哈哈哈哈。"]},
-    {user:"温尚翊的吉他拨片",avatar:1,body:"等等？？？女生？？？我放大看了三遍？？？",likes:963,replies:["今天也要听五月天：姐妹你不是一个人，我也在放大哈哈哈哈。","吃颗苹果：感觉两个人很熟欸，不像普通粉丝偶遇。","吉他弦别断：重点是刚刚演出现场我好像也看到这个女生了！！"]},
-    {user:"团长今天弹吉他了吗",avatar:2,body:"我靠我刚刚就在现场！！！散场那会儿怪兽是不是把拨片递给她了？？？我当时还跟朋友说我是不是眼花了？？？",likes:1521,replies:["真的假的？？？递拨片？？？那这关系不一般吧？？","现场第三排：我也看到有人拿到拨片了，但不确定是不是同一个人。","理智追星版：一块拨片能说明什么，别脑补了。","温柔一点好吗：如果真的是送给她的，那也是人家的私事吧。"]},
-    {user:"今天不熬夜了",avatar:3,body:"不是？？？散场递拨片→转头一起吃饭？？？这时间线我先蹲一个后续……",likes:876,replies:["团长今天弹吉他了吗：我真的不是编的，我就在侧边看见的！你们别一有消息就说别人造谣。","五月天是我的青春：也可能是工作人员帮忙递的吧？一块拨片就开始脑补恋情，能不能冷静一点。"]},
-    {user:"阿信今天发微博了吗",avatar:4,body:"先不说是不是认识，为什么要拍人家吃饭啊？？演出现场拍就算了，私人时间真的别追着拍吧……",likes:1132,replies:["今天也要听五月天：我们是隔壁桌刚好看到，没有跟拍，也没有上去打扰。","不想被偷拍：但把别人吃饭的照片发出来还是不太合适吧？你们有没有想过旁边那个女生根本不是公众人物？","路过五迷：同意，女生也不是公众人物，别扒身份。"]},
-    {user:"吉他弦断了",avatar:5,body:"姐你拍的时候他们有发现吗……不是想吵，真的觉得吃饭被拍有点越界了。",likes:604,replies:["今天也要听五月天：没有对着拍很久，是远远看到觉得很巧才记录一下。","保持距离：希望不要继续放大女生长相或找个人信息。"]},
-    {user:"怪兽的吉他",avatar:6,body:"团长刚下班就去干饭了是吧哈哈哈哈哈哈这才是我认识的怪兽🤣",likes:421,replies:["宵夜战士：工作结束当然要吃饭啦哈哈哈。"]},
-    {user:"橘子汽水加冰",avatar:7,body:"不是吧啊啊啊啊啊！！！拨片？？？我先尖叫三分钟，谁懂这个含金量！！",likes:998,replies:["现场第三排：我也记得有递东西，但别把未经确认的事说死。","冷静五秒：评论区已经开始写连续剧了。"]},
-    {user:"五迷不迷路",avatar:8,body:"能不能别一看到女生就嫂子嫂子啊？？朋友不能一起吃饭吗，真的窒息。男艺人身边不能有女性朋友吗？",likes:713,replies:["今天不熬夜了：主要是刚刚现场递拨片的传闻撞上了，大家才好奇。","给点空间：好奇也别去扒人家身份，更别去蹲餐厅和酒店，真的越界了。"]},
-    {user:"今晚听温柔",avatar:9,body:"我朋友刚刚也在现场！！她说怪兽散场时递了拨片给一个女生……不会真是同一位吧？？？我鸡皮疙瘩起来了。",likes:1104,replies:["团长今天弹吉他了吗：我看到的也是那个方向！！","理智追星版：没有清楚照片就别认人了，别误伤。","今天也要听五月天：我们只是刚好一起吃饭，其他真的不清楚啦。"]},
-    {user:"五月天的猫猫",avatar:10,body:"拜托别扒女生是谁啊，人家又不是艺人。看个热闹就好了，别去人肉。",likes:842,replies:["同意，保护普通人的隐私。"]},
-    {user:"派对动物本人",avatar:11,body:"评论区已经从偶遇楼变成辩论赛了哈哈哈哈哈，但真的别去店里蹲人啊。",likes:529,replies:["五迷路过：说得对，讨论归讨论，不要去店里蹲人。"]},
-    {user:"不想取昵称了",avatar:12,body:"所以是演出结束后刚好碰上，还是本来就约好吃饭的啊？？纯好奇，别骂我我不扒。",likes:390,replies:["今天也要听五月天：这个我就不清楚啦，真的只是偶遇。"]},
-    {user:"等一场五月天",avatar:13,body:"怪兽开心就好啦！但拍照发帖之前还是想想当事人愿不愿意被公开吧。",likes:678,replies:["路人甲：这条说得挺有道理。"]}
-    ,{user:"别拿拨片嗑CP",avatar:14,body:"说真的，一块拨片就能脑补成约会对象？演唱会递拨片给粉丝也不是没发生过。",likes:947,replies:["团长今天弹吉他了吗：可她现在又跟怪兽一起吃饭啊，你觉得只是普通粉丝？","别拿拨片嗑CP：一起吃饭也可能是朋友，别替人家官宣。","今晚听温柔：重点是照片里女生根本没同意被讨论吧。"]},
-    {user:"今晚不做梦",avatar:15,body:"我真的服了，发帖人拍到就发，评论区开始扒女生，下一步是不是要人肉了？",likes:1203,replies:["今天也要听五月天：没有要扒她啦，我只是分享遇到怪兽的心情。","不吃香菜：那就把女生相关的猜测删掉啊，别让帖子继续发酵。","五迷不迷路：发帖人也没故意引导吧，评论区自己在吵。"]},
-    {user:"拨片收藏家",avatar:16,body:"如果现场真的递了拨片，那我只想说羡慕……但也没必要把人家吃饭照片传得到处都是。",likes:766,replies:["橘子汽水加冰：羡慕归羡慕，别把女生当成线索找。","团长今天弹吉他了吗：我只是在说我看到的，不是在扒她。"]},
-    {user:"五月天不散场",avatar:17,body:"有些人真的双标，平时说支持怪兽幸福，真看到女生又开始破防。",likes:1088,replies:["阿信今天发微博了吗：反对偷拍不等于反对恋爱，别混为一谈。","五月天不散场：那就别把所有讨论都扣成偷拍受害者啊。","路过五迷：这条下面已经吵成两派了……"]},
-    {user:"温柔是你",avatar:18,body:"今天也要听五月天 能不能说一下，是不是演出结束后你们一群人一起吃饭？还是只有他们两个？",likes:623,replies:["今天也要听五月天：现场人挺多的，我没有一直注意他们桌。","吃瓜小号：这回答好微妙啊？？？","给点私人空间：人家没义务交代同行的人都有谁。"]}
+    {user:"温柔乡里听怪兽",avatar:0,location:"上海",body:"啊啊啊啊啊？？？散场之后还能在餐厅偶遇团长？？这是什么隐藏彩蛋啊！！！本人状态看起来也太好了吧😭",likes:1286,replies:["今天也要听五月天：真的！！本人比照片还帅，我当时整个人都愣住了。"]},
+    {user:"温尚翊今天营业了吗",avatar:1,location:"广东",body:"等下我先放大看一下……旁边那个女生是坐他旁边吗？？？我眼睛没花吧？？",likes:963,replies:["吃颗苹果：我也放大了三遍，姐妹咱俩看到的是同一个位置。","今天珍重：别扒女生啦，讨论现场就好。"]},
+    {user:"团长的拨片收藏夹",avatar:2,location:"江苏",body:"我靠？？？我刚刚就在现场！！散场的时候怪兽是不是把拨片递给一个女生了？？我当时还跟朋友说是不是我看错了！！",likes:1521,replies:["今天不熬夜：？？？？拨片？？？你再说一遍？？","现场第三排：我也看到他手上有东西递出去，但不敢确定。","理智追星版：先别把两个画面强行连起来，求锤不求脑补。"]},
+    {user:"苹果味的五月天",avatar:3,location:"浙江",body:"不是吧……现场递拨片，散场又一起吃饭？？？这两条时间线放一起我真的很难不多想啊啊啊",likes:876,replies:["团长的拨片收藏夹：我说的就是这个！我真的亲眼看到有人接了。","不嗑只听歌：也可能是朋友啊，别急着给人家写剧情。"]},
+    {user:"今天也要听五月天",avatar:4,location:"北京",body:"先问一句，楼主是演出结束后才遇到他们的吗？不是第二天吧？如果是散场后那也太巧了……",likes:1132,replies:["今天也要听五月天：对！！就是演唱会结束后，我们出来找地方吃东西的时候碰到的。"]},
+    {user:"别把普通人当线索",avatar:5,location:"四川",body:"我比较在意旁边女生是普通人吧……大家好奇可以理解，但别截图放大找身份，更不要去扒社交账号。",likes:604,replies:["五迷路过：同意，别把人家当成什么解谜素材。","橘子汽水加冰：好奇归好奇，边界感还是要有的。"]},
+    {user:"吉他弦永不断",avatar:6,location:"湖北",body:"团长下班第一件事：干饭哈哈哈哈哈哈哈！演出那么久真的该吃点东西了🤣",likes:421,replies:["面包脑袋：五月天全员都要按时吃饭！！","温柔乡里听怪兽：本人看起来是真的饿了哈哈哈哈。"]},
+    {user:"一颗会发光的卜卜",avatar:7,location:"台湾",body:"啊啊啊啊啊拨片含金量先不说，能跟怪兽同桌吃饭我已经羡慕到失语了……这是什么人生体验！！",likes:998,replies:["今天珍重：我先替楼主尖叫，真的好幸运。","理智追星版：羡慕可以，别把女生身份猜出来就好。"]},
+    {user:"五迷不迷路",avatar:8,location:"香港",body:"能不能不要一看到女生就自动嫂子啊？？朋友不能一起吃饭吗，真的有点窒息。",likes:713,replies:["苹果味的五月天：也没人说一定是嫂子吧，大家只是好奇。","给点私人空间：好奇也不要追问身份，普通人不该被围观。"]},
+    {user:"今晚听温柔",avatar:9,location:"福建",body:"我朋友也在现场！！！她说散场时看到怪兽把拨片递给一个女生……不会真的是同一位吧？？我鸡皮疙瘩起来了",likes:1104,replies:["团长的拨片收藏夹：啊啊啊那我可能不是一个人看到！","理智追星版：没有清晰证据就先别认定是同一个人。"]},
+    {user:"五月天的猫猫",avatar:10,location:"澳门",body:"拜托别扒女生是谁啊，人家又不是公众人物。照片看看就好，不要去搜人家。",likes:842,replies:["同意，讨论怪兽可以，保护普通人的隐私也要做到。"]},
+    {user:"派对动物本人",avatar:11,location:"重庆",body:"评论区怎么从偶遇楼变成拨片考古现场了哈哈哈哈哈哈，我先蹲一个，但不要去餐厅蹲人哈！",likes:529,replies:["五迷路过：蹲后续可以，蹲本人不行。"]},
+    {user:"今天不想早睡",avatar:12,location:"山东",body:"纯好奇问一下，演出结束后是大家一起去吃饭，还是刚好在同一家店碰见的？没有要扒的意思！",likes:390,replies:["今天也要听五月天：我们只是刚好在同一家餐厅，具体同行的人我没有特别留意。","给点私人空间：楼主不需要交代同行名单啦。"]},
+    {user:"等一场五月天",avatar:13,location:"河南",body:"怪兽开心就好啦！不过发帖照片里旁边的人也要注意隐私，别把脸放大传播了。",likes:678,replies:["路过五迷：这条说得挺平衡的。"]},
+    {user:"别拿拨片嗑CP",avatar:14,location:"辽宁",body:"一块拨片就开始写恋爱连续剧了？演唱会递拨片给歌迷也不是没发生过，别什么都往CP上套。",likes:947,replies:["团长的拨片收藏夹：但现在又有同桌吃饭的目击啊。","别拿拨片嗑CP：一起吃饭也可能是朋友，别替人家官宣。","今晚听温柔：重点是不要拿女生当线索扒。"]},
+    {user:"今晚不做梦",avatar:15,location:"吉林",body:"发帖分享偶遇没问题，但评论区已经有人开始盘女生了……真的别把普通人推到聚光灯下面。",likes:1203,replies:["今天也要听五月天：没有要扒她啦，我就是太激动了才发帖。","不吃香菜：那就把引导身份猜测的内容收一收吧。"]},
+    {user:"拨片收藏家",avatar:16,location:"云南",body:"如果现场真的递了拨片，那我只能说羡慕到原地转圈……但还是别把人家吃饭照片传得到处都是。",likes:766,replies:["橘子汽水加冰：羡慕归羡慕，边界感还是要有。","团长的拨片收藏夹：我只是在说我看到的，不是在扒她。"]},
+    {user:"五月天不散场",avatar:17,location:"江苏",body:"有些人平时说希望怪兽幸福，真看到他身边有女生又开始破防；也有人把正常的隐私讨论说成不许恋爱，能不能分开讲？",likes:1088,replies:["阿信今天发微博了吗：反对偷拍不等于反对恋爱，别混为一谈。","五月天不散场：那也别把所有人都扣成嫂子粉。","路过五迷：这条下面已经吵成两派了……"]},
+    {user:"温柔是你",avatar:18,location:"广东",body:"楼主能不能确认一下是演唱会结束后当天一起吃饭？我主要想知道拨片目击和餐厅偶遇是不是同一天，不是想问女生身份。",likes:623,replies:["今天也要听五月天：对，是演唱会结束后当天。其他人的事情我就不多说啦。","吃瓜小号：时间线对上了？？","给点私人空间：时间线可以讨论，身份别猜了。"]}
   ];
   if (p.ui?.redbookMalaysiaEncounterPostV1 === "show") {
     return (
       <div className="catalog-skin redbook-ui redbook-dark redbook-encounter-detail" style={{background:"#111116",color:"#f4f4f5",height:"100%",minHeight:0,width:"100%",margin:0,padding:0,border:0,outline:0,boxSizing:"border-box",overflow:"hidden",display:"flex",flexDirection:"column"}}>
-        <header className="redbook-encounter-topbar"><button aria-label="返回" onClick={p.onBack} style={{fontSize:27,lineHeight:1}}>‹</button><img src="https://api.dicebear.com/9.x/adventurer/svg?seed=MaydayFanAuthor&backgroundColor=ffd5dc" alt="发帖人头像"/><strong>今天也要听五月天</strong><button className="redbook-encounter-follow" onClick={()=>setEncounterFollowed(v=>!v)}>{encounterFollowed?"已关注":"关注"}</button><button aria-label="转发" onClick={()=>setEncounterShareOpen(true)} style={{fontSize:25}}>↗</button></header>
+        <header className="redbook-encounter-topbar"><button aria-label="返回" onClick={p.onBack} style={{fontSize:27,lineHeight:1}}>‹</button><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" alt="发帖人头像"/><strong>今天也要听五月天</strong><button className="redbook-encounter-follow" onClick={()=>setEncounterFollowed(v=>!v)}>{encounterFollowed?"已关注":"关注"}</button><button aria-label="转发" onClick={()=>setEncounterShareOpen(true)} style={{fontSize:25}}>↗</button></header>
         <div className="catalog-scroll" style={{flex:1,overflowY:"auto",padding:"14px 16px 90px",margin:0,border:0,boxSizing:"border-box"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}><div style={{flex:1,fontSize:11,color:"#999"}}>2026-11-12 22:18 · 吉隆坡</div></div>
           <h2 style={{fontSize:21,lineHeight:1.45,margin:"8px 0 14px"}}>吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹</h2>
@@ -464,7 +464,7 @@ export function RedbookSkin(p: Props) {
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><strong style={{fontSize:16}}>共 {103+encounterLocalComments.length} 条评论</strong><span style={{fontSize:12,color:"#999"}}>最热</span></div>
           <div style={{display:"flex",gap:8,marginBottom:18}}><img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=96&h=96&fit=crop" alt="我的头像" style={{width:38,height:38,borderRadius:"50%",objectFit:"cover"}}/><input value={encounterCommentDraft} onChange={e=>setEncounterCommentDraft(e.target.value)} placeholder="说点什么…" style={{flex:1,minWidth:0,border:0,borderRadius:20,background:"#292930",color:"#fff",padding:"10px 14px"}}/><button onClick={()=>{if(encounterCommentDraft.trim()){setEncounterLocalComments(v=>[...v,encounterCommentDraft.trim()]);setEncounterCommentDraft("");}}} style={{background:"none",color:"#ff4967"}}>发送</button></div>
           {encounterComments.map((comment,index)=>(
-            <div key={index} style={{display:"flex",gap:10,margin:"18px 0"}}><img src={encounterAvatars[comment.avatar]} alt={comment.user+"头像"} style={{width:38,height:38,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,color:"#aaa",marginBottom:6}}>{comment.user}</div><div style={{fontSize:14,lineHeight:1.65}}>{comment.body}</div><div style={{fontSize:11,color:"#777",marginTop:8}}>2小时前 吉隆坡 <button style={{background:"none",color:"#aaa"}} onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))}>回复</button><span style={{float:"right"}}>♡ {comment.likes}</span></div>
+            <div key={index} style={{display:"flex",gap:10,margin:"18px 0"}}><img src={encounterAvatars[comment.avatar]} alt={comment.user+"头像"} style={{width:38,height:38,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,color:"#aaa",marginBottom:6}}>{comment.user}</div><div style={{fontSize:14,lineHeight:1.65}}>{comment.body}</div><div style={{fontSize:11,color:"#777",marginTop:8}}>2小时前 · {comment.location} <button style={{background:"none",color:"#aaa"}} onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))}>回复</button><span style={{float:"right"}}>♡ {comment.likes}</span></div>
               {comment.replies.length>0&&<div style={{marginTop:9,padding:"10px 12px",background:"#202027",borderRadius:7}}>{comment.replies.slice(0,expandedEncounterComments[index]?undefined:1).map((reply,j)=><div key={j} style={{fontSize:13,lineHeight:1.7,marginBottom:6}}>{reply}</div>)}{comment.replies.length>1&&<button onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))} style={{background:"none",color:"#9ca3af",fontSize:12}}>{expandedEncounterComments[index]?"收起回复":"展开 "+comment.replies.length+" 条回复"}</button>}</div>}
             </div></div>
           ))}
