@@ -87,7 +87,7 @@ function Avatar({
 }) {
   const safeSrc = safeMedia(src);
   const isBroccoli = name === "西蓝花" || name === "西兰花";
-  const imageSrc = isBroccoli ? GLOOMY_AVATAR : (safeSrc.startsWith("data:image/") || safeSrc.startsWith("/assets/") || safeSrc.startsWith("./assets/")) ? safeSrc : "";
+  const imageSrc = isBroccoli ? GLOOMY_AVATAR : name === "Patrick 小杨" ? "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=160&h=160&fit=crop&crop=center" : (safeSrc.startsWith("data:image/") || safeSrc.startsWith("/assets/") || safeSrc.startsWith("./assets/")) ? safeSrc : "";
   return (
     <span className={`skin-avatar ${round ? "round" : ""} ${name === "大G" || name === "温尚翊" ? "guitar-avatar" : ""} ${className}`}>
       {imageSrc ? <img src={imageSrc} alt="" /> : name === "大G" || name === "温尚翊" ? "🎸" : name.slice(0, 1)}
@@ -2460,6 +2460,12 @@ export function WeChatSkin(p: SkinProps) {
   // Separate Malaysia follow-up story. Never reuse returnDinnerStage: that
   // state drives older scenes and must remain untouched.
   const [malaysiaDaGChatStage, setMalaysiaDaGChatStage] = useSkinState<number>(p, "wxMalaysiaDaGChatStageV1", -1);
+  const [patrickFriendRequestOpen, setPatrickFriendRequestOpen] = useSkinState<boolean>(p, "wxPatrickFriendRequestOpenV1", false);
+  const [patrickFriendAccepted, setPatrickFriendAccepted] = useSkinState<boolean>(p, "wxPatrickFriendAcceptedV1", false);
+  useEffect(() => {
+    if (!isMonsterThread || malaysiaDaGChatStage < 71 || patrickFriendAccepted || patrickFriendRequestOpen) return;
+    setPatrickFriendRequestOpen(true);
+  }, [isMonsterThread, malaysiaDaGChatStage, patrickFriendAccepted, patrickFriendRequestOpen]);
   const postBathGoodbyeAlreadySent = [...p.items, ...catRescue.messages].some((item) =>
     item.body.trim() === "活该！不跟你说了我要去洗澡，债见！"
   );
@@ -6106,6 +6112,44 @@ export function WeChatSkin(p: SkinProps) {
             <div className="wx-friend-id">mo00oster111</div>
             <button className="wx-friend-flow-primary" onClick={() => { void navigator.clipboard?.writeText("mo00oster111").catch(() => undefined); setIdCopied(true); }}>{idCopied ? "已复制" : "复制微信号"}</button>
             {idCopied && <button className="wx-friend-flow-secondary" onClick={() => { setAddIdModal(false); setTab("通讯录"); setUtility("添加朋友"); setAddQuery(""); }}>前往通讯录，粘贴微信号添加</button>}
+          </section>
+        </div>
+      )}
+      {patrickFriendRequestOpen && !patrickFriendAccepted && (
+        <div className="wx-friend-flow-backdrop">
+          <section className="wx-friend-flow-sheet" role="dialog" aria-modal="true" aria-label="新的好友申请">
+            <div className="wx-friend-flow-avatar" style={{overflow:"hidden"}}>
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=240&h=240&fit=crop&crop=center" alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} />
+            </div>
+            <strong>新的朋友</strong>
+            <p>Patrick 小杨 请求添加你为朋友</p>
+            <div className="wx-friend-id">通过好友申请后即可查看行程安排</div>
+            <button className="wx-friend-flow-primary" onClick={() => {
+              const now = Date.now();
+              const time = "2026-11-02 " + (p.virtualTime || "14:24");
+              const details = "Day 1 布城市 + 吉隆坡市内游览\nDay 2 马六甲市游览午餐后回市内 + Bukit Jalil National stadium 看演唱会结束后送回酒店\nDay 3 送往吉隆坡机场\n\n司机：Patrick 小杨\n手机：+60133813448\n车号：VJU8861\n车型：丰田埃尔法\n谢谢";
+              const exists = [...p.items, ...catRescue.messages].some(item => item.meta?.storyThread === "Patrick 小杨" || item.title === "Patrick 小杨");
+              if (!exists) {
+                const eventItem = makeItem({
+                  id: "patrick-friend-added-" + now, title: "Patrick 小杨", sender: "我",
+                  body: "你已添加了 Patrick 小杨，现在可以开始聊天了。",
+                  time, outgoing: true, kind: "event",
+                  meta: { storyId: "malaysia-driver", storyThread: "Patrick 小杨", storyOrderAt: String(now) }
+                });
+                const detailItem = makeItem({
+                  id: "patrick-itinerary-" + now, title: "Patrick 小杨", sender: "Patrick 小杨",
+                  body: details, time, outgoing: false, avatar: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=160&h=160&fit=crop&crop=center",
+                  meta: { storyId: "malaysia-driver", storyThread: "Patrick 小杨", storyOrderAt: String(now + 1) }
+                });
+                setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, eventItem, detailItem] }));
+              }
+              setAddedFriends(current => current.includes("Patrick 小杨") ? current : [...current, "Patrick 小杨"]);
+              setPatrickFriendAccepted(true);
+              setPatrickFriendRequestOpen(false);
+              setTab("微信");
+              p.onThread("Patrick 小杨");
+            }}>通过</button>
+            <button className="wx-friend-flow-secondary" onClick={() => setPatrickFriendRequestOpen(false)}>暂不添加</button>
           </section>
         </div>
       )}
