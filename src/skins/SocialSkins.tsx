@@ -343,6 +343,22 @@ export function RedbookSkin(p: Props) {
   const [encounterLocalComments, setEncounterLocalComments] = useState<string[]>([]);
   const [encounterLiked, setEncounterLiked] = useState(false);
   const [encounterSaved, setEncounterSaved] = useState(false);
+  const [encounterShareOpen, setEncounterShareOpen] = useState(false);
+  const [encounterFollowed, setEncounterFollowed] = useState(false);
+  const wechatUi = p.allUi?.wechat ?? {};
+  let encounterRemarks = {};
+  try {
+    const parsed = JSON.parse(String(wechatUi.wxContactRemarks || "{}"));
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) encounterRemarks = parsed;
+  } catch {}
+  const encounterDisplayName = (canonical) => String(encounterRemarks[canonical] || canonical).trim() || canonical;
+  const encounterShareToWechat = (recipient) => {
+    const payload = { id:"redbook-post-share-"+Date.now(), type:"redbookPost", recipient, name:"吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹", title:"吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹", image:"https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg", url:"monster://redbook/malaysia-encounter" };
+    p.onAppUi?.("wechat","shopeeSharePayload",JSON.stringify(payload));
+    setEncounterShareOpen(false);
+    p.onOpenApp?.("wechat");
+  };
+
   const [category, setCategory] = useState("推荐");
   const location = "北京";
   const [showSearch, setShowSearch] = useState(false);
@@ -432,11 +448,11 @@ export function RedbookSkin(p: Props) {
   if (p.ui?.redbookMalaysiaEncounterPostV1 === "show") {
     return (
       <div className="catalog-skin redbook-ui redbook-dark redbook-encounter-detail" style={{background:"#111116",color:"#f4f4f5",height:"100%",minHeight:0,width:"100%",margin:0,padding:0,border:0,outline:0,boxSizing:"border-box",overflow:"hidden",display:"flex",flexDirection:"column"}}>
+        <header className="redbook-encounter-topbar"><button aria-label="返回" onClick={p.onBack} style={{fontSize:27,lineHeight:1}}>‹</button><img src="https://api.dicebear.com/9.x/adventurer/svg?seed=MaydayFanAuthor&backgroundColor=ffd5dc" alt="发帖人头像"/><strong>今天也要听五月天</strong><button className="redbook-encounter-follow" onClick={()=>setEncounterFollowed(v=>!v)}>{encounterFollowed?"已关注":"关注"}</button><button aria-label="转发" onClick={()=>setEncounterShareOpen(true)} style={{fontSize:25}}>↗</button></header>
         <div className="catalog-scroll" style={{flex:1,overflowY:"auto",padding:"14px 16px 90px",margin:0,border:0,boxSizing:"border-box"}}>
-          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
-            <img src={encounterAvatars[0]} alt="发帖人头像" style={{width:42,height:42,borderRadius:"50%",objectFit:"cover"}}/>
-            <div style={{flex:1}}><strong style={{fontSize:14}}>今天也要听五月天</strong><div style={{fontSize:11,color:"#999",marginTop:3}}>2026-11-12 22:18 · 吉隆坡</div></div>
-            <button style={{border:"1px solid #ff2442",borderRadius:18,padding:"6px 14px",color:"#ff4967",background:"transparent"}}>关注</button>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}><div style={{flex:1,fontSize:11,color:"#999"}}>2026-11-12 22:18 · 吉隆坡</div></div>
+          <div style={{display:"none",alignItems:"center",gap:10,marginBottom:16}}>
+            
           </div>
           <h2 style={{fontSize:21,lineHeight:1.45,margin:"8px 0 14px"}}>吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹</h2>
           <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" alt="五月天怪兽演出照片" style={{width:"100%",borderRadius:7,display:"block",maxHeight:620,objectFit:"cover"}}/>
@@ -452,6 +468,7 @@ export function RedbookSkin(p: Props) {
           ))}
           {encounterLocalComments.map((comment,index)=><div key={"local"+index} style={{padding:"12px 0",borderTop:"1px solid #303036"}}><strong>快樂小狗</strong><p>{comment}</p></div>)}
         </div>
+        {encounterShareOpen && (<div className="redbook-share-overlay" role="dialog" aria-modal="true"><div className="redbook-share-sheet"><div className="redbook-share-sheet-head"><strong>分享到微信</strong><button onClick={()=>setEncounterShareOpen(false)}>✕</button></div><p>选择要分享的聊天</p><div className="redbook-share-contacts"><button onClick={()=>encounterShareToWechat("大G")}><img src={typeof wechatUi.wxDaGAvatarV2==="string"&&wechatUi.wxDaGAvatarV2?String(wechatUi.wxDaGAvatarV2):"./assets/dag-new-avatar.jpg"} alt=""/><span>{encounterDisplayName("大G")}</span></button><button onClick={()=>encounterShareToWechat("西蓝花")}><img src={GLOOMY_AVATAR} alt=""/><span>{encounterDisplayName("西蓝花")}</span></button></div><small>分享后将打开微信，并发送这篇笔记卡片</small></div></div>)}
         <footer style={{height:64,flexShrink:0,borderTop:"1px solid #303036",borderBottom:0,display:"flex",alignItems:"center",justifyContent:"space-around",background:"#15151b"}}><span style={{color:"#aaa"}}>说点什么…</span><button onClick={()=>setEncounterLiked(v=>!v)} style={{background:"none",color:encounterLiked?"#ff2442":"#eee"}}>♡ {2386+(encounterLiked?1:0)}</button><button onClick={()=>setEncounterSaved(v=>!v)} style={{background:"none",color:encounterSaved?"#ffd166":"#eee"}}>☆ {1024+(encounterSaved?1:0)}</button><span>☏ 103</span></footer>
       </div>
     );
