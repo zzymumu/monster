@@ -82,3 +82,5 @@ npm run preview
 验证命令：`npm run typecheck`、`npm run lint`、`npm test`、`npm run story:validate`、`npm run story:test`、`npm run build`。浏览器回归使用 `npm run test:e2e`。
 
 项目许可见 [LICENSE](LICENSE)。故事与素材的权利由其作者确认。安装、启动和构建不会自动 Fork、Star 或推送仓库。
+
+<!-- Trigger a fresh GitHub Pages deployment; no app behavior changes. -->
