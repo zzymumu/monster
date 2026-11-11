@@ -1650,20 +1650,36 @@ export function WeChatSkin(p: SkinProps) {
     (item.title === "西蓝花" || item.title === "西兰花" || item.meta?.storyThread === "西蓝花" || item.meta?.storyThread === "西兰花") &&
     item.sender === "西蓝花" && item.body.trim() === "你在哪里碰到的？"
   );
-  const hasOpeningQuestionQueued = pendingCatLines.some((line) =>
-    line.thread === "西蓝花" && line.body.trim() === "你在哪里碰到的？"
-  );
   useEffect(() => {
-    if (catRescue.stage !== 0 || !hasCatRescueOpeningSeed || hasOpeningQuestionInBroccoliThread || hasOpeningQuestionQueued) return;
-    setPendingCatLines((current) => current.some((line) => line.id === "cat-rescue-opening-question-v3")
-      ? current
-      : [...current, {
-          id: "cat-rescue-opening-question-v3",
-          sender: "西蓝花",
-          body: "你在哪里碰到的？",
-          thread: "西蓝花",
-        }]);
-  }, [catRescue.stage, hasCatRescueOpeningSeed, hasOpeningQuestionInBroccoliThread, hasOpeningQuestionQueued]);
+    if (catRescue.stage !== 0 || !hasCatRescueOpeningSeed || hasOpeningQuestionInBroccoliThread) return;
+    const openingSeed = allItems.find((item) =>
+      item.sender === "我" && item.body.trim() === "救命，我在路边碰到了一只小黑猫好喜欢啊啊啊"
+    );
+    const seedOrder = Number(openingSeed?.meta?.storyOrderAt);
+    const fallbackOrder = openingSeed?.time ? Date.parse(openingSeed.time) : Date.now();
+    const question = makeItem({
+      id: "cat-rescue-opening-question-direct-v4",
+      title: "西蓝花",
+      sender: "西蓝花",
+      body: "你在哪里碰到的？",
+      time: openingSeed?.time || ("2026-11-02 " + (storyClockRef.current || "14:24")),
+      outgoing: false,
+      avatar: "",
+      meta: {
+        storyId: "cat-rescue",
+        storyThread: "西蓝花",
+        storyOrderAt: String((Number.isFinite(seedOrder) && seedOrder > 0 ? seedOrder : fallbackOrder) + 0.001),
+      },
+    });
+    // Write directly into the persisted chat transcript. Do not route this
+    // mandatory opening question through the generic pending queue: that
+    // queue can be delayed by unrelated story gates and is not proof of display.
+    setCatRescueRaw(JSON.stringify({
+      ...catRescue,
+      version: 2,
+      messages: [...catRescue.messages, question],
+    }));
+  }, [catRescue.stage, hasCatRescueOpeningSeed, hasOpeningQuestionInBroccoliThread, p.items, catRescue.messages]);
 
   // Existing saves may already have advanced past the first reply choice. If
   // the question was skipped in that save, insert only the missing incoming
@@ -6673,7 +6689,7 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               {!milkTeaGiftStoryActive && !postPickupGoodbyeSent && catChoices.length > 0 &&
-                !(isBroccoliThread && catRescue.stage === 0 && hasCatRescueOpeningSeed && !hasOpeningQuestionInBroccoliThread && !hasOpeningQuestionQueued) && (
+                !(isBroccoliThread && catRescue.stage === 0 && hasCatRescueOpeningSeed && !hasOpeningQuestionInBroccoliThread) && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
