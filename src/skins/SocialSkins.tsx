@@ -431,25 +431,25 @@ export function RedbookSkin(p: Props) {
   ];
   const encounterAuthorAvatar = "https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/377adab44aed2e73d55e02458601a18b87d6fa20.jpg";
   const encounterComments = [
-    {user:"温柔乡里听怪兽",avatar:0,location:"上海",body:"啊啊啊这张图我真的要反复看！！团长本人也太帅了吧😭",likes:3286,replies:["楼主什么运气啊啊啊","这抓拍绝了！！","我先酸了，真的先酸了"]},
-    {user:"温尚翊今天营业了吗",avatar:1,location:"广东",body:"等等？？旁边那个抱小暴的女生？？我朋友说她演唱会也在现场……",likes:3976,replies:["？？？开始有点东西了","先别急姐妹哈哈哈哈","小暴好可爱（重点错）"]},
-    {user:"团长的拨片收藏夹",avatar:2,location:"江苏",body:"我坐那个方向！！他那几次走过来我真的以为在看我们😭",likes:6120,replies:["哈哈哈哈哈哈姐妹我懂","谁懂啊我也以为被看到了","救命现在回想是不是有点尴尬"]},
-    {user:"苹果味的五月天",avatar:3,location:"浙江",body:"我当时还跟朋友疯狂说他在看我！！现在想想好好笑哈哈哈哈哈",likes:2941,replies:["姐妹你先别笑我已经笑了","大型自我攻略现场哈哈哈哈","我宣布这条评论赢了"]},
-    {user:"今天也要听五月天",avatar:4,location:"北京",body:"我朋友也坐那个方向！！她当时激动到拍我胳膊说接到饭撒了🤣",likes:5840,replies:["哈哈哈哈哈哈哈怎么还带售后回忆的","现在刷到这帖：笑容逐渐消失","但舞台上真的很容易觉得在看自己！！"]},
-    {user:"别把普通人当线索",avatar:5,location:"四川",body:"大家吃瓜归吃瓜哈，别扒女生账号，也别去问餐厅。",likes:1864,replies:["这个必须的","对对对别去打扰人家","看演出聊演出就好"]},
-    {user:"吉他弦永不断",avatar:6,location:"湖北",body:"团长下班吃饭被偶遇，怎么还是这么有魅力啊啊啊",likes:1598,replies:["吉他手滤镜根本摘不掉","本人一拿琴我就没了","楼主今晚真的欧皇"]},
-    {user:"一颗会发光的卜卜",avatar:7,location:"台湾",body:"我真的酸了……别人散场是回酒店，我散场还在找地铁口😭",likes:2481,replies:["哈哈哈哈哈哈真实","我连饭都没吃上","楼主这是什么隐藏剧情"]},
-    {user:"五迷不迷路",avatar:8,location:"香港",body:"先别嫂子嫂子地叫啦，正常吃顿饭也能被脑补出八百集。",likes:2107,replies:["真的别乱扣称呼","尊重一下普通女生吧","吃瓜可以别上升本人"]},
-    {user:"今晚听温柔",avatar:9,location:"福建",body:"等下我好像之前跟这个女生互过物料？？不会这么巧吧？？",likes:4841,replies:["啊啊啊啊世界这么小吗","姐妹你先确认一下哈哈哈","别发人家信息！"]},
-    {user:"五月天的猫猫",avatar:10,location:"澳门",body:"我只想说这张怪兽好帅……谁懂我放大看了十分钟。",likes:1936,replies:["懂！！眼睛不知道往哪放","这张可以当壁纸了","团长今天帅得很具体"]},
-    {user:"派对动物本人",avatar:11,location:"重庆",body:"评论区怎么回事哈哈哈哈哈已经有人开始复盘自己当晚的饭撒了",likes:1722,replies:["全场：他是不是在看我","本人：原来大家都这样哈哈哈哈","笑死我了今晚不睡了"]},
-    {user:"今天不想早睡",avatar:12,location:"山东",body:"我朋友当晚还跟我说怪兽一直往她那个方向走，她开心了一晚上哈哈哈哈。",likes:1426,replies:["现在看到帖子是不是沉默了","不要笑她！！我也会这样","姐妹的快乐先保留哈哈哈"]},
-    {user:"等一场五月天",avatar:13,location:"河南",body:"有没有一种可能他只是正常走位……但我还是要说楼主好幸运！！",likes:1835,replies:["理智但没完全理智哈哈哈","先把照片存了再说","这张真的好有现场感"]},
-    {user:"别拿拨片嗑CP",avatar:14,location:"辽宁",body:"现场互动归现场互动，餐厅吃饭归吃饭，别硬把两件事连成恋爱实锤。",likes:2257,replies:["同意，别替人家写剧情","好奇归好奇别造谣","这条说得在理"]},
-    {user:"今晚不做梦",avatar:15,location:"吉林",body:"互过物料也不代表认识吧，大家别顺着这个找人了。",likes:2640,replies:["对对对别开盒","普通粉丝也要有隐私","这楼到此为止最好"]},
-    {user:"拨片收藏家",avatar:16,location:"云南",body:"如果真有人接到拨片我会羡慕一辈子……先说好我没有嫉妒😭",likes:2896,replies:["你这句就是嫉妒哈哈哈哈","十年老粉表示狠狠羡慕","团长随手一个互动够我回味半年"]},
-    {user:"五月天不散场",avatar:17,location:"江苏",body:"当时：啊啊啊他在看我！现在：等等？？？哈哈哈哈哈",likes:5128,replies:["这条总结全文","姐妹们都开始回忆当晚了","笑到打鸣哈哈哈哈"]},
-    {user:"温柔是你",avatar:18,location:"广东",body:"我好像也见过她！！之前现场互过物料，但真的只是互过物料哈。",likes:1769,replies:["这也太巧了吧","别说细节啦保护隐私","饭圈真的好小哈哈哈"]}
+    {"user":"温柔乡里听怪兽","avatar":0,"location":"上海","body":"我先说我真的不是来嗑的……但这张抓拍也太会拍了吧？？他低头弹琴那个侧脸我直接失去语言能力。","likes":9286,"replies":["楼主你拍照技术可以去站姐那边应聘了","不是嗑不嗑的问题，这张图真的帅得很具体","我本来路过，结果盯着看了五分钟……"]},
+    {"user":"温尚翊今天营业了吗","avatar":1,"location":"广东","body":"等一下，旁边这个女生是不是演唱会也在现场啊？？我昨天在内场好像见过她，散场的时候还跟朋友说了一嘴。","likes":6842,"replies":["啊？？你确定是同一个人吗","我也想说！好像在某个走道附近见过","先别认人了姐妹，别把普通观众扒出来"]},
+    {"user":"团长的拨片收藏夹","avatar":2,"location":"江苏","body":"我朋友说她看到怪兽把拨片递给这个女生了……我当时还以为她在夸张，结果现在刷到这帖？？？？","likes":10321,"replies":["递拨片？？？真的假的啊？？","演出现场递的还是吃饭的时候啊，时间线先搞清楚","我朋友也提过这件事，但我没亲眼看到"]},
+    {"user":"今天不想写作业","avatar":3,"location":"浙江","body":"等等等等，递拨片和散场一起吃饭是同一天？？我怎么越看越像连续剧了，我作业突然不香了。","likes":4190,"replies":["姐妹你先把作业写了哈哈哈哈","是演唱会结束以后一起去吃东西啦，不是隔天偶遇","我也是刚看懂时间线，前面差点以为是第二天"]},
+    {"user":"苹果味的五月天","avatar":4,"location":"北京","body":"我先泼个冷水哈，递拨片可能就是现场互动，演出结束一起吃饭也可能是朋友聚餐。别一张照片就开始给人家安排身份。","likes":7551,"replies":["理智姐来了，但你说得也不是没道理","那你解释一下为什么有人现场也见过她？","见过就代表认识？这逻辑我没懂"]},
+    {"user":"今天也要早睡","avatar":5,"location":"四川","body":"不是，楼主你怎么能这么淡定地发出来啊！！！如果是我我现在已经在床上滚成一个麻花了。","likes":3288,"replies":["楼主可能还没意识到评论区已经炸了","本人淡定，评论区替她激动哈哈哈哈","我光看照片都要尖叫了"]},
+    {"user":"吉他弦永不断","avatar":6,"location":"湖北","body":"老粉插一句，怪兽有时候真的会把拨片送给台下观众，不是什么神秘暗号。大家不要自动脑补成偶像剧哈。","likes":2961,"replies":["老粉说话就是有底气","但如果真的是同一个女生那也太巧了吧","重点是别把一个正常互动说得像恋爱证据"]},
+    {"user":"今晚必须吃宵夜","avatar":7,"location":"台湾","body":"我比较在意的是演唱会结束都累成那样了还去吃饭……到底吃哪家啦？吉隆坡宵夜有推荐吗我下次也要去。","likes":1876,"replies":["哈哈哈哈终于有人问正事","这家看起来像是当地朋友带去的","求店名！比猜身份实用多了"]},
+    {"user":"五迷不迷路","avatar":8,"location":"香港","body":"有些人真的很奇怪欸，女生跟朋友吃个饭也要被问是谁？如果是普通朋友呢？如果是工作人员呢？人家不能有自己的生活吗。","likes":5644,"replies":["同意，别把女生当线索拼图","但楼主也没曝光她的信息吧，讨论一下而已","讨论可以，跑去找人就过线了"]},
+    {"user":"等一场五月天","avatar":9,"location":"福建","body":"我昨天在场！我记得有个女生拿到拨片以后整个人愣住，旁边朋友一直拍她肩膀……但我不敢说一定是同一个人。","likes":8123,"replies":["啊啊啊啊这个描述怎么有画面了","你先别急着认人，保护隐私哈","我只想知道她后来有没有开心到睡不着"]},
+    {"user":"拨片到底给谁了","avatar":10,"location":"澳门","body":"所以现在有三个版本：现场递拨片、散场一起吃饭、朋友偶遇。到底哪个是亲眼看到的哪个是听朋友说的？我已经绕晕。","likes":4762,"replies":["互联网大型传话游戏开始了","楼上总结得好，信息源先分清楚","反正不是第二天碰见的，是散场后一起吃饭"]},
+    {"user":"别替我嗑我自己会嗑","avatar":11,"location":"重庆","body":"我不管我先嗑一口（被打）……开玩笑的！但他俩同框真的很有故事感，照片氛围好好。","likes":6902,"replies":["哈哈哈哈哈哈你这个ID很诚实","嗑可以，别去打扰真人就行","收一收姐妹，楼里已经有人要吵起来了"]},
+    {"user":"理性追星但不完全","avatar":12,"location":"山东","body":"我觉得最离谱的是大家都在讨论女生是谁，没人问怪兽吃了什么。团长也是要吃饭的啊喂！","likes":2390,"replies":["笑死，突然想起他之前说忙到忘记吃饭","他吃饱最重要，别饿着我们吉他手","这楼怎么从偶遇变成团长伙食监督了"]},
+    {"user":"温柔只给五月天","avatar":13,"location":"河南","body":"说真的，如果只是普通朋友就让人家好好当普通朋友吧。不要一会儿女朋友一会儿嫂子，女生看到得多尴尬。","likes":5103,"replies":["谢谢，终于有人说了","可是有人说现场递拨片欸，这也不能问吗","问可以，别把猜测当事实发出去"]},
+    {"user":"我真的只是路过","avatar":14,"location":"辽宁","body":"刚点进来：哇怪兽好帅。看了三分钟：你们在吵什么。又看了五分钟：怎么还在吵。","likes":3721,"replies":["欢迎来到评论区连续剧现场","哈哈哈哈哈哈你已经出不去了","别走，下一集马上开播"]},
+    {"user":"十年老粉今天破防","avatar":15,"location":"吉林","body":"讲真，看到有人说递拨片我第一反应是羡慕，第二反应是我当年为什么不站那个方向，第三反应是算了我还是好好听歌吧。","likes":4588,"replies":["第三反应最真实哈哈哈哈","姐妹你只是差一个好位置","我每次演唱会结束都在后悔站错边"]},
+    {"user":"不许开盒谢谢","avatar":16,"location":"云南","body":"提醒一下哈，别去扒女生账号、别猜学校公司、也别去问餐厅店员。看个偶遇帖就好，普通人不该因为一张照片被围观。","likes":9230,"replies":["这条请置顶","真的，别把喜欢变成打扰","楼主也注意不要放更多能定位人的细节"]},
+    {"user":"键盘比拨片快","avatar":17,"location":"江苏","body":"楼上说朋友、楼下说现场看到、再楼下说递拨片……有没有一种可能你们说的根本不是同一个人？评论区先别开庭了哈哈哈哈。","likes":6127,"replies":["哈哈哈哈哈哈法官都来了","那也太巧了吧，同一天同一场演唱会","我宣布本楼需要一个时间线管理员"]},
+    {"user":"凌晨还在刷帖","avatar":18,"location":"广东","body":"本来想睡了，结果看到这句‘好像递了拨片’直接坐起来。姐妹们，我明天还要上班啊啊啊啊。","likes":7349,"replies":["哈哈哈哈哈快睡吧明天还要搬砖","你不是一个人，我也精神了","这帖建议早上再看一遍，可能会更离谱"]}
   ];
   if (p.ui?.redbookMalaysiaEncounterPostV1 === "show") {
     return (
@@ -470,7 +470,7 @@ export function RedbookSkin(p: Props) {
           <div style={{display:"flex",gap:8,marginBottom:18}}><img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=96&h=96&fit=crop" alt="我的头像" style={{width:38,height:38,borderRadius:"50%",objectFit:"cover"}}/><input value={encounterCommentDraft} onChange={e=>setEncounterCommentDraft(e.target.value)} placeholder="说点什么…" style={{flex:1,minWidth:0,border:0,borderRadius:20,background:"#292930",color:"#fff",padding:"10px 14px"}}/><button onClick={()=>{if(encounterCommentDraft.trim()){setEncounterLocalComments(v=>[...v,encounterCommentDraft.trim()]);setEncounterCommentDraft("");}}} style={{background:"none",color:"#ff4967"}}>发送</button></div>
           {encounterComments.map((comment,index)=>(
             <div key={index} style={{display:"flex",gap:10,margin:"18px 0"}}><div role="img" aria-label={comment.user+"头像"} style={{width:42,height:42,borderRadius:"50%",flexShrink:0,border:"1px solid rgba(255,255,255,.12)",backgroundImage:`url(${encounterAvatars[comment.avatar].src})`,backgroundSize:encounterAvatars[comment.avatar].size,backgroundPosition:encounterAvatars[comment.avatar].position,backgroundRepeat:"no-repeat",backgroundColor:"#dcecff"}}/><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,color:"#e3e3ea",fontWeight:600,marginBottom:6,letterSpacing:".1px"}}>{comment.user}</div><div style={{fontSize:14,lineHeight:1.65}}>{comment.body}</div><div style={{fontSize:11,color:"#777",marginTop:8}}>2小时前 · {comment.location} <button style={{background:"none",color:"#aaa"}} onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))}>回复</button><span style={{float:"right"}}>♡ {comment.likes}</span></div>
-              {comment.replies.length>0&&<div style={{marginTop:9,padding:"10px 12px",background:"#202027",borderRadius:7}}>{comment.replies.slice(0,expandedEncounterComments[index]?undefined:1).map((reply,j)=><div key={j} style={{fontSize:13,lineHeight:1.7,marginBottom:6}}>{reply}</div>)}{comment.replies.length>1&&<button onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))} style={{background:"none",color:"#9ca3af",fontSize:12}}>{expandedEncounterComments[index]?"收起回复":"展开 "+comment.replies.length+" 条回复"}</button>}</div>}
+              {comment.replies.length>0&&<div style={{marginTop:9,padding:"10px 12px",background:"#202027",borderRadius:7}}>{comment.replies.slice(0,expandedEncounterComments[index]?undefined:2).map((reply,j)=><div key={j} style={{fontSize:13,lineHeight:1.7,marginBottom:6}}>{reply}</div>)}{comment.replies.length>1&&<button onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))} style={{background:"none",color:"#9ca3af",fontSize:12}}>{expandedEncounterComments[index]?"收起回复":"展开 "+comment.replies.length+" 条回复"}</button>}</div>}
             </div></div>
           ))}
           {encounterLocalComments.map((comment,index)=><div key={"local"+index} style={{padding:"12px 0",borderTop:"1px solid #303036"}}><strong>快樂小狗</strong><p>{comment}</p></div>)}
