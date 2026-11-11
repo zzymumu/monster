@@ -2467,9 +2467,28 @@ export function WeChatSkin(p: SkinProps) {
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
   // The friend request must be gated by the actual sent goodbye message,
   // never by a guessed chat-stage number (which can already be advanced in saves).
-  const postBathGoodbyeAlreadySent = [...p.items, ...catRescue.messages].some((item) =>
-    item.body.trim() === "活该！不跟你说了我要去洗澡，债见！"
+  const allMalaysiaDaGMessages = [...p.items, ...catRescue.messages];
+  // Match this scene's stable message ID only. The same goodbye wording may
+  // exist in an older transcript/save and must not skip the guitar lesson scene.
+  const postBathGoodbyeAlreadySent = allMalaysiaDaGMessages.some((item) =>
+    item.id === "malaysia-dag-user-53-0"
   );
+  useEffect(() => {
+    if (!isMonsterThread || postBathGoodbyeAlreadySent || malaysiaDaGChatStage < 54) return;
+    // Recover saves that were incorrectly pushed to stage 54 by the old
+    // text-only detector: resume immediately after the latest actually-sent
+    // turn from this Malaysia DaG conversation.
+    let latestSentTurn = -1;
+    for (let index = 0; index < malaysiaDaGChatTurns.length; index += 1) {
+      const sent = allMalaysiaDaGMessages.some(item =>
+        item.id === "malaysia-dag-user-" + index + "-0" &&
+        item.sender === "我" &&
+        item.meta?.storyThread === "大G"
+      );
+      if (sent) latestSentTurn = index;
+    }
+    setMalaysiaDaGChatStage(Math.max(0, latestSentTurn + 1));
+  }, [isMonsterThread, postBathGoodbyeAlreadySent, malaysiaDaGChatStage, p.items, catRescue.messages]);
   useEffect(() => {
     if (!isMonsterThread || !postBathGoodbyeAlreadySent || patrickFriendAccepted || patrickFriendRequestOpen) return;
     setPatrickFriendRequestOpen(true);
