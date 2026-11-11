@@ -2465,6 +2465,19 @@ export function WeChatSkin(p: SkinProps) {
   // Malaysia arrival coordination: each contact's turn unlocks only after the
   // previous conversation has been completed by the player.
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
+  // Reconcile stale coordination progress with the actual chat transcript.
+  // If Patrick was accepted but the first contact-confirmation reply was never
+  // sent, the next action must remain available in Patrick's conversation.
+  const malaysiaPatrickContactReplySent = [...p.items, ...catRescue.messages].some(item =>
+    item.sender === "我" &&
+    item.meta?.storyThread === "Patrick 小杨" &&
+    item.body.trim() === "好的收到~谢谢哦！明天我们到大马怎么联系你呀？"
+  );
+  useEffect(() => {
+    if (!isMonsterThread && p.thread !== "Patrick 小杨") return;
+    if (!patrickFriendAccepted || malaysiaPatrickContactReplySent) return;
+    if (malaysiaCoordinationStage !== 0) setMalaysiaCoordinationStage(0);
+  }, [p.thread, patrickFriendAccepted, malaysiaPatrickContactReplySent, malaysiaCoordinationStage, setMalaysiaCoordinationStage]);
   // The friend request must be gated by the actual sent goodbye message,
   // never by a guessed chat-stage number (which can already be advanced in saves).
   const allMalaysiaDaGMessages = [...p.items, ...catRescue.messages];
