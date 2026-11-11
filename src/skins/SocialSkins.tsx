@@ -391,25 +391,43 @@ export function RedbookSkin(p: Props) {
     richText:"",
     hidden:false,unlock:"",password:"",folder:"推荐",favorite:false,outgoing:false,read:false
   };
+  const encounterAvatars = [
+    "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1552053831-71594a27632d?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1517849845537-4d2579f1c9c0?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=96&h=96&fit=crop"
+  ];
   const encounterComments = [
-    {user:"今天也要听五月天",body:"啊啊啊啊啊真的假的！！！吉隆坡的姐妹是什么神仙运气！！！",likes:1286,replies:["楼主：真的！！本人超级帅！！我看到的时候差点没认出来哈哈哈哈。"]},
-    {user:"温尚翊的吉他拨片",body:"等等？？？女生？？？我放大看了三遍？？？",likes:963,replies:["今天也要听五月天：姐妹你不是一个人，我也在放大哈哈哈哈。","吃颗苹果：感觉两个人很熟欸，不像普通粉丝偶遇。"]},
-    {user:"团长今天弹吉他了吗",body:"人家吃个饭也要被拍？？？能不能给一点私人空间啊。",likes:689,replies:["我爱怪兽一辈子：楼主又没上去打扰，而且也没曝光女生信息，分享偶遇而已吧。","团长今天弹吉他了吗：拍到私人用餐还发出来，这也叫没打扰？"]},
-    {user:"今天不熬夜了",body:"我有一个大胆的猜测……不会是女朋友吧？？？",likes:532,replies:["理智追星版：朋友也可以一起吃饭啊，先别乱猜。","五月天是我的青春：如果真的是女朋友我也祝福，怪兽开心就好。"]},
-    {user:"阿信今天发微博了吗",body:"不是不让谈，是不想看到他被偷拍好吗……",likes:498,replies:["橘子汽水：评论区已经给团长安排完婚姻大事了哈哈哈哈。","路过的五月天粉丝：为什么每次有女生出现就要被盘问身份？"]},
-    {user:"吉他弦断了",body:"我比较好奇的是演出结束后他怎么还出来吃宵夜哈哈哈哈。",likes:387,replies:["楼主：我们也是吃饭的时候刚好遇到的！"]},
-    {user:"怪兽的吉他",body:"你们有没有发现他看起来心情很好啊！！！",likes:356,replies:["今天珍重：心情好就好啦，别打扰人家休息。"]}
+    {user:"今天也要听五月天",avatar:0,body:"啊啊啊啊啊真的假的！！！吉隆坡的姐妹是什么神仙运气！！！",likes:1286,replies:["今天也要听五月天：真的！！本人超级帅！！我看到的时候差点没认出来哈哈哈哈。"]},
+    {user:"温尚翊的吉他拨片",avatar:1,body:"等等？？？女生？？？我放大看了三遍？？？",likes:963,replies:["今天也要听五月天：姐妹你不是一个人，我也在放大哈哈哈哈。","吃颗苹果：感觉两个人很熟欸，不像普通粉丝偶遇。","吉他弦别断：重点是昨天演出现场我好像也看到这个女生了！！"]},
+    {user:"团长今天弹吉他了吗",avatar:2,body:"昨天在现场好像看到这个女生了！！！散场前怪兽还递了拨片给她，我当时还以为自己看错了？？？",likes:1521,replies:["真的假的？？？递拨片？？？那这关系不一般吧？？","现场第三排：我也看到有人拿到拨片了，但不确定是不是同一个人。","理智追星版：一块拨片能说明什么，别脑补了。","温柔一点好吗：如果真的是送给她的，那也是人家的私事吧。"]},
+    {user:"今天不熬夜了",avatar:3,body:"？？？？昨天递拨片今天一起吃饭？？？我先坐下听听故事。",likes:876,replies:["团长今天弹吉他了吗：我真的不是编的，我就在侧边看见的。","五月天是我的青春：也可能是工作人员帮忙递的，别越传越离谱。"]},
+    {user:"阿信今天发微博了吗",avatar:4,body:"我想问一下，为什么要拍人家吃饭啊？演出可以拍，私人时间就别跟了吧。",likes:1132,replies:["今天也要听五月天：我们是隔壁桌刚好看到，没有跟拍，也没有上去打扰。","不想被偷拍：但把别人吃饭的照片发出来还是不太合适吧。","路过五迷：同意，女生也不是公众人物，别扒身份。"]},
+    {user:"吉他弦断了",avatar:5,body:"楼主你拍的时候人家有发现吗？感觉这种私人场合还是要注意一下。",likes:604,replies:["今天也要听五月天：没有对着拍很久，是远远看到觉得很巧才记录一下。","保持距离：希望不要继续放大女生长相或找个人信息。"]},
+    {user:"怪兽的吉他",avatar:6,body:"先不说女生是谁，怪兽演出结束还有精神出来吃饭也太真实了哈哈哈哈。",likes:421,replies:["宵夜战士：工作结束当然要吃饭啦哈哈哈。"]},
+    {user:"橘子汽水加冰",avatar:7,body:"不是吧？？？递拨片这个细节谁懂啊啊啊啊啊！！！",likes:998,replies:["现场第三排：我也记得有递东西，但别把未经确认的事说死。","冷静五秒：评论区已经开始写连续剧了。"]},
+    {user:"五迷不迷路",avatar:8,body:"朋友一起吃饭很正常吧，为什么一看到女生就开始猜女朋友？",likes:713,replies:["今天不熬夜了：主要是昨天现场递拨片的传闻撞上了，大家才好奇。","给点空间：好奇也别去扒人家身份。"]},
+    {user:"今晚听温柔",avatar:9,body:"我朋友昨天也在现场，说怪兽有把拨片递给台下一个女生……不会真的是同一位吧？？",likes:1104,replies:["团长今天弹吉他了吗：我看到的也是那个方向！！","理智追星版：没有清楚照片就别认人了，别误伤。","今天也要听五月天：我们只是刚好一起吃饭，其他真的不清楚啦。"]},
+    {user:"五月天的猫猫",avatar:10,body:"拍到艺人可以理解，但旁边女生的脸和身份真的不要挖，拜托。",likes:842,replies:["同意，保护普通人的隐私。"]},
+    {user:"派对动物本人",avatar:11,body:"评论区一边嗑一边吵好热闹……但还是希望大家别打扰他们吃饭。",likes:529,replies:["五迷路过：说得对，讨论归讨论，不要去店里蹲人。"]},
+    {user:"不想取昵称了",avatar:0,body:"所以到底是演出后临时约饭，还是本来就认识啊？我真的好奇但我不扒。",likes:390,replies:["今天也要听五月天：这个我就不清楚啦，真的只是偶遇。"]},
+    {user:"等一场五月天",avatar:3,body:"怪兽开心就好啦！但拍照发帖之前还是想想当事人愿不愿意被公开吧。",likes:678,replies:["路人甲：这条说得挺有道理。"]}
   ];
   if (p.ui?.redbookMalaysiaEncounterPostV1 === "show") {
     return (
-      <div className="catalog-skin redbook-ui redbook-dark" style={{background:"#111116",color:"#f4f4f5",height:"100%",display:"flex",flexDirection:"column"}}>
-        <header style={{height:54,flexShrink:0,display:"flex",alignItems:"center",gap:16,padding:"0 16px",borderBottom:"1px solid #303036"}}>
-          <button onClick={()=>p.onAppUi?.("redbook","redbookMalaysiaEncounterPostV1","")} style={{background:"none",color:"#eee",fontSize:26}}>‹</button>
-          <div style={{fontSize:15,fontWeight:600,overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹</div>
-        </header>
-        <div className="catalog-scroll" style={{flex:1,overflowY:"auto",padding:"14px 16px 90px"}}>
+      <div className="catalog-skin redbook-ui redbook-dark" style={{background:"#111116",color:"#f4f4f5",height:"100%",minHeight:0,width:"100%",margin:0,padding:0,border:0,outline:0,boxSizing:"border-box",overflow:"hidden",display:"flex",flexDirection:"column"}}>
+/header>
+        <div className="catalog-scroll" style={{flex:1,overflowY:"auto",padding:"14px 16px 90px",margin:0,border:0,boxSizing:"border-box"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
-            <Avatar name="今天也要听五月天"/>
+            <img src={encounterAvatars[0]} alt="发帖人头像" style={{width:42,height:42,borderRadius:"50%",objectFit:"cover"}}/>
             <div style={{flex:1}}><strong style={{fontSize:14}}>今天也要听五月天</strong><div style={{fontSize:11,color:"#999",marginTop:3}}>2026-11-12 22:18 · 吉隆坡</div></div>
             <button style={{border:"1px solid #ff2442",borderRadius:18,padding:"6px 14px",color:"#ff4967",background:"transparent"}}>关注</button>
           </div>
@@ -419,15 +437,15 @@ export function RedbookSkin(p: Props) {
           <div style={{color:"#999",fontSize:12,margin:"18px 0"}}>话题 #五月天 #五月天怪兽 #吉隆坡</div>
           <div style={{background:"#202027",borderRadius:8,padding:12,marginBottom:16,color:"#aaa",fontSize:13}}>📁 推荐</div>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><strong style={{fontSize:16}}>共 {103+encounterLocalComments.length} 条评论</strong><span style={{fontSize:12,color:"#999"}}>最热</span></div>
-          <div style={{display:"flex",gap:8,marginBottom:18}}><Avatar name="快樂小狗"/><input value={encounterCommentDraft} onChange={e=>setEncounterCommentDraft(e.target.value)} placeholder="说点什么…" style={{flex:1,minWidth:0,border:0,borderRadius:20,background:"#292930",color:"#fff",padding:"10px 14px"}}/><button onClick={()=>{if(encounterCommentDraft.trim()){setEncounterLocalComments(v=>[...v,encounterCommentDraft.trim()]);setEncounterCommentDraft("");}}} style={{background:"none",color:"#ff4967"}}>发送</button></div>
+          <div style={{display:"flex",gap:8,marginBottom:18}}><img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=96&h=96&fit=crop" alt="我的头像" style={{width:38,height:38,borderRadius:"50%",objectFit:"cover"}}/><input value={encounterCommentDraft} onChange={e=>setEncounterCommentDraft(e.target.value)} placeholder="说点什么…" style={{flex:1,minWidth:0,border:0,borderRadius:20,background:"#292930",color:"#fff",padding:"10px 14px"}}/><button onClick={()=>{if(encounterCommentDraft.trim()){setEncounterLocalComments(v=>[...v,encounterCommentDraft.trim()]);setEncounterCommentDraft("");}}} style={{background:"none",color:"#ff4967"}}>发送</button></div>
           {encounterComments.map((comment,index)=>(
-            <div key={index} style={{display:"flex",gap:10,margin:"18px 0"}}><Avatar name={comment.user}/><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,color:"#aaa",marginBottom:6}}>{comment.user}</div><div style={{fontSize:14,lineHeight:1.65}}>{comment.body}</div><div style={{fontSize:11,color:"#777",marginTop:8}}>2小时前 吉隆坡 <button style={{background:"none",color:"#aaa"}} onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))}>回复</button><span style={{float:"right"}}>♡ {comment.likes}</span></div>
+            <div key={index} style={{display:"flex",gap:10,margin:"18px 0"}}><img src={encounterAvatars[comment.avatar]} alt={comment.user+"头像"} style={{width:38,height:38,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/><div style={{flex:1,minWidth:0}}><div style={{fontSize:13,color:"#aaa",marginBottom:6}}>{comment.user}</div><div style={{fontSize:14,lineHeight:1.65}}>{comment.body}</div><div style={{fontSize:11,color:"#777",marginTop:8}}>2小时前 吉隆坡 <button style={{background:"none",color:"#aaa"}} onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))}>回复</button><span style={{float:"right"}}>♡ {comment.likes}</span></div>
               {comment.replies.length>0&&<div style={{marginTop:9,padding:"10px 12px",background:"#202027",borderRadius:7}}>{comment.replies.slice(0,expandedEncounterComments[index]?undefined:1).map((reply,j)=><div key={j} style={{fontSize:13,lineHeight:1.7,marginBottom:6}}>{reply}</div>)}{comment.replies.length>1&&<button onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))} style={{background:"none",color:"#9ca3af",fontSize:12}}>{expandedEncounterComments[index]?"收起回复":"展开 "+comment.replies.length+" 条回复"}</button>}</div>}
             </div></div>
           ))}
           {encounterLocalComments.map((comment,index)=><div key={"local"+index} style={{padding:"12px 0",borderTop:"1px solid #303036"}}><strong>快樂小狗</strong><p>{comment}</p></div>)}
         </div>
-        <footer style={{height:64,flexShrink:0,borderTop:"1px solid #303036",display:"flex",alignItems:"center",justifyContent:"space-around",background:"#15151b"}}><span style={{color:"#aaa"}}>说点什么…</span><button onClick={()=>setEncounterLiked(v=>!v)} style={{background:"none",color:encounterLiked?"#ff2442":"#eee"}}>♡ {2386+(encounterLiked?1:0)}</button><button onClick={()=>setEncounterSaved(v=>!v)} style={{background:"none",color:encounterSaved?"#ffd166":"#eee"}}>☆ {1024+(encounterSaved?1:0)}</button><span>☏ 103</span></footer>
+        <footer style={{height:64,flexShrink:0,borderTop:"1px solid #303036",borderBottom:0,display:"flex",alignItems:"center",justifyContent:"space-around",background:"#15151b"}}><span style={{color:"#aaa"}}>说点什么…</span><button onClick={()=>setEncounterLiked(v=>!v)} style={{background:"none",color:encounterLiked?"#ff2442":"#eee"}}>♡ {2386+(encounterLiked?1:0)}</button><button onClick={()=>setEncounterSaved(v=>!v)} style={{background:"none",color:encounterSaved?"#ffd166":"#eee"}}>☆ {1024+(encounterSaved?1:0)}</button><span>☏ 103</span></footer>
       </div>
     );
   }
