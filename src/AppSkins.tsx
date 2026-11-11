@@ -2475,10 +2475,22 @@ export function WeChatSkin(p: SkinProps) {
     item.meta?.storyThread === "大G" &&
     item.body.trim() === "活该！不跟你说了我要去洗澡，债见！"
   );
+  // Patrick's friend request belongs after the complete DaG conversation,
+  // specifically after the player's final "知道啦～" reply—not after the
+  // earlier shower goodbye.
+  const malaysiaDaGFinalReplySent = allMalaysiaDaGMessages.some((item) =>
+    item.sender === "我" &&
+    item.meta?.storyThread === "大G" &&
+    item.body.trim() === "知道啦～"
+  );
   useEffect(() => {
-    if (!isMonsterThread || !postBathGoodbyeAlreadySent || patrickFriendAccepted || patrickFriendRequestOpen) return;
-    setPatrickFriendRequestOpen(true);
-  }, [isMonsterThread, postBathGoodbyeAlreadySent, patrickFriendAccepted, patrickFriendRequestOpen]);
+    if (!isMonsterThread || patrickFriendAccepted) return;
+    if (!malaysiaDaGFinalReplySent) {
+      if (patrickFriendRequestOpen) setPatrickFriendRequestOpen(false);
+      return;
+    }
+    if (!patrickFriendRequestOpen) setPatrickFriendRequestOpen(true);
+  }, [isMonsterThread, malaysiaDaGFinalReplySent, patrickFriendAccepted, patrickFriendRequestOpen]);
   useEffect(() => {
     if (!isMonsterThread || !postBathGoodbyeAlreadySent) return;
     if (malaysiaDaGChatStage < 87) setMalaysiaDaGChatStage(87);
