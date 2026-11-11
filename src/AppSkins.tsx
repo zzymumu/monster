@@ -2188,7 +2188,7 @@ export function WeChatSkin(p: SkinProps) {
       outgoing: false,
       avatar: typeof p.ui?.wxDaGAvatarV2 === "string" ? p.ui.wxDaGAvatarV2 : "",
       kind: "audio",
-      media: "./assets/dag-voice-03.mp3?v=20261111-2",
+      media: "./assets/dag-voice-03.mp3",
       read: false,
       meta: {
         storyId: "cat-rescue",
