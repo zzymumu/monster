@@ -632,21 +632,33 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   12: [
-    { id: "kitten-wont-enter-carrier", label: "它不肯进外出笼，我快抓不住了！", nextStage: 30, lines: [
+    { id: "kitten-wont-enter-carrier", label: "它不肯进外出笼，我快抓不住了！", nextStage: 35, lines: [
       { sender: "我", body: "妈呀，你说对了，是真抓不住，它不肯进外出笼。", thread: "西蓝花" },
       { sender: "我", body: "我刚刚把笼子放在旁边，它看了一眼就跑了！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "哈哈哈哈哈哈哈", thread: "西蓝花" },
       { sender: "西蓝花", body: "你是不是太着急了？", thread: "西蓝花" },
+    ]},
+  ],
+  35: [
+    { id: "insist-gentle", label: "我没有！！我已经很温柔了好吗！", nextStage: 36, lines: [
       { sender: "我", body: "我没有！！", thread: "西蓝花" },
       { sender: "我", body: "我已经很温柔了好吗！", thread: "西蓝花" },
       { sender: "我", body: "我甚至拿零食哄它了！", thread: "西蓝花" },
       { sender: "西蓝花", body: "那它吃了吗？", thread: "西蓝花" },
+    ]},
+  ],
+  36: [
+    { id: "kitten-took-treats", label: "吃了啦，但是吃完就跑！！", nextStage: 37, lines: [
       { sender: "我", body: "吃了啦。", thread: "西蓝花" },
       { sender: "我", body: "但是吃完就跑！！", thread: "西蓝花" },
       { sender: "我", body: "我怀疑它是在耍我。", thread: "西蓝花" },
       { sender: "西蓝花", body: "……", thread: "西蓝花" },
       { sender: "西蓝花", body: "你不要跟一只小猫斗智斗勇了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "慢慢来啦。", thread: "西蓝花" },
+    ]},
+  ],
+  37: [
+    { id: "kitten-under-car", label: "啊啊啊啊啊！它又跑到车底下去了！！", nextStage: 30, lines: [
       { sender: "我", body: "啊啊啊啊啊！", thread: "西蓝花" },
       { sender: "我", body: "它又跑到车底下去了！！", thread: "西蓝花" },
       { sender: "西蓝花", body: "你先别追！", thread: "西蓝花" },
@@ -655,12 +667,20 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   30: [
-    { id: "ask-nearby-for-help", label: "好吧，我去问问附近的人", nextStage: 31, lines: [
+    { id: "ask-nearby-for-help", label: "好吧，我去问问附近的人", nextStage: 38, lines: [
       { sender: "我", body: "好吧，我去问问附近的人。", thread: "西蓝花" },
+    ]},
+  ],
+  38: [
+    { id: "nearby-person-helps", label: "进去了进去了！附近的人帮我把它放进笼子了", nextStage: 39, lines: [
       { sender: "我", body: "进去了进去了。", thread: "西蓝花" },
       { sender: "我", body: "我刚刚请附近的人帮了一下。", thread: "西蓝花" },
       { sender: "我", body: "现在已经安全放进外出笼了。", thread: "西蓝花" },
       { sender: "西蓝花", body: "好，那你快带它去医院吧，到了记得告诉我。", thread: "西蓝花" },
+    ]},
+  ],
+  39: [
+    { id: "leave-for-vet", label: "我现在出发！希望它身体没什么问题", nextStage: 31, lines: [
       { sender: "我", body: "我现在出发！", thread: "西蓝花" },
       { sender: "我", body: "希望它身体没什么问题。", thread: "西蓝花" },
       { sender: "西蓝花", body: "会没事的。", thread: "西蓝花" },
@@ -5095,7 +5115,7 @@ export function WeChatSkin(p: SkinProps) {
   }, [p.items, parsedCatRescue.messages, pendingCatLines]);
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch, "cat-choice-" + choice.id);
-    if (choice.nextStage === 8) { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
+    if (choice.nextStage === 8 && choice.id !== "notice-tag") { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
     if (choice.nextStage === 13 && (choice.branch || catRescue.branch) === "monster-prank") {
       // The player gets to compose an apology first; the send then visibly fails
       // because the prank has already cost them the friendship.
