@@ -2795,13 +2795,9 @@ export function WeChatSkin(p: SkinProps) {
     // Existing saves may already have advanced to the next turn because the
     // order-view flag was previously set at order creation. Roll those saves
     // back to the reassurance choice unless the player really sent it.
-    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage !== 41) {
+    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage <= 42 && malaysiaDaGChatStage !== 41) {
       setMalaysiaDaGChatStage(41);
       setMalaysiaDaGPostOrderUnlocked(false);
-      return;
-    }
-    if (questionDelivered && !reassuranceSent && malaysiaDaGChatStage !== 41) {
-      setMalaysiaDaGChatStage(41);
       return;
     }
     if (!questionDelivered && malaysiaDaGChatStage === 42) setMalaysiaDaGChatStage(999);
