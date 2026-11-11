@@ -460,7 +460,7 @@ export function orderCatRescueThreadItems(items: Item[]): Item[] {
     })
     .map(({ item }) => item);
 }
-type CatLine = { id?: string; sender: "我" | "西蓝花" | "大G"; body: string; thread?: string; kind?: Item["kind"]; media?: string; meta?: Record<string, string> };
+type CatLine = { id?: string; sender: "我" | "西蓝花" | "大G" | "Patrick 小杨"; body: string; thread?: string; kind?: Item["kind"]; media?: string; meta?: Record<string, string> };
 type CatChoice = {
   id: string;
   label: string;
@@ -6790,7 +6790,7 @@ export function WeChatSkin(p: SkinProps) {
               {isMonsterThread && malaysiaCoordinationStage >= 7 && malaysiaCoordinationStage <= 13 && (
                 <div className="cat-rescue-choices" aria-label="榴莲聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
-                    const pairs=[
+                    const pairs: Array<[string, string[]]> = [
                       ["就是很好吃诶！！哼哼，我要去吃一吨！",["你要去大马？"]],
                       ["没有没有，我意思是你帮我吃。",["才不要咧！"]],
                       ["🥺",["....有空的话我会试试看。"]],
