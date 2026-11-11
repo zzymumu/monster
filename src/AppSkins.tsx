@@ -2465,13 +2465,15 @@ export function WeChatSkin(p: SkinProps) {
   // Malaysia arrival coordination: each contact's turn unlocks only after the
   // previous conversation has been completed by the player.
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
-  useEffect(() => {
-    if (!isMonsterThread || malaysiaDaGChatStage < 71 || patrickFriendAccepted || patrickFriendRequestOpen) return;
-    setPatrickFriendRequestOpen(true);
-  }, [isMonsterThread, malaysiaDaGChatStage, patrickFriendAccepted, patrickFriendRequestOpen]);
+  // The friend request must be gated by the actual sent goodbye message,
+  // never by a guessed chat-stage number (which can already be advanced in saves).
   const postBathGoodbyeAlreadySent = [...p.items, ...catRescue.messages].some((item) =>
     item.body.trim() === "活该！不跟你说了我要去洗澡，债见！"
   );
+  useEffect(() => {
+    if (!isMonsterThread || !postBathGoodbyeAlreadySent || patrickFriendAccepted || patrickFriendRequestOpen) return;
+    setPatrickFriendRequestOpen(true);
+  }, [isMonsterThread, postBathGoodbyeAlreadySent, patrickFriendAccepted, patrickFriendRequestOpen]);
   useEffect(() => {
     if (!isMonsterThread || !postBathGoodbyeAlreadySent) return;
     if (malaysiaDaGChatStage < 54) setMalaysiaDaGChatStage(54);
