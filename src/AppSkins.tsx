@@ -5561,7 +5561,6 @@ export function WeChatSkin(p: SkinProps) {
         p.onUi?.("shopeeSharePayload", "");
         return;
       }
-      const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\\s*food|canned\\s*cat/i.test(payload.name || "");
       const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(payload.name);
       if (payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true && !isCatCan) {
         p.onNotification?.("蝦皮購物：這段劇情請分享一款貓罐頭商品。");
