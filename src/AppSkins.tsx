@@ -5577,7 +5577,7 @@ export function WeChatSkin(p: SkinProps) {
         thread: payload.recipient!,
         kind: "text",
         media: "",
-        meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productVariant: payload.variant || "", productImage: payload.image || "", productEmoji: payload.emoji || "🛍️", productCategory: payload.category || "" },
+        meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name || "", productPrice: String(payload.price || 0), productVariant: payload.variant || "", productImage: payload.image || "", productEmoji: payload.emoji || "🛍️", productCategory: payload.category || "" },
       };
       const isDaGStoryShare = payload.recipient === "大G" && payload.storyShare === true;
       // The product card is the only outgoing bubble here. DaG's question
