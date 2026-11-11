@@ -160,6 +160,7 @@ function PhoneRuntime({
   const [postDinnerCallStep, setPostDinnerCallStep] = useState(-1);
   const [postDinnerReplyReady, setPostDinnerReplyReady] = useState(false);
   const [outgoingDaGCallStep, setOutgoingDaGCallStep] = useState(-1);
+  const [outgoingDaGReplyReady, setOutgoingDaGReplyReady] = useState(false);
   const [malaysiaAftershowCallStep, setMalaysiaAftershowCallStep] = useState(-1);
   const [malaysiaAftershowReplyReady, setMalaysiaAftershowReplyReady] = useState(false);
   const outgoingDaGCallAudio = Array.from({ length: 13 }, (_, index) => `./assets/dag-outgoing-call-${String(index + 1).padStart(2, "0")}.mp3`);
@@ -283,6 +284,7 @@ function PhoneRuntime({
   const postDinnerCallActive = !outgoingDaGCallActive && s?.ui?.wechat?.wxPostDinnerCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const milkTeaCallActive = !outgoingDaGCallActive && s?.ui?.wechat?.wxMilkTeaArrivalCallV1 === true && s?.incomingCall?.caller === "大G";
   // A later post-dinner call must never render/play the earlier hotpot-call subtitles.
+  const dagHotpotCallActive = !outgoingDaGCallActive && !postDinnerCallActive && s?.ui?.wechat?.wxDaGHotpotCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const malaysiaAftershowCallActive = !outgoingDaGCallActive && !postDinnerCallActive && !dagHotpotCallActive && s?.ui?.wechat?.wxMalaysiaAftershowCallStartedV1 === true && s?.incomingCall?.caller === "大G";
   const deliveryCallActive = s?.incomingCall?.caller === "外卖";
   const [deliveryCallReplySent, setDeliveryCallReplySent] = useState(false);
