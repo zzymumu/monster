@@ -49,8 +49,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[12][0].nextStage).toBe(30);
     expect(CAT_RESCUE_CHOICES[30][0].nextStage).toBe(31);
     expect(CAT_RESCUE_CHOICES[31][0].nextStage).toBe(4);
-    expect(CAT_RESCUE_CHOICES[4][0].nextStage).toBe(5);
-    expect(CAT_RESCUE_CHOICES[5][0].nextStage).toBe(8);
+    expect(CAT_RESCUE_CHOICES[4][0].nextStage).toBe(8);
     for (const obsoleteStage of [67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 80, 81]) {
       expect(CAT_RESCUE_CHOICES[obsoleteStage]).toBeUndefined();
     }
