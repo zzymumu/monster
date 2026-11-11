@@ -770,7 +770,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   47: [
-    { id: "phone-unanswered", label: "救命，我现在手都在抖……电话没人接，我留言了！", nextStage: 48, lines: [
+    { id: "phone-unanswered", label: "救命，我现在手都在抖……电话没人接，我留言了！", nextStage: 8, lines: [
       { sender: "我", body: "救命，我现在手都在抖。", thread: "西蓝花" },
       { sender: "西蓝花", body: "怎么样？打通了吗？", thread: "西蓝花" },
       { sender: "我", body: "没人接诶....转语音了，我给留言了。", thread: "西蓝花" },
@@ -5147,7 +5147,7 @@ export function WeChatSkin(p: SkinProps) {
   }, [p.items, parsedCatRescue.messages, pendingCatLines]);
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch, "cat-choice-" + choice.id);
-    if (choice.nextStage === 8 && choice.id !== "notice-tag") { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
+    if (choice.nextStage === 8 && choice.id !== "notice-tag" && choice.id !== "phone-unanswered") { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
     if (choice.nextStage === 13 && (choice.branch || catRescue.branch) === "monster-prank") {
       // The player gets to compose an apology first; the send then visibly fails
       // because the prank has already cost them the friendship.
