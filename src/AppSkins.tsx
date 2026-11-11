@@ -235,9 +235,18 @@ function MessageList({
           <button
             className={i.meta?.shopeeProductShare === "true" || i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? "skin-bubble wx-card-only-bubble" : "skin-bubble"}
             style={i.meta?.shopeeProductShare === "true" || i.kind === "transfer" || (i.kind === "event" && i.meta?.locationName) ? { background: "transparent", border: 0, boxShadow: "none", padding: 0, borderRadius: 0, minWidth: 0, maxWidth: "min(285px, 72vw)", overflow: "visible" } : undefined}
-            onClick={() => { if (i.meta?.shopeeProductShare === "true") { onProductOpen?.(i); return; } if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } if (creator) { onItem(i); } else { onRead(i.id); } }}
+            onClick={() => { if (i.meta?.redbookShare === "true") { window.open(String(i.meta.redbookUrl || "https://www.xiaohongshu.com/"), "_blank", "noopener,noreferrer"); return; } if (i.meta?.shopeeProductShare === "true") { onProductOpen?.(i); return; } if (i.kind === "transfer") { setSelectedTransfer(i); return; } if (i.kind === "event" && i.meta?.locationName) { setSelectedLocation(i); return; } if (creator) { onItem(i); } else { onRead(i.id); } }}
           >
-            {i.meta?.shopeeProductShare === "true" ? (
+            {i.meta?.redbookShare === "true" ? (
+              <div style={{width:260,maxWidth:"68vw",background:"#fff",color:"#222",borderRadius:10,overflow:"hidden",textAlign:"left",boxShadow:"0 1px 4px rgba(0,0,0,.16)"}}>
+                <img src={i.media || "https://resource02.ulifestyle.com.hk/ulcms/content/article/image/w600/2026/04/20260421100543_5e8c7e33c9217b9b3d9ef3c0257f5d3070ecc11c.jpg"} alt="五月天怪獸" style={{display:"block",width:"100%",height:150,objectFit:"cover"}}/>
+                <div style={{padding:"10px 12px"}}>
+                  <div style={{fontSize:14,fontWeight:700,lineHeight:1.4}}>{body}</div>
+                  <div style={{fontSize:11,color:"#999",marginTop:7}}>小红书笔记 · 点击打开小红书</div>
+                  <div style={{fontSize:12,color:"#ff2442",fontWeight:600,marginTop:7}}>打开小红书 ↗</div>
+                </div>
+              </div>
+            ) : i.meta?.shopeeProductShare === "true" ? (
               <div style={{width:250,maxWidth:"68vw",background:"#fff",color:"#222",borderRadius:9,overflow:"hidden",textAlign:"left",boxShadow:"0 1px 3px rgba(0,0,0,.12)"}}>
                 {(i.meta.productImage || i.media) && <img src={i.meta.productImage || i.media} alt={i.meta.productName || "蝦皮商品"} style={{display:"block",width:"100%",height:170,objectFit:"contain",background:"#f7f7f7"}}/>}
                 <div style={{padding:"10px 12px"}}>
@@ -1673,6 +1682,19 @@ export function WeChatSkin(p: SkinProps) {
     }
   }, [catRescueRaw]);
   const allItems = [...p.items, ...catRescue.messages];
+  const malaysiaAftershowArrivalConfirmed = allItems.some(item =>
+    item.id === "malaysia-aftershow-dag-coming-v1" && item.sender === "大G" && item.body.trim() === "好，我马上就来。"
+  );
+  const malaysiaAftershowBroccoliLinkDelivered = allItems.some(item => item.id === "malaysia-aftershow-broccoli-link-v1");
+  useEffect(() => {
+    if (!malaysiaAftershowArrivalConfirmed || malaysiaAftershowBroccoliLinkDelivered) return;
+    setPendingCatLines(current => [
+      ...current,
+      {id:"malaysia-aftershow-broccoli-link-v1",sender:"西蓝花",body:"吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹",thread:"西蓝花",kind:"event",media:"https://resource02.ulifestyle.com.hk/ulcms/content/article/image/w600/2026/04/20260421100543_5e8c7e33c9217b9b3d9ef3c0257f5d3070ecc11c.jpg",meta:{redbookShare:"true",redbookUrl:"https://www.xiaohongshu.com/search_result?keyword="+encodeURIComponent("吉隆坡偶遇五月天怪兽 旁边那个女生是谁")}},
+      {id:"malaysia-aftershow-broccoli-panic-v1",sender:"西蓝花",body:"妈的，你们吃饭被看到了！！这咋办啊！",thread:"西蓝花"},
+    ]);
+  }, [malaysiaAftershowArrivalConfirmed, malaysiaAftershowBroccoliLinkDelivered, allItems, setPendingCatLines]);
+
   const malaysiaPickupInstructionDelivered = allItems.some(item =>
     item.id === "malaysia-patrick-arrival-07" &&
     item.sender === "Patrick 小杨" &&
