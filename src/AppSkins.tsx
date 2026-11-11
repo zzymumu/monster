@@ -2597,7 +2597,7 @@ export function WeChatSkin(p: SkinProps) {
     if (repairedMessages.length !== catRescue.messages.length) {
       setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repairedMessages }));
     }
-    if (malaysiaDaGChatStage > 52) setMalaysiaDaGChatStage(52);
+    // Do not clamp later stages: 53/54 are the intentional goodbye/Shopee handoff.
     setMalaysiaDaGGuitarChatMigratedV1(true);
   }, [malaysiaDaGGuitarChatMigratedV1, catRescue.messages, catRescue, malaysiaDaGChatStage]);
   const malaysiaDaGChatTurns: Array<{user:string[];incoming:string[]}> = [
@@ -2717,7 +2717,7 @@ export function WeChatSkin(p: SkinProps) {
     let latestLaterTurn = -1;
     for (const item of allMessages) {
       if (item.sender !== "我" || item.meta?.storyThread !== "大G") continue;
-      const match = /^malaysia-dag-user-(\\d+)-0$/.exec(item.id);
+      const match = /^malaysia-dag-user-(\d+)-0$/.exec(item.id);
       if (!match) continue;
       const turnIndex = Number(match[1]);
       if (turnIndex >= 50) latestLaterTurn = Math.max(latestLaterTurn, turnIndex);
