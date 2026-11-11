@@ -6804,13 +6804,36 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && !malaysiaPatrickContactReplySent && (
+              {p.thread.trim().includes("Patrick") && ![...p.items, ...catRescue.messages].some(item =>
+                item.body.trim() === "到后直接微信我就好。" &&
+                (item.title === "Patrick 小杨" || item.meta?.storyThread === "Patrick 小杨")
+              ) && (
                 <div className="cat-rescue-choices" aria-label="Patrick 行程确认回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
-                    appendCatLines([
-                      {id:"malaysia-patrick-reply-01",sender:"我",body:"好的收到~谢谢哦！明天我们到大马怎么联系你呀？",thread:"Patrick 小杨"},
-                      {id:"malaysia-patrick-reply-02",sender:"Patrick 小杨",body:"到后直接微信我就好。",thread:"Patrick 小杨"},
-                    ],catRescue.stage,catRescue.branch,"malaysia-patrick-contact-confirm");
+                    const existing = [...p.items, ...catRescue.messages];
+                    const outgoingBody = "好的收到~谢谢哦！明天我们到大马怎么联系你呀？";
+                    const incomingBody = "到后直接微信我就好。";
+                    const additions: Item[] = [];
+                    if (!existing.some(item => item.sender === "我" && item.body.trim() === outgoingBody &&
+                      (item.title === "Patrick 小杨" || item.meta?.storyThread === "Patrick 小杨"))) {
+                      additions.push(makeItem({
+                        id:"malaysia-patrick-contact-user-v2",title:"Patrick 小杨",sender:"我",body:outgoingBody,
+                        time:"2026-11-02 "+(storyClockRef.current||"14:24"),outgoing:true,avatar:"",kind:"text",media:"",
+                        meta:{storyId:"cat-rescue",storyThread:"Patrick 小杨",storyOrderAt:String(Date.now())}
+                      }));
+                    }
+                    if (!existing.some(item => item.sender === "Patrick 小杨" && item.body.trim() === incomingBody &&
+                      (item.title === "Patrick 小杨" || item.meta?.storyThread === "Patrick 小杨"))) {
+                      additions.push(makeItem({
+                        id:"malaysia-patrick-contact-driver-v2",title:"Patrick 小杨",sender:"Patrick 小杨",body:incomingBody,
+                        time:"2026-11-02 "+(storyClockRef.current||"14:24"),outgoing:false,avatar:"",kind:"text",media:"",
+                        meta:{storyId:"cat-rescue",storyThread:"Patrick 小杨",storyOrderAt:String(Date.now()+1)}
+                      }));
+                    }
+                    if (additions.length) {
+                      setCatRescueRaw(JSON.stringify({...catRescue,version:2,messages:[...catRescue.messages,...additions]}));
+                    }
+                    setPendingCatLines([]);
                     setMalaysiaCoordinationStage(1);
                   }}>好的收到~谢谢哦！明天我们到大马怎么联系你呀？</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
