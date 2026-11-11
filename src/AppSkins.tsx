@@ -3180,7 +3180,13 @@ export function WeChatSkin(p: SkinProps) {
   const hasOpeningQuestionInRenderedThread = threadItems.some((item) =>
     item.sender === "西蓝花" && item.body.trim() === openingQuestionBody
   );
-  if (isBroccoliThread && catRescue.stage === 0 && hasCatRescueOpeningSeed && !hasOpeningQuestionInRenderedThread) {
+  // Base the trigger on the exact list that MessageList will render, not
+  // allItems: old saves can keep the seed in a legacy transcript source that
+  // is merged into the visible thread but is absent from allItems.
+  const hasOpeningSeedInRenderedThread = threadItems.some((item) =>
+    item.sender === "我" && item.body.trim() === "救命，我在路边碰到了一只小黑猫好喜欢啊啊啊"
+  );
+  if (isBroccoliThread && catRescue.stage === 0 && hasOpeningSeedInRenderedThread && !hasOpeningQuestionInRenderedThread) {
     const openingQuestion = makeItem({
       id: "cat-rescue-opening-question-render-v5",
       title: "西蓝花",
@@ -6712,7 +6718,7 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               {!milkTeaGiftStoryActive && !postPickupGoodbyeSent && catChoices.length > 0 &&
-                !(isBroccoliThread && catRescue.stage === 0 && hasCatRescueOpeningSeed && !threadItems.some((item) => item.sender === "西蓝花" && item.body.trim() === "你在哪里碰到的？")) && (
+                !(isBroccoliThread && catRescue.stage === 0 && hasOpeningSeedInRenderedThread && !threadItems.some((item) => item.sender === "西蓝花" && item.body.trim() === "你在哪里碰到的？")) && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
