@@ -423,7 +423,7 @@ export function RedbookSkin(p: Props) {
   ];
   if (p.ui?.redbookMalaysiaEncounterPostV1 === "show") {
     return (
-      <div className="catalog-skin redbook-ui redbook-dark" style={{background:"#111116",color:"#f4f4f5",height:"100%",minHeight:0,width:"100%",margin:0,padding:0,border:0,outline:0,boxSizing:"border-box",overflow:"hidden",display:"flex",flexDirection:"column"}}>
+      <div className="catalog-skin redbook-ui redbook-dark redbook-encounter-detail" style={{background:"#111116",color:"#f4f4f5",height:"100%",minHeight:0,width:"100%",margin:0,padding:0,border:0,outline:0,boxSizing:"border-box",overflow:"hidden",display:"flex",flexDirection:"column"}}>
         <div className="catalog-scroll" style={{flex:1,overflowY:"auto",padding:"14px 16px 90px",margin:0,border:0,boxSizing:"border-box"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
             <img src={encounterAvatars[0]} alt="发帖人头像" style={{width:42,height:42,borderRadius:"50%",objectFit:"cover"}}/>
