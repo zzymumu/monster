@@ -6787,70 +6787,57 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage >= 7 && malaysiaCoordinationStage <= 14 && (
+              {isMonsterThread && malaysiaCoordinationStage >= 7 && malaysiaCoordinationStage <= 13 && (
                 <div className="cat-rescue-choices" aria-label="榴莲聊天回复选项">
-                  {([
-                    ["就是很好吃诶！！哼哼，我要去吃一吨！","你要去大马？"],
-                    ["没有没有，我意思是你帮我吃。","才不要咧！"],
-                    ["🥺","....有空的话我会试试看。"],
-                    ["吃猫山王！猫山王！！！！","妳到底為什麼這麼喜歡榴槤啦。"],
-                    ["因为真的很好吃啊！！","我真的不懂。"],
-                    ["你不懂欣赏！","好好好。"],
-                    ["留給妳吃，我不跟妳搶。","这还差不多！"],
-                    ["不過妳真的很奇怪欸。","怎麼有人可以為了榴槤這麼激動哈哈哈。"],
-                  ] as string[][])[malaysiaCoordinationStage-7] && (
-                    <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
-                      const pairs=[
-                        ["就是很好吃诶！！哼哼，我要去吃一吨！","你要去大马？"],
-                        ["没有没有，我意思是你帮我吃。","才不要咧！"],
-                        ["🥺","....有空的话我会试试看。"],
-                        ["吃猫山王！猫山王！！！！","妳到底為什麼這麼喜歡榴槤啦。"],
-                        ["因为真的很好吃啊！！","我真的不懂。"],
-                        ["你不懂欣赏！","好好好。"],
-                        ["留給妳吃，我不跟妳搶。","这还差不多！"],
-                        ["不過妳真的很奇怪欸。","怎麼有人可以為了榴槤這麼激動哈哈哈。"],
-                      ];
-                      const pair=pairs[malaysiaCoordinationStage-7];
-                      appendCatLines([{id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-u",sender:"我",body:pair[0],thread:"大G"},{id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-i",sender:"大G",body:pair[1],thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-durian-"+malaysiaCoordinationStage);
-                      setMalaysiaCoordinationStage(malaysiaCoordinationStage+1);
-                    }}>{([
-                      "就是很好吃诶！！哼哼，我要去吃一吨！",
-                      "没有没有，我意思是你帮我吃。",
-                      "🥺",
-                      "吃猫山王！猫山王！！！！",
-                      "因为真的很好吃啊！！",
-                      "你不懂欣赏！",
-                      "留給妳吃，我不跟妳搶。",
-                      "不過妳真的很奇怪欸。",
-                    ])[malaysiaCoordinationStage-7]}</button>
-                  )}
+                  <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
+                    const pairs=[
+                      ["就是很好吃诶！！哼哼，我要去吃一吨！","你要去大马？"],
+                      ["没有没有，我意思是你帮我吃。","才不要咧！"],
+                      ["🥺","....有空的话我会试试看。"],
+                      ["吃猫山王！猫山王！！！！","妳到底為什麼這麼喜歡榴槤啦。"],
+                      ["因为真的很好吃啊！！","我真的不懂。"],
+                      ["你不懂欣赏！","好好好。\n留給妳吃，我不跟妳搶。"],
+                      ["这还差不多！","不過妳真的很奇怪欸。\n怎麼有人可以為了榴槤這麼激動哈哈哈。"],
+                    ];
+                    const pair=pairs[malaysiaCoordinationStage-7];
+                    appendCatLines([{id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-u",sender:"我",body:pair[0],thread:"大G"},{id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-i",sender:"大G",body:pair[1],thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-durian-"+malaysiaCoordinationStage);
+                    setMalaysiaCoordinationStage(malaysiaCoordinationStage+1);
+                  }}>{([
+                    "就是很好吃诶！！哼哼，我要去吃一吨！",
+                    "没有没有，我意思是你帮我吃。",
+                    "🥺",
+                    "吃猫山王！猫山王！！！！",
+                    "因为真的很好吃啊！！",
+                    "你不懂欣赏！",
+                    "这还差不多！",
+                  ])[malaysiaCoordinationStage-7]}</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage === 15 && (
+              {isMonsterThread && malaysiaCoordinationStage === 14 && (
                 <div className="cat-rescue-choices" aria-label="大G榴莲话题最后回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
                       {id:"malaysia-dag-durian-final-01",sender:"我",body:"喵🐱因为吃的是猫山王。",thread:"大G"},
                     ],catRescue.stage,catRescue.branch,"malaysia-dag-durian-final");
-                    setMalaysiaCoordinationStage(16);
+                    setMalaysiaCoordinationStage(15);
                   }}>喵🐱因为吃的是猫山王。</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 16 && (
+              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 15 && (
                 <div className="cat-rescue-choices" aria-label="落地后联系司机回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
                       {id:"malaysia-patrick-arrival-01",sender:"我",body:"我们落地啦",thread:"Patrick 小杨"},
                       {id:"malaysia-patrick-arrival-02",sender:"Patrick 小杨",body:"我在机场附近加油站等候出来了让我知道",thread:"Patrick 小杨"},
                     ],catRescue.stage,catRescue.branch,"malaysia-patrick-arrival");
-                    setMalaysiaCoordinationStage(17);
+                    setMalaysiaCoordinationStage(16);
                   }}>我们落地啦</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 17 && (
+              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 16 && (
                 <div className="cat-rescue-choices" aria-label="过关后联系司机回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6858,19 +6845,19 @@ export function WeChatSkin(p: SkinProps) {
                       {id:"malaysia-patrick-arrival-04",sender:"Patrick 小杨",body:"ok 我开车上来",thread:"Patrick 小杨"},
                       {id:"malaysia-patrick-arrival-05",sender:"Patrick 小杨",body:"我在1号门外车道",thread:"Patrick 小杨"},
                     ],catRescue.stage,catRescue.branch,"malaysia-patrick-exit");
-                    setMalaysiaCoordinationStage(18);
+                    setMalaysiaCoordinationStage(17);
                   }}>好，我们出来啦，过完关了</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 18 && (
+              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 17 && (
                 <div className="cat-rescue-choices" aria-label="寻找司机上车点回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
                       {id:"malaysia-patrick-arrival-06",sender:"我",body:"来了来了，有个商场，是不是得下楼？",thread:"Patrick 小杨"},
                       {id:"malaysia-patrick-arrival-07",sender:"Patrick 小杨",body:"不要下楼，往前直走",thread:"Patrick 小杨"},
                     ],catRescue.stage,catRescue.branch,"malaysia-patrick-pickup");
-                    setMalaysiaCoordinationStage(19);
+                    setMalaysiaCoordinationStage(18);
                   }}>来了来了，有个商场，是不是得下楼？</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
