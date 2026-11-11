@@ -6252,3 +6252,38 @@
 .shopee-share-contacts button{min-width:72px}
 .shopee-share-contacts button img{width:52px;height:52px;border-radius:14px;object-fit:cover;background:#f4f4f4;display:block}
 .shopee-share-contacts button span{width:auto;height:auto;border-radius:0;background:transparent;display:block;place-items:initial;font-size:13px;color:#333;white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis}
+
+
+/* Xiaohongshu encounter note: remove the generic catalog screen's white inset. */
+.app-screen:has(.redbook-encounter-detail) {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: #111116 !important;
+  box-shadow: none !important;
+}
+.app-screen:has(.redbook-encounter-detail) > * {
+  border-top: 0 !important;
+}
+.phone-screen:has(.redbook-encounter-detail) .status-bar {
+  background: #19191f !important;
+  color: #f6f6f8 !important;
+}
+.phone-screen:has(.redbook-encounter-detail) .home-indicator {
+  background: #f4f4f6 !important;
+}
+.redbook-encounter-detail,
+.redbook-encounter-detail > .catalog-scroll {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+.redbook-encounter-detail > .catalog-scroll {
+  background: #111116 !important;
+  scrollbar-width: none;
+}
