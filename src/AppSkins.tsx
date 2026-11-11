@@ -2460,6 +2460,16 @@ export function WeChatSkin(p: SkinProps) {
   // Separate Malaysia follow-up story. Never reuse returnDinnerStage: that
   // state drives older scenes and must remain untouched.
   const [malaysiaDaGChatStage, setMalaysiaDaGChatStage] = useSkinState<number>(p, "wxMalaysiaDaGChatStageV1", -1);
+  const postBathGoodbyeAlreadySent = [...p.items, ...catRescue.messages].some((item) =>
+    item.body.trim() === "活该！不跟你说了我要去洗澡，债见！"
+  );
+  useEffect(() => {
+    if (!isMonsterThread || !postBathGoodbyeAlreadySent) return;
+    if (malaysiaDaGChatStage < 54) setMalaysiaDaGChatStage(54);
+    if (p.ui?.wxMalaysiaDaGPostBathAwaitShopeeV1 !== true) {
+      p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1", true);
+    }
+  }, [isMonsterThread, postBathGoodbyeAlreadySent, malaysiaDaGChatStage, p.ui?.wxMalaysiaDaGPostBathAwaitShopeeV1]);
   const [malaysiaDaGPostOrderUnlocked, setMalaysiaDaGPostOrderUnlocked] = useSkinState<boolean>(p, "wxMalaysiaDaGPostOrderUnlockedV1", false);
   useEffect(() => {
     if (!isMonsterThread || malaysiaDaGChatStage !== 42 || p.allUi?.shopee?.shopeeStoryOrderViewedV1 !== true) return;
@@ -2645,6 +2655,23 @@ export function WeChatSkin(p: SkinProps) {
     {"user":["....哦！！！！那我要再买一把！凑八把！！！"],"incoming":["哈哈哈哈哈哈哈哈哈哈哈哈哈哈"]},
     {"user":["啊啊啊啊啊啊不准再笑了！！！"],"incoming":["哎呦，都怪你，我手机都摔了。"]},
     {"user":["活该！不跟你说了我要去洗澡，债见！"],"incoming":[]},
+    {user:["罐头到了，我一会去拿，你今天有空吗？要不要带一半回去？"],incoming:["今天没空了啦，先放你那边好了，那就是给vava吃的。"]},
+    {user:["她哪能吃那么多....本来就13斤了，现在更得胖死。"],incoming:["这么重？那还打不过玩玩？"]},
+    {user:["对啊，谁知道呢，被打只会吱哇乱叫。"],incoming:["vava是女孩子吗？"]},
+    {user:["对，已经7岁了。"],incoming:["那你照顾的很好欸！"]},
+    {user:["是啊，我都说了我上辈子可能是养猪的....你敢想吗，我ex跟我在一起的时候胖了40斤！！40斤欸！！！！！"],incoming:["哈哈哈哈哈哈哈哈。","四十斤也太誇張了吧？","妳前任是每天三餐都在妳家報到喔？"]},
+    {user:["差不多！！","我真的觉得我有一种神奇的能力。","只要跟我待在一起，就会不知不觉胖起来。"],incoming:["那妳還蠻厲害的欸。","不過四十斤也太多了啦哈哈哈哈。"]},
+    {user:["所以我才说我是养猪专业户啊！","而且他以前还觉得自己吃得不多。"],incoming:["那妳是不是很喜歡看別人吃妳做的東西？"]},
+    {user:["对啊！","看到别人把我做的东西吃光，我会很有成就感😌"],incoming:["這樣喔。","那如果有人不小心被妳養胖了，妳會負責嗎？"]},
+    {user:["？？？？？","你怎么突然问这种问题？"],incoming:["沒有啊。","合理詢問一下而已。"]},
+    {user:["那要看是谁啊！"],incoming:["還要看人喔？"]},
+    {user:["当然！！","不是谁都有这个待遇的好吗！"],incoming:["哈哈哈哈哈哈。","看來要先排隊了。"]},
+    {user:["你排什么队啦！！"],incoming:["排隊等吃飯啊。","不然咧？"]},
+    {user:["…………","温尚翊，你真的很会给自己找台阶欸。"],incoming:["蛤？","我只是怕妳太忙，沒時間煮給我吃啊。"]},
+    {user:["我什么时候说过要煮给你吃了？"],incoming:["妳剛剛不是說，看到別人吃妳做的東西會很有成就感？","我只是在幫妳創造成就感。"]},
+    {user:["......你想得倒是挺美的🙄"],incoming:["那不然呢？","總要給我一個機會吧🥺"]},
+    {user:["看你表现咯～"],incoming:["好。","我記住了。","但妳以後還是多照顧一下自己啊。","不要光顧著照顧別人。"]},
+    {user:["知道啦～"],incoming:[]},
   ];
 
   // Repair existing saves that already sent "温尚翊！！" before the missing
@@ -6632,7 +6659,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 41 || malaysiaDaGShareQuestionDelivered) && (malaysiaDaGChatStage < 42 || malaysiaDaGPostOrderUnlocked) && (
+              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 41 || malaysiaDaGShareQuestionDelivered) && (malaysiaDaGChatStage < 42 || malaysiaDaGPostOrderUnlocked) && (malaysiaDaGChatStage !== 54 || p.ui?.wxMalaysiaDaGPostBathShopeeOpenedV1 === true) && (
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
@@ -6640,6 +6667,16 @@ export function WeChatSkin(p: SkinProps) {
                     // flow. Persist the player's bubble with a stable ID and
                     // queue DaG's acknowledgement explicitly, rather than
                     // relying on the generic mixed-chat append path.
+                    if(malaysiaDaGChatStage===53){
+                      const goodbyeId="malaysia-dag-user-53-0";
+                      const alreadySent=[...p.items,...catRescue.messages].some(item=>item.body.trim()==="活该！不跟你说了我要去洗澡，债见！");
+                      if(!alreadySent){
+                        appendCatLines([{id:goodbyeId,sender:"我",body:turn.user[0],thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-chat-goodbye-53");
+                      }
+                      p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1",true);
+                      setMalaysiaDaGChatStage(54);
+                      return;
+                    }
                     if(malaysiaDaGChatStage===41){
                       const replyId="malaysia-dag-user-41-0";
                       const acknowledgementId="malaysia-dag-incoming-41-0";
@@ -6661,6 +6698,10 @@ export function WeChatSkin(p: SkinProps) {
                       }
                       setMalaysiaDaGChatStage(42);
                       return;
+                    }
+                    if(malaysiaDaGChatStage===54){
+                      p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1",false);
+                      p.onUi?.("wxMalaysiaDaGPostBathShopeeOpenedV1",false);
                     }
                     const lines:CatLine[]=[
                       ...turn.user.map((body,index)=>({id:"malaysia-dag-user-"+malaysiaDaGChatStage+"-"+index,sender:"我" as const,body,thread:"大G" as const})),
