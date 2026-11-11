@@ -7104,6 +7104,23 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
+              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 18 &&
+                malaysiaConcertChatStage === malaysiaConcertTurns.length &&
+                allItems.some(item => item.id === "malaysia-concert-midshow-incoming-8-0" && item.body.trim() === "嗯，等一下見。") &&
+                !allItems.some(item => item.id === "malaysia-patrick-after-show-question-v1") &&
+                pendingCatLines.filter(line => line.thread === "Patrick 小杨").length === 0 && (
+                <div className="cat-rescue-choices" aria-label="演唱会结束后联系小杨">
+                  <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
+                    appendCatLines([
+                      {id:"malaysia-patrick-after-show-question-v1",sender:"我",body:"我们结束了，去哪里找你？",thread:"Patrick 小杨"},
+                      {id:"malaysia-patrick-after-show-location-v1",sender:"Patrick 小杨",body:"",thread:"Patrick 小杨",kind:"event",meta:{locationName:"Bukit Jalil National Stadium",locationAddress:"Jalan Barat, Bukit Jalil, 57000 Kuala Lumpur, Malaysia"}},
+                      {id:"malaysia-patrick-after-show-rush-v1",sender:"Patrick 小杨",body:"我就在外面，你们快点出来喔，保全在催了。",thread:"Patrick 小杨"},
+                    ],catRescue.stage,catRescue.branch,"malaysia-patrick-after-show-v1");
+                    setMalaysiaCoordinationStage(19);
+                  }}>我们结束了，去哪里找你？</button>
+                  <div className="cat-rescue-option-hint">点击发送你的回复</div>
+                </div>
+              )}
               {isMonsterThread && malaysiaConcertChatStage >= 0 && malaysiaConcertChatStage < malaysiaConcertTurns.length && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="演唱会中场微信回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
