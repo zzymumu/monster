@@ -35,17 +35,22 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[66]).toHaveLength(0);
   });
 
-  it("keeps the Vava isolation objection and then takes the kitten to the clinic", () => {
-    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.nextStage === 1)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.lines[0].body.includes("帶") && !/隔離/.test(choice.lines[0].body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.lines[1].body.includes("Vava") && /傳染病/.test(choice.lines[1].body))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[1].some((choice) => /隔离|隔離/.test(choice.label))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[1].every((choice) => choice.nextStage === 2)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.nextStage === 3)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.lines.some((line) => /醫院|医院/.test(line.body)))).toBe(true);
-    expect(CAT_RESCUE_CHOICES[0].every((choice) => choice.nextStage === 1)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[1].every((choice) => choice.nextStage === 2)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[2].every((choice) => choice.nextStage === 3)).toBe(true);
+  it("keeps the rewritten opening, Vava isolation objection, and clinic route", () => {
+    expect(CAT_RESCUE_CHOICES[0]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[0][0].nextStage).toBe(1);
+    expect(CAT_RESCUE_CHOICES[0][0].lines.map((line) => line.body)).toContain("结果它居然主动跑过来蹭我的腿！！");
+    expect(CAT_RESCUE_CHOICES[1][0].nextStage).toBe(2);
+    expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => line.body === "hold on hold on🤺")).toBe(true);
+    expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => /Vava/.test(line.body) && /传染病/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[2][0].nextStage).toBe(3);
+    expect(CAT_RESCUE_CHOICES[2][0].lines.some((line) => line.body.includes("不是简单关个门就好的事情"))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[3][0].nextStage).toBe(12);
+    expect(CAT_RESCUE_CHOICES[3][0].lines.some((line) => /带它去医院/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[12][0].nextStage).toBe(30);
+    expect(CAT_RESCUE_CHOICES[30][0].nextStage).toBe(31);
+    expect(CAT_RESCUE_CHOICES[31][0].nextStage).toBe(4);
+    expect(CAT_RESCUE_CHOICES[4][0].nextStage).toBe(5);
+    expect(CAT_RESCUE_CHOICES[5][0].nextStage).toBe(8);
     for (const obsoleteStage of [67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 80, 81]) {
       expect(CAT_RESCUE_CHOICES[obsoleteStage]).toBeUndefined();
     }
@@ -106,7 +111,7 @@ describe("WeChat cat-rescue story configuration", () => {
 
   it("offers player-controlled replies at every active story turn", () => {
     const systemOrTerminalStages = new Set([8, 13, 57, 66]);
-    const intentionalSingleChoiceStages = new Set([25, 82, 85, 86, 87]);
+    const intentionalSingleChoiceStages = new Set([0, 1, 2, 3, 4, 5, 12, 30, 31, 25, 82, 85, 86, 87]);
     for (const [stage, choices] of Object.entries(CAT_RESCUE_CHOICES)) {
       if (systemOrTerminalStages.has(Number(stage))) continue;
       const expectedCount = intentionalSingleChoiceStages.has(Number(stage)) ? 1 : 2;
@@ -115,13 +120,13 @@ describe("WeChat cat-rescue story configuration", () => {
   });
 
   it("shows two reply choices immediately after Broccoli asks whether the user arrived", () => {
-    expect(CAT_RESCUE_CHOICES[12]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[12]).toHaveLength(1);
     expect(CAT_RESCUE_CHOICES[12].every((choice) => choice.nextStage === 30)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[30]).toHaveLength(2);
+    expect(CAT_RESCUE_CHOICES[30]).toHaveLength(1);
     expect(CAT_RESCUE_CHOICES[30][1].lines[0].body).not.toContain("玩玩");
     expect(CAT_RESCUE_CHOICES[30].every((choice) => choice.nextStage === 31)).toBe(true);
-    expect(CAT_RESCUE_CHOICES[31]).toHaveLength(2);
-    expect(CAT_RESCUE_CHOICES[31].every((choice) => choice.nextStage === 46)).toBe(true);
+    expect(CAT_RESCUE_CHOICES[31]).toHaveLength(1);
+    expect(CAT_RESCUE_CHOICES[31].every((choice) => choice.nextStage === 4)).toBe(true);
     expect(CAT_RESCUE_CHOICES[31].every((choice) => !choice.lines[0].body.includes("！！！！"))).toBe(true);
     for (const stage of [46, 47, 48, 49, 50, 51, 52]) expect(CAT_RESCUE_CHOICES[stage]).toHaveLength(2);
     expect(CAT_RESCUE_CHOICES[46].every((choice) => choice.nextStage === 47)).toBe(true);
