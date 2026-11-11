@@ -6791,16 +6791,19 @@ export function WeChatSkin(p: SkinProps) {
                 <div className="cat-rescue-choices" aria-label="榴莲聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const pairs=[
-                      ["就是很好吃诶！！哼哼，我要去吃一吨！","你要去大马？"],
-                      ["没有没有，我意思是你帮我吃。","才不要咧！"],
-                      ["🥺","....有空的话我会试试看。"],
-                      ["吃猫山王！猫山王！！！！","妳到底為什麼這麼喜歡榴槤啦。"],
-                      ["因为真的很好吃啊！！","我真的不懂。"],
-                      ["你不懂欣赏！","好好好。\n留給妳吃，我不跟妳搶。"],
-                      ["这还差不多！","不過妳真的很奇怪欸。\n怎麼有人可以為了榴槤這麼激動哈哈哈。"],
+                      ["就是很好吃诶！！哼哼，我要去吃一吨！",["你要去大马？"]],
+                      ["没有没有，我意思是你帮我吃。",["才不要咧！"]],
+                      ["🥺",["....有空的话我会试试看。"]],
+                      ["吃猫山王！猫山王！！！！",["妳到底為什麼這麼喜歡榴槤啦。"]],
+                      ["因为真的很好吃啊！！",["我真的不懂。"]],
+                      ["你不懂欣赏！",["好好好。","留給妳吃，我不跟妳搶。"]],
+                      ["这还差不多！",["不過妳真的很奇怪欸。","怎麼有人可以為了榴槤這麼激動哈哈哈。"]],
                     ];
                     const pair=pairs[malaysiaCoordinationStage-7];
-                    appendCatLines([{id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-u",sender:"我",body:pair[0],thread:"大G"},{id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-i",sender:"大G",body:pair[1],thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-durian-"+malaysiaCoordinationStage);
+                    appendCatLines([
+                      {id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-u",sender:"我",body:pair[0],thread:"大G"},
+                      ...pair[1].map((body,index)=>({id:"malaysia-dag-durian-"+malaysiaCoordinationStage+"-i-"+index,sender:"大G" as const,body,thread:"大G" as const})),
+                    ],catRescue.stage,catRescue.branch,"malaysia-dag-durian-"+malaysiaCoordinationStage);
                     setMalaysiaCoordinationStage(malaysiaCoordinationStage+1);
                   }}>{([
                     "就是很好吃诶！！哼哼，我要去吃一吨！",
