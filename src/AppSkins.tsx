@@ -2707,25 +2707,29 @@ export function WeChatSkin(p: SkinProps) {
     {user:["知道啦～"],incoming:[]},
   ];
 
-  // Recover older saves where the transcript has already advanced into the
-  // post-cat-can relationship / guitar conversation, but the persisted stage
-  // was left at the old canned-food index (42). The visible transcript is the
-  // source of truth here: never show the cat-can reply over a later sent turn.
+  // Recover old saves from the actual player-authored transcript.
+  // appendCatLines assigns fresh IDs to outgoing bubbles, so stage IDs are not
+  // reliable here. Match complete user turns by their exact visible text.
   useEffect(() => {
     if (!isMonsterThread || pendingCatLines.some(line => line.thread === "大G" || line.thread === "温尚翊")) return;
-    const allMessages = [...p.items, ...catRescue.messages];
-    let latestLaterTurn = -1;
-    for (const item of allMessages) {
-      if (item.sender !== "我" || item.meta?.storyThread !== "大G") continue;
-      const match = /^malaysia-dag-user-(\d+)-0$/.exec(item.id);
-      if (!match) continue;
-      const turnIndex = Number(match[1]);
-      if (turnIndex >= 50) latestLaterTurn = Math.max(latestLaterTurn, turnIndex);
+    const sentPlayerBodies = new Set(
+      [...p.items, ...catRescue.messages]
+        .filter(item => item.sender === "我" && item.meta?.storyThread === "大G")
+        .map(item => item.body.trim())
+    );
+    let latestCompletedTurn = -1;
+    // Only inspect the relationship / guitar section. The distinctive full
+    // user turns prevent old repeated punctuation from advancing the stage.
+    for (let index = 50; index <= 53 && index < malaysiaDaGChatTurns.length; index += 1) {
+      const turn = malaysiaDaGChatTurns[index];
+      if (turn.user.every(body => sentPlayerBodies.has(body.trim()))) {
+        latestCompletedTurn = index;
+      }
     }
-    if (latestLaterTurn >= 50 && malaysiaDaGChatStage <= 42) {
-      setMalaysiaDaGChatStage(latestLaterTurn + 1);
+    if (latestCompletedTurn >= 50 && malaysiaDaGChatStage <= 42) {
+      setMalaysiaDaGChatStage(latestCompletedTurn + 1);
     }
-  }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines]);
+  }, [isMonsterThread, malaysiaDaGChatStage, p.items, catRescue.messages, pendingCatLines, malaysiaDaGChatTurns]);
 
   // Repair existing saves that already sent "温尚翊！！" before the missing
   // follow-up question was added to this turn. Insert only that one message
