@@ -681,7 +681,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   4: [
-    { id: "notice-tag", label: "欸，等一下！我好像发现了什么", nextStage: 8, lines: [
+    { id: "notice-tag", label: "欸，等一下！我好像发现了什么", nextStage: 5, lines: [
       { sender: "我", body: "欸，等一下！！", thread: "西蓝花" },
       { sender: "我", body: "我刚刚好像发现了什么！", thread: "西蓝花" },
       { sender: "西蓝花", body: "怎么了？", thread: "西蓝花" },
@@ -722,7 +722,9 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   5: [
-    { id: "add-owner-wechat", label: "好，我试试看添加这个微信号", nextStage: 8, lines: [] },
+    { id: "add-owner-wechat", label: "好，我试试看添加这个微信号", nextStage: 8, lines: [
+      { sender: "我", body: "好，我试试看添加这个微信号。", thread: "西蓝花" },
+    ] },
   ],
   10: [
     { id: "talk-about-day", label: "先聊点别的吧，你今天不是说有件事要跟我讲？", nextStage: 0, lines: [
