@@ -346,13 +346,13 @@ export function RedbookSkin(p: Props) {
   const [encounterShareOpen, setEncounterShareOpen] = useState(false);
   const [encounterFollowed, setEncounterFollowed] = useState(false);
   const wechatUi = p.allUi?.wechat ?? {};
-  let encounterRemarks = {};
+  let encounterRemarks: Record<string, string> = {};
   try {
     const parsed = JSON.parse(String(wechatUi.wxContactRemarks || "{}"));
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) encounterRemarks = parsed;
   } catch {}
-  const encounterDisplayName = (canonical) => String(encounterRemarks[canonical] || canonical).trim() || canonical;
-  const encounterShareToWechat = (recipient) => {
+  const encounterDisplayName = (canonical: string) => String(encounterRemarks[canonical] || canonical).trim() || canonical;
+  const encounterShareToWechat = (recipient: string) => {
     const payload = { id:"redbook-post-share-"+Date.now(), type:"redbookPost", recipient, name:"吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹", title:"吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹", image:"https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg", url:"monster://redbook/malaysia-encounter" };
     p.onAppUi?.("wechat","shopeeSharePayload",JSON.stringify(payload));
     setEncounterShareOpen(false);
