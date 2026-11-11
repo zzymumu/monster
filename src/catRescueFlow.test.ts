@@ -41,7 +41,8 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[0][0].lines.map((line) => line.body)).toContain("结果它居然主动跑过来蹭我的腿！！");
     expect(CAT_RESCUE_CHOICES[1][0].nextStage).toBe(2);
     expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => line.body === "hold on hold on🤺")).toBe(true);
-    expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => /Vava/.test(line.body) && /传染病/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => /Vava/.test(line.body))).toBe(true);
+    expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => /传染病/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[2][0].nextStage).toBe(3);
     expect(CAT_RESCUE_CHOICES[2][0].lines.some((line) => line.body.includes("不是简单关个门就好的事情"))).toBe(true);
     expect(CAT_RESCUE_CHOICES[3][0].nextStage).toBe(12);
@@ -118,11 +119,11 @@ describe("WeChat cat-rescue story configuration", () => {
     }
   });
 
-  it("shows two reply choices immediately after Broccoli asks whether the user arrived", () => {
+  it("keeps the single-choice carrier and hospital arrival flow", () => {
     expect(CAT_RESCUE_CHOICES[12]).toHaveLength(1);
     expect(CAT_RESCUE_CHOICES[12].every((choice) => choice.nextStage === 30)).toBe(true);
     expect(CAT_RESCUE_CHOICES[30]).toHaveLength(1);
-    expect(CAT_RESCUE_CHOICES[30][1].lines[0].body).not.toContain("玩玩");
+    expect(CAT_RESCUE_CHOICES[30][0].lines.some((line) => line.body.includes("玩玩"))).toBe(false);
     expect(CAT_RESCUE_CHOICES[30].every((choice) => choice.nextStage === 31)).toBe(true);
     expect(CAT_RESCUE_CHOICES[31]).toHaveLength(1);
     expect(CAT_RESCUE_CHOICES[31].every((choice) => choice.nextStage === 4)).toBe(true);
