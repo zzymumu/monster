@@ -6810,14 +6810,18 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {isPatrickThread && ![...p.items, ...catRescue.messages].some(item => item.id === "malaysia-patrick-contact-user-v2") && (
+              {isPatrickThread && malaysiaCoordinationStage === 0 && ![...p.items, ...catRescue.messages].some(item =>
+                item.sender === "我" &&
+                item.body.trim() === "好的收到~谢谢哦！明天我们到大马怎么联系你呀？" &&
+                (item.title === "Patrick 小杨" || item.meta?.storyThread === "Patrick 小杨")
+              ) && (
                 <div className="cat-rescue-choices" aria-label="Patrick 行程确认回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
                       {id:"malaysia-patrick-contact-user-v2",sender:"我",body:"好的收到~谢谢哦！明天我们到大马怎么联系你呀？",thread:"Patrick 小杨"},
                       {id:"malaysia-patrick-contact-driver-v2",sender:"Patrick 小杨",body:"到后直接微信我就好。",thread:"Patrick 小杨"},
                     ],catRescue.stage,catRescue.branch,"malaysia-patrick-contact-confirm-v2");
-                    setPendingCatLines([]);
+                    // Keep the queued incoming driver reply; appendCatLines schedules it.
                     setMalaysiaCoordinationStage(1);
                     setMalaysiaPatrickContactChoiceSent(true);
                   }}>好的收到~谢谢哦！明天我们到大马怎么联系你呀？</button>
