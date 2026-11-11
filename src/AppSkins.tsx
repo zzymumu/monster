@@ -2541,16 +2541,28 @@ export function WeChatSkin(p: SkinProps) {
     }, 10000);
     return () => window.clearTimeout(timer);
   }, [malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, malaysiaConcertOpeningDelivered, malaysiaConcertOpeningPending, pendingCatLinesRaw]);
+  // One new player-response beat was inserted after DaG's surprised reaction.
+  // Migrate only this scene's saved stage index so existing progress stays aligned.
+  const [malaysiaConcertStageExpandedV1, setMalaysiaConcertStageExpandedV1] = useSkinState<boolean>(p, "wxMalaysiaConcertStageExpandedV1", false);
+  useEffect(() => {
+    if (malaysiaConcertStageExpandedV1 || malaysiaConcertChatStage <= 0) return;
+    setMalaysiaConcertChatStage(malaysiaConcertChatStage + 1);
+    setMalaysiaConcertStageExpandedV1(true);
+  }, [malaysiaConcertStageExpandedV1, malaysiaConcertChatStage, setMalaysiaConcertChatStage, setMalaysiaConcertStageExpandedV1]);
   const malaysiaConcertTurns: Array<{user:string[]; incoming:string[]}> = [
-    {user:["嘻嘻~","被你发现了。"],incoming:["妳喔……","我之前說要給妳票，妳又不要。","現在倒好，偷偷跑來了。"]},
+    {user:["嘻嘻~","被你发现了。"],incoming:["欸？？？","妳真的來了喔？","妳差點嚇死我啊，我還以為看到鬼了。"]},
+    {user:["？？？？？","我又沒死！","你在瞎說什麼啦！"],incoming:["不是啦，妳不是說不來了嗎？","之前說要給妳票，又不要。","現在倒好，偷偷跑來了。"]},
     {user:["嘿嘿。","我这不是想给你一个惊喜嘛！","怎么样？惊不惊喜？"],incoming:["妳真的很會。","不過這算什麼驚喜，根本是突然襲擊吧。"]},
-    {user:["惊喜当然要出其不意啊！"],incoming:["算你厉害。","我承認有被妳驚喜到。"]},
-    {user:["那你开不开心嘛！"],incoming:["开心啊，开心到差点弹错音。"]},
-    {user:["不要甩锅，这个锅很大！"],incoming:["😕","就怪你。"]},
-    {user:["不可以！接下来我要考核你了哦，团长大人~"],incoming:["蛤？考核什麽？","我都不知道今天還有這個任務欸。"]},
-    {user:["突然有的，免得你弹错音往我身上推🙄"],incoming:["那我要打起百分之两百的精神来。","不然等一下有人看完演出要給我打低分了。"]},
-    {user:["知道就好😎"],incoming:["哈哈哈哈。","好啦，vcr要结束了，我真的要去準備。","等我忙完再找妳。"]},
-    {user:["好！快去吧！","加油！！"],incoming:["嗯，等一下見。"]},
+    {user:["惊喜当然要出其不意啊！"],incoming:["好好好。","算妳厲害。","我承認有被妳驚喜到。"]},
+    {user:["那你开不开心嘛！"],incoming:["開心啊。","開心到差點彈錯音。"]},
+    {user:["不要甩锅！","这个锅很大！"],incoming:["😕","就怪妳。","我本來好好的，看到妳整個人都亂了。"]},
+    {user:["？？？","你不要什么都赖我！","明明是你自己定力不够！"],incoming:["好喔。","那下次我就不看妳了。"]},
+    {user:["你敢！"],incoming:["哈哈哈哈哈哈。","好啦，不逗妳了。"]},
+    {user:["那接下来换我了哦~我要考核你了，团长大人~"],incoming:["蛤？","考核什麽？","我都不知道今天還有這個任務欸。"]},
+    {user:["突然有的，免得你弹错音往我身上推🙄"],incoming:["這樣喔？","那我要打起百分之兩百的精神來。","不然等一下有人看完演出要給我打低分了。"]},
+    {user:["知道就好😎"],incoming:["哈哈哈哈。","妳真的很會找事情給我做。","我現在連上台都要先通過妳的考核了是不是？"]},
+    {user:["那当然！","团长大人可要好好表现哦！"],incoming:["好啦好啦。","我會努力的，考官大人。","啊，VCR要結束了，我真的要去準備。","等我忙完再找妳。"]},
+    {user:["好！快去吧！我会一直看着你哦！！","加油！！"],incoming:["嗯，等一下見。"]},
   ];
 
   const malaysiaDurianTurnIsDelivered = (stage: number) =>
