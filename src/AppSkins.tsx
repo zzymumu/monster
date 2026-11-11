@@ -1678,16 +1678,6 @@ export function WeChatSkin(p: SkinProps) {
     item.sender === "Patrick 小杨" &&
     item.body.trim() === "不要下楼，往前直走"
   );
-  useEffect(() => {
-    if (!isMonsterThread || !malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
-    setPendingCatLines(current => [
-      ...current,
-      {id:"malaysia-concert-midshow-opening-01",sender:"大G",body:"妳來了？",thread:"大G"},
-      {id:"malaysia-concert-midshow-opening-02",sender:"大G",body:"我好像看到妳了。",thread:"大G"},
-    ]);
-    setMalaysiaConcertChatStage(0);
-  }, [isMonsterThread, malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
-
   // A stage number alone is not proof that the other person’s message has
   // actually appeared in the transcript. Gate every Durian follow-up on the
   // stable IDs of the preceding incoming bubbles.
@@ -2529,6 +2519,15 @@ export function WeChatSkin(p: SkinProps) {
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
   // Separate mid-show DaG chat, unlocked only after Patrick's final pickup instruction.
   const [malaysiaConcertChatStage, setMalaysiaConcertChatStage] = useSkinState<number>(p, "wxMalaysiaConcertChatStageV1", -1);
+  useEffect(() => {
+    if (!isMonsterThread || !malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
+    setPendingCatLines(current => [
+      ...current,
+      {id:"malaysia-concert-midshow-opening-01",sender:"大G",body:"妳來了？",thread:"大G"},
+      {id:"malaysia-concert-midshow-opening-02",sender:"大G",body:"我好像看到妳了。",thread:"大G"},
+    ]);
+    setMalaysiaConcertChatStage(0);
+  }, [isMonsterThread, malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
   const malaysiaConcertTurns: Array<{user:string[]; incoming:string[]}> = [
     {user:["嘻嘻~","被你发现了。"],incoming:["妳喔……","我之前說要給妳票，妳又不要。","現在倒好，偷偷跑來了。"]},
     {user:["嘿嘿。","我这不是想给你一个惊喜嘛！","怎么样？惊不惊喜？"],incoming:["妳真的很會。","不過這算什麼驚喜，根本是突然襲擊吧。"]},
