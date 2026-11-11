@@ -748,44 +748,6 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "西蓝花", body: "去吧去吧，但不要跑，注意車！" },
     ]},
   ],
-  12: [
-    { id: "finally-in-carrier", label: "好不容易把它安抚下来，终于进外出笼了", nextStage: 30, lines: [
-      { sender: "我", body: "好不容易！牠終於安靜下來，也順利進外出籠了，我現在準備帶牠去醫院。" },
-      { sender: "西蓝花", body: "太好了！妳先確認外出籠有關好，路上小心……" },
-      { sender: "西蓝花", body: "妳到醫院了嗎？" },
-    ]},
-    { id: "staff-helped-carrier", label: "刚刚请附近的人帮忙，已经安全放进外出笼", nextStage: 30, lines: [
-      { sender: "我", body: "剛剛請旁邊的人幫忙，終於安全把牠放進外出籠了，現在要出發去醫院。" },
-      { sender: "西蓝花", body: "呼……那我放心一點了！記得把外出籠固定好。" },
-      { sender: "西蓝花", body: "妳到醫院了嗎？" },
-    ]},
-  ],
-  4: [
-    { id: "tag-check", label: "我把牌子拍給你看了，真的是温尚翊", nextStage: 5, lines: [
-      { sender: "我", body: "医生刚刚看了它脖子上的挂牌，上面清清楚楚写着主人：温尚翊。" },
-      { sender: "西蓝花", body: "等一下……你说的是温尚翊？？？不会吧？？？" },
-      { sender: "我", body: "真的！医生说牌子上留了联络电话，我现在脑袋一片空白。" },
-      { sender: "西蓝花", body: "先把照片传給我！我确认一下……天啊，真的是这三个字欸！" },
-    ]},
-    { id: "check-name-again", label: "我再确认一下挂牌和联络方式，免得认错人", nextStage: 5, lines: [
-      { sender: "我", body: "我再仔細確認一下挂牌和聯絡方式，免得真的認錯人。" },
-      { sender: "西蓝花", body: "對，先確認清楚比較好！不過這名字真的太巧了啦。" },
-    ]},
-  ],
-  5: [
-    { id: "same-name", label: "我也觉得可能是重名，但还是好不真实……", nextStage: 6, lines: [
-      { sender: "我", body: "可是这个名字也太巧了吧，我现在还是觉得很不真实。" },
-      { sender: "西蓝花", body: "名字一样不代表就是本人啦，先不要自己吓自己。" },
-      { sender: "我", body: "我知道啊，但如果真的是他呢？" },
-      { sender: "西蓝花", body: "我也觉得很离谱……算了不管了，可能是重名吧！主人肯定等得很着急，先打电话过去问问啦。" },
-    ]},
-    { id: "maybe-him", label: "你说会不会真的是他啊……", nextStage: 6, lines: [
-      { sender: "我", body: "你说……会不会真的是他啊？" },
-      { sender: "西蓝花", body: "温尚翊？？啊？？啊？？？我真的要疯了！" },
-      { sender: "我", body: "五月天那个温尚翊欸！！！" },
-      { sender: "西蓝花", body: "我知道我知道！可是也可能只是同名啦……先打电话确认，拜托你冷静一点哈哈哈。" },
-    ]},
-  ],
   6: [
     { id: "call-owner", label: "行……我现在打电话过去问问。", nextStage: 7, lines: [
       { sender: "我", body: "行……我现在打过去问问。" },
