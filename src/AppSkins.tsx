@@ -2500,6 +2500,34 @@ export function WeChatSkin(p: SkinProps) {
   // Malaysia arrival coordination: each contact's turn unlocks only after the
   // previous conversation has been completed by the player.
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
+  // Separate mid-show DaG chat, unlocked only after Patrick's final pickup instruction.
+  const [malaysiaConcertChatStage, setMalaysiaConcertChatStage] = useSkinState<number>(p, "wxMalaysiaConcertChatStageV1", -1);
+  const malaysiaConcertTurns: Array<{user:string[]; incoming:string[]}> = [
+    {user:["嘻嘻~","被你发现了。"],incoming:["妳喔……","我之前說要給妳票，妳又不要。","現在倒好，偷偷跑來了。"]},
+    {user:["嘿嘿。","我这不是想给你一个惊喜嘛！","怎么样？惊不惊喜？"],incoming:["妳真的很會。","不過這算什麼驚喜，根本是突然襲擊吧。"]},
+    {user:["惊喜当然要出其不意啊！"],incoming:["算你厉害。","我承認有被妳驚喜到。"]},
+    {user:["那你开不开心嘛！"],incoming:["开心啊，开心到差点弹错音。"]},
+    {user:["不要甩锅，这个锅很大！"],incoming:["😕","就怪你。"]},
+    {user:["不可以！接下来我要考核你了哦，团长大人~"],incoming:["蛤？考核什麽？","我都不知道今天還有這個任務欸。"]},
+    {user:["突然有的，免得你弹错音往我身上推🙄"],incoming:["那我要打起百分之两百的精神来。","不然等一下有人看完演出要給我打低分了。"]},
+    {user:["知道就好😎"],incoming:["哈哈哈哈。","好啦，vcr要结束了，我真的要去準備。","等我忙完再找妳。"]},
+    {user:["好！快去吧！","加油！！"],incoming:["嗯，等一下見。"]},
+  ];
+  const malaysiaPickupInstructionDelivered = allItems.some(item =>
+    item.id === "malaysia-patrick-arrival-07" &&
+    item.sender === "Patrick 小杨" &&
+    item.body.trim() === "不要下楼，往前直走"
+  );
+  useEffect(() => {
+    if (!isMonsterThread || !malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
+    setPendingCatLines(current => [
+      ...current,
+      {id:"malaysia-concert-midshow-opening-01",sender:"大G",body:"妳來了？",thread:"大G"},
+      {id:"malaysia-concert-midshow-opening-02",sender:"大G",body:"我好像看到妳了。",thread:"大G"},
+    ]);
+    setMalaysiaConcertChatStage(0);
+  }, [isMonsterThread, malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
+
   // A stage number alone is not proof that the other person’s message has
   // actually appeared in the transcript. Gate every Durian follow-up on the
   // stable IDs of the preceding incoming bubbles.
@@ -7073,6 +7101,20 @@ export function WeChatSkin(p: SkinProps) {
                     ],catRescue.stage,catRescue.branch,"malaysia-patrick-pickup");
                     setMalaysiaCoordinationStage(18);
                   }}>来了来了，有个商场，是不是得下楼？</button>
+                  <div className="cat-rescue-option-hint">点击发送你的回复</div>
+                </div>
+              )}
+              {isMonsterThread && malaysiaConcertChatStage >= 0 && malaysiaConcertChatStage < malaysiaConcertTurns.length && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
+                <div className="cat-rescue-choices" aria-label="演唱会中场微信回复选项">
+                  <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
+                    const turn=malaysiaConcertTurns[malaysiaConcertChatStage];
+                    const lines:CatLine[]=[
+                      ...turn.user.map((body,index)=>({id:"malaysia-concert-midshow-user-"+malaysiaConcertChatStage+"-"+index,sender:"我" as const,body,thread:"大G" as const})),
+                      ...turn.incoming.map((body,index)=>({id:"malaysia-concert-midshow-incoming-"+malaysiaConcertChatStage+"-"+index,sender:"大G" as const,body,thread:"大G" as const})),
+                    ];
+                    appendCatLines(lines,catRescue.stage,catRescue.branch,"malaysia-concert-midshow-"+malaysiaConcertChatStage);
+                    setMalaysiaConcertChatStage(malaysiaConcertChatStage+1);
+                  }}>{malaysiaConcertTurns[malaysiaConcertChatStage].user.join(" ")}</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
