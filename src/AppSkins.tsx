@@ -3178,13 +3178,13 @@ export function WeChatSkin(p: SkinProps) {
   // This last-mile insertion guarantees the bubble is visible before choices.
   const openingQuestionBody = "你在哪里碰到的？";
   const hasOpeningQuestionInRenderedThread = threadItems.some((item) =>
-    item.sender === "西蓝花" && item.body.trim() === openingQuestionBody
+    item.body.trim() === openingQuestionBody
   );
-  // Base the trigger on the exact list that MessageList will render, not
-  // allItems: old saves can keep the seed in a legacy transcript source that
-  // is merged into the visible thread but is absent from allItems.
+  // Legacy outgoing bubbles do not always store sender="我" (some saves use
+  // the player's nickname). The exact seed text is unique to this scene, so
+  // detect it by body in the already-filtered active Broccoli thread.
   const hasOpeningSeedInRenderedThread = threadItems.some((item) =>
-    item.sender === "我" && item.body.trim() === "救命，我在路边碰到了一只小黑猫好喜欢啊啊啊"
+    item.body.trim() === "救命，我在路边碰到了一只小黑猫好喜欢啊啊啊"
   );
   if (isBroccoliThread && hasOpeningSeedInRenderedThread && !hasOpeningQuestionInRenderedThread) {
     const openingQuestion = makeItem({
@@ -3198,7 +3198,7 @@ export function WeChatSkin(p: SkinProps) {
       meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
     });
     const lastOpeningQuestionAnchor = threadItems.reduce((last, item, index) =>
-      item.sender === "西蓝花" && item.body.trim() === "？？？" ? index : last, -1);
+      item.body.trim() === "？？？" ? index : last, -1);
     threadItems.splice(lastOpeningQuestionAnchor >= 0 ? lastOpeningQuestionAnchor + 1 : threadItems.length, 0, openingQuestion);
   }
   const choiceThread = getCatRescueThreadForStage(catRescue.stage);
