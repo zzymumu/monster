@@ -39,6 +39,7 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[0]).toHaveLength(1);
     expect(CAT_RESCUE_CHOICES[0][0].nextStage).toBe(1);
     expect(CAT_RESCUE_CHOICES[0][0].lines.map((line) => line.body)).toContain("结果它居然主动跑过来蹭我的腿！！");
+    expect(CAT_RESCUE_CHOICES[0][0].lines[0]).toMatchObject({ sender: "西蓝花", body: "你在哪里碰到的？" });
     expect(CAT_RESCUE_CHOICES[1][0].nextStage).toBe(2);
     expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => line.body === "hold on hold on🤺")).toBe(true);
     expect(CAT_RESCUE_CHOICES[1][0].lines.some((line) => /Vava/.test(line.body))).toBe(true);
