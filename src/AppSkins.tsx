@@ -3172,6 +3172,29 @@ export function WeChatSkin(p: SkinProps) {
   // still waiting to arrive. The stage advances when the player chooses, but
   // the next choice belongs after the complete incoming exchange, not before it.
   if (isBroccoliThread) threadItems = threadItems.map((item) => ({ ...item, body: simplifyBroccoliText(item.body) }));
+  // Render the required opening follow-up in the final active-thread list.
+  // Legacy saves can contain the seed and "？？？" in the phone transcript
+  // while the canonical story queue/state fails to surface the follow-up.
+  // This last-mile insertion guarantees the bubble is visible before choices.
+  const openingQuestionBody = "你在哪里碰到的？";
+  const hasOpeningQuestionInRenderedThread = threadItems.some((item) =>
+    item.sender === "西蓝花" && item.body.trim() === openingQuestionBody
+  );
+  if (isBroccoliThread && catRescue.stage === 0 && hasCatRescueOpeningSeed && !hasOpeningQuestionInRenderedThread) {
+    const openingQuestion = makeItem({
+      id: "cat-rescue-opening-question-render-v5",
+      title: "西蓝花",
+      sender: "西蓝花",
+      body: openingQuestionBody,
+      time: p.virtualDate + " " + p.virtualTime,
+      outgoing: false,
+      avatar: "",
+      meta: { storyId: "cat-rescue", storyThread: "西蓝花" },
+    });
+    const lastOpeningQuestionAnchor = threadItems.reduce((last, item, index) =>
+      item.sender === "西蓝花" && item.body.trim() === "？？？" ? index : last, -1);
+    threadItems.splice(lastOpeningQuestionAnchor >= 0 ? lastOpeningQuestionAnchor + 1 : threadItems.length, 0, openingQuestion);
+  }
   const choiceThread = getCatRescueThreadForStage(catRescue.stage);
   // Choices belong only to the contact whose conversation is active for this
   // story stage. In particular, once the owner-add flow hands off to 大G,
@@ -6689,7 +6712,7 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
               {!milkTeaGiftStoryActive && !postPickupGoodbyeSent && catChoices.length > 0 &&
-                !(isBroccoliThread && catRescue.stage === 0 && hasCatRescueOpeningSeed && !hasOpeningQuestionInBroccoliThread) && (
+                !(isBroccoliThread && catRescue.stage === 0 && hasCatRescueOpeningSeed && !threadItems.some((item) => item.sender === "西蓝花" && item.body.trim() === "你在哪里碰到的？")) && (
                 <div className="cat-rescue-choices" aria-label="剧情回复选项">
                   {catChoices.map((choice) => (
                     <button key={choice.id} onClick={() => chooseCatRescue(choice)}>{choice.label}</button>
