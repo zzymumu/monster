@@ -2471,7 +2471,9 @@ export function WeChatSkin(p: SkinProps) {
   // Match this scene's stable message ID only. The same goodbye wording may
   // exist in an older transcript/save and must not skip the guitar lesson scene.
   const postBathGoodbyeAlreadySent = allMalaysiaDaGMessages.some((item) =>
-    item.id === "malaysia-dag-user-53-0"
+    item.id === "malaysia-dag-user-86-0" &&
+    item.sender === "我" &&
+    item.body.trim() === "活该！不跟你说了我要去洗澡，债见！"
   );
   useEffect(() => {
     if (!isMonsterThread || postBathGoodbyeAlreadySent || malaysiaDaGChatStage < 54) return;
@@ -2495,7 +2497,7 @@ export function WeChatSkin(p: SkinProps) {
   }, [isMonsterThread, postBathGoodbyeAlreadySent, patrickFriendAccepted, patrickFriendRequestOpen]);
   useEffect(() => {
     if (!isMonsterThread || !postBathGoodbyeAlreadySent) return;
-    if (malaysiaDaGChatStage < 54) setMalaysiaDaGChatStage(54);
+    if (malaysiaDaGChatStage < 87) setMalaysiaDaGChatStage(87);
     if (p.ui?.wxMalaysiaDaGPostBathAwaitShopeeV1 !== true) {
       p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1", true);
     }
@@ -2585,6 +2587,41 @@ export function WeChatSkin(p: SkinProps) {
 
   // One-time save migration: replace the old "想我了吧" prompt with the new
   // text-only guitar-teaching conversation, without disturbing earlier chat history.
+  // Repair saves affected by the old off-by-33 goodbye handler. Stage 53 is
+  // the two-line phone reply; the actual shower goodbye is stage 86.
+  const [malaysiaDaGPhoneReplyRepairV1, setMalaysiaDaGPhoneReplyRepairV1] =
+    useSkinState<boolean>(p, "wxMalaysiaDaGPhoneReplyRepairV1", false);
+  useEffect(() => {
+    if (malaysiaDaGPhoneReplyRepairV1 || !isMonsterThread) return;
+    const wrongMarkerMessages = catRescue.messages.filter(item =>
+      item.id === "malaysia-dag-user-53-0" &&
+      item.body.trim() !== "活该！不跟你说了我要去洗澡，债见！"
+    );
+    if (wrongMarkerMessages.length > 0) {
+      const seen = new Set<string>();
+      const repaired = catRescue.messages.flatMap((item, index) => {
+        const isPhoneReply = item.sender === "我" &&
+          item.meta?.storyThread === "大G" &&
+          (item.body.trim() === "欸？怎么突然要打电话啦？" ||
+           item.body.trim() === "你说要努力一下，这么快就开始行动了喔？");
+        if (isPhoneReply) {
+          if (seen.has(item.body.trim())) return [];
+          seen.add(item.body.trim());
+        }
+        if (item.id === "malaysia-dag-user-53-0") {
+          return [{ ...item, id: "malaysia-dag-phone-reply-repaired-" + index }];
+        }
+        return [item];
+      });
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repaired }));
+      setMalaysiaDaGChatStage(53);
+      setPatrickFriendRequestOpen(false);
+      p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1", false);
+      p.onUi?.("wxMalaysiaDaGPostBathShopeeOpenedV1", false);
+    }
+    setMalaysiaDaGPhoneReplyRepairV1(true);
+  }, [malaysiaDaGPhoneReplyRepairV1, isMonsterThread, catRescue.messages, catRescue, setMalaysiaDaGChatStage, setPatrickFriendRequestOpen]);
+
   const [malaysiaDaGGuitarChatMigratedV1, setMalaysiaDaGGuitarChatMigratedV1] =
     useSkinState<boolean>(p, "wxMalaysiaDaGGuitarChatMigratedV1", false);
   useEffect(() => {
@@ -6909,7 +6946,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 41 || malaysiaDaGShareQuestionDelivered) && (malaysiaDaGChatStage < 42 || malaysiaDaGPostOrderUnlocked) && (malaysiaDaGChatStage !== 54 || p.ui?.wxMalaysiaDaGPostBathShopeeOpenedV1 === true) && (
+              {isMonsterThread && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage < malaysiaDaGChatTurns.length && pendingCatLines.filter((line)=>line.thread==="大G"||line.thread==="温尚翊").length===0 && (malaysiaDaGChatStage !== 41 || malaysiaDaGShareQuestionDelivered) && (malaysiaDaGChatStage < 42 || malaysiaDaGPostOrderUnlocked) && (malaysiaDaGChatStage !== 87 || p.ui?.wxMalaysiaDaGPostBathShopeeOpenedV1 === true) && (
                 <div className="cat-rescue-choices" aria-label="马来西亚出发前聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const turn=malaysiaDaGChatTurns[malaysiaDaGChatStage];
@@ -6917,14 +6954,14 @@ export function WeChatSkin(p: SkinProps) {
                     // flow. Persist the player's bubble with a stable ID and
                     // queue DaG's acknowledgement explicitly, rather than
                     // relying on the generic mixed-chat append path.
-                    if(malaysiaDaGChatStage===53){
-                      const goodbyeId="malaysia-dag-user-53-0";
+                    if(malaysiaDaGChatStage===86){
+                      const goodbyeId="malaysia-dag-user-86-0";
                       const alreadySent=[...p.items,...catRescue.messages].some(item=>item.body.trim()==="活该！不跟你说了我要去洗澡，债见！");
                       if(!alreadySent){
-                        appendCatLines([{id:goodbyeId,sender:"我",body:turn.user[0],thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-chat-goodbye-53");
+                        appendCatLines([{id:goodbyeId,sender:"我",body:turn.user[0],thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-chat-goodbye-86");
                       }
                       p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1",true);
-                      setMalaysiaDaGChatStage(54);
+                      setMalaysiaDaGChatStage(87);
                       return;
                     }
                     if(malaysiaDaGChatStage===41){
@@ -6949,7 +6986,7 @@ export function WeChatSkin(p: SkinProps) {
                       setMalaysiaDaGChatStage(42);
                       return;
                     }
-                    if(malaysiaDaGChatStage===54){
+                    if(malaysiaDaGChatStage===87){
                       p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1",false);
                       p.onUi?.("wxMalaysiaDaGPostBathShopeeOpenedV1",false);
                     }
