@@ -7140,7 +7140,7 @@ export function WeChatSkin(p: SkinProps) {
               )}
               {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 18 &&
                 malaysiaConcertChatStage === malaysiaConcertTurns.length &&
-                allItems.some(item => item.id === "malaysia-concert-midshow-incoming-8-0" && item.body.trim() === "嗯，等一下見。") &&
+                allItems.some(item => /^malaysia-concert-midshow-incoming-(?:8|12)-0$/.test(item.id) && item.body.trim() === "嗯，等一下見。" && (item.thread === "大G" || item.thread === "温尚翊")) &&
                 !allItems.some(item => item.id === "malaysia-patrick-after-show-question-v1") &&
                 pendingCatLines.filter(line => line.thread === "Patrick 小杨").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="演唱会结束后联系小杨">
