@@ -1,4 +1,5 @@
 import { useSkinState } from "../skinState";
+import { GLOOMY_AVATAR } from "../gloomyAvatar";
 import {
   ArrowDown,
   ArrowUp,
@@ -392,18 +393,20 @@ export function RedbookSkin(p: Props) {
     hidden:false,unlock:"",password:"",folder:"推荐",favorite:false,outgoing:false,read:false
   };
   const encounterAvatars = [
-    "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=96&h=96&fit=crop"
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=MaydayGuitar&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=StarConcert&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=RabbitFan&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=BlueStage&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=PandaMusic&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=LittleMonster&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=GuitarPick&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=PinkRock&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=MoonlightFan&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=DrumKit&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=CloudSinger&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=TinyBear&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=MusicNote&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9",
+    "https://api.dicebear.com/9.x/adventurer/svg?seed=StageLight&backgroundColor=ffd5dc,c0e6ff,d1f4d3,f5d0a9"
   ];
   const encounterComments = [
     {user:"今天也要听五月天",avatar:0,body:"啊啊啊啊啊真的假的！！！吉隆坡的姐妹是什么神仙运气！！！",likes:1286,replies:["今天也要听五月天：真的！！本人超级帅！！我们散场后一起去吃饭，看到的时候差点没认出来哈哈哈哈。"]},
