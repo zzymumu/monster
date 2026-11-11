@@ -579,8 +579,7 @@ export function splitCatRescueMessages(messages: Item[]): { broccoli: Item[]; ow
 }
 export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   0: [
-    { id: "opening-found-kitten", label: "告诉西蓝花小猫就在我回家的路上", nextStage: 1, lines: [
-      { sender: "西蓝花", body: "你在哪里碰到的？", thread: "西蓝花" },
+    { id: "opening-found-kitten", label: "就在我回家的路上！它自己蹲在路边，我本来只是想过去看看它，结果它居然主动跑过来蹭我的腿！！", nextStage: 1, lines: [
       { sender: "我", body: "就在我回家的路上！", thread: "西蓝花" },
       { sender: "我", body: "它自己蹲在路边。", thread: "西蓝花" },
       { sender: "我", body: "我本来只是想过去看看它。", thread: "西蓝花" },
@@ -702,7 +701,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
   2300: [
     { id: "describe-hospital-check", label: "刚刚先带去看了一下，医生说还要扫描一下看看有没有晶片", nextStage: 2301, lines: [
       { sender: "我", body: "刚刚先带去看了一下。", thread: "西蓝花" },
-      { sender: "我", body: "医生说还要扫描一下看看有没有晶片。", thread: "西蓝花" },
+      { sender: "我", body: "医生说要还要扫描一下看看有没有晶片。", thread: "西蓝花" },
       { sender: "西蓝花", body: "那就好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "如果有晶片的话，说不定能找到主人。", thread: "西蓝花" },
     ]},
@@ -1640,6 +1639,86 @@ export function WeChatSkin(p: SkinProps) {
     }
   }, [catRescueRaw]);
   const allItems = [...p.items, ...catRescue.messages];
+  // The opening "？？？" is part of the seeded chat. Deliver Broccoli's
+  // follow-up question as an incoming bubble before showing the player's
+  // first reply choice; mixed incoming/player lines cannot be passed through
+  // appendCatLines as one choice because it intentionally stops at turn edges.
+  useEffect(() => {
+    if (p.creator || catRescue.stage !== 0) return;
+    const hasOpeningSeed = allItems.some((item) =>
+      item.sender === "我" && item.body.trim() === "救命，我在路边碰到了一只小黑猫好喜欢啊啊啊"
+    );
+    const alreadyDelivered = allItems.some((item) =>
+      item.body.trim() === "你在哪里碰到的？"
+    );
+    const alreadyQueued = pendingCatLines.some((line) =>
+      line.body.trim() === "你在哪里碰到的？"
+    );
+    if (!hasOpeningSeed || alreadyDelivered || alreadyQueued) return;
+    setPendingCatLines((current) => current.some((line) => line.id === "cat-rescue-opening-question-v2")
+      ? current
+      : [...current, {
+          id: "cat-rescue-opening-question-v2",
+          sender: "西蓝花",
+          body: "你在哪里碰到的？",
+          thread: "西蓝花",
+        }]);
+  }, [p.creator, catRescue.stage, catRescue.messages, p.items, pendingCatLines]);
+
+  // Backfill the mixed-turn opening that older builds truncated after the
+  // first incoming question. This is deliberately transcript-only: it does
+  // not rewind the player's stage, clear progress, or replay already-sent lines.
+  useEffect(() => {
+    if (p.creator || catRescue.stage < 1) return;
+    const hasNextTurn = allItems.some((item) =>
+      item.sender === "我" && item.body.trim() === "我刚刚看了一圈，没看到其他猫欸。"
+    );
+    if (!hasNextTurn) return;
+    const openingBodies = [
+      "你在哪里碰到的？",
+      "就在我回家的路上！",
+      "它自己蹲在路边。",
+      "我本来只是想过去看看它。",
+      "结果它居然主动跑过来蹭我的腿！！",
+      "等一下。",
+      "你先别激动。",
+      "附近有猫妈妈吗？",
+      "不会是人家刚走丢的小猫吧？",
+    ];
+    const existingBodies = new Set(allItems.map((item) => item.body.trim()));
+    const missing = openingBodies.filter((body) => !existingBodies.has(body));
+    if (!missing.length) return;
+    const anchor = allItems.find((item) =>
+      item.sender === "我" && item.body.trim() === "我刚刚看了一圈，没看到其他猫欸。"
+    );
+    const anchorOrder = Number(anchor?.meta?.storyOrderAt);
+    const baseOrder = Number.isFinite(anchorOrder) && anchorOrder > 0
+      ? anchorOrder
+      : Date.parse(anchor?.time || "") || Date.now();
+    const incomingBodies = new Set([
+      "你在哪里碰到的？", "等一下。", "你先别激动。", "附近有猫妈妈吗？", "不会是人家刚走丢的小猫吧？",
+    ]);
+    const additions = missing.map((body, index) => makeItem({
+      id: "cat-rescue-opening-repair-v2-" + String(openingBodies.indexOf(body)).padStart(2, "0"),
+      title: "西蓝花",
+      sender: incomingBodies.has(body) ? "西蓝花" : "我",
+      body,
+      time: anchor?.time || "2026-11-02 " + (storyClockRef.current || "14:24"),
+      outgoing: !incomingBodies.has(body),
+      avatar: "",
+      meta: {
+        storyId: "cat-rescue",
+        storyThread: "西蓝花",
+        storyOrderAt: String(baseOrder - 100 + openingBodies.indexOf(body)),
+      },
+    }));
+    setCatRescueRaw(JSON.stringify({
+      ...catRescue,
+      version: 2,
+      messages: [...catRescue.messages, ...additions],
+    }));
+  }, [p.creator, catRescue.stage, catRescueRaw, p.items, catRescue.messages]);
+
   // The morning-after voice is delivered once the previous door voice has
   // reached the DaG transcript. Keep the real uploaded MP3 and transcript in
   // the same persisted story stream so it survives reopening the chat.
