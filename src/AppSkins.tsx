@@ -484,7 +484,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 2200, 2201, 2202, 2203, 2204, 2205, 2206, 2207, 2100, 2101, 2102, 2103, 2104, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 2200, 2201, 2202, 2203, 2204, 2205, 2206, 2207, 2208, 2100, 2101, 2102, 2103, 2104, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -770,9 +770,13 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   2207: [
-    { id: "phone-unanswered", label: "救命，我现在手都在抖……电话没人接，我留言了！", nextStage: 8, lines: [
+    { id: "phone-unanswered-checkin", label: "救命，我现在手都在抖……", nextStage: 2208, lines: [
       { sender: "我", body: "救命，我现在手都在抖。", thread: "西蓝花" },
       { sender: "西蓝花", body: "怎么样？打通了吗？", thread: "西蓝花" },
+    ]},
+  ],
+  2208: [
+    { id: "phone-unanswered", label: "没人接诶……转语音了，我给留言了。要不我加微信试试看？", nextStage: 8, lines: [
       { sender: "我", body: "没人接诶....转语音了，我给留言了。", thread: "西蓝花" },
       { sender: "我", body: "要不....我加微信试试看？", thread: "西蓝花" },
       { sender: "西蓝花", body: "嗯嗯先加上先加上。", thread: "西蓝花" },
