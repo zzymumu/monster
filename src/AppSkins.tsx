@@ -2465,6 +2465,7 @@ export function WeChatSkin(p: SkinProps) {
   // Malaysia arrival coordination: each contact's turn unlocks only after the
   // previous conversation has been completed by the player.
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
+  const [malaysiaPatrickContactChoiceSent, setMalaysiaPatrickContactChoiceSent] = useSkinState<boolean>(p, "wxMalaysiaPatrickContactChoiceSentV2", false);
   // Reconcile stale coordination progress with the actual chat transcript.
   // If Patrick was accepted but the first contact-confirmation reply was never
   // sent, the next action must remain available in Patrick's conversation.
@@ -6804,10 +6805,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {p.thread.trim().includes("Patrick") && ![...p.items, ...catRescue.messages].some(item =>
-                item.body.trim() === "到后直接微信我就好。" &&
-                (item.title === "Patrick 小杨" || item.meta?.storyThread === "Patrick 小杨")
-              ) && (
+              {(p.thread.includes("Patrick") || p.thread.includes("小杨")) && !malaysiaPatrickContactChoiceSent && (
                 <div className="cat-rescue-choices" aria-label="Patrick 行程确认回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const existing = [...p.items, ...catRescue.messages];
@@ -6835,6 +6833,7 @@ export function WeChatSkin(p: SkinProps) {
                     }
                     setPendingCatLines([]);
                     setMalaysiaCoordinationStage(1);
+                    setMalaysiaPatrickContactChoiceSent(true);
                   }}>好的收到~谢谢哦！明天我们到大马怎么联系你呀？</button>
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
