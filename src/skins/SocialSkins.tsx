@@ -431,25 +431,25 @@ export function RedbookSkin(p: Props) {
 ];
   const encounterAuthorAvatar = "https://i.imgur.com/yZVxgvV.jpg";
   const encounterComments = [
-    {"user":"温柔乡里听怪兽","avatar":0,"location":"上海","body":"我先说我真的不是来嗑的……但这张抓拍也太会拍了吧？？他低头弹琴那个侧脸我直接失去语言能力。","likes":9286,"replies":["楼主你拍照技术可以去站姐那边应聘了","不是嗑不嗑的问题，这张图真的帅得很具体","我本来路过，结果盯着看了五分钟……"]},
-    {"user":"A1区今天也在尖叫","avatar":1,"location":"上海","body":"A1的我有话说……他后半场真的好几次往我们这边走，我还跟旁边姐妹说团长今天怎么老往这个方向晃😂","likes":12680,"replies":["我当时也以为他在看我们这边！！","姐妹你不是一个人，我朋友也说他老往A1看","别急别急，也可能是舞台走位啦，但我当时真的激动死"]},
-    {"user":"拨片到底给谁了","avatar":2,"location":"江苏","body":"有没有A1的wmls来对一下？我记得他有几次走到靠我们这边，后来还看到有人拿到拨片……不会真是同一个女生吧？？","likes":10321,"replies":["我在A1！但现场太乱我没看清是谁","我朋友拍到一个片段但角度看不清脸","先别对号入座啦，现场发生的事大家记忆可能有偏差"]},
-    {"user":"今天不想写作业","avatar":3,"location":"浙江","body":"等等等等，递拨片和散场一起吃饭是同一天？？我怎么越看越像连续剧了，我作业突然不香了。","likes":4190,"replies":["姐妹你先把作业写了哈哈哈哈","是演唱会结束以后一起去吃东西啦，不是隔天偶遇","我也是刚看懂时间线，前面差点以为是第二天"]},
-    {"user":"苹果味的五月天","avatar":4,"location":"北京","body":"我先泼个冷水哈，递拨片可能就是现场互动，演出结束一起吃饭也可能是朋友聚餐。别一张照片就开始给人家安排身份。","likes":7551,"replies":["理智姐来了，但你说得也不是没道理","那你解释一下为什么有人现场也见过她？","见过就代表认识？这逻辑我没懂"]},
-    {"user":"今天也要早睡","avatar":5,"location":"四川","body":"不是，楼主你怎么能这么淡定地发出来啊！！！如果是我我现在已经在床上滚成一个麻花了。","likes":3288,"replies":["楼主可能还没意识到评论区已经炸了","本人淡定，评论区替她激动哈哈哈哈","我光看照片都要尖叫了"]},
-    {"user":"吉他弦永不断","avatar":6,"location":"湖北","body":"老粉插一句，怪兽有时候真的会把拨片送给台下wmls，不是什么神秘暗号。大家不要自动脑补成偶像剧哈。","likes":2961,"replies":["老粉说话就是有底气","但如果真的是同一个女生那也太巧了吧","重点是别把一个正常互动说得像恋爱证据"]},
-    {"user":"今晚必须吃宵夜","avatar":7,"location":"台湾","body":"我比较在意的是演唱会结束都累成那样了还去吃饭……到底吃哪家啦？吉隆坡宵夜有推荐吗我下次也要去。","likes":1876,"replies":["哈哈哈哈终于有人问正事","这家看起来像是当地朋友带去的","求店名！比猜身份实用多了"]},
-    {"user":"今天第一次见她","avatar":8,"location":"香港","body":"说实话这个女生我第一次见欸。之前几场好像都没见过她，不像工作人员吧？有wmls认识她吗？","likes":5944,"replies":["我也没印象，可能只是刚好去看这场的吧","工作人员一般有工作证和固定动线，不要随便猜啦","不认识很正常啊，又不是每个来现场的人我们都见过"]},
-    {"user":"好像在哪里见过","avatar":9,"location":"福建","body":"等下……我怎么觉得这个女生有点眼熟？？好像在哪次散场的时候见过，但我不敢认，怕自己脸盲认错人。","likes":8123,"replies":["姐妹你先别急着认哈哈哈哈","可能是妆发或者衣服眼熟？","我也有这种感觉但完全想不起在哪见过"]},
-    {"user":"A1边边的薯条","avatar":10,"location":"澳门","body":"我坐A1附近，怪兽那几次往这边走的时候我们整排都在叫，旁边一个女生激动到抓着朋友胳膊晃……现在想想不会就是楼主吧哈哈哈哈","likes":9762,"replies":["救命这个画面好真实","A1今天到底发生了多少事啊！！","先别认人啦，但你说的那个反应我已经脑补出来了"]},
-    {"user":"别替我嗑我自己会嗑","avatar":11,"location":"重庆","body":"我不管我先嗑一口（被打）……开玩笑的！但他俩同框真的很有故事感，照片氛围好好。","likes":6902,"replies":["哈哈哈哈哈哈你这个ID很诚实","嗑可以，别去打扰真人就行","收一收姐妹，楼里已经有人要吵起来了"]},
-    {"user":"理性追星但不完全","avatar":12,"location":"山东","body":"我觉得最离谱的是大家都在讨论女生是谁，没人问怪兽吃了什么。团长也是要吃饭的啊喂！","likes":2390,"replies":["笑死，突然想起他之前说忙到忘记吃饭","他吃饱最重要，别饿着我们吉他手","这楼怎么从偶遇变成团长伙食监督了"]},
-    {"user":"温柔只给五月天","avatar":13,"location":"河南","body":"说真的，如果只是普通朋友就让人家好好当普通朋友吧。不要一会儿女朋友一会儿嫂子，女生看到得多尴尬。","likes":5103,"replies":["谢谢，终于有人说了","可是有人说现场递拨片欸，这也不能问吗","问可以，别把猜测当事实发出去"]},
-    {"user":"我真的只是路过","avatar":14,"location":"辽宁","body":"刚点进来：哇怪兽好帅。看了三分钟：你们在吵什么。又看了五分钟：怎么还在吵。","likes":3721,"replies":["欢迎来到评论区连续剧现场","哈哈哈哈哈哈你已经出不去了","别走，下一集马上开播"]},
-    {"user":"十年老粉今天破防","avatar":15,"location":"吉林","body":"讲真，看到有人说递拨片我第一反应是羡慕，第二反应是我当年为什么不站那个方向，第三反应是算了我还是好好听歌吧。","likes":4588,"replies":["第三反应最真实哈哈哈哈","姐妹你只是差一个好位置","我每次演唱会结束都在后悔站错边"]},
-    {"user":"第一次来别吓人","avatar":16,"location":"云南","body":"我觉得有人第一次看现场很正常吧，没见过不代表有问题，更不代表是工作人员或者什么特殊身份。大家别把普通wmls吓跑了。","likes":9230,"replies":["对啊谁不是从第一次来的","而且不认识就不认识，没必要查人家","这条说得对，讨论演出就好"]},
-    {"user":"时间线管理员上线","avatar":17,"location":"江苏","body":"目前我看到的是：有人说A1方向反复走位、有人说现场疑似递拨片、还有人说散场后一起吃饭。信息来源都不一样，先别混成一个确定故事哈。","likes":6127,"replies":["哈哈哈哈真的需要你来整理","但A1姐妹的说法怎么越看越像了","楼里已经从吃瓜变成现场复盘了"]},
-    {"user":"凌晨三点还没睡","avatar":18,"location":"广东","body":"我就想知道A1的姐妹们今晚睡了吗……一边说自己当时以为被看到，一边发现可能是同一个女生，谁懂这种后知后觉啊😭","likes":7349,"replies":["睡什么睡我现在脑子里全是现场","姐妹你先喝口水哈哈哈哈","别说了我又开始后悔没站A1了"]}
+    {"user":"温柔乡里听怪兽","avatar":0,"location":"上海","body":"我真的服了这张抓拍……他低头弹琴那个侧脸谁懂啊啊啊啊啊","likes":9286,"replies":["楼主拍得好会！！求原图","今天的怪兽帅得我想报警","我宣布这张进年度存图"]},
+    {"user":"A1区今天也在尖叫","avatar":1,"location":"上海","body":"A1的我来报到！！他后半场真的一直往A1这边晃，我跟朋友俩人叫到嗓子哑😂","likes":12680,"replies":["我也是A1！！真的来了好几次","当时全区都在喊吧哈哈哈哈","我那会儿还以为他听见我喊了（醒醒）"]},
+    {"user":"拨片到底给谁了","avatar":2,"location":"江苏","body":"A1附近是不是有人接到拨片了？？我看到的时候整个人：？？？羡慕到失语","likes":10321,"replies":["我朋友说看见了但没拍清","递拨片那一下我直接原地尖叫","别问我是谁我只恨自己没站那边"]},
+    {"user":"今天不想写作业","avatar":3,"location":"浙江","body":"有没有人发现他今天心情真的特别好啊！！讲话都带笑，弹琴也一直笑，我在台下看得好开心🥹","likes":7190,"replies":["有！！！我也觉得今天状态超松弛","不是错觉吧，今天笑好多次","看到他开心我就开心呜呜"]},
+    {"user":"苹果味的五月天","avatar":4,"location":"北京","body":"等下这女生我好像认识？？好像之前现场见过她，但不敢确定，世界这么小的吗","likes":7551,"replies":["姐妹先别认人哈哈哈","我也觉得眼熟但可能是撞脸","不要在评论区猜具体身份啦"]},
+    {"user":"今天也要早睡","avatar":5,"location":"四川","body":"这个女生我第一次见欸！之前几场我好像都没见过她，不像工作人员吧？有点好奇但不敢乱猜","likes":6288,"replies":["也可能就是来听演唱会的wmls呀","工作人员一般有工作证，别凭感觉判断","对啊第一次见很正常吧"]},
+    {"user":"吉他弦永不断","avatar":6,"location":"湖北","body":"老粉路过，今天怪兽状态真的好！好几次往A1方向走，我旁边的人都激动疯了哈哈哈","likes":5961,"replies":["A1今晚含金量还在上升","我在别区只能羡慕了","他今天走位真的很勤快！！"]},
+    {"user":"今晚必须吃宵夜","avatar":7,"location":"台湾","body":"所以演唱会结束以后还一起去吃饭了？？这体力我真的佩服，刚唱完欸哈哈哈哈","likes":3876,"replies":["团长需要补充碳水！！","我散场只想躺地上","求问吃的什么我比较关心这个"]},
+    {"user":"五迷不迷路","avatar":8,"location":"香港","body":"我真的好像见过这个女生……但也可能是我认错，先不说了免得误伤","likes":5644,"replies":["互联网最怕一句我好像认识","不确定就别往下扒啦","姐妹谨慎是对的"]},
+    {"user":"等一场五月天","avatar":9,"location":"福建","body":"我昨天在现场！A1那边有个女生拿到东西以后跟朋友抱在一起蹦，我记到现在哈哈哈哈，不知道是不是她","likes":8123,"replies":["啊啊啊啊这也太开心了吧","拿到拨片谁能不疯！！","不要确认身份啦，保留这份快乐就好"]},
+    {"user":"拨片到底给谁了","avatar":10,"location":"澳门","body":"我现在只想知道今天到底有多少A1 wmls在评论区集合了哈哈哈哈","likes":4762,"replies":["A1集合！！报数！！","不是A1的可以申请旁听吗","今晚A1姐妹们都别睡了"]},
+    {"user":"别替我嗑我自己会嗑","avatar":11,"location":"重庆","body":"今天他笑得也太多了吧……我本来在认真拍视频，拍着拍着自己先对着屏幕傻笑了","likes":6902,"replies":["懂！！看他开心我也跟着开心","今天真的像充了电一样","姐妹你拍到的笑容分我一点"]},
+    {"user":"理性追星但不完全","avatar":12,"location":"山东","body":"大家别把女生身份猜得太具体哈，讨论现场可以，别去扒人。还有今天怪兽状态是真的好！","likes":4390,"replies":["同意，留点边界","今天状态好这点我疯狂赞同","评论区聊演出就很快乐"]},
+    {"user":"温柔只给五月天","avatar":13,"location":"河南","body":"第一次见不代表不是工作人员，也不代表就是工作人员啊……大家别靠眼熟不眼熟给人家定身份","likes":5103,"replies":["这句说得对","可能就是普通来看演出的wmls","别把猜测说成结论"]},
+    {"user":"我真的只是路过","avatar":14,"location":"辽宁","body":"点进来想看怪兽照片，结果看完评论我已经知道A1今天发生了什么（大概）","likes":3721,"replies":["哈哈哈哈A1专场复盘","你已经是今晚的云A1 wmls了","欢迎加入评论区蹲后续"]},
+    {"user":"十年老粉今天破防","avatar":15,"location":"吉林","body":"今天他状态好到我旁边一个平时超冷静的姐妹都在蹦，散场还在说今天好幸福","likes":4588,"replies":["这种快乐真的会传染","我也觉得今天氛围特别好","看演唱会最幸福就是大家一起开心"]},
+    {"user":"不许开盒谢谢","avatar":16,"location":"云南","body":"提醒一下，别去扒女生账号、学校公司，也别跑去问餐厅。她可能只是一个来听歌的wmls。","likes":9230,"replies":["这条支持","别把喜欢变成打扰","尊重普通人的生活边界"]},
+    {"user":"键盘比拨片快","avatar":17,"location":"江苏","body":"目前评论区：A1集合、今天怪兽心情好、有人好像认识女生、有人第一次见。信息量有点大哈哈哈哈","likes":6127,"replies":["你是今晚评论区播报员吗","哈哈哈哈总结得很到位","但别把猜测当实锤哦"]},
+    {"user":"凌晨三点还没睡","avatar":18,"location":"广东","body":"有没有人跟我一样，演唱会结束了还在回味今天他笑的那几次……现在刷到这帖又开始激动","likes":7349,"replies":["我也是！！根本睡不着","今天真的值得反复回忆","明天上班的我先哭了"]}
   ];  ];
   if (p.ui?.redbookMalaysiaEncounterPostV1 === "show") {
     return (
@@ -460,11 +460,11 @@ export function RedbookSkin(p: Props) {
         </div>
         <div className="catalog-scroll" style={{flex:1,overflowY:"auto",padding:"0 16px 90px",margin:0,border:0,boxSizing:"border-box"}}>
                   <div className="redbook-encounter-topbar" style={{position:"sticky",top:0,zIndex:100,width:"calc(100% + 32px)",height:58,minHeight:58,flex:"0 0 58px",margin:"0 -16px 14px",paddingTop:0,display:"flex",visibility:"visible",opacity:1,alignItems:"center",gap:10,padding:"0 12px",boxSizing:"border-box",background:"#19191f",borderBottom:"1px solid #303036",color:"#f5f5f6",order:0}}><button aria-label="返回" onClick={p.onBack} style={{fontSize:27,lineHeight:1,color:"#f5f5f6",width:28,flex:"0 0 28px"}}>‹</button><img src={encounterAuthorAvatar} alt="五月天手绘乐队头像" style={{width:34,height:34,borderRadius:"50%",objectFit:"cover",flex:"0 0 34px"}}/><strong style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontSize:13,fontWeight:500}}>今天也要听五月天</strong><button className="redbook-encounter-follow" onClick={()=>setEncounterFollowed(v=>!v)} style={{color:"#ff4967",border:"1px solid #ff4967",borderRadius:18,padding:"6px 13px",fontSize:12,whiteSpace:"nowrap"}}>{encounterFollowed?"已关注":"关注"}</button><button aria-label="转发" onClick={()=>setEncounterShareOpen(true)} style={{width:34,height:40,display:"grid",placeItems:"center",background:"transparent",border:0,color:"#f5f5f6",padding:0}}><svg viewBox="0 0 28 28" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15.5 4.5 24 13l-8.5 8.5"/><path d="M23.5 13H13c-5.2 0-8.5 3.1-8.5 8.5"/></svg></button></div>
-          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}><div style={{flex:1,fontSize:11,color:"#999"}}>2026-11-12 22:18 · 吉隆坡</div></div>
+          
           <h2 style={{fontSize:21,lineHeight:1.45,margin:"8px 0 14px"}}>吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹</h2>
           <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" alt="五月天怪兽演出照片" style={{width:"100%",borderRadius:7,display:"block",maxHeight:620,objectFit:"cover"}}/>
           <p style={{fontSize:15,lineHeight:1.85,whiteSpace:"pre-wrap",marginTop:18}}>演唱会结束后本来想找地方吃点东西，没想到居然和朋友一起在餐厅遇到怪兽！！本人真的好帅啊啊啊！{"\n\n"}他旁边还有一位女生，两个人是一起过来吃饭的，坐在一起聊天，看起来很熟，期间一直有说有笑。我们就在附近，看到的时候真的愣住了，没敢上去打扰。{"\n\n"}散场后还能遇到团长，这是什么神仙运气！！😭{"\n\n"}#五月天 #五月天怪兽 #吉隆坡 #演唱会偶遇</p>
-          <div style={{color:"#999",fontSize:12,margin:"18px 0"}}>话题 #五月天 #五月天怪兽 #吉隆坡</div>
+          <div style={{color:"#999",fontSize:12,margin:"18px 0 12px",display:"flex",alignItems:"center",gap:8}}><span>2026-11-12 22:18</span><span>·</span><span>吉隆坡</span></div>
           <div style={{background:"#202027",borderRadius:8,padding:12,marginBottom:16,color:"#aaa",fontSize:13}}>📁 推荐</div>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><strong style={{fontSize:16}}>共 {103+encounterLocalComments.length} 条评论</strong><span style={{fontSize:12,color:"#999"}}>最热</span></div>
           <div style={{display:"flex",gap:8,marginBottom:18}}><img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=96&h=96&fit=crop" alt="我的头像" style={{width:38,height:38,borderRadius:"50%",objectFit:"cover"}}/><input value={encounterCommentDraft} onChange={e=>setEncounterCommentDraft(e.target.value)} placeholder="说点什么…" style={{flex:1,minWidth:0,border:0,borderRadius:20,background:"#292930",color:"#fff",padding:"10px 14px"}}/><button onClick={()=>{if(encounterCommentDraft.trim()){setEncounterLocalComments(v=>[...v,encounterCommentDraft.trim()]);setEncounterCommentDraft("");}}} style={{background:"none",color:"#ff4967"}}>发送</button></div>
