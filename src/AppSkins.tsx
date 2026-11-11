@@ -2474,7 +2474,7 @@ export function WeChatSkin(p: SkinProps) {
     item.body.trim() === "好的收到~谢谢哦！明天我们到大马怎么联系你呀？"
   );
   useEffect(() => {
-    if (!isMonsterThread && p.thread !== "Patrick 小杨") return;
+    if (p.thread !== "Patrick 小杨") return;
     if (!patrickFriendAccepted || malaysiaPatrickContactReplySent) return;
     if (malaysiaCoordinationStage !== 0) setMalaysiaCoordinationStage(0);
   }, [p.thread, patrickFriendAccepted, malaysiaPatrickContactReplySent, malaysiaCoordinationStage, setMalaysiaCoordinationStage]);
