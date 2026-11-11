@@ -373,7 +373,7 @@ export function RedbookSkin(p: Props) {
     time:"2026-11-12 22:18",
     likes:2386,
     comments:[
-      "啊啊啊啊啊真的假的！！！吉隆坡的姐妹是什么神仙运气！！！",
+      "啊啊啊啊啊真的假的！！！散场后还能一起吃饭也太巧了吧！！！",
       "等等？？？女生？？？我放大看了三遍？？？",
       "感觉两个人很熟欸，不像普通粉丝偶遇。",
       "人家吃个饭也要被拍？？？能不能给一点私人空间啊。",
@@ -392,30 +392,30 @@ export function RedbookSkin(p: Props) {
     hidden:false,unlock:"",password:"",folder:"推荐",favorite:false,outgoing:false,read:false
   };
   const encounterAvatars = [
-    "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1552053831-71594a27632d?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1517849845537-4d2579f1c9c0?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=96&h=96&fit=crop",
-    "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=96&h=96&fit=crop"
+    "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=96&h=96&fit=crop",
+    "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=96&h=96&fit=crop"
   ];
   const encounterComments = [
-    {user:"今天也要听五月天",avatar:0,body:"啊啊啊啊啊真的假的！！！吉隆坡的姐妹是什么神仙运气！！！",likes:1286,replies:["今天也要听五月天：真的！！本人超级帅！！我看到的时候差点没认出来哈哈哈哈。"]},
-    {user:"温尚翊的吉他拨片",avatar:1,body:"等等？？？女生？？？我放大看了三遍？？？",likes:963,replies:["今天也要听五月天：姐妹你不是一个人，我也在放大哈哈哈哈。","吃颗苹果：感觉两个人很熟欸，不像普通粉丝偶遇。","吉他弦别断：重点是昨天演出现场我好像也看到这个女生了！！"]},
-    {user:"团长今天弹吉他了吗",avatar:2,body:"昨天在现场好像看到这个女生了！！！散场前怪兽还递了拨片给她，我当时还以为自己看错了？？？",likes:1521,replies:["真的假的？？？递拨片？？？那这关系不一般吧？？","现场第三排：我也看到有人拿到拨片了，但不确定是不是同一个人。","理智追星版：一块拨片能说明什么，别脑补了。","温柔一点好吗：如果真的是送给她的，那也是人家的私事吧。"]},
+    {user:"今天也要听五月天",avatar:0,body:"啊啊啊啊啊真的假的！！！吉隆坡的姐妹是什么神仙运气！！！",likes:1286,replies:["今天也要听五月天：真的！！本人超级帅！！我们散场后一起去吃饭，看到的时候差点没认出来哈哈哈哈。"]},
+    {user:"温尚翊的吉他拨片",avatar:1,body:"等等？？？女生？？？我放大看了三遍？？？",likes:963,replies:["今天也要听五月天：姐妹你不是一个人，我也在放大哈哈哈哈。","吃颗苹果：感觉两个人很熟欸，不像普通粉丝偶遇。","吉他弦别断：重点是刚刚演出现场我好像也看到这个女生了！！"]},
+    {user:"团长今天弹吉他了吗",avatar:2,body:"我刚刚就在现场！！！散场的时候好像看到怪兽把拨片递给这个女生了？？？我当时还以为自己看错了！！！",likes:1521,replies:["真的假的？？？递拨片？？？那这关系不一般吧？？","现场第三排：我也看到有人拿到拨片了，但不确定是不是同一个人。","理智追星版：一块拨片能说明什么，别脑补了。","温柔一点好吗：如果真的是送给她的，那也是人家的私事吧。"]},
     {user:"今天不熬夜了",avatar:3,body:"？？？？昨天递拨片今天一起吃饭？？？我先坐下听听故事。",likes:876,replies:["团长今天弹吉他了吗：我真的不是编的，我就在侧边看见的。","五月天是我的青春：也可能是工作人员帮忙递的，别越传越离谱。"]},
     {user:"阿信今天发微博了吗",avatar:4,body:"我想问一下，为什么要拍人家吃饭啊？演出可以拍，私人时间就别跟了吧。",likes:1132,replies:["今天也要听五月天：我们是隔壁桌刚好看到，没有跟拍，也没有上去打扰。","不想被偷拍：但把别人吃饭的照片发出来还是不太合适吧。","路过五迷：同意，女生也不是公众人物，别扒身份。"]},
     {user:"吉他弦断了",avatar:5,body:"楼主你拍的时候人家有发现吗？感觉这种私人场合还是要注意一下。",likes:604,replies:["今天也要听五月天：没有对着拍很久，是远远看到觉得很巧才记录一下。","保持距离：希望不要继续放大女生长相或找个人信息。"]},
     {user:"怪兽的吉他",avatar:6,body:"先不说女生是谁，怪兽演出结束还有精神出来吃饭也太真实了哈哈哈哈。",likes:421,replies:["宵夜战士：工作结束当然要吃饭啦哈哈哈。"]},
     {user:"橘子汽水加冰",avatar:7,body:"不是吧？？？递拨片这个细节谁懂啊啊啊啊啊！！！",likes:998,replies:["现场第三排：我也记得有递东西，但别把未经确认的事说死。","冷静五秒：评论区已经开始写连续剧了。"]},
-    {user:"五迷不迷路",avatar:8,body:"朋友一起吃饭很正常吧，为什么一看到女生就开始猜女朋友？",likes:713,replies:["今天不熬夜了：主要是昨天现场递拨片的传闻撞上了，大家才好奇。","给点空间：好奇也别去扒人家身份。"]},
-    {user:"今晚听温柔",avatar:9,body:"我朋友昨天也在现场，说怪兽有把拨片递给台下一个女生……不会真的是同一位吧？？",likes:1104,replies:["团长今天弹吉他了吗：我看到的也是那个方向！！","理智追星版：没有清楚照片就别认人了，别误伤。","今天也要听五月天：我们只是刚好一起吃饭，其他真的不清楚啦。"]},
+    {user:"五迷不迷路",avatar:8,body:"朋友一起吃饭很正常吧，为什么一看到女生就开始猜女朋友？",likes:713,replies:["今天不熬夜了：主要是刚刚现场递拨片的传闻撞上了，大家才好奇。","给点空间：好奇也别去扒人家身份。"]},
+    {user:"今晚听温柔",avatar:9,body:"我朋友刚刚也在现场，说怪兽散场时把拨片递给一个女生了……不会真的是同一位吧？？",likes:1104,replies:["团长今天弹吉他了吗：我看到的也是那个方向！！","理智追星版：没有清楚照片就别认人了，别误伤。","今天也要听五月天：我们只是刚好一起吃饭，其他真的不清楚啦。"]},
     {user:"五月天的猫猫",avatar:10,body:"拍到艺人可以理解，但旁边女生的脸和身份真的不要挖，拜托。",likes:842,replies:["同意，保护普通人的隐私。"]},
     {user:"派对动物本人",avatar:11,body:"评论区一边嗑一边吵好热闹……但还是希望大家别打扰他们吃饭。",likes:529,replies:["五迷路过：说得对，讨论归讨论，不要去店里蹲人。"]},
     {user:"不想取昵称了",avatar:0,body:"所以到底是演出后临时约饭，还是本来就认识啊？我真的好奇但我不扒。",likes:390,replies:["今天也要听五月天：这个我就不清楚啦，真的只是偶遇。"]},
@@ -432,7 +432,7 @@ export function RedbookSkin(p: Props) {
           </div>
           <h2 style={{fontSize:21,lineHeight:1.45,margin:"8px 0 14px"}}>吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹</h2>
           <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg" alt="五月天怪兽演出照片" style={{width:"100%",borderRadius:7,display:"block",maxHeight:620,objectFit:"cover"}}/>
-          <p style={{fontSize:15,lineHeight:1.85,whiteSpace:"pre-wrap",marginTop:18}}>本来只是出来吃个饭，没想到居然偶遇五月天怪兽！！本人真的好帅，而且感觉刚结束工作没多久。{"\n\n"}旁边还有一位女生，两个人坐在一起吃饭，看起来关系蛮熟悉的，期间一直有说有笑。不过我们也没敢一直盯着看，更没好意思上去打扰。{"\n\n"}没想到能在吉隆坡遇到本人，今天是什么运气啊啊啊！！😭{"\n\n"}#五月天 #五月天怪兽 #吉隆坡 #演唱会偶遇</p>
+          <p style={{fontSize:15,lineHeight:1.85,whiteSpace:"pre-wrap",marginTop:18}}>演唱会结束后本来想找地方吃点东西，没想到居然和朋友一起在餐厅遇到怪兽！！本人真的好帅啊啊啊！{"\n\n"}他旁边还有一位女生，两个人是一起过来吃饭的，坐在一起聊天，看起来很熟，期间一直有说有笑。我们就在附近，看到的时候真的愣住了，没敢上去打扰。{"\n\n"}散场后还能遇到团长，这是什么神仙运气！！😭{"\n\n"}#五月天 #五月天怪兽 #吉隆坡 #演唱会偶遇</p>
           <div style={{color:"#999",fontSize:12,margin:"18px 0"}}>话题 #五月天 #五月天怪兽 #吉隆坡</div>
           <div style={{background:"#202027",borderRadius:8,padding:12,marginBottom:16,color:"#aaa",fontSize:13}}>📁 推荐</div>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><strong style={{fontSize:16}}>共 {103+encounterLocalComments.length} 条评论</strong><span style={{fontSize:12,color:"#999"}}>最热</span></div>
