@@ -6289,6 +6289,10 @@
 }
 
 .redbook-encounter-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: 100%;
   flex: 0 0 58px;
   min-height: 58px;
   display: flex;
