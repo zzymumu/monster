@@ -6845,7 +6845,7 @@ export function WeChatSkin(p: SkinProps) {
                 </div>
               )}
 
-              {isBroccoliThread && malaysiaCoordinationStage === 1 && (
+              {isBroccoliThread && malaysiaCoordinationStage === 1 && pendingCatLines.filter(line => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="告诉西蓝花包车已安排回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6857,7 +6857,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isBroccoliThread && malaysiaCoordinationStage === 2 && (
+              {isBroccoliThread && malaysiaCoordinationStage === 2 && pendingCatLines.filter(line => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="西蓝花接机安排回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([{id:"malaysia-broccoli-car-arranged-03",sender:"我",body:"嗯嗯！",thread:"西蓝花"}],catRescue.stage,catRescue.branch,"malaysia-broccoli-car-arranged-ack");
@@ -6866,7 +6866,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage === 3 && (
+              {isMonsterThread && malaysiaCoordinationStage === 3 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="询问大G出发时间回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6878,7 +6878,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage === 4 && (
+              {isMonsterThread && malaysiaCoordinationStage === 4 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G出发时间后续回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6890,7 +6890,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage === 5 && (
+              {isMonsterThread && malaysiaCoordinationStage === 5 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大马榴莲话题回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6902,7 +6902,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage === 6 && (
+              {isMonsterThread && malaysiaCoordinationStage === 6 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="榴莲话题回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6914,7 +6914,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage >= 7 && malaysiaCoordinationStage <= 13 && (
+              {isMonsterThread && malaysiaCoordinationStage >= 7 && malaysiaCoordinationStage <= 13 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="榴莲聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const pairs: Array<[string, string[]]> = [
@@ -6944,7 +6944,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage === 14 && (
+              {isMonsterThread && malaysiaCoordinationStage === 14 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G榴莲话题最后回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6955,7 +6955,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 15 && (
+              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 15 && pendingCatLines.filter(line => line.thread === "Patrick 小杨").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="落地后联系司机回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6967,7 +6967,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 16 && (
+              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 16 && pendingCatLines.filter(line => line.thread === "Patrick 小杨").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="过关后联系司机回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
@@ -6980,7 +6980,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 17 && (
+              {p.thread === "Patrick 小杨" && malaysiaCoordinationStage === 17 && pendingCatLines.filter(line => line.thread === "Patrick 小杨").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="寻找司机上车点回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
