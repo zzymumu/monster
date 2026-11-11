@@ -357,8 +357,40 @@ export function RedbookSkin(p: Props) {
   const sourceIsPlaceholder = !items.length || items.every((i) =>
     ["测试内容", "等一场雨停", "九月的某一天"].includes(i.title)
   );
+  const malaysiaEncounterPost: Item = {
+    id:"redbook-malaysia-monster-encounter-v1",
+    title:"吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹",
+    body:"本来只是出来吃个饭，没想到居然偶遇五月天怪兽！！本人真的好帅，而且感觉刚结束工作没多久。\n\n旁边还有一位女生，两个人坐在一起吃饭，看起来关系蛮熟悉的，期间一直有说有笑。不过我们也没敢一直盯着看，更没好意思上去打扰。\n\n没想到能在吉隆坡遇到本人，今天是什么运气啊啊啊！！😭\n\n#五月天 #五月天怪兽 #吉隆坡 #演唱会偶遇",
+    sender:"今天也要听五月天",
+    avatar:"",
+    kind:"post",
+    media:"https://upload.wikimedia.org/wikipedia/commons/3/37/%E4%BA%94%E6%9C%88%E5%A4%A9-%E6%80%AA%E7%8D%B8_%285247925751%29.jpg",
+    time:"2026-11-12 22:18",
+    likes:2386,
+    comments:[
+      "啊啊啊啊啊真的假的！！！吉隆坡的姐妹是什么神仙运气！！！",
+      "等等？？？女生？？？我放大看了三遍？？？",
+      "感觉两个人很熟欸，不像普通粉丝偶遇。",
+      "人家吃个饭也要被拍？？？能不能给一点私人空间啊。",
+      "楼主又没上去打扰，而且也没曝光女生信息，分享偶遇而已吧。",
+      "不会是女朋友吧？？？我有一个大胆的猜测……",
+      "朋友也可以一起吃饭啊，先别乱猜了好吗。",
+      "如果真的是女朋友我也祝福啊，怪兽开心就好。",
+      "不是不让谈，是不想看到他被偷拍好吗……",
+      "哈哈哈哈评论区已经给团长安排完婚姻大事了。",
+      "你们有没有发现他看起来心情很好啊！！！",
+      "为什么每次有女生出现就要被盘问身份？给人一点私人空间吧。",
+      "我比较好奇的是演出结束后他怎么还出来吃宵夜哈哈哈哈。"
+    ],
+    meta:{art:"guitar",category:"推荐",handle:"今天也要听五月天",location:"吉隆坡",redbookMalaysiaEncounter:"true"},
+    richText:"",
+    hidden:false,unlock:"",password:"",folder:"推荐",favorite:false,outgoing:false,read:false
+  };
   const feedItems = sourceIsPlaceholder ? demoPosts : items;
-  const visible = feedItems.filter((item) => {
+  const withMalaysiaEncounter = p.ui?.redbookMalaysiaEncounterPostV1 === "show"
+    ? [malaysiaEncounterPost, ...feedItems.filter(item => item.id !== malaysiaEncounterPost.id)]
+    : feedItems;
+  const visible = withMalaysiaEncounter.filter((item) => {
     const matchesCategory = category === "推荐" || category === "RED" ||
       item.folder === category || meta(item, "category") === category;
     const matchesTop = tab === "发现" || tab === "关注"
