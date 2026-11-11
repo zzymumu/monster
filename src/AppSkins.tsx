@@ -2471,26 +2471,10 @@ export function WeChatSkin(p: SkinProps) {
   // Match this scene's stable message ID only. The same goodbye wording may
   // exist in an older transcript/save and must not skip the guitar lesson scene.
   const postBathGoodbyeAlreadySent = allMalaysiaDaGMessages.some((item) =>
-    item.id === "malaysia-dag-user-86-0" &&
     item.sender === "我" &&
+    item.meta?.storyThread === "大G" &&
     item.body.trim() === "活该！不跟你说了我要去洗澡，债见！"
   );
-  useEffect(() => {
-    if (!isMonsterThread || postBathGoodbyeAlreadySent || malaysiaDaGChatStage < 54) return;
-    // Recover saves that were incorrectly pushed to stage 54 by the old
-    // text-only detector: resume immediately after the latest actually-sent
-    // turn from this Malaysia DaG conversation.
-    let latestSentTurn = -1;
-    for (let index = 0; index < malaysiaDaGChatTurns.length; index += 1) {
-      const sent = allMalaysiaDaGMessages.some(item =>
-        item.id === "malaysia-dag-user-" + index + "-0" &&
-        item.sender === "我" &&
-        item.meta?.storyThread === "大G"
-      );
-      if (sent) latestSentTurn = index;
-    }
-    setMalaysiaDaGChatStage(Math.max(0, latestSentTurn + 1));
-  }, [isMonsterThread, postBathGoodbyeAlreadySent, malaysiaDaGChatStage, p.items, catRescue.messages]);
   useEffect(() => {
     if (!isMonsterThread || !postBathGoodbyeAlreadySent || patrickFriendAccepted || patrickFriendRequestOpen) return;
     setPatrickFriendRequestOpen(true);
@@ -2587,31 +2571,39 @@ export function WeChatSkin(p: SkinProps) {
 
   // One-time save migration: replace the old "想我了吧" prompt with the new
   // text-only guitar-teaching conversation, without disturbing earlier chat history.
-  // Repair saves affected by the old off-by-33 goodbye handler. Stage 53 is
-  // the two-line phone reply; the actual shower goodbye is stage 86.
-  const [malaysiaDaGPhoneReplyRepairV1, setMalaysiaDaGPhoneReplyRepairV1] =
-    useSkinState<boolean>(p, "wxMalaysiaDaGPhoneReplyRepairV1", false);
+  // Repair saves affected by the old phone-reply / shower-goodbye stage collision.
+  const [malaysiaDaGPhoneReplyRepairV2, setMalaysiaDaGPhoneReplyRepairV2] =
+    useSkinState<boolean>(p, "wxMalaysiaDaGPhoneReplyRepairV2", false);
   useEffect(() => {
-    if (malaysiaDaGPhoneReplyRepairV1 || !isMonsterThread) return;
-    const wrongMarkerMessages = catRescue.messages.filter(item =>
-      item.id === "malaysia-dag-user-53-0" &&
-      item.body.trim() !== "活该！不跟你说了我要去洗澡，债见！"
+    if (malaysiaDaGPhoneReplyRepairV2 || !isMonsterThread) return;
+    const firstReply = "欸？怎么突然要打电话啦？";
+    const secondReply = "你说要努力一下，这么快就开始行动了喔？";
+    const outgoing = catRescue.messages.filter(item =>
+      item.sender === "我" && item.meta?.storyThread === "大G"
     );
-    if (wrongMarkerMessages.length > 0) {
-      const seen = new Set<string>();
-      const repaired = catRescue.messages.flatMap((item, index) => {
-        const isPhoneReply = item.sender === "我" &&
+    const firstCount = outgoing.filter(item => item.body.trim() === firstReply).length;
+    const secondCount = outgoing.filter(item => item.body.trim() === secondReply).length;
+    // The old stage-53 handler sent only the first half of the two-line reply,
+    // then jumped to stage 54. If that happened, remove duplicates and return
+    // to stage 53 so the player can send the complete two-line turn once.
+    const interruptedPhoneReply = firstCount > 0 && secondCount === 0 &&
+      (firstCount > 1 || malaysiaDaGChatStage >= 54);
+    if (interruptedPhoneReply) {
+      let keptFirst = false;
+      const repaired = catRescue.messages.filter(item => {
+        const isFirst = item.sender === "我" &&
           item.meta?.storyThread === "大G" &&
-          (item.body.trim() === "欸？怎么突然要打电话啦？" ||
-           item.body.trim() === "你说要努力一下，这么快就开始行动了喔？");
-        if (isPhoneReply) {
-          if (seen.has(item.body.trim())) return [];
-          seen.add(item.body.trim());
+          item.body.trim() === firstReply;
+        if (!isFirst) return true;
+        if (keptFirst) return false;
+        keptFirst = true;
+        return true;
+      }).map(item => {
+        if (item.id === "malaysia-dag-user-53-0" &&
+            item.body.trim() !== "活该！不跟你说了我要去洗澡，债见！") {
+          return { ...item, id: "malaysia-dag-phone-reply-repaired" };
         }
-        if (item.id === "malaysia-dag-user-53-0") {
-          return [{ ...item, id: "malaysia-dag-phone-reply-repaired-" + index }];
-        }
-        return [item];
+        return item;
       });
       setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: repaired }));
       setMalaysiaDaGChatStage(53);
@@ -2619,8 +2611,8 @@ export function WeChatSkin(p: SkinProps) {
       p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1", false);
       p.onUi?.("wxMalaysiaDaGPostBathShopeeOpenedV1", false);
     }
-    setMalaysiaDaGPhoneReplyRepairV1(true);
-  }, [malaysiaDaGPhoneReplyRepairV1, isMonsterThread, catRescue.messages, catRescue, setMalaysiaDaGChatStage, setPatrickFriendRequestOpen]);
+    setMalaysiaDaGPhoneReplyRepairV2(true);
+  }, [malaysiaDaGPhoneReplyRepairV2, isMonsterThread, catRescue.messages, catRescue, malaysiaDaGChatStage, setMalaysiaDaGChatStage, setPatrickFriendRequestOpen]);
 
   const [malaysiaDaGGuitarChatMigratedV1, setMalaysiaDaGGuitarChatMigratedV1] =
     useSkinState<boolean>(p, "wxMalaysiaDaGGuitarChatMigratedV1", false);
@@ -6955,10 +6947,19 @@ export function WeChatSkin(p: SkinProps) {
                     // queue DaG's acknowledgement explicitly, rather than
                     // relying on the generic mixed-chat append path.
                     if(malaysiaDaGChatStage===86){
-                      const goodbyeId="malaysia-dag-user-86-0";
-                      const alreadySent=[...p.items,...catRescue.messages].some(item=>item.body.trim()==="活该！不跟你说了我要去洗澡，债见！");
+                      const goodbyeBody="活该！不跟你说了我要去洗澡，债见！";
+                      const alreadySent=[...p.items,...catRescue.messages].some(item=>
+                        item.sender==="我" && item.body.trim()===goodbyeBody &&
+                        item.meta?.storyThread==="大G"
+                      );
                       if(!alreadySent){
-                        appendCatLines([{id:goodbyeId,sender:"我",body:turn.user[0],thread:"大G"}],catRescue.stage,catRescue.branch,"malaysia-dag-chat-goodbye-86");
+                        const goodbyeItem=makeItem({
+                          id:"malaysia-dag-user-86-0",title:"大G",sender:"我",body:goodbyeBody,
+                          time:"2026-11-02 "+(storyClockRef.current||"14:24"),
+                          outgoing:true,avatar:"",kind:"text",media:"",
+                          meta:{storyId:"cat-rescue",storyThread:"大G",storyOrderAt:String(Date.now())}
+                        });
+                        setCatRescueRaw(JSON.stringify({...catRescue,version:2,messages:[...catRescue.messages,goodbyeItem]}));
                       }
                       p.onUi?.("wxMalaysiaDaGPostBathAwaitShopeeV1",true);
                       setMalaysiaDaGChatStage(87);
