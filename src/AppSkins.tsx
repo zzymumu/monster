@@ -614,11 +614,15 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   3: [
-    { id: "take-kitten-to-vet", label: "那你说要怎么办嘛，真的很可怜啊！", nextStage: 12, lines: [
+    { id: "take-kitten-to-vet", label: "那你说要怎么办嘛，真的很可怜啊！", nextStage: 34, lines: [
       { sender: "我", body: "那你说要怎么办嘛，真的很可怜啊！", thread: "西蓝花" },
       { sender: "西蓝花", body: "我知道你心软。", thread: "西蓝花" },
       { sender: "西蓝花", body: "但是Vava也要保护好啊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "要不然先带它去医院检查一下？", thread: "西蓝花" },
+    ]},
+  ],
+  34: [
+    { id: "agree-vet-check", label: "对哦！那我先带它去医院检查！", nextStage: 12, lines: [
       { sender: "我", body: "对哦！", thread: "西蓝花" },
       { sender: "我", body: "那我先带它去医院！", thread: "西蓝花" },
       { sender: "我", body: "等医生检查完再决定怎么安置。", thread: "西蓝花" },
