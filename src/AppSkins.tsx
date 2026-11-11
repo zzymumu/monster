@@ -2466,6 +2466,21 @@ export function WeChatSkin(p: SkinProps) {
   // Malaysia arrival coordination: each contact's turn unlocks only after the
   // previous conversation has been completed by the player.
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
+  // A stage number alone is not proof that the other person’s message has
+  // actually appeared in the transcript. Gate every Durian follow-up on the
+  // stable IDs of the preceding incoming bubbles.
+  const malaysiaDurianRequiredIncoming: Record<number, string[]> = {
+    8: ["malaysia-dag-durian-7-i-0"],
+    9: ["malaysia-dag-durian-8-i-0"],
+    10: ["malaysia-dag-durian-9-i-0"],
+    11: ["malaysia-dag-durian-10-i-0"],
+    12: ["malaysia-dag-durian-11-i-0", "malaysia-dag-durian-11-i-1"],
+    13: ["malaysia-dag-durian-12-i-0", "malaysia-dag-durian-12-i-1"],
+    14: ["malaysia-dag-durian-13-i-0", "malaysia-dag-durian-13-i-1"],
+  };
+  const malaysiaDurianTurnIsDelivered = (stage: number) =>
+    (malaysiaDurianRequiredIncoming[stage] || []).every(id => allItems.some(item => item.id === id));
+
   const [malaysiaPatrickContactChoiceSent, setMalaysiaPatrickContactChoiceSent] = useSkinState<boolean>(p, "wxMalaysiaPatrickContactChoiceSentV2", false);
   // If the itinerary is already in the driver's chat but the player has not
   // sent the first contact question, always restore that one pending choice.
@@ -2660,6 +2675,41 @@ export function WeChatSkin(p: SkinProps) {
     setMalaysiaDaGPhoneReplyRepairV2(true);
   }, [malaysiaDaGPhoneReplyRepairV2, isMonsterThread, catRescue.messages, catRescue, malaysiaDaGChatStage, setMalaysiaDaGChatStage, setPatrickFriendRequestOpen]);
 
+  const [malaysiaDurianMissingLineMigratedV1, setMalaysiaDurianMissingLineMigratedV1] =
+    useSkinState<boolean>(p, "wxMalaysiaDurianMissingLineMigratedV1", false);
+  useEffect(() => {
+    if (malaysiaDurianMissingLineMigratedV1) return;
+    const previous = allItems.find(item =>
+      item.sender === "大G" && item.body.trim() === "我真的不懂。"
+    );
+    const next = allItems.find(item =>
+      item.sender === "我" && item.body.trim() === "你不懂欣赏！"
+    );
+    const alreadyPresent = allItems.some(item =>
+      item.sender === "大G" && /那個味道……|那个味道……/.test(item.body.trim())
+    );
+    if (previous && next && !alreadyPresent) {
+      const previousOrder = Number(previous.meta?.storyOrderAt);
+      const nextOrder = Number(next.meta?.storyOrderAt);
+      const order = Number.isFinite(previousOrder) && Number.isFinite(nextOrder) && nextOrder > previousOrder
+        ? previousOrder + (nextOrder - previousOrder) / 2
+        : (Number.isFinite(previousOrder) ? previousOrder + 0.0001 : Date.now());
+      const repairedLine = makeItem({
+        id: "malaysia-dag-durian-11-i-1",
+        title: "大G",
+        sender: "大G",
+        body: "那個味道……",
+        time: previous.time,
+        outgoing: false,
+        avatar: previous.avatar || "",
+        kind: "text",
+        media: "",
+        meta: { ...(previous.meta || {}), storyId: "cat-rescue", storyThread: "大G", storyOrderAt: String(order) },
+      });
+      setCatRescueRaw(JSON.stringify({ ...catRescue, version: 2, messages: [...catRescue.messages, repairedLine] }));
+    }
+    setMalaysiaDurianMissingLineMigratedV1(true);
+  }, [malaysiaDurianMissingLineMigratedV1, allItems, catRescueRaw]);
   const [malaysiaDaGGuitarChatMigratedV1, setMalaysiaDaGGuitarChatMigratedV1] =
     useSkinState<boolean>(p, "wxMalaysiaDaGGuitarChatMigratedV1", false);
   useEffect(() => {
@@ -6857,7 +6907,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isBroccoliThread && malaysiaCoordinationStage === 2 && pendingCatLines.filter(line => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
+              {isBroccoliThread && malaysiaCoordinationStage === 2 && allItems.some(item => item.id === "malaysia-broccoli-car-arranged-02") && pendingCatLines.filter(line => line.thread === "西蓝花" || line.thread === "西兰花").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="西蓝花接机安排回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([{id:"malaysia-broccoli-car-arranged-03",sender:"我",body:"嗯嗯！",thread:"西蓝花"}],catRescue.stage,catRescue.branch,"malaysia-broccoli-car-arranged-ack");
@@ -6914,7 +6964,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage >= 7 && malaysiaCoordinationStage <= 13 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
+              {isMonsterThread && malaysiaCoordinationStage >= 7 && malaysiaCoordinationStage <= 13 && malaysiaDurianTurnIsDelivered(malaysiaCoordinationStage) && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="榴莲聊天回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     const pairs: Array<[string, string[]]> = [
@@ -6922,7 +6972,7 @@ export function WeChatSkin(p: SkinProps) {
                       ["没有没有，我意思是你帮我吃。",["才不要咧！"]],
                       ["🥺",["....有空的话我会试试看。"]],
                       ["吃猫山王！猫山王！！！！",["妳到底為什麼這麼喜歡榴槤啦。"]],
-                      ["因为真的很好吃啊！！",["我真的不懂。"]],
+                      ["因为真的很好吃啊！！",["我真的不懂。","那個味道……"]],
                       ["你不懂欣赏！",["好好好。","留給妳吃，我不跟妳搶。"]],
                       ["这还差不多！",["不過妳真的很奇怪欸。","怎麼有人可以為了榴槤這麼激動哈哈哈。"]],
                     ];
@@ -6944,7 +6994,7 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
-              {isMonsterThread && malaysiaCoordinationStage === 14 && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
+              {isMonsterThread && malaysiaCoordinationStage === 14 && malaysiaDurianTurnIsDelivered(14) && pendingCatLines.filter(line => line.thread === "大G" || line.thread === "温尚翊").length === 0 && (
                 <div className="cat-rescue-choices" aria-label="大G榴莲话题最后回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
                     appendCatLines([
