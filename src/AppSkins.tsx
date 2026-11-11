@@ -5553,15 +5553,15 @@ export function WeChatSkin(p: SkinProps) {
       if (payload.type === "redbookPost") {
         if (catRescue.messages.some((item) => item.id === payload.id)) { p.onUi?.("shopeeSharePayload", ""); return; }
         const sharedPostCard: CatLine = {
-          id: payload.id, sender: "我", body: payload.title || payload.name || "小红书笔记",
-          thread: payload.recipient, kind: "text", media: payload.image || "",
+          id: payload.id!, sender: "我", body: payload.title || payload.name || "小红书笔记",
+          thread: payload.recipient!, kind: "text", media: payload.image || "",
           meta: { redbookShare: "true", redbookPostTitle: payload.title || payload.name || "", redbookPostUrl: payload.url || "monster://redbook/malaysia-encounter" },
         };
-        appendCatLines([sharedPostCard], catRescue.stage, catRescue.branch, payload.id);
+        appendCatLines([sharedPostCard], catRescue.stage, catRescue.branch, payload.id!);
         p.onUi?.("shopeeSharePayload", "");
         return;
       }
-      const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(payload.name);
+      const isCatCan = /罐頭|猫罐头|貓罐頭|主食罐|cat\s*food|canned\s*cat/i.test(payload.name || "");
       if (payload.recipient === "大G" && p.ui?.wxDaGShopeeSharePendingV1 === true && !isCatCan) {
         p.onNotification?.("蝦皮購物：這段劇情請分享一款貓罐頭商品。");
         return;
@@ -5573,8 +5573,8 @@ export function WeChatSkin(p: SkinProps) {
       const sharedCard: CatLine = {
         id: payload.id,
         sender: "我",
-        body: `${payload.name}${payload.variant ? "（" + payload.variant + "）" : ""} · NT$ ${Number(payload.price || 0).toLocaleString("zh-TW")}`,
-        thread: payload.recipient,
+        body: `${payload.name || ""}${payload.variant ? "（" + payload.variant + "）" : ""} · NT$ ${Number(payload.price || 0).toLocaleString("zh-TW")}`,
+        thread: payload.recipient!,
         kind: "text",
         media: "",
         meta: { shopeeProductShare: "true", productId: payload.productId || "", productName: payload.name, productPrice: String(payload.price || 0), productVariant: payload.variant || "", productImage: payload.image || "", productEmoji: payload.emoji || "🛍️", productCategory: payload.category || "" },
