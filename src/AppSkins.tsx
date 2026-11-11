@@ -6789,22 +6789,6 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">选择一条回复发送</div>
                 </div>
               )}
-              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 613)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
-                <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
-                  {malaysiaTripStage < 0 && returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
-                    <button key={choice.id} onClick={() => {
-                      const choiceKey = returnDinnerStage + ":" + choice.id;
-                      if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
-                      handledReturnDinnerChoicesRef.current.add(choiceKey);
-                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch, "return-dinner-" + returnDinnerStage + "-" + choice.id);
-                      setReturnDinnerStage(choice.nextStage);
-                      // If the next stage belongs to another contact, keep the
-                      // current chat open. The player switches contacts manually.
-                    }}>{isBroccoliThread ? simplifyBroccoliText(choice.label) : choice.label}</button>
-                  ))}
-                  <div className="cat-rescue-option-hint">选择一条回复发送</div>
-                </div>
-              )}
               {(p.thread.includes("Patrick") || p.thread.includes("小杨")) && !malaysiaPatrickContactChoiceSent && (
                 <div className="cat-rescue-choices" aria-label="Patrick 行程确认回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
@@ -6838,6 +6822,23 @@ export function WeChatSkin(p: SkinProps) {
                   <div className="cat-rescue-option-hint">点击发送你的回复</div>
                 </div>
               )}
+              {(!milkTeaGiftStoryActive || (returnDinnerStage >= 544 && returnDinnerStage <= 613)) && !postLockWaitPending && returnDinnerStage !== 261 && (returnDinnerStage !== 300 || (isBroccoliThread && postDoorDoorMessageExists && p.ui?.wxPostDrunkBroccoliCheckInV1 === true)) && (!postPickupGoodbyeSent || returnDinnerStage >= 111) && (returnDinnerStage === 544 ? (isBroccoliThread && !pendingCatLines.some((line) => line.thread === "大G" || line.thread === "温尚翊")) : ((returnDinnerStage >= 545 && returnDinnerStage <= 578) ? !pendingCatLines.some((line) => line.thread === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") || (isBroccoliThread && line.thread === "西兰花")) : (returnDinnerStage === 249 || pendingCatLines.length === 0))) && returnDinnerChoices.some((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![469, 470, 471].includes(returnDinnerStage) || milkTeaArrivalWaitReady)) && (
+                <div className="cat-rescue-choices" aria-label="下一段剧情回复选项">
+                  {malaysiaTripStage < 0 && returnDinnerChoices.filter((choice) => choice.stage === (postDoorHelloReady && returnDinnerStage < 300 ? 300 : returnDinnerStage) && choice.chat === (isMonsterThread ? "大G" : isBroccoliThread ? "西蓝花" : "") && (returnDinnerStage !== 392 || dagWanwanCommentCompleted) && (returnDinnerStage !== 454 || milkTeaTransferStatus === "returned") && (![470, 472, 474].includes(returnDinnerStage) || milkTeaArrivalWaitReady)).map((choice) => (
+                    <button key={choice.id} onClick={() => {
+                      const choiceKey = returnDinnerStage + ":" + choice.id;
+                      if (handledReturnDinnerChoicesRef.current.has(choiceKey)) return;
+                      handledReturnDinnerChoicesRef.current.add(choiceKey);
+                      appendCatLines(choice.lines, catRescue.stage, catRescue.branch, "return-dinner-" + returnDinnerStage + "-" + choice.id);
+                      setReturnDinnerStage(choice.nextStage);
+                      // If the next stage belongs to another contact, keep the
+                      // current chat open. The player switches contacts manually.
+                    }}>{isBroccoliThread ? simplifyBroccoliText(choice.label) : choice.label}</button>
+                  ))}
+                  <div className="cat-rescue-option-hint">选择一条回复发送</div>
+                </div>
+              )}
+
               {isBroccoliThread && malaysiaCoordinationStage === 1 && (
                 <div className="cat-rescue-choices" aria-label="告诉西蓝花包车已安排回复选项">
                   <button style={{display:"block",width:"100%",minHeight:44,padding:"10px 14px",borderRadius:10,background:"#07c160",color:"#102010",fontSize:15,fontWeight:600,whiteSpace:"normal",textAlign:"left"}} onClick={()=>{
