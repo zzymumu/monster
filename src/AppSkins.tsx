@@ -2466,6 +2466,25 @@ export function WeChatSkin(p: SkinProps) {
   // previous conversation has been completed by the player.
   const [malaysiaCoordinationStage, setMalaysiaCoordinationStage] = useSkinState<number>(p, "wxMalaysiaCoordinationStageV1", 0);
   const [malaysiaPatrickContactChoiceSent, setMalaysiaPatrickContactChoiceSent] = useSkinState<boolean>(p, "wxMalaysiaPatrickContactChoiceSentV2", false);
+  // If the itinerary is already in the driver's chat but the player has not
+  // sent the first contact question, always restore that one pending choice.
+  useEffect(() => {
+    if (p.thread !== "Patrick 小杨") return;
+    const messages = [...p.items, ...catRescue.messages];
+    const itineraryExists = messages.some(item =>
+      item.title === "Patrick 小杨" &&
+      item.meta?.storyId === "malaysia-driver" &&
+      item.body.includes("Day 1 布城市")
+    );
+    const playerAlreadyAsked = messages.some(item =>
+      item.sender === "我" &&
+      item.body.trim() === "好的收到~谢谢哦！明天我们到大马怎么联系你呀？" &&
+      (item.title === "Patrick 小杨" || item.meta?.storyThread === "Patrick 小杨")
+    );
+    if (itineraryExists && !playerAlreadyAsked && malaysiaPatrickContactChoiceSent) {
+      setMalaysiaPatrickContactChoiceSent(false);
+    }
+  }, [p.thread, p.items, catRescue.messages, malaysiaPatrickContactChoiceSent, setMalaysiaPatrickContactChoiceSent]);
   // Reconcile stale coordination progress with the actual chat transcript.
   // If Patrick was accepted but the first contact-confirmation reply was never
   // sent, the next action must remain available in Patrick's conversation.
@@ -6247,6 +6266,7 @@ export function WeChatSkin(p: SkinProps) {
               }
               setAddedFriends(current => current.includes("Patrick 小杨") ? current : [...current, "Patrick 小杨"]);
               setPatrickFriendAccepted(true);
+              setMalaysiaPatrickContactChoiceSent(false);
               setPatrickFriendRequestOpen(false);
               setTab("微信");
               p.onThread("Patrick 小杨");
