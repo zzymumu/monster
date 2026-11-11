@@ -187,6 +187,7 @@ function PhoneRuntime({
     "你慢慢开啦，晚高峰就是这样。", "有啦。", "嗯嗯记得！",
     "马上马上，很快啦！", "好~掰掰。", "嗯呐，掰掰。",
   ];  const milkTeaAudioRef = useRef<HTMLAudioElement | null>(null);
+  const malaysiaAftershowAudioRef = useRef<HTMLAudioElement | null>(null);
   const milkTeaCallAudio = ["./assets/audio/dag-call-01.mp3","./assets/audio/dag-call-02.mp3","./assets/audio/dag-call-03.mp3","./assets/audio/dag-call-04.mp3"];
   const milkTeaCallLines = ["你到了是不是？pai seh，我刚才在录音没听到，我现在去接你。","你在哪啦？我怎么没有看见你。","啊，我看到你了，怎么买那么多，不是叫你少买点嘛！","好啦好啦，我帮你拿，走吧。"];
   const milkTeaCallReplies = ["嗯嗯我到啦。","啊？我在路边欸，穿白色衣服的，提了个大袋子。","没事呀，我想着你们可能会有蛮多人，喝不完可以分给其他同事嘛！"];
@@ -601,7 +602,7 @@ function PhoneRuntime({
     if (outgoingDaGCallStep < 12) setOutgoingDaGCallStep((step) => step + 1);
   };
 
-  const malaysiaAftershowCallAudio = Array.from({ length: 7 }, (_, index) => `./assets/audio/dag-malaysia-aftershow-call-${String(index + 1).padStart(2, "0")}.mp3`);
+  const malaysiaAftershowCallAudio = Array.from({ length: 7 }, (_, index) => `./assets/audio/dag-malaysia-aftershow-call-${String(index + 1).padStart(2, "0")}.mp3?v=malaysia-aftershow-20261111`);
   const malaysiaAftershowCallLines = [
     "喂？散场了是不是？你先不要走啦，我带你去吃宵夜。",
     "我已经跟西蓝花说好了啦，不信你问她。",
@@ -642,7 +643,7 @@ function PhoneRuntime({
       ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxMalaysiaAftershowCallRequestedV1: false, wxMalaysiaAftershowCallFinishedV1: true } } });
     setMalaysiaAftershowCallStep(-1);
     setMalaysiaAftershowReplyReady(false);
-    if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
+    if (malaysiaAftershowAudioRef.current) { malaysiaAftershowAudioRef.current.pause(); malaysiaAftershowAudioRef.current.currentTime = 0; }
   };
 
   useEffect(() => {
@@ -668,9 +669,11 @@ function PhoneRuntime({
 
   useEffect(() => {
     if (!malaysiaAftershowCallActive || s.incomingCall?.status !== "answered" || malaysiaAftershowCallStep < 0 || malaysiaAftershowCallStep > 6) return;
-    const audio = milkTeaAudioRef.current;
+    const audio = malaysiaAftershowAudioRef.current;
     if (!audio) return;
+    audio.pause();
     audio.src = malaysiaAftershowCallAudio[malaysiaAftershowCallStep];
+    audio.load();
     audio.currentTime = 0;
     setMalaysiaAftershowReplyReady(false);
     void audio.play().catch(() => setCallTopNotice("语音播放失败，请检查设备音量"));
@@ -740,6 +743,9 @@ function PhoneRuntime({
       ui: { ...current.ui, wechat: { ...(current.ui?.wechat ?? {}), wxMilkTeaArrivalCallV1: false, wxMilkTeaArrivalCallFinishedV1: true } } });
     setMilkTeaCallStep(-1); setMilkTeaCallReply(-1);
     if (milkTeaAudioRef.current) { milkTeaAudioRef.current.pause(); milkTeaAudioRef.current.currentTime = 0; }
+  };
+  const onMalaysiaAftershowAudioEnded = () => {
+    if (malaysiaAftershowCallActive && malaysiaAftershowCallStep >= 0 && malaysiaAftershowCallStep <= 6) setMalaysiaAftershowReplyReady(true);
   };
   const onMilkTeaAudioEnded = () => {
     if (malaysiaAftershowCallActive && malaysiaAftershowCallStep >= 0 && malaysiaAftershowCallStep <= 6) { setMalaysiaAftershowReplyReady(true); return; }
@@ -2280,7 +2286,7 @@ function PhoneRuntime({
               )}
               {malaysiaAftershowCallActive && s.incomingCall.status === "answered" && (
                 <div style={{ width: "min(88%, 360px)", margin: "18px auto 12px", padding: "14px", borderRadius: "18px", background: "rgba(255,255,255,.14)", color: "white", textAlign: "center" }}>
-                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>{contactRemarksForNotifications["大G"] || contactRemarksForNotifications["温尚翊"] || "大G"} · 语音字幕</div>
+                  <div style={{ fontSize: 12, opacity: .72, marginBottom: 8 }}>{(contactRemarksForNotifications["大G"] || contactRemarksForNotifications["温尚翊"] || "").trim() || "联系人备注未读取"} · 语音字幕</div>
                   <div style={{ fontSize: 16, lineHeight: 1.6 }}>{malaysiaAftershowCallLines[malaysiaAftershowCallStep] ?? "正在通话…"}</div>
                   {malaysiaAftershowReplyReady && <button type="button" onClick={sendMalaysiaAftershowCallReply} style={{ width: "100%", marginTop: 14, border: 0, borderRadius: 14, padding: "12px", background: "rgba(255,255,255,.92)", color: "#222", fontSize: 14 }}>{malaysiaAftershowCallReplies[malaysiaAftershowCallStep]}</button>}
                 </div>
@@ -2300,6 +2306,7 @@ function PhoneRuntime({
                 </div>
               )}
               <audio ref={milkTeaAudioRef} onEnded={onMilkTeaAudioEnded} preload="auto" />
+              <audio ref={malaysiaAftershowAudioRef} onEnded={onMalaysiaAftershowAudioEnded} preload="none" />
               <div className="incoming-actions">
                 {s.incomingCall.status === "answered" || s.incomingCall.direction === "outgoing" ? (
                   <>
