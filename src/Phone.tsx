@@ -1248,6 +1248,19 @@ function PhoneRuntime({
   };
   const open = (id: string) => {
     if (!work.apps.some((a) => a.id === id && a.installed)) return;
+    if (id === "shopee") {
+      const current = runtimeRef.current;
+      const wx = current.ui?.wechat ?? {};
+      if (wx.wxMalaysiaDaGPostBathAwaitShopeeV1 === true && wx.wxMalaysiaDaGPostBathShopeeOpenedV1 !== true) {
+        update({
+          ...current,
+          ui: {
+            ...current.ui,
+            wechat: { ...wx, wxMalaysiaDaGPostBathShopeeOpenedV1: true },
+          },
+        });
+      }
+    }
     // Keep the post-call Moments trigger armed across app switches. It is
     // consumed only when the player actually opens Moments in WeChat.
     setApp(id);
