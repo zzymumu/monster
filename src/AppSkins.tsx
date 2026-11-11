@@ -484,7 +484,7 @@ function toSimplifiedChinese(value: string) {
 }
 export function getCatRescueThreadForStage(stage: number): "西蓝花" | "大G" {
   // Hospital arrival and clinic check-in remain in the friend's conversation.
-  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 2200, 2201, 2202, 2203, 2204, 2205, 2206, 2207, 2208, 2100, 2101, 2102, 2103, 2104, 2105, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248]);
+  const broccoliStages = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 30, 31, 32, 33, 34, 2200, 2201, 2202, 2203, 2204, 2205, 2206, 2207, 2208, 2100, 2101, 2102, 2103, 2104, 2105, 2106, 2300, 2301, 2302, 48, 49, 50, 51, 52, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 84, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 200, 201, 202, 203, 204, 207, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248]);
   return broccoliStages.has(stage) ? "西蓝花" : "大G";
 }
 export function shouldAutoReturnToBroccoli(stage: number, pendingCount: number, currentThread: string): boolean {
@@ -622,12 +622,16 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   2105: [
-    { id: "agree-vet-check", label: "对哦！那我先带它去医院检查！", nextStage: 12, lines: [
+    { id: "agree-vet-check", label: "对哦！那我先带它去医院检查！", nextStage: 2106, lines: [
       { sender: "我", body: "对哦！", thread: "西蓝花" },
       { sender: "我", body: "那我先带它去医院！", thread: "西蓝花" },
       { sender: "我", body: "等医生检查完再决定怎么安置。", thread: "西蓝花" },
       { sender: "西蓝花", body: "嗯嗯！不过你别硬抓它啊。", thread: "西蓝花" },
       { sender: "西蓝花", body: "小心它害怕的时候抓伤你。", thread: "西蓝花" },
+    ]},
+  ],
+  2106: [
+    { id: "acknowledge-vet-warning", label: "知道啦！", nextStage: 12, lines: [
       { sender: "我", body: "知道啦！", thread: "西蓝花" },
     ]},
   ],
@@ -688,19 +692,30 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   31: [
-    { id: "arrived-at-hospital", label: "到了到了，我刚到医院", nextStage: 4, lines: [
-      { sender: "西蓝花", body: "你到医院了吗？", thread: "西蓝花" },
-      { sender: "我", body: "到了到了我刚到。", thread: "西蓝花" },
+    { id: "arrived-at-hospital", label: "到了到了，我刚到医院", nextStage: 2300, lines: [
+      { sender: "我", body: "到了到了，我刚到医院。", thread: "西蓝花" },
       { sender: "西蓝花", body: "这么快！", thread: "西蓝花" },
       { sender: "西蓝花", body: "医生有开始检查了吗？", thread: "西蓝花" },
+    ]},
+  ],
+  2300: [
+    { id: "describe-hospital-check", label: "刚刚先带去看了一下，医生说还要扫描一下看看有没有晶片", nextStage: 2301, lines: [
       { sender: "我", body: "刚刚先带去看了一下。", thread: "西蓝花" },
       { sender: "我", body: "医生说还要扫描一下看看有没有晶片。", thread: "西蓝花" },
       { sender: "西蓝花", body: "那就好。", thread: "西蓝花" },
       { sender: "西蓝花", body: "如果有晶片的话，说不定能找到主人。", thread: "西蓝花" },
+    ]},
+  ],
+  2301: [
+    { id: "worry-about-owner", label: "对哦，不过如果没有主人怎么办？", nextStage: 2302, lines: [
       { sender: "我", body: "对哦。", thread: "西蓝花" },
       { sender: "我", body: "不过如果没有主人怎么办？", thread: "西蓝花" },
       { sender: "西蓝花", body: "那就等检查结果出来再说。", thread: "西蓝花" },
       { sender: "西蓝花", body: "你先别自己吓自己。", thread: "西蓝花" },
+    ]},
+  ],
+  2302: [
+    { id: "stay-with-kitten", label: "嗯嗯，我现在就陪着它。", nextStage: 4, lines: [
       { sender: "我", body: "嗯嗯。", thread: "西蓝花" },
       { sender: "我", body: "我现在就陪着它。", thread: "西蓝花" },
     ]},
@@ -5151,7 +5166,7 @@ export function WeChatSkin(p: SkinProps) {
   }, [p.items, parsedCatRescue.messages, pendingCatLines]);
   const chooseCatRescue = (choice: CatChoice) => {
     appendCatLines(choice.lines, choice.nextStage, choice.branch || catRescue.branch, "cat-choice-" + choice.id);
-    if (choice.nextStage === 8 && choice.id !== "notice-tag" && choice.id !== "phone-unanswered") { setIdCopied(false); setIdPasted(false); setAddIdModal(true); }
+    if (choice.nextStage === 8) { setIdCopied(false); setIdPasted(false); }
     if (choice.nextStage === 13 && (choice.branch || catRescue.branch) === "monster-prank") {
       // The player gets to compose an apology first; the send then visibly fails
       // because the prank has already cost them the friendship.
