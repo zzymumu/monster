@@ -48,8 +48,10 @@ describe("WeChat cat-rescue story configuration", () => {
     expect(CAT_RESCUE_CHOICES[2][0].lines.some((line) => line.body.includes("不是简单关个门就好的事情"))).toBe(true);
     expect(CAT_RESCUE_CHOICES[3][0].nextStage).toBe(2105);
     expect(CAT_RESCUE_CHOICES[3][0].lines.some((line) => line.body === "要不然先带它去医院检查一下？")).toBe(true);
-    expect(CAT_RESCUE_CHOICES[2105][0].nextStage).toBe(12);
-    expect(CAT_RESCUE_CHOICES[2105][0].lines.map((line) => line.body)).toContain("知道啦！");
+    expect(CAT_RESCUE_CHOICES[2105][0].nextStage).toBe(2106);
+    expect(CAT_RESCUE_CHOICES[2105][0].lines.map((line) => line.body)).toContain("小心它害怕的时候抓伤你。");
+    expect(CAT_RESCUE_CHOICES[2106][0].nextStage).toBe(12);
+    expect(CAT_RESCUE_CHOICES[2106][0].lines.map((line) => line.body)).toContain("知道啦！");
     expect(CAT_RESCUE_CHOICES[3][0].lines.some((line) => /带它去医院/.test(line.body))).toBe(true);
     expect(CAT_RESCUE_CHOICES[12][0].nextStage).toBe(2100);
     expect(CAT_RESCUE_CHOICES[30][0].nextStage).toBe(2103);
