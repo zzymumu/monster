@@ -1673,6 +1673,33 @@ export function WeChatSkin(p: SkinProps) {
     }
   }, [catRescueRaw]);
   const allItems = [...p.items, ...catRescue.messages];
+  const malaysiaPickupInstructionDelivered = allItems.some(item =>
+    item.id === "malaysia-patrick-arrival-07" &&
+    item.sender === "Patrick 小杨" &&
+    item.body.trim() === "不要下楼，往前直走"
+  );
+  useEffect(() => {
+    if (!isMonsterThread || !malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
+    setPendingCatLines(current => [
+      ...current,
+      {id:"malaysia-concert-midshow-opening-01",sender:"大G",body:"妳來了？",thread:"大G"},
+      {id:"malaysia-concert-midshow-opening-02",sender:"大G",body:"我好像看到妳了。",thread:"大G"},
+    ]);
+    setMalaysiaConcertChatStage(0);
+  }, [isMonsterThread, malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
+
+  // A stage number alone is not proof that the other person’s message has
+  // actually appeared in the transcript. Gate every Durian follow-up on the
+  // stable IDs of the preceding incoming bubbles.
+  const malaysiaDurianRequiredIncoming: Record<number, string[]> = {
+    8: ["malaysia-dag-durian-7-i-0"],
+    9: ["malaysia-dag-durian-8-i-0"],
+    10: ["malaysia-dag-durian-9-i-0"],
+    11: ["malaysia-dag-durian-10-i-0"],
+    12: ["malaysia-dag-durian-11-i-0", "malaysia-dag-durian-11-i-1"],
+    13: ["malaysia-dag-durian-12-i-0", "malaysia-dag-durian-12-i-1"],
+    14: ["malaysia-dag-durian-13-i-0", "malaysia-dag-durian-13-i-1"],
+  };
   // The opening "？？？" is part of the seeded chat. Deliver Broccoli's
   // follow-up question as an incoming bubble before showing the player's
   // first reply choice; mixed incoming/player lines cannot be passed through
@@ -2513,33 +2540,7 @@ export function WeChatSkin(p: SkinProps) {
     {user:["知道就好😎"],incoming:["哈哈哈哈。","好啦，vcr要结束了，我真的要去準備。","等我忙完再找妳。"]},
     {user:["好！快去吧！","加油！！"],incoming:["嗯，等一下見。"]},
   ];
-  const malaysiaPickupInstructionDelivered = allItems.some(item =>
-    item.id === "malaysia-patrick-arrival-07" &&
-    item.sender === "Patrick 小杨" &&
-    item.body.trim() === "不要下楼，往前直走"
-  );
-  useEffect(() => {
-    if (!isMonsterThread || !malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
-    setPendingCatLines(current => [
-      ...current,
-      {id:"malaysia-concert-midshow-opening-01",sender:"大G",body:"妳來了？",thread:"大G"},
-      {id:"malaysia-concert-midshow-opening-02",sender:"大G",body:"我好像看到妳了。",thread:"大G"},
-    ]);
-    setMalaysiaConcertChatStage(0);
-  }, [isMonsterThread, malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
 
-  // A stage number alone is not proof that the other person’s message has
-  // actually appeared in the transcript. Gate every Durian follow-up on the
-  // stable IDs of the preceding incoming bubbles.
-  const malaysiaDurianRequiredIncoming: Record<number, string[]> = {
-    8: ["malaysia-dag-durian-7-i-0"],
-    9: ["malaysia-dag-durian-8-i-0"],
-    10: ["malaysia-dag-durian-9-i-0"],
-    11: ["malaysia-dag-durian-10-i-0"],
-    12: ["malaysia-dag-durian-11-i-0", "malaysia-dag-durian-11-i-1"],
-    13: ["malaysia-dag-durian-12-i-0", "malaysia-dag-durian-12-i-1"],
-    14: ["malaysia-dag-durian-13-i-0", "malaysia-dag-durian-13-i-1"],
-  };
   const malaysiaDurianTurnIsDelivered = (stage: number) =>
     (malaysiaDurianRequiredIncoming[stage] || []).every(id => allItems.some(item => item.id === id));
 
