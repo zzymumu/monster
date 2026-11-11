@@ -2520,14 +2520,21 @@ export function WeChatSkin(p: SkinProps) {
   // Separate mid-show DaG chat, unlocked only after Patrick's final pickup instruction.
   const [malaysiaConcertChatStage, setMalaysiaConcertChatStage] = useSkinState<number>(p, "wxMalaysiaConcertChatStageV1", -1);
   useEffect(() => {
-    if (!isMonsterThread || !malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
-    setPendingCatLines(current => [
-      ...current,
-      {id:"malaysia-concert-midshow-opening-01",sender:"大G",body:"妳來了？",thread:"大G"},
-      {id:"malaysia-concert-midshow-opening-02",sender:"大G",body:"我好像看到妳了。",thread:"大G"},
-    ]);
-    setMalaysiaConcertChatStage(0);
-  }, [isMonsterThread, malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
+    // Start the ten-second delay as soon as Patrick's pickup instruction is
+    // delivered. Do not depend on the currently open chat: Phone.tsx's global
+    // incoming-message scheduler will create the notification if DaG's chat
+    // is not already open when these messages arrive.
+    if (!malaysiaPickupInstructionDelivered || malaysiaConcertChatStage !== -1) return;
+    const timer = window.setTimeout(() => {
+      setPendingCatLines(current => [
+        ...current.filter(line => line.id !== "malaysia-concert-midshow-opening-01" && line.id !== "malaysia-concert-midshow-opening-02"),
+        {id:"malaysia-concert-midshow-opening-01",sender:"大G",body:"妳來了？",thread:"大G"},
+        {id:"malaysia-concert-midshow-opening-02",sender:"大G",body:"我好像看到妳了。",thread:"大G"},
+      ]);
+      setMalaysiaConcertChatStage(0);
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [malaysiaPickupInstructionDelivered, malaysiaConcertChatStage, setMalaysiaConcertChatStage]);
   const malaysiaConcertTurns: Array<{user:string[]; incoming:string[]}> = [
     {user:["嘻嘻~","被你发现了。"],incoming:["妳喔……","我之前說要給妳票，妳又不要。","現在倒好，偷偷跑來了。"]},
     {user:["嘿嘿。","我这不是想给你一个惊喜嘛！","怎么样？惊不惊喜？"],incoming:["妳真的很會。","不過這算什麼驚喜，根本是突然襲擊吧。"]},
