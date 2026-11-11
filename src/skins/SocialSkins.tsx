@@ -409,35 +409,35 @@ export function RedbookSkin(p: Props) {
     hidden:false,unlock:"",password:"",folder:"推荐",favorite:false,outgoing:false,read:false
   };
   const encounterAvatars = [
-    {src:"https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/377adab44aed2e73d55e02458601a18b87d6fa20.jpg",position:"15% 45%",size:"340% 340%"},
-    {src:"https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/377adab44aed2e73d55e02458601a18b87d6fa20.jpg",position:"35% 50%",size:"340% 340%"},
-    {src:"https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/377adab44aed2e73d55e02458601a18b87d6fa20.jpg",position:"52% 40%",size:"340% 340%"},
-    {src:"https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/377adab44aed2e73d55e02458601a18b87d6fa20.jpg",position:"68% 50%",size:"340% 340%"},
-    {src:"https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/377adab44aed2e73d55e02458601a18b87d6fa20.jpg",position:"85% 45%",size:"340% 340%"},
-    {src:"https://down-tw.img.susercontent.com/file/919986dce1c1a295df5a2248a868e5ea",position:"18% 22%",size:"280% 280%"},
-    {src:"https://down-tw.img.susercontent.com/file/919986dce1c1a295df5a2248a868e5ea",position:"80% 20%",size:"280% 280%"},
-    {src:"https://down-tw.img.susercontent.com/file/919986dce1c1a295df5a2248a868e5ea",position:"18% 80%",size:"280% 280%"},
-    {src:"https://down-tw.img.susercontent.com/file/919986dce1c1a295df5a2248a868e5ea",position:"50% 80%",size:"280% 280%"},
-    {src:"https://down-tw.img.susercontent.com/file/919986dce1c1a295df5a2248a868e5ea",position:"82% 80%",size:"280% 280%"},
-    {src:"https://c-ssl.dtstatic.com/uploads/item/201706/16/20170616191058_wcQAG.thumb.1000_0.jpeg",position:"8% 50%",size:"520% 180%"},
-    {src:"https://c-ssl.dtstatic.com/uploads/item/201706/16/20170616191058_wcQAG.thumb.1000_0.jpeg",position:"29% 50%",size:"520% 180%"},
-    {src:"https://c-ssl.dtstatic.com/uploads/item/201706/16/20170616191058_wcQAG.thumb.1000_0.jpeg",position:"50% 50%",size:"520% 180%"},
-    {src:"https://c-ssl.dtstatic.com/uploads/item/201706/16/20170616191058_wcQAG.thumb.1000_0.jpeg",position:"71% 50%",size:"520% 180%"},
-    {src:"https://c-ssl.dtstatic.com/uploads/item/201706/16/20170616191058_wcQAG.thumb.1000_0.jpeg",position:"92% 50%",size:"520% 180%"},
-    {src:"https://media.karousell.com/media/photos/products/2023/2/9/qmayday_1675969606_e7e79e59_progressive.jpg",position:"12% 30%",size:"300% 200%"},
-    {src:"https://media.karousell.com/media/photos/products/2023/2/9/qmayday_1675969606_e7e79e59_progressive.jpg",position:"50% 30%",size:"300% 200%"},
-    {src:"https://media.karousell.com/media/photos/products/2023/2/9/qmayday_1675969606_e7e79e59_progressive.jpg",position:"88% 30%",size:"300% 200%"},
-    {src:"https://n.sinaimg.cn/sinakd20251113s/320/w640h480/20251113/4cc5-6ada4cd53a2f51bacce4882422909901.jpg",position:"50% 45%",size:"160% 160%"}
-  ];
-  const encounterAuthorAvatar = "https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/377adab44aed2e73d55e02458601a18b87d6fa20.jpg";
+  "https://i.imgur.com/dKexkdC.jpg",
+  "https://i.imgur.com/yZVxgvV.jpg",
+  "https://i.imgur.com/NgTM2qw.jpg",
+  "https://i.imgur.com/lZHOt59.jpg",
+  "https://i.imgur.com/91FmtOA.jpg",
+  "https://i.imgur.com/MxRdtDN.jpg",
+  "https://i.imgur.com/5hVWNF1.jpg",
+  "https://i.imgur.com/zjoQKX7.jpg",
+  "https://i.imgur.com/wNNBKkj.jpg",
+  "https://i.imgur.com/h8BPJc1.jpg",
+  "https://i.imgur.com/AdUfjHy.jpg",
+  "https://i.imgur.com/5w1nnY7.jpg",
+  "https://i.imgur.com/QqJV1EH.jpg",
+  "https://i.pinimg.com/564x/d0/f7/26/d0f726a57508b516fd5bce4e41a9a3dc.jpg",
+  "https://imgs.qiubiaoqing.com/qiubiaoqing/imgs/67d198b9131a1xeG.jpeg",
+  "https://img.shetu66.com/2024/01/24/170608276301458295.png",
+  "https://img2.woyaogexing.com/2022/03/05/dc207a78a2164c95bcf9e9bdbbf7bad3%21400x400.jpeg",
+  "https://mojocarrot.com/wp-content/uploads/2025/05/Mojo-Carrot.png",
+  "https://media.karousell.com/media/photos/products/2023/2/9/qmayday_1675969606_e7e79e59_progressive.jpg"
+];
+  const encounterAuthorAvatar = "https://i.imgur.com/yZVxgvV.jpg";
   const encounterComments = [
     {"user":"温柔乡里听怪兽","avatar":0,"location":"上海","body":"我先说我真的不是来嗑的……但这张抓拍也太会拍了吧？？他低头弹琴那个侧脸我直接失去语言能力。","likes":9286,"replies":["楼主你拍照技术可以去站姐那边应聘了","不是嗑不嗑的问题，这张图真的帅得很具体","我本来路过，结果盯着看了五分钟……"]},
-    {"user":"温尚翊今天营业了吗","avatar":1,"location":"广东","body":"等一下，旁边这个女生是不是演唱会也在现场啊？？我昨天在内场好像见过她，散场的时候还跟朋友说了一嘴。","likes":6842,"replies":["啊？？你确定是同一个人吗","我也想说！好像在某个走道附近见过","先别认人了姐妹，别把普通观众扒出来"]},
+    {"user":"温尚翊今天营业了吗","avatar":1,"location":"广东","body":"等一下，旁边这个女生是不是演唱会也在现场啊？？我昨天在内场好像见过她，散场的时候还跟朋友说了一嘴。","likes":6842,"replies":["啊？？你确定是同一个人吗","我也想说！好像在某个走道附近见过","先别认人了姐妹，别把普通wmls扒出来"]},
     {"user":"团长的拨片收藏夹","avatar":2,"location":"江苏","body":"我朋友说她看到怪兽把拨片递给这个女生了……我当时还以为她在夸张，结果现在刷到这帖？？？？","likes":10321,"replies":["递拨片？？？真的假的啊？？","演出现场递的还是吃饭的时候啊，时间线先搞清楚","我朋友也提过这件事，但我没亲眼看到"]},
     {"user":"今天不想写作业","avatar":3,"location":"浙江","body":"等等等等，递拨片和散场一起吃饭是同一天？？我怎么越看越像连续剧了，我作业突然不香了。","likes":4190,"replies":["姐妹你先把作业写了哈哈哈哈","是演唱会结束以后一起去吃东西啦，不是隔天偶遇","我也是刚看懂时间线，前面差点以为是第二天"]},
     {"user":"苹果味的五月天","avatar":4,"location":"北京","body":"我先泼个冷水哈，递拨片可能就是现场互动，演出结束一起吃饭也可能是朋友聚餐。别一张照片就开始给人家安排身份。","likes":7551,"replies":["理智姐来了，但你说得也不是没道理","那你解释一下为什么有人现场也见过她？","见过就代表认识？这逻辑我没懂"]},
     {"user":"今天也要早睡","avatar":5,"location":"四川","body":"不是，楼主你怎么能这么淡定地发出来啊！！！如果是我我现在已经在床上滚成一个麻花了。","likes":3288,"replies":["楼主可能还没意识到评论区已经炸了","本人淡定，评论区替她激动哈哈哈哈","我光看照片都要尖叫了"]},
-    {"user":"吉他弦永不断","avatar":6,"location":"湖北","body":"老粉插一句，怪兽有时候真的会把拨片送给台下观众，不是什么神秘暗号。大家不要自动脑补成偶像剧哈。","likes":2961,"replies":["老粉说话就是有底气","但如果真的是同一个女生那也太巧了吧","重点是别把一个正常互动说得像恋爱证据"]},
+    {"user":"吉他弦永不断","avatar":6,"location":"湖北","body":"老粉插一句，怪兽有时候真的会把拨片送给台下wmls，不是什么神秘暗号。大家不要自动脑补成偶像剧哈。","likes":2961,"replies":["老粉说话就是有底气","但如果真的是同一个女生那也太巧了吧","重点是别把一个正常互动说得像恋爱证据"]},
     {"user":"今晚必须吃宵夜","avatar":7,"location":"台湾","body":"我比较在意的是演唱会结束都累成那样了还去吃饭……到底吃哪家啦？吉隆坡宵夜有推荐吗我下次也要去。","likes":1876,"replies":["哈哈哈哈终于有人问正事","这家看起来像是当地朋友带去的","求店名！比猜身份实用多了"]},
     {"user":"五迷不迷路","avatar":8,"location":"香港","body":"有些人真的很奇怪欸，女生跟朋友吃个饭也要被问是谁？如果是普通朋友呢？如果是工作人员呢？人家不能有自己的生活吗。","likes":5644,"replies":["同意，别把女生当线索拼图","但楼主也没曝光她的信息吧，讨论一下而已","讨论可以，跑去找人就过线了"]},
     {"user":"等一场五月天","avatar":9,"location":"福建","body":"我昨天在场！我记得有个女生拿到拨片以后整个人愣住，旁边朋友一直拍她肩膀……但我不敢说一定是同一个人。","likes":8123,"replies":["啊啊啊啊这个描述怎么有画面了","你先别急着认人，保护隐私哈","我只想知道她后来有没有开心到睡不着"]},
@@ -469,8 +469,8 @@ export function RedbookSkin(p: Props) {
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><strong style={{fontSize:16}}>共 {103+encounterLocalComments.length} 条评论</strong><span style={{fontSize:12,color:"#999"}}>最热</span></div>
           <div style={{display:"flex",gap:8,marginBottom:18}}><img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=96&h=96&fit=crop" alt="我的头像" style={{width:38,height:38,borderRadius:"50%",objectFit:"cover"}}/><input value={encounterCommentDraft} onChange={e=>setEncounterCommentDraft(e.target.value)} placeholder="说点什么…" style={{flex:1,minWidth:0,border:0,borderRadius:20,background:"#292930",color:"#fff",padding:"10px 14px"}}/><button onClick={()=>{if(encounterCommentDraft.trim()){setEncounterLocalComments(v=>[...v,encounterCommentDraft.trim()]);setEncounterCommentDraft("");}}} style={{background:"none",color:"#ff4967"}}>发送</button></div>
           {encounterComments.map((comment,index)=>(
-            <div key={index} style={{display:"flex",gap:10,margin:"18px 0"}}><div role="img" aria-label={comment.user+"头像"} style={{width:42,height:42,borderRadius:"50%",flexShrink:0,border:"1px solid rgba(255,255,255,.12)",backgroundImage:`url(${encounterAvatars[comment.avatar].src})`,backgroundSize:encounterAvatars[comment.avatar].size,backgroundPosition:encounterAvatars[comment.avatar].position,backgroundRepeat:"no-repeat",backgroundColor:"#dcecff"}}/><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,color:"#e3e3ea",fontWeight:600,marginBottom:6,letterSpacing:".1px"}}>{comment.user}</div><div style={{fontSize:14,lineHeight:1.65}}>{comment.body}</div><div style={{fontSize:11,color:"#777",marginTop:8}}>2小时前 · {comment.location} <button style={{background:"none",color:"#aaa"}} onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))}>回复</button><span style={{float:"right"}}>♡ {comment.likes}</span></div>
-              {comment.replies.length>0&&<div style={{marginTop:9,padding:"10px 12px",background:"#202027",borderRadius:7}}>{comment.replies.slice(0,expandedEncounterComments[index]?undefined:2).map((reply,j)=><div key={j} style={{fontSize:13,lineHeight:1.7,marginBottom:6}}>{reply}</div>)}{comment.replies.length>1&&<button onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))} style={{background:"none",color:"#9ca3af",fontSize:12}}>{expandedEncounterComments[index]?"收起回复":"展开 "+comment.replies.length+" 条回复"}</button>}</div>}
+            <div key={index} style={{display:"flex",gap:10,margin:"18px 0"}}><div role="img" aria-label={comment.user+"头像"} style={{width:42,height:42,borderRadius:"50%",flexShrink:0,border:"1px solid rgba(255,255,255,.12)",backgroundImage:`url(${encounterAvatars[comment.avatar]})`,backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat",backgroundColor:"#dcecff"}}/><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,color:"#e3e3ea",fontWeight:600,marginBottom:6,letterSpacing:".1px"}}>{comment.user}</div><div style={{fontSize:14,lineHeight:1.65}}>{comment.body}</div><div style={{fontSize:11,color:"#777",marginTop:8}}>2小时前 · {comment.location} <button style={{background:"none",color:"#aaa"}} onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))}>回复</button><span style={{float:"right"}}>♡ {comment.likes}</span></div>
+              {comment.replies.length>0&&<div style={{marginTop:9,padding:"10px 12px",background:"#202027",borderRadius:7}}>{comment.replies.slice(0,expandedEncounterComments[index]?undefined:2).map((reply,j)=><div key={j} style={{fontSize:13,lineHeight:1.7,marginBottom:7}}><span style={{color:"#a9b9dc",fontWeight:600,marginRight:5}}>{["奶茶加五分糖","阿信的吉他拨片","今天也要听五月天","不吃香菜","温柔乡里的人"][((index*3)+j)%5]}</span><span style={{color:"#d7d7df"}}>{reply}</span></div>)}{comment.replies.length>1&&<button onClick={()=>setExpandedEncounterComments(v=>({...v,[index]:!v[index]}))} style={{background:"none",color:"#9ca3af",fontSize:12}}>{expandedEncounterComments[index]?"收起回复":"展开 "+comment.replies.length+" 条回复"}</button>}</div>}
             </div></div>
           ))}
           {encounterLocalComments.map((comment,index)=><div key={"local"+index} style={{padding:"12px 0",borderTop:"1px solid #303036"}}><strong>快樂小狗</strong><p>{comment}</p></div>)}
