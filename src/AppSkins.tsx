@@ -689,6 +689,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
       { sender: "我", body: "希望它身体没什么问题。", thread: "西蓝花" },
       { sender: "西蓝花", body: "会没事的。", thread: "西蓝花" },
       { sender: "西蓝花", body: "你开车慢一点。", thread: "西蓝花" },
+      { sender: "西蓝花", body: "你到医院了吗？", thread: "西蓝花" },
     ]},
   ],
   31: [
