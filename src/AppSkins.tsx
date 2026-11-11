@@ -1698,7 +1698,7 @@ export function WeChatSkin(p: SkinProps) {
     const incomingBodies = new Set([
       "你在哪里碰到的？", "等一下。", "你先别激动。", "附近有猫妈妈吗？", "不会是人家刚走丢的小猫吧？",
     ]);
-    const additions = missing.map((body, index) => makeItem({
+    const additions = missing.map((body) => makeItem({
       id: "cat-rescue-opening-repair-v2-" + String(openingBodies.indexOf(body)).padStart(2, "0"),
       title: "西蓝花",
       sender: incomingBodies.has(body) ? "西蓝花" : "我",
