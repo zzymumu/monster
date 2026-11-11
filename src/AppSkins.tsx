@@ -2547,7 +2547,10 @@ export function WeChatSkin(p: SkinProps) {
     // on different screens and the shared card may arrive after the first render.
     // Keep the scene parked at the product-question handoff until the question
     // is actually delivered, then expose the reassurance reply.
-    if (sharedCatCan && !reassuranceSent) {
+    // This recovery applies only while the player is still at the original
+    // product-share handoff. Never rewind a later DaG conversation (guitar
+    // lesson, goodbye, or travel planning) back to the canned-food scene.
+    if (sharedCatCan && !reassuranceSent && malaysiaDaGChatStage >= 0 && malaysiaDaGChatStage <= 42) {
       if (questionDelivered) {
         if (malaysiaDaGChatStage !== 41) setMalaysiaDaGChatStage(41);
       } else if (malaysiaDaGChatStage !== 999) {
