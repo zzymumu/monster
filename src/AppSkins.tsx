@@ -681,7 +681,7 @@ export const CAT_RESCUE_CHOICES: Record<number, CatChoice[]> = {
     ]},
   ],
   4: [
-    { id: "notice-tag", label: "欸，等一下！我好像发现了什么", nextStage: 5, lines: [
+    { id: "notice-tag", label: "欸，等一下！我好像发现了什么", nextStage: 8, lines: [
       { sender: "我", body: "欸，等一下！！", thread: "西蓝花" },
       { sender: "我", body: "我刚刚好像发现了什么！", thread: "西蓝花" },
       { sender: "西蓝花", body: "怎么了？", thread: "西蓝花" },
