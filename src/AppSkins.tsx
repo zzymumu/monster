@@ -1691,7 +1691,7 @@ export function WeChatSkin(p: SkinProps) {
     setPendingCatLines(current => [
       ...current,
       {id:"malaysia-aftershow-broccoli-link-v1",sender:"西蓝花",body:"吉隆坡偶遇怪兽！！！旁边那个女生是谁啊🥹",thread:"西蓝花",kind:"event",media:"https://resource02.ulifestyle.com.hk/ulcms/content/article/image/w600/2026/04/20260421100543_5e8c7e33c9217b9b3d9ef3c0257f5d3070ecc11c.jpg",meta:{redbookShare:"true",redbookUrl:"https://www.xiaohongshu.com/search_result?keyword="+encodeURIComponent("吉隆坡偶遇五月天怪兽 旁边那个女生是谁")}},
-      {id:"malaysia-aftershow-broccoli-panic-v1",sender:"西蓝花",body:"妈的，你们吃饭被人遇到还发出来了！",thread:"西蓝花"},
+      {id:"malaysia-aftershow-broccoli-panic-v1",sender:"西蓝花",body:"妈的，出事了你快回来！你们吃饭被粉丝遇到拍照发网上了！！！",thread:"西蓝花"},
     ]);
   }, [malaysiaAftershowArrivalConfirmed, malaysiaAftershowBroccoliLinkDelivered, allItems, setPendingCatLines]);
 
