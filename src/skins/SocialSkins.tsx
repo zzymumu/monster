@@ -466,15 +466,17 @@ export function RedbookSkin(p: Props) {
     "https://api.dicebear.com/9.x/fun-emoji/svg?seed=melon&backgroundColor=c1f0c1",
     "https://api.dicebear.com/9.x/thumbs/svg?seed=cloud&backgroundColor=f4d1a6",
     "https://api.dicebear.com/9.x/adventurer/svg?seed=hazel&backgroundColor=b6e3f4",
-    "https://api.dicebear.com/9.x/notionists/svg?seed=sprout&backgroundColor=c0aede"
+    "https://api.dicebear.com/9.x/notionists/svg?seed=sprout&backgroundColor=c0aede",
+    "https://api.dicebear.com/9.x/lorelei/svg?seed=teh-tarik-night&backgroundColor=ffe4c7"
   ];
   const encounterAuthorAvatar = "https://i.imgur.com/yZVxgvV.jpg";
   const encounterComments = [
-    {"user":"momo（今天也没睡醒）","avatar":0,"location":"上海","body":"我就坐她边上？？？刚刚还问她借了张纸，刷到帖子才反应过来是同一桌？？","likes":6430,"replies":[{"user":"momo","text":"啊？？是A1吗"},{"user":"小鱼","text":"不是吧这也太巧了"},{"user":"阿圆","text":"先别问人家具体坐哪桌"}]},
+    {"user":"momo（今天也没睡醒）","avatar":0,"location":"上海","body":"我就坐她旁边啊！！！她是跟朋友一起来的吧？我记得旁边还有个人，怎么这张图只拍到她一个人？","likes":6430,"replies":[{"user":"葡萄冻冻","text":"等下你坐A1吗？？"},{"user":"阿圆","text":"她旁边好像确实还有朋友，我记得有人一起的"},{"user":"小鱼吐泡泡","text":"A1的姐妹出来对一下位置哈哈哈"}]},
     {"user":"小鱼吐泡泡","avatar":1,"location":"广东","body":"等下你坐A1？我朋友也在A1，说怪兽今天真的老往这边走哈哈哈","likes":4457,"replies":[{"user":"阿May","text":"对！！我朋友也说他过来好几次"},{"user":"今天星期几","text":"我还以为饭撒给我了救命"},{"user":"七分糖","text":"A1今晚集体自我攻略"}]},
     {"user":"阿圆","avatar":2,"location":"浙江","body":"我也在A1……他走过来那几次我跟朋友疯狂对视，真的以为被看到了，回家越想越好笑","likes":8470,"replies":[{"user":"林同学","text":"姐妹你不是一个人哈哈哈哈"},{"user":"小周","text":"我朋友手机举得比谁都快"},{"user":"桃子汽水","text":"演唱会限定错觉文学"}]},
     {"user":"今天吃什么","avatar":3,"location":"北京","body":"她是不是跟人互过物料？我有点眼熟，但不敢乱认","likes":3236,"replies":[{"user":"困困小狗","text":"我跟她互过！！就是现场换了物料而已"},{"user":"阿哲","text":"啊啊原来是你！别在这认亲了哈哈"},{"user":"椰椰拿铁","text":"互物料跟认识本人还是两回事啦"}]},
     {"user":"一颗栗子","avatar":4,"location":"福建","body":"我之前去大马玩必去这家欸！！真的蛮好吃的，没想到还能在这种帖子看到它","likes":1265,"replies":[{"user":"栗子","text":"哈哈突然开始美食种草"},{"user":"晚点再说","text":"求问什么菜必点"},{"user":"小满","text":"先别在评论区报店名啦"}]},
+    {"user":"今天也在摸鱼","avatar":58,"location":"马来西亚·吉隆坡","body":"我今天也在这家店吃饭来着？？刚刚刷到才发现原来大家说的是这家，好巧啊","likes":1864,"replies":[{"user":"一颗栗子","text":"这家真的蛮好吃的！"},{"user":"奶盖三分甜","text":"吉隆坡哪家店呀求个美食repo"},{"user":"晚点再说","text":"散场后去吃饭也太幸福了吧"}]},
     {"user":"别催在排队","avatar":5,"location":"四川","body":"等等所以是演唱会结束后一起去吃饭？我刚开始还以为是第二天偶遇","likes":6105,"replies":[{"user":"不吃香菜","text":"对对，散场后"},{"user":"小熊饼干","text":"我也看岔了时间线"},{"user":"一颗土豆","text":"终于有人把时间说清楚"}]},
     {"user":"桃子汽水","avatar":6,"location":"重庆","body":"怪兽今天是不是往A1那边走了好多次？我在远一点的位置都看到了","likes":5156,"replies":[{"user":"momo","text":"他走位确实经过那边几次"},{"user":"小鱼","text":"舞台动线也可能会经过啦"},{"user":"阿圆","text":"但今天看起来心情蛮好"}]},
     {"user":"困困小狗","avatar":7,"location":"江苏","body":"有没有人看到点歌那段？他后面好像把拨片扔出去了？？我没看清","likes":2850,"replies":[{"user":"阿May","text":"好像有！但不确定扔给谁"},{"user":"今天星期几","text":"我只看到有东西飞过去"},{"user":"七分糖","text":"求个清楚机位别靠猜"}]},
